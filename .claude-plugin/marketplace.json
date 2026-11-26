@@ -1,0 +1,21 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "acl-rea",
+  "description": "Reverse engineer anything with agents, from app behavior down to native binaries.",
+  "owner": {
+    "name": "Ashz05",
+    "url": "https://github.com/Ashz05"
+  },
+  "plugins": [
+    {
+      "name": "acl-rea",
+      "description": "Reverse engineer anything with agents, from app behavior down to native binaries.",
+      "source": {
+        "source": "npm",
+        "package": "acl-rea-agents",
+        "version": "6.10.1"
+      },
+      "category": "development"
+    }
+  ]
+}

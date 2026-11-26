@@ -1,0 +1,21 @@
+{
+  "name": "acl-rea",
+  "interface": {
+    "displayName": "ACL-REA"
+  },
+  "plugins": [
+    {
+      "name": "acl-rea",
+      "source": {
+        "source": "npm",
+        "package": "acl-rea-agents",
+        "version": "6.10.1"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}

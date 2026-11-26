@@ -1,0 +1,40 @@
+{
+  "name": "acl-rea",
+  "version": "6.10.1",
+  "description": "Reverse engineer anything with agents, from app behavior down to native binaries.",
+  "author": {
+    "name": "Ashz05",
+    "url": "https://github.com/Ashz05"
+  },
+  "homepage": "https://github.com/Ashz05/ACL-REA",
+  "repository": "https://github.com/Ashz05/ACL-REA",
+  "license": "MIT",
+  "keywords": [
+    "reverse-engineering",
+    "binary-analysis",
+    "decompiler",
+    "mcp-server"
+  ],
+  "skills": "./skills",
+  "mcpServers": "./.codex-plugin/mcp.json",
+  "interface": {
+    "displayName": "ACL-REA",
+    "shortDescription": "Reverse engineer anything",
+    "longDescription": "Reverse engineer anything with agents, from app behavior down to native binaries.",
+    "developerName": "Ashz05",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/Ashz05/ACL-REA",
+    "defaultPrompt": [
+      "Use ACL-REA to explain how this binary implements a feature.",
+      "Use ACL-REA to compare two versions of this application.",
+      "Use ACL-REA to recover the sources from this JavaScript bundle."
+    ],
+    "composerIcon": "./assets/acl-rea-plugin.png",
+    "logo": "./assets/acl-rea-plugin.png"
+  }
+}

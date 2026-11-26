@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "acl-rea": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "acl-rea-agents@6.10.1",
+        "mcp"
+      ]
+    }
+  }
+}
