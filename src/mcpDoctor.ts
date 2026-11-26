@@ -162,7 +162,10 @@ export const runProductionMcpDoctor = async (options: McpDoctorOptions) => {
     },
     stderr.append,
   );
-  const client = new OwnedMcpClient({ name: "acl-rea-mcp-doctor", version: "1" });
+  const client = new OwnedMcpClient({
+    name: "acl-rea-mcp-doctor",
+    version: "1",
+  });
   let result: ProductionMcpDoctorResult;
   let cleanupFailure: { readonly cause: unknown } | undefined;
   try {

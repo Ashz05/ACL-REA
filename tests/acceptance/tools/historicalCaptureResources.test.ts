@@ -19,7 +19,9 @@ import { parseMcpToolError } from "../../fixtures/mcpToolError.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 const execute = promisify(execFile);
-const cli = fileURLToPath(new URL("../../../scripts/acl-rea.mjs", import.meta.url));
+const cli = fileURLToPath(
+  new URL("../../../scripts/acl-rea.mjs", import.meta.url),
+);
 const entry = JSON.stringify({
   startedDateTime: "2026-01-01T00:00:00.000Z",
   time: 1,

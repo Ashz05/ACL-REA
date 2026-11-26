@@ -137,7 +137,10 @@ await withVerifierCleanup(async () => {
         result.stdout,
       );
     }
-    assert.equal(await readFile(`${configPath}.acl-rea.backup`, "utf8"), original);
+    assert.equal(
+      await readFile(`${configPath}.acl-rea.backup`, "utf8"),
+      original,
+    );
     const installedConfiguration = await readFile(configPath, "utf8");
     assert(installedConfiguration.includes("unrelated-server"));
     if (client === "hermes")
@@ -161,7 +164,10 @@ await withVerifierCleanup(async () => {
     );
     assert.deepEqual(JSON.parse(repeated.stdout).appliedActions, []);
     assert.equal(await readFile(configPath, "utf8"), installedConfiguration);
-    assert.equal(await readFile(`${configPath}.acl-rea.backup`, "utf8"), original);
+    assert.equal(
+      await readFile(`${configPath}.acl-rea.backup`, "utf8"),
+      original,
+    );
     assert(
       (await readFile(skillPath, "utf8")).includes(
         "name: acl-reverse-engineer-anything",
@@ -244,7 +250,9 @@ await withVerifierCleanup(async () => {
             .filter((t) => t.name.startsWith("mcp__acl-rea__"))
             .map((t) => t.name.slice(14));
           const deferred = [
-            ...(search?.description ?? "").matchAll(/^- mcp__acl-rea__(\w+):/gmu),
+            ...(search?.description ?? "").matchAll(
+              /^- mcp__acl-rea__(\w+):/gmu,
+            ),
           ].map((m) => m[1]);
           const native = [...new Set([...exposed, ...deferred])];
           // Hermes advertises MCP prompt utilities beside server tools.
@@ -298,7 +306,9 @@ await withVerifierCleanup(async () => {
           });
         }
         assert(
-          serializedTools.includes("mcp__acl-rea__analyze_javascript_application"),
+          serializedTools.includes(
+            "mcp__acl-rea__analyze_javascript_application",
+          ),
           "Hermes must discover the analysis tool.",
         );
         if (!describeRequested) {

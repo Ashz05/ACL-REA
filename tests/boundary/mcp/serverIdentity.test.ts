@@ -171,7 +171,10 @@ it.skipIf(process.platform === "win32")(
     // Bun traverses the link and runs a different file.
     const lexical = join(scratch, "acl-rea.mjs");
     await writeFile(lexical, "lexical entrypoint");
-    await writeFile(join(root, "package", "acl-rea.mjs"), "traversed entrypoint");
+    await writeFile(
+      join(root, "package", "acl-rea.mjs"),
+      "traversed entrypoint",
+    );
     const crossing = (runtime: "node" | "bun") =>
       createServerIdentity({
         catalog: DEFAULT_CATALOG_IDENTITY,

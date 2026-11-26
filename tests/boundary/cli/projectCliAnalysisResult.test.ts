@@ -144,7 +144,9 @@ it("spells an input refusal with the CLI command and drops the MCP catalog claus
     operations: entry.operations,
     commands: entries,
   }) as { remediation: { action: string } };
-  expect(cliProjected.remediation.action).toContain("acl-rea inspect-pe-resources");
+  expect(cliProjected.remediation.action).toContain(
+    "acl-rea inspect-pe-resources",
+  );
   expect(cliProjected.remediation.action).not.toContain("inspect_pe_resources");
   expect(cliProjected.remediation.action).not.toContain("tools/list");
 });

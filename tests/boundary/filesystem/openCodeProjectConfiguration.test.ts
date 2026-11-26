@@ -97,7 +97,9 @@ it("loads OpenCode V2 ancestors beyond Git and layers all direct files before .o
     },
   });
   await writeConfiguration(direct, {
-    mcp: { servers: { "acl-rea": { ...localServer("direct"), disabled: true } } },
+    mcp: {
+      servers: { "acl-rea": { ...localServer("direct"), disabled: true } },
+    },
   });
   await writeConfiguration(nested, {
     mcp: { servers: { "acl-rea": localServer("nested") } },
@@ -137,7 +139,8 @@ it.each(["legacy", "native"] as const)(
     const upper = join(projectDirectory, "opencode.json");
     const setting = "REA_GHIDRA_STARTUP_TIMEOUT_MS";
     const mcp = (row: unknown) => ({
-      mcp: dialect === "native" ? { servers: { "acl-rea": row } } : { rea: row },
+      mcp:
+        dialect === "native" ? { servers: { "acl-rea": row } } : { rea: row },
     });
     await writeConfiguration(
       client.configPath,
@@ -185,7 +188,10 @@ it("attributes a dotted environment key to its effective OpenCode source", async
   });
   await writeConfiguration(upper, {
     mcp: {
-      "acl-rea": { ...localServer("project"), environment: { VALUE: "unrelated" } },
+      "acl-rea": {
+        ...localServer("project"),
+        environment: { VALUE: "unrelated" },
+      },
     },
   });
   const result = await read();
@@ -345,7 +351,9 @@ it("attributes an inherited OpenCode launcher to the file declaring the command"
     cwd.mockRestore();
   }
 
-  await writeConfiguration(project, { mcp: { "acl-rea": localServer("project") } });
+  await writeConfiguration(project, {
+    mcp: { "acl-rea": localServer("project") },
+  });
   const replacement = await read();
   if (!replacement.ok) throw Error(replacement.error.detail);
   expect(replacement.value).toMatchObject({

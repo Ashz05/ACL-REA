@@ -865,7 +865,10 @@ const copyCompiledPackage = async (prefix: string): Promise<string> => {
   const directory = await createTestTempDirectory(prefix);
   await cp(resolve("dist"), join(directory, "dist"), { recursive: true });
   await mkdir(join(directory, "scripts/lib"), { recursive: true });
-  await cp(resolve("scripts/acl-rea.mjs"), join(directory, "scripts/acl-rea.mjs"));
+  await cp(
+    resolve("scripts/acl-rea.mjs"),
+    join(directory, "scripts/acl-rea.mjs"),
+  );
   // Copy the helpers selected by the package, so this fixture exercises the
   // same launcher files that an installation receives.
   const manifest = JSON.parse(await readFile("package.json", "utf8")) as {

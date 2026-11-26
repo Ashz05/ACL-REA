@@ -22,10 +22,14 @@ describe("Goose YAML source key retention", () => {
   it("updates and removes an extension selected through aliased path keys", () => {
     const source =
       "table: &table extensions\nname: &name acl-rea\n? *table\n:\n  ? *name\n  : {cmd: old, type: stdio}\n";
-    const updated = editGooseConfigurationYaml(source, ["extensions", "acl-rea"], {
-      cmd: "rea",
-      type: "stdio",
-    });
+    const updated = editGooseConfigurationYaml(
+      source,
+      ["extensions", "acl-rea"],
+      {
+        cmd: "rea",
+        type: "stdio",
+      },
+    );
     expect(updated).toContain("*table");
     expect(updated).toContain("*name");
     expect(parseGooseConfigurationYaml(updated)).toMatchObject({
@@ -55,10 +59,14 @@ describe("Goose YAML source key retention", () => {
     const parsed = parseGooseConfigurationYaml(source) as {
       extensions: { "acl-rea": Record<string, unknown> };
     };
-    const updated = editGooseConfigurationYaml(source, ["extensions", "acl-rea"], {
-      ...parsed.extensions["acl-rea"],
-      cmd: "rea",
-    });
+    const updated = editGooseConfigurationYaml(
+      source,
+      ["extensions", "acl-rea"],
+      {
+        ...parsed.extensions["acl-rea"],
+        cmd: "rea",
+      },
+    );
     const document = parseDocument(updated);
     expect(document.errors).toEqual([]);
     const native = document.toJS({ mapAsMap: true }) as Map<string, unknown>;
@@ -74,10 +82,14 @@ describe("Goose YAML source key retention", () => {
     const parsed = parseGooseConfigurationYaml(source) as {
       extensions: { "acl-rea": Record<string, unknown> };
     };
-    const updated = editGooseConfigurationYaml(source, ["extensions", "acl-rea"], {
-      ...parsed.extensions["acl-rea"],
-      cmd: "rea",
-    });
+    const updated = editGooseConfigurationYaml(
+      source,
+      ["extensions", "acl-rea"],
+      {
+        ...parsed.extensions["acl-rea"],
+        cmd: "rea",
+      },
+    );
     expect(updated).toContain("*label");
     expect(updated).toContain("numeric");
     expect(updated).toContain('"1": string');
@@ -89,10 +101,14 @@ describe("Goose YAML source key retention", () => {
     const parsed = parseGooseConfigurationYaml(source) as {
       extensions: { "acl-rea": Record<string, unknown> };
     };
-    const updated = editGooseConfigurationYaml(source, ["extensions", "acl-rea"], {
-      ...parsed.extensions["acl-rea"],
-      cmd: "rea",
-    });
+    const updated = editGooseConfigurationYaml(
+      source,
+      ["extensions", "acl-rea"],
+      {
+        ...parsed.extensions["acl-rea"],
+        cmd: "rea",
+      },
+    );
     expect(updated.indexOf("&seed")).toBeLessThan(updated.indexOf("*seed"));
     expect(parseGooseConfigurationYaml(updated)).toMatchObject({
       extensions: { "acl-rea": { shared: "value", cmd: "rea" } },
@@ -106,10 +122,14 @@ describe("Goose YAML source key retention", () => {
       extensions: { "acl-rea": Record<string, unknown> };
     };
     const entry = parsed.extensions["acl-rea"];
-    const updated = editGooseConfigurationYaml(source, ["extensions", "acl-rea"], {
-      ...entry,
-      cmd: "rea",
-    });
+    const updated = editGooseConfigurationYaml(
+      source,
+      ["extensions", "acl-rea"],
+      {
+        ...entry,
+        cmd: "rea",
+      },
+    );
     expect(updated).toContain('    1: numeric\n    "1": string');
     expect(updated).toContain("cmd: rea");
     expect(() =>
@@ -126,10 +146,14 @@ describe("Goose YAML source key retention", () => {
     const parsed = parseGooseConfigurationYaml(source) as {
       extensions: { "acl-rea": Record<string, unknown> };
     };
-    const updated = editGooseConfigurationYaml(source, ["extensions", "acl-rea"], {
-      ...parsed.extensions["acl-rea"],
-      cmd: "rea",
-    });
+    const updated = editGooseConfigurationYaml(
+      source,
+      ["extensions", "acl-rea"],
+      {
+        ...parsed.extensions["acl-rea"],
+        cmd: "rea",
+      },
+    );
     expect(updated).toContain('      1: numeric\n      "1": string');
     expect(updated).toContain("cmd: rea");
   });
@@ -171,7 +195,11 @@ describe("Goose YAML 1.2 source facts", () => {
     expect(parseGooseConfigurationYaml(source)).toEqual(original);
     expect(
       parseGooseConfigurationYaml(
-        editGooseConfigurationYaml(source, ["extensions", "acl-rea"], extension),
+        editGooseConfigurationYaml(
+          source,
+          ["extensions", "acl-rea"],
+          extension,
+        ),
       ),
     ).toEqual({ ...original, extensions: { "acl-rea": extension } });
   });
@@ -203,7 +231,11 @@ describe("Goose YAML 1.2 source facts", () => {
     "refuses a source shape that cannot hold the selected extension: %j",
     (source) => {
       expect(() =>
-        editGooseConfigurationYaml(source, ["extensions", "acl-rea"], extension),
+        editGooseConfigurationYaml(
+          source,
+          ["extensions", "acl-rea"],
+          extension,
+        ),
       ).toThrow(ConfigurationError);
     },
   );
@@ -234,7 +266,11 @@ describe("Goose YAML 1.2 source facts", () => {
         `Goose YAML contains a duplicate mapping member at ${path.join(".")}`,
       );
       expect(() =>
-        editGooseConfigurationYaml(source, ["extensions", "acl-rea"], extension),
+        editGooseConfigurationYaml(
+          source,
+          ["extensions", "acl-rea"],
+          extension,
+        ),
       ).toThrow(`duplicate mapping member at ${path.join(".")}`);
     },
   );
@@ -250,7 +286,11 @@ describe("Goose YAML 1.2 source facts", () => {
         ConfigurationError,
       );
       expect(() =>
-        editGooseConfigurationYaml(source, ["extensions", "acl-rea"], extension),
+        editGooseConfigurationYaml(
+          source,
+          ["extensions", "acl-rea"],
+          extension,
+        ),
       ).toThrow(ConfigurationError);
     },
   );
@@ -264,7 +304,11 @@ describe("Goose YAML 1.2 source facts", () => {
         ConfigurationError,
       );
       expect(() =>
-        editGooseConfigurationYaml(source, ["extensions", "acl-rea"], extension),
+        editGooseConfigurationYaml(
+          source,
+          ["extensions", "acl-rea"],
+          extension,
+        ),
       ).toThrow(ConfigurationError);
     },
   );
@@ -305,10 +349,14 @@ describe("Goose extension edits", () => {
   it("moves a unique argument's comment with its value without duplicating removed annotations", () => {
     const source =
       "extensions:\n  acl-rea:\n    cmd: old\n    args:\n      - --mcp # protocol\n      - dropped # removed\n";
-    const updated = editGooseConfigurationYaml(source, ["extensions", "acl-rea"], {
-      cmd: "new",
-      args: ["", "--mcp"],
-    });
+    const updated = editGooseConfigurationYaml(
+      source,
+      ["extensions", "acl-rea"],
+      {
+        cmd: "new",
+        args: ["", "--mcp"],
+      },
+    );
     expect(updated).toMatch(/- --mcp # protocol/);
     expect(updated.split("# removed")).toHaveLength(2);
     expect(parseGooseConfigurationYaml(updated)).toEqual({

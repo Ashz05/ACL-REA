@@ -10,8 +10,7 @@ import type {
 import type { SetupOptions, SetupProviderEnvironment } from "./SetupTypes.js";
 import { supportedClientRegistrationProfile } from "../../tests/fixtures/clientRegistrationProfile.js";
 
-const ARCHIVE =
-  "/home/ada/.cache/acl-rea/build-computer/acl-rea-6.8.0.tar.xz";
+const ARCHIVE = "/home/ada/.cache/acl-rea/build-computer/acl-rea-6.8.0.tar.xz";
 const SETTINGS = {
   REA_AGENT_ENV_COMMAND: "/home/ada/.local/bin/agent-env",
   REA_DOCKER_COMMAND: "/usr/bin/docker",

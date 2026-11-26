@@ -309,7 +309,9 @@ await withVerifierCleanup(async () => {
           };
         } else if (skillCallId === undefined) {
           assert(skill, "Qwen must expose its native skill tool.");
-          message = call(skill.name, { skill: "acl-reverse-engineer-anything" });
+          message = call(skill.name, {
+            skill: "acl-reverse-engineer-anything",
+          });
           skillCallId = message.tool_calls[0].id;
         } else if (!selectedSkillLoaded) {
           if (skillRead === undefined) {

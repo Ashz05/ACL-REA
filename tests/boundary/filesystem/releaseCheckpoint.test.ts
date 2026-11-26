@@ -83,7 +83,9 @@ async function metadata(
     ".release-please-manifest.json": { ".": version },
     "server.json": {
       version,
-      packages: [{ registryType: "npm", identifier: "acl-rea-agents", version }],
+      packages: [
+        { registryType: "npm", identifier: "acl-rea-agents", version },
+      ],
     },
     "release-please-config.json": {
       ...(versioning === undefined ? {} : { versioning }),
@@ -1087,7 +1089,10 @@ it.each([
     path: "mcp.json",
     manifest: {
       mcpServers: {
-        "acl-rea": { command: "npx", args: ["-y", "acl-rea-agents@5.1.0", "mcp"] },
+        "acl-rea": {
+          command: "npx",
+          args: ["-y", "acl-rea-agents@5.1.0", "mcp"],
+        },
       },
     },
     failure:

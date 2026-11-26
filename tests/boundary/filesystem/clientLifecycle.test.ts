@@ -276,8 +276,12 @@ describe("client configuration filesystem lifecycle", () => {
       ),
     ).toMatchObject({ status: "configured" });
     expect((await lstat(configPath)).isSymbolicLink()).toBe(true);
-    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
-    expect(await readFile(targetPath, "utf8")).toContain("[mcp_servers.acl-rea]");
+    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(
+      original,
+    );
+    expect(await readFile(targetPath, "utf8")).toContain(
+      "[mcp_servers.acl-rea]",
+    );
   });
 
   it("fails before mutation when a TOML config symlink is dangling", async () => {
@@ -549,7 +553,11 @@ describe("Grok Build text that resembles a server table", () => {
       mcp_servers: {
         "rea.env": { command: "other", args: ["serve"] },
         "other[prod]": { command: "other", args: ["serve"] },
-        "acl-rea": { command: "acl-rea", args: ["mcp"], startup_timeout_sec: 30 },
+        "acl-rea": {
+          command: "acl-rea",
+          args: ["mcp"],
+          startup_timeout_sec: 30,
+        },
       },
       marketplace: { "sources[prod]": [{ name: "official" }] },
     });
@@ -683,7 +691,11 @@ describe("Grok Build multiline and escaped headers", () => {
       ],
       marker: ["first\n", '[mcp_servers.acl-rea]\ncommand = "keep literal"\n'],
       mcp_servers: {
-        "acl-rea": { command: "acl-rea", args: ["mcp"], startup_timeout_sec: 30 },
+        "acl-rea": {
+          command: "acl-rea",
+          args: ["mcp"],
+          startup_timeout_sec: 30,
+        },
       },
     });
     expect(
@@ -750,7 +762,11 @@ describe("Grok Build multiline and escaped headers", () => {
     expect(parseToml(configured)).toMatchObject({
       mcp_servers: {
         "rea.env": { command: "other", args: ["serve"] },
-        "acl-rea": { command: "acl-rea", args: ["mcp"], startup_timeout_sec: 30 },
+        "acl-rea": {
+          command: "acl-rea",
+          args: ["mcp"],
+          startup_timeout_sec: 30,
+        },
       },
     });
   });
@@ -788,7 +804,9 @@ describe("Grok Build inline and dotted assignments", () => {
       ),
     ).toMatchObject({ status: "failed", reason: "registration_ownership" });
     expect(await readFile(configPath, "utf8")).toBe(inline);
-    await expect(readFile(`${configPath}.acl-rea.backup`)).rejects.toMatchObject({
+    await expect(
+      readFile(`${configPath}.acl-rea.backup`),
+    ).rejects.toMatchObject({
       code: "ENOENT",
     });
     await writeFile(
@@ -824,7 +842,11 @@ describe("Grok Build inline and dotted assignments", () => {
     expect(parseToml(configuredInline)).toMatchObject({
       mcp_servers: {
         other: { command: "other" },
-        "acl-rea": { command: "acl-rea", args: ["mcp"], startup_timeout_sec: 30 },
+        "acl-rea": {
+          command: "acl-rea",
+          args: ["mcp"],
+          startup_timeout_sec: 30,
+        },
       },
       privacy: { share: false },
     });
@@ -899,7 +921,11 @@ describe("Grok Build inline and dotted assignments", () => {
     expect(parseToml(configuredDotted)).toMatchObject({
       mcp_servers: {
         other: { command: "other" },
-        "acl-rea": { command: "acl-rea", args: ["mcp"], startup_timeout_sec: 30 },
+        "acl-rea": {
+          command: "acl-rea",
+          args: ["mcp"],
+          startup_timeout_sec: 30,
+        },
       },
     });
   });
@@ -999,7 +1025,11 @@ describe("Grok Build closed inline tables", () => {
     expect(created).not.toMatch(/^\[mcp_servers\.rea\]$/mu);
     expect(parseToml(created)).toMatchObject({
       mcp_servers: {
-        "acl-rea": { command: "acl-rea", args: ["mcp"], startup_timeout_sec: 30 },
+        "acl-rea": {
+          command: "acl-rea",
+          args: ["mcp"],
+          startup_timeout_sec: 30,
+        },
       },
     });
   });
@@ -1036,7 +1066,11 @@ describe("Grok Build closed inline tables", () => {
       banner: ['keep"'],
       marker: ["keep'"],
       mcp_servers: {
-        "acl-rea": { command: "acl-rea", args: ["mcp"], startup_timeout_sec: 30 },
+        "acl-rea": {
+          command: "acl-rea",
+          args: ["mcp"],
+          startup_timeout_sec: 30,
+        },
       },
     });
     expect(
@@ -1079,7 +1113,11 @@ describe("Grok Build scalar and nested values", () => {
     expect(parseToml(configured)).toMatchObject({
       banner: "\u001b[31m",
       mcp_servers: {
-        "acl-rea": { command: "acl-rea", args: ["mcp"], startup_timeout_sec: 30 },
+        "acl-rea": {
+          command: "acl-rea",
+          args: ["mcp"],
+          startup_timeout_sec: 30,
+        },
       },
     });
   });
@@ -1108,7 +1146,11 @@ describe("Grok Build scalar and nested values", () => {
     expect(configured).not.toMatch(/^\[mcp_servers\.acl-rea\]$/mu);
     expect(parseToml(configured)).toMatchObject({
       mcp_servers: {
-        "acl-rea": { command: "acl-rea", args: ["mcp"], startup_timeout_sec: 10 },
+        "acl-rea": {
+          command: "acl-rea",
+          args: ["mcp"],
+          startup_timeout_sec: 10,
+        },
       },
     });
   });
@@ -1158,7 +1200,11 @@ describe("Grok Build scalar and nested values", () => {
     expect(parseToml(configured)).toMatchObject({
       privacy: { share: false },
       mcp_servers: {
-        "acl-rea": { command: "acl-rea", args: ["mcp"], startup_timeout_sec: 30 },
+        "acl-rea": {
+          command: "acl-rea",
+          args: ["mcp"],
+          startup_timeout_sec: 30,
+        },
       },
     });
   });
@@ -1169,10 +1215,7 @@ describe("Grok Build newlines and leading marks", () => {
     const home = await createTestTempDirectory("rea-grok-bom-");
     const configPath = join(home, ".grok/config.toml");
     await mkdir(dirname(configPath), { recursive: true });
-    await writeFile(
-      configPath,
-      '\uFEFF[profile]\nrea = "keep this setting"\n',
-    );
+    await writeFile(configPath, '\uFEFF[profile]\nrea = "keep this setting"\n');
     expect(
       await configureClientConfiguration(
         {
@@ -1191,7 +1234,11 @@ describe("Grok Build newlines and leading marks", () => {
     expect(parseToml(configured)).toMatchObject({
       profile: { mcp_servers: { rea: "keep this setting" } },
       mcp_servers: {
-        "acl-rea": { command: "acl-rea", args: ["mcp"], startup_timeout_sec: 30 },
+        "acl-rea": {
+          command: "acl-rea",
+          args: ["mcp"],
+          startup_timeout_sec: 30,
+        },
       },
     });
 
@@ -1229,7 +1276,11 @@ describe("Grok Build newlines and leading marks", () => {
     expect(parseToml(await readFile(configPath, "utf8"))).toMatchObject({
       banner: "a\r\nb",
       mcp_servers: {
-        "acl-rea": { command: "acl-rea", args: ["mcp"], startup_timeout_sec: 30 },
+        "acl-rea": {
+          command: "acl-rea",
+          args: ["mcp"],
+          startup_timeout_sec: 30,
+        },
       },
     });
 
@@ -1265,7 +1316,11 @@ describe("Grok Build newlines and leading marks", () => {
     expect(parseToml(await readFile(configPath, "utf8"))).toMatchObject({
       banner: "keep\nthis LF",
       mcp_servers: {
-        "acl-rea": { command: "acl-rea", args: ["mcp"], startup_timeout_sec: 30 },
+        "acl-rea": {
+          command: "acl-rea",
+          args: ["mcp"],
+          startup_timeout_sec: 30,
+        },
       },
     });
   });
@@ -1301,7 +1356,11 @@ describe("Grok Build inline comments", () => {
     expect(parseToml(configured)).toMatchObject({
       mcp_servers: {
         other: { command: "other" },
-        "acl-rea": { command: "acl-rea", args: ["mcp"], startup_timeout_sec: 30 },
+        "acl-rea": {
+          command: "acl-rea",
+          args: ["mcp"],
+          startup_timeout_sec: 30,
+        },
       },
     });
 
@@ -1342,7 +1401,11 @@ describe("Grok Build inline comments", () => {
     expect(parseToml(configured)).toMatchObject({
       mcp_servers: {
         other: { command: "other" },
-        "acl-rea": { command: "acl-rea", args: ["mcp"], startup_timeout_sec: 30 },
+        "acl-rea": {
+          command: "acl-rea",
+          args: ["mcp"],
+          startup_timeout_sec: 30,
+        },
       },
     });
 
@@ -1718,7 +1781,9 @@ describe("uninstall configuration symlink ownership", () => {
       }),
     );
     expect((await lstat(configPath)).isSymbolicLink()).toBe(true);
-    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(
+      original,
+    );
     expect(JSON.parse(await readFile(targetPath, "utf8"))).toEqual({
       mcpServers: { other: { command: "other" } },
     });
@@ -1948,7 +2013,10 @@ describe("uninstall configuration preflight", () => {
     ];
     const cursorConfig = JSON.stringify({
       mcpServers: {
-        "acl-rea": { command: "npx", args: ["-y", "acl-rea-agents@6.1.0", "mcp"] },
+        "acl-rea": {
+          command: "npx",
+          args: ["-y", "acl-rea-agents@6.1.0", "mcp"],
+        },
         other: { command: "echo", args: ["hello"] },
       },
     });
@@ -2141,7 +2209,10 @@ describe("client configuration filesystem failure reporting", () => {
 describe("managed skill removal outcomes", () => {
   it("reports a managed-path removal failure", async () => {
     const home = await createTestTempDirectory("rea-uninstall-remove-");
-    const skillRoot = join(home, ".agents/skills/acl-reverse-engineer-anything");
+    const skillRoot = join(
+      home,
+      ".agents/skills/acl-reverse-engineer-anything",
+    );
     await mkdir(skillRoot, { recursive: true });
     await writeFile(join(skillRoot, "SKILL.md"), ownedSkillManifest);
     const result = await runUninstall(
@@ -2200,7 +2271,10 @@ describe("skill root client identifier labels", () => {
   it("labels each retained or removed skill root by its client identifier", async () => {
     const home = await createTestTempDirectory("rea-uninstall-skill-labels-");
     const customClaudeDirectory = join(home, "claude-config");
-    const sharedRoot = join(home, ".agents/skills/acl-reverse-engineer-anything");
+    const sharedRoot = join(
+      home,
+      ".agents/skills/acl-reverse-engineer-anything",
+    );
     const claudeRoot = join(
       customClaudeDirectory,
       "skills/acl-reverse-engineer-anything",
@@ -2251,7 +2325,9 @@ const uninstallFixture = async (): Promise<{
   await mkdir(dirname(config), { recursive: true });
   await writeFile(
     config,
-    JSON.stringify({ mcpServers: { "acl-rea": { command: "acl-rea", args: ["mcp"] } } }),
+    JSON.stringify({
+      mcpServers: { "acl-rea": { command: "acl-rea", args: ["mcp"] } },
+    }),
   );
   return { home, config };
 };

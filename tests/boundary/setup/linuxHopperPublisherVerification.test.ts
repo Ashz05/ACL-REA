@@ -150,7 +150,10 @@ it.each([undefined, "", "/selected/cache", "relative/cache"])(
     else
       expect(selected).toEqual({
         ok: true,
-        value: join(setting || "/caller/home/.cache", "acl-rea/hopper-releases"),
+        value: join(
+          setting || "/caller/home/.cache",
+          "acl-rea/hopper-releases",
+        ),
       });
   },
 );
@@ -168,7 +171,9 @@ portableTar.each(["HOME", "XDG_CACHE_HOME"] as const)(
     await symlink(join(physical, "child"), join(directory, "alias"), "dir");
     const selected = `${directory}/alias/..`;
     const suffix =
-      setting === "HOME" ? ".cache/acl-rea/hopper-releases" : "acl-rea/hopper-releases";
+      setting === "HOME"
+        ? ".cache/acl-rea/hopper-releases"
+        : "acl-rea/hopper-releases";
     const expected = `${physical}/${suffix}/${f.release.main_exe_hash}`;
     const decoy = `${directory}/${suffix}/${f.release.main_exe_hash}`;
     await mkdir(decoy, { recursive: true });

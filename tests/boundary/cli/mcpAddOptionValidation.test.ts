@@ -95,7 +95,9 @@ cliTest(
       },
       theme: "dark",
     });
-    expect(await readFile(`${settingsPath}.acl-rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${settingsPath}.acl-rea.backup`, "utf8")).toBe(
+      original,
+    );
   },
 );
 

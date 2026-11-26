@@ -33,9 +33,6 @@
 > Follow the installation and release links from these official sources. A similar
 > repository name or copied README does not establish that a download is official.
 
-
-
-
 ---
 
 See a feature in an app that you want in your own product? Ask your agent to investigate it with ACL-REA. It can inspect the app without its source code, explain how the feature works, show the evidence, and build a version for your project.
@@ -287,24 +284,6 @@ Report vulnerabilities through [SECURITY.md](SECURITY.md).
 - **Discord** — Ask questions and share what you’re investigating with our passionate community of over 50,000 reverse engineers and builders! [![Join the ACL-REA Discord](https://img.shields.io/badge/Join%20Discord-5865F2?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/GkcryMnJDM)
 - **Twitter / X** — Follow [@reatools](https://x.com/reatools) for updates and announcements.
 - **Feedback & Ideas** — Want a new feature or support for a file format? [Open a GitHub issue](https://github.com/Ashz05/ACL-REA/issues) or [join our Discord](https://discord.gg/GkcryMnJDM) and let us know.
-
-## Star history
-
-🎉 **400,000 GitHub stars — thank you!**
-
-Thanks to everyone using ACL-REA, reporting bugs, requesting features, testing builds, and contributing fixes.
-
-<a href="https://rea.tools/contributors/">
-  <img src="website/public/contributors/avatars.png" alt="ACL-REA contributors" />
-</a>
-
-<a href="https://www.star-history.com/?repos=Ashz05%2FACL-REA&amp;type=date">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=Ashz05/ACL-REA&amp;type=date&amp;theme=dark&amp;legend=top-left" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=Ashz05/ACL-REA&amp;type=date" />
-    <img alt="ACL-REA GitHub star history" src="https://api.star-history.com/chart?repos=Ashz05/ACL-REA&amp;type=date" />
-  </picture>
-</a>
 
 ## Contributing
 

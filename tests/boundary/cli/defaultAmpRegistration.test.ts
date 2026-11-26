@@ -203,10 +203,13 @@ cliTest(
       const registered = await run();
       expect(registered.exitCode, registered.stdout).toBe(0);
       expect(
-        JSON.parse(await readFile(f.settings, "utf8"))["amp.mcpServers"]["acl-rea"]
-          .env,
+        JSON.parse(await readFile(f.settings, "utf8"))["amp.mcpServers"][
+          "acl-rea"
+        ].env,
       ).toEqual({ KEEP_ME: "1" });
-      expect(await readFile(`${f.settings}.acl-rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${f.settings}.acl-rea.backup`, "utf8")).toBe(
+        original,
+      );
       await writeFile(f.settings, "broken JSON\n");
       const rejected = await run();
       expect(rejected.exitCode).toBe(1);
@@ -216,7 +219,9 @@ cliTest(
         ),
       ).toMatchObject({ status: "failed" });
       expect(await readFile(f.settings, "utf8")).toBe("broken JSON\n");
-      expect(await readFile(`${f.settings}.acl-rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${f.settings}.acl-rea.backup`, "utf8")).toBe(
+        original,
+      );
     }
   },
 );
@@ -279,7 +284,9 @@ cliTest(
         ok: true,
       });
       expect(
-        JSON.parse(await readFile(f.settings, "utf8"))["amp.mcpServers"]["acl-rea"],
+        JSON.parse(await readFile(f.settings, "utf8"))["amp.mcpServers"][
+          "acl-rea"
+        ],
       ).toMatchObject({ command, args: [], env: { KEEP_ME: "1" } });
     }
   },

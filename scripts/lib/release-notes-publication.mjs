@@ -42,7 +42,11 @@ export async function verifyNotesPublication(run, options) {
       await run("git", ["ls-tree", "--name-only", source, "--", path])
     ).trim() === path;
   if (!present) {
-    if (pr.labels.some((label) => label.name === "acl-rea:release-notes-finalized"))
+    if (
+      pr.labels.some(
+        (label) => label.name === "acl-rea:release-notes-finalized",
+      )
+    )
       throw new Error(
         "Finalized release PR is missing its contribution inventory",
       );
@@ -66,7 +70,10 @@ export async function verifyNotesPublication(run, options) {
   if (valid(baseline) !== baseline || baseline.includes("+"))
     throw new Error("Invalid release baseline version");
   const baselineSha = (
-    await run("git", ["rev-parse", `refs/tags/acl-rea-agents-${baseline}^{commit}`])
+    await run("git", [
+      "rev-parse",
+      `refs/tags/acl-rea-agents-${baseline}^{commit}`,
+    ])
   ).trim();
   if (inventory.base !== baselineSha)
     throw new Error(

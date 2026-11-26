@@ -216,9 +216,9 @@ describe("ZCode .agents fallback preservation", () => {
         },
       });
       if (original !== undefined) {
-        expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
-          original,
-        );
+        expect(
+          await readFile(`${client.configPath}.acl-rea.backup`, "utf8"),
+        ).toBe(original);
         if (JSON.parse(original).ui !== undefined)
           expect(parsed.ui).toEqual({ theme: "dark" });
       }
@@ -308,9 +308,9 @@ describe("ZCode fallback uninstall", () => {
       const edited = await readFile(fallbackPath(home), "utf8");
       expect(edited).not.toContain('"rea"');
       expect(edited).toContain("other-server");
-      expect(await readFile(`${fallbackPath(home)}.acl-rea.backup`, "utf8")).toBe(
-        original,
-      );
+      expect(
+        await readFile(`${fallbackPath(home)}.acl-rea.backup`, "utf8"),
+      ).toBe(original);
     },
   );
 
@@ -387,7 +387,9 @@ describe("ZCode fallback uninstall", () => {
     await writeFile(
       client.configPath,
       JSON.stringify({
-        mcp: { servers: { "acl-rea": owned, other: { command: "other-server" } } },
+        mcp: {
+          servers: { "acl-rea": owned, other: { command: "other-server" } },
+        },
       }),
     );
     const fallback = await writeFallback(home, {
@@ -597,7 +599,11 @@ describe("ZCode disabled registrations", () => {
       fallback,
       JSON.stringify({
         mcpServers: {
-          "acl-rea": { command: command[0], args: command.slice(1), enable: false },
+          "acl-rea": {
+            command: command[0],
+            args: command.slice(1),
+            enable: false,
+          },
         },
       }),
     );
@@ -636,7 +642,9 @@ describe("ZCode disabled registrations", () => {
       client.configPath,
       JSON.stringify({
         mcp: {
-          servers: { "acl-rea": { command: command[0], args: command.slice(1) } },
+          servers: {
+            "acl-rea": { command: command[0], args: command.slice(1) },
+          },
         },
       }),
     );

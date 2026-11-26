@@ -184,7 +184,10 @@ await withVerifierCleanup(async () => {
         result.stdout,
       );
     }
-    assert.equal(await readFile(`${configPath}.acl-rea.backup`, "utf8"), original);
+    assert.equal(
+      await readFile(`${configPath}.acl-rea.backup`, "utf8"),
+      original,
+    );
     const configured = await readFile(configPath, "utf8");
     assert.deepEqual(JSON.parse(configured).mcpServers.other, {
       command: "unrelated-server",
@@ -203,7 +206,10 @@ await withVerifierCleanup(async () => {
     );
     assert.deepEqual(JSON.parse(repeated.stdout).appliedActions, []);
     assert.equal(await readFile(configPath, "utf8"), configured);
-    assert.equal(await readFile(`${configPath}.acl-rea.backup`, "utf8"), original);
+    assert.equal(
+      await readFile(`${configPath}.acl-rea.backup`, "utf8"),
+      original,
+    );
     const installedSkill = await readFile(skillPath, "utf8");
     assert(installedSkill.includes("name: acl-reverse-engineer-anything"));
     const frontmatter = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n([\s\S]*))?/u.exec(

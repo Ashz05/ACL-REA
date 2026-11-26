@@ -402,7 +402,9 @@ it.each(["existing", "first-run"] as const)(
     expect((await fs.lstat(path)).isSymbolicLink()).toBe(true);
     expect(result).toMatchObject({ status: "failed", reason: "conflict" });
     if (kind === "existing")
-      expect(await fs.readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
+      expect(await fs.readFile(`${path}.acl-rea.backup`, "utf8")).toBe(
+        original,
+      );
   },
 );
 
@@ -646,7 +648,9 @@ it.each(["symlink", "regular", "valid-readback"] as const)(
       }
       expect(result.status).toBe("failed");
       expect(result.detail).not.toContain("The original was restored");
-      expect(await fs.readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
+      expect(await fs.readFile(`${path}.acl-rea.backup`, "utf8")).toBe(
+        original,
+      );
     } finally {
       await host.close?.();
     }
@@ -749,7 +753,8 @@ it("uninstall retains the exact owner of a failed initial config read", async ()
     await vi.importActual<typeof import("node:fs/promises")>(
       "node:fs/promises",
     );
-  const original = '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}}}\n';
+  const original =
+    '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}}}\n';
   await fs.writeFile(path, original);
   const owner = await ownReadHandle(path);
   const close = owner.handle.close.bind(owner.handle);
@@ -1167,7 +1172,9 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
       expect(result.detail).toContain("The original was restored");
       expect(await fs.readFile(path, "utf8")).toBe(original);
       expect((await fs.lstat(path)).mode & 0o777).toBe(0o400);
-      expect(await fs.readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
+      expect(await fs.readFile(`${path}.acl-rea.backup`, "utf8")).toBe(
+        original,
+      );
       expect(state.publicationHandles[0]!.fd).toBe(-1);
     } finally {
       await host.close?.();

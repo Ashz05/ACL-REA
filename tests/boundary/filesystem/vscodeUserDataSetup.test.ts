@@ -33,7 +33,9 @@ it("registers VS Code in VSCODE_APPDATA and preserves its configuration", async 
   expect(await readFile(expectedPath, "utf8")).toContain(
     "// Keep this comment.",
   );
-  expect(await readFile(`${expectedPath}.acl-rea.backup`, "utf8")).toBe(original);
+  expect(await readFile(`${expectedPath}.acl-rea.backup`, "utf8")).toBe(
+    original,
+  );
   expect(
     await configureClientConfiguration(client, {}, ["acl-rea", "mcp"]),
   ).toMatchObject({ status: "unchanged" });

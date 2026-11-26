@@ -4,4 +4,10 @@
 if git rev-parse -q --verify MERGE_HEAD >/dev/null; then
   exit 0
 fi
+# Windows cmd.exe enforces an 8191-char command limit; reserve room for .cmd shim expansion and quoting.
+case "${OS:-}:${MSYSTEM:-}" in
+  Windows_NT:*|*:MINGW*|*:MSYS*|*:UCRT64*|*:CLANG64*)
+    exec npx --no-install lint-staged --max-arg-length 4096
+    ;;
+esac
 npx --no-install lint-staged

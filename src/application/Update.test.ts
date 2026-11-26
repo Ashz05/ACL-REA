@@ -380,7 +380,9 @@ describe("update failures and version boundaries", () => {
     expect(result).toMatchObject({ status: "failed", reason: "install" });
     expect(result).toHaveProperty(
       "remediation",
-      expect.stringContaining("EACCES /fixture/lib/node_modules/acl-rea-agents"),
+      expect.stringContaining(
+        "EACCES /fixture/lib/node_modules/acl-rea-agents",
+      ),
     );
     expect(host.verifiedInstallation).toBeUndefined();
   });

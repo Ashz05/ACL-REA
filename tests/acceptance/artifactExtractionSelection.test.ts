@@ -23,7 +23,9 @@ import { createTestTempDirectory } from "../fixtures/temporaryDirectory.js";
 import { createMcpSchemaValidation } from "../fixtures/mcpSchemaValidation.js";
 
 const execute = promisify(execFile);
-const cli = fileURLToPath(new URL("../../scripts/acl-rea.mjs", import.meta.url));
+const cli = fileURLToPath(
+  new URL("../../scripts/acl-rea.mjs", import.meta.url),
+);
 
 const setup = async () => {
   const root = await createTestTempDirectory(

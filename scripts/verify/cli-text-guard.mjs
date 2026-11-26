@@ -49,7 +49,8 @@ export const cliTextGuardSelects = (path) =>
 // One `rea <command>` with the arguments written after it. They end at a
 // closing backtick or parenthesis, a comma or semicolon, or the next
 // `rea <command>`, so one exemption never removes another command.
-const reaCommand = /\bacl-rea ([a-z][a-z-]*)(?:(?!\bacl-rea [a-z])[^`)\n,;])*/gu;
+const reaCommand =
+  /\bacl-rea ([a-z][a-z-]*)(?:(?!\bacl-rea [a-z])[^`)\n,;])*/gu;
 const remainingCliText = /--[a-z]|\bacl-rea [a-z]|\bon the CLI\b/u;
 
 /**

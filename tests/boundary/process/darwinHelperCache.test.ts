@@ -228,7 +228,9 @@ it("shares a helper only for the default toolchain and an absolute home", () => 
       moduleCachePath: undefined,
       ...overrides,
     });
-  expect(select({})).toBe("/Users/analyst/Library/Caches/acl-rea/process-helper");
+  expect(select({})).toBe(
+    "/Users/analyst/Library/Caches/acl-rea/process-helper",
+  );
   // An empty module cache setting keeps the default, as documented.
   expect(select({ moduleCachePath: "" })).toBe(
     "/Users/analyst/Library/Caches/acl-rea/process-helper",

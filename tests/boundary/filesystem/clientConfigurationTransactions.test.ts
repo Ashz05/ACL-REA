@@ -87,7 +87,9 @@ it.skipIf(process.platform === "win32")(
       await configureClientConfiguration(client, {}, ["acl-rea", "mcp"]),
     ).toMatchObject({ status: "configured" });
     expect((await lstat(existing)).mode & 0o777).toBe(0o640);
-    expect((await lstat(`${existing}.acl-rea.backup`)).mode & 0o777).toBe(0o640);
+    expect((await lstat(`${existing}.acl-rea.backup`)).mode & 0o777).toBe(
+      0o640,
+    );
     expect(await readFile(`${existing}.acl-rea.backup`, "utf8")).toBe(original);
     expect(
       await configureClientConfiguration(client, {}, ["acl-rea", "mcp"]),
@@ -95,7 +97,9 @@ it.skipIf(process.platform === "win32")(
     expect((await lstat(existing)).mode & 0o777).toBe(0o640);
 
     expect(
-      await configureClientConfiguration({ ...client, configPath: fresh }, {}, ["acl-rea", "mcp",
+      await configureClientConfiguration({ ...client, configPath: fresh }, {}, [
+        "acl-rea",
+        "mcp",
       ]),
     ).toMatchObject({ status: "configured" });
     expect((await lstat(fresh)).mode & 0o777).toBe(0o600);
@@ -337,7 +341,9 @@ it("previews the recovery path without writing and then backs up the applied upd
   });
   expect(JSON.parse(await readFile(configPath, "utf8"))).toMatchObject({
     keep: "edited after setup",
-    mcpServers: { "acl-rea": { command: "npx", args: ["-y", "acl-rea-agents", "mcp"] } },
+    mcpServers: {
+      "acl-rea": { command: "npx", args: ["-y", "acl-rea-agents", "mcp"] },
+    },
   });
   expect(await readFile(firstBackup, "utf8")).toBe(beforeSetup);
   expect(await readFile(recoveryPath, "utf8")).toBe(beforeUninstall);
@@ -370,7 +376,9 @@ it("blocks setup and uninstall when the current backup path is occupied", async 
     detail: expect.stringContaining(recoveryPath),
   });
   expect(await readFile(configPath, "utf8")).toBe(beforeUninstall);
-  expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(beforeSetup);
+  expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(
+    beforeSetup,
+  );
   expect(await readFile(recoveryPath, "utf8")).toBe("occupied by other data");
 });
 
@@ -398,9 +406,11 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
         },
       });
       await expect(lstat(configPath)).rejects.toMatchObject({ code: "ENOENT" });
-      await expect(lstat(`${configPath}.acl-rea.backup`)).rejects.toMatchObject({
-        code: "ENOENT",
-      });
+      await expect(lstat(`${configPath}.acl-rea.backup`)).rejects.toMatchObject(
+        {
+          code: "ENOENT",
+        },
+      );
     } finally {
       await chmod(root, 0o700);
     }
@@ -426,7 +436,9 @@ describe("TOML client configuration comparison", () => {
       status: "configured",
       backupPath: `${configPath}.acl-rea.backup`,
     });
-    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(
+      original,
+    );
     expect(await readFile(configPath, "utf8")).toContain(
       `unrelated = ${value}`,
     );
@@ -531,7 +543,9 @@ describe("Codex configuration text preservation", () => {
       expect(unrelatedValues(removed)).toEqual(unrelatedValues(original));
       expect(parseToml(removed)).not.toHaveProperty("mcp_servers.acl-rea");
       expect(removed.startsWith("\uFEFF")).toBe(original.startsWith("\uFEFF"));
-      expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(
+        original,
+      );
     },
   );
 

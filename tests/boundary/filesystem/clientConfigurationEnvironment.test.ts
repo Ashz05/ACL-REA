@@ -96,7 +96,9 @@ it.each([
     const current = expectResultValue(
       parseClientConfiguration(await readFile(configPath, "utf8"), "kimi"),
     );
-    expect(current.servers["acl-rea"]).toMatchObject({ toolTimeoutMs: deadline });
+    expect(current.servers["acl-rea"]).toMatchObject({
+      toolTimeoutMs: deadline,
+    });
     expect(current.servers["acl-rea"]).toHaveProperty("env", env);
   },
 );
@@ -142,17 +144,32 @@ it("preserves owner-parsed registration facts and revalidates later inspections"
   };
 
   expect(
-    await clientConfigurationAligned(client, {}, ["acl-rea", "mcp"], resolveBudget),
+    await clientConfigurationAligned(
+      client,
+      {},
+      ["acl-rea", "mcp"],
+      resolveBudget,
+    ),
   ).toBe(true);
   expect(observedBudgets.has(17)).toBe(true);
 
   expect(
-    await inspectClientConfiguration(client, {}, ["acl-rea", "mcp"], resolveBudget),
+    await inspectClientConfiguration(
+      client,
+      {},
+      ["acl-rea", "mcp"],
+      resolveBudget,
+    ),
   ).toEqual({ status: "already_current" });
   providerTimeoutMs = 1_000_000;
   // Revalidate the budget while preserving the caller's positive timeout.
   expect(
-    await inspectClientConfiguration(client, {}, ["acl-rea", "mcp"], resolveBudget),
+    await inspectClientConfiguration(
+      client,
+      {},
+      ["acl-rea", "mcp"],
+      resolveBudget,
+    ),
   ).toEqual({ status: "already_current" });
   expect(observedBudgets.has(providerTimeoutMs)).toBe(true);
   expect(await readFile(configPath, "utf8")).toBe(original);
@@ -248,7 +265,9 @@ it.skipIf(process.platform !== "win32").each([
     ).toEqual([override]);
     expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(source);
     expect(
-      await configureClientConfiguration(client, { [override]: value }, ["acl-rea", "mcp",
+      await configureClientConfiguration(client, { [override]: value }, [
+        "acl-rea",
+        "mcp",
       ]),
     ).toEqual({ status: "unchanged" });
   },
@@ -311,7 +330,9 @@ it
       configPath,
     } as const;
     const overrides = { REA_ANALYSIS_PROVIDER: "ghidra" };
-    const configured = await configureClientConfiguration(client, overrides, ["acl-rea", "mcp",
+    const configured = await configureClientConfiguration(client, overrides, [
+      "acl-rea",
+      "mcp",
     ]);
     expect(configured, JSON.stringify(configured)).toMatchObject({
       status: "configured",
@@ -350,7 +371,9 @@ it.skipIf(process.platform !== "win32").each([
     const parsed = expectResultValue(
       parseClientConfiguration(
         JSON.stringify({
-          mcpServers: { "acl-rea": { command: "acl-rea", args: ["mcp"], env: existing } },
+          mcpServers: {
+            "acl-rea": { command: "acl-rea", args: ["mcp"], env: existing },
+          },
         }),
         "json",
       ),
@@ -492,7 +515,9 @@ it.each([
     expect(effectiveClientServer(parsed, "other")).toEqual(
       effectiveClientServer(originalParsed, "other"),
     );
-    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(
+      original,
+    );
     expect(await clientConfigurationAligned(client, providers, command)).toBe(
       true,
     );
@@ -800,7 +825,11 @@ it("retains legacy OpenCode environment when migrating into a native server tabl
     configPath,
     JSON.stringify({
       mcp: {
-        "acl-rea": clientRegistrationEntry("opencode", staleOwnedCommand, custom),
+        "acl-rea": clientRegistrationEntry(
+          "opencode",
+          staleOwnedCommand,
+          custom,
+        ),
         servers: {
           other: clientRegistrationEntry("opencode_v2", ["other"], {}),
         },
@@ -1016,9 +1045,9 @@ it.each([
     expect(
       await configureClientConfiguration(client, {}, ["acl-rea", "mcp"]),
     ).toEqual({ status: "failed", reason: "readback" });
-    expect(await clientConfigurationAligned(client, {}, ["acl-rea", "mcp"])).toBe(
-      false,
-    );
+    expect(
+      await clientConfigurationAligned(client, {}, ["acl-rea", "mcp"]),
+    ).toBe(false);
     const statuses = await readClientRegistrationStatuses(home, "rea", {
       platform: HOST_PLATFORM.platform,
       environment: {},

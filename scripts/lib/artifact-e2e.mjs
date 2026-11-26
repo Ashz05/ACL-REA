@@ -216,7 +216,10 @@ const withOpenedArtifactMcp = async (
   const owner = options.commands ?? (await createVerifierCommands());
   const transport = await createOwnedMcpStdioTransport({
     command: process.execPath,
-    arguments: [fileURLToPath(new URL("../acl-rea.mjs", import.meta.url)), "mcp"],
+    arguments: [
+      fileURLToPath(new URL("../acl-rea.mjs", import.meta.url)),
+      "mcp",
+    ],
     hostEnvironment: { ...environment(), ...INLINE_EVIDENCE_MCP_ENVIRONMENT },
     cwd: process.cwd(),
     expectedCommand: null,

@@ -489,7 +489,8 @@ const doctorReportWithCleanup = (
     ...(typeof cleanup === "string"
       ? {}
       : { details: { cleanup_failure: projectAnalysisError(cleanup) } }),
-    remediation: "Resolve the reported cleanup failure, then rerun acl-rea doctor.",
+    remediation:
+      "Resolve the reported cleanup failure, then rerun acl-rea doctor.",
   };
   return {
     ...report,

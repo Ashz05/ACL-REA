@@ -67,7 +67,9 @@ cliTest(
       });
       expect(result.exitCode).toBe(1);
       expect(result.stdout).not.toContain(secret);
-      expect(result.stdout).not.toContain("acl-rea inspect-web-network-capture ");
+      expect(result.stdout).not.toContain(
+        "acl-rea inspect-web-network-capture ",
+      );
       expect(result.stdout).toContain("COMMAND_NOT_FOUND");
     }
   },

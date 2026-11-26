@@ -158,7 +158,12 @@ describe("FreeBuff configuration paths", () => {
     ).toEqual([
       {
         client: "shared",
-        path: join("/home/a", ".agents", "skills", "acl-reverse-engineer-anything"),
+        path: join(
+          "/home/a",
+          ".agents",
+          "skills",
+          "acl-reverse-engineer-anything",
+        ),
       },
     ]);
   });
@@ -196,7 +201,11 @@ describe("FreeBuff shared-row activation", () => {
       JSON.stringify(
         {
           mcpServers: {
-            "acl-rea": { command: command[0], args: command.slice(1), enable: false },
+            "acl-rea": {
+              command: command[0],
+              args: command.slice(1),
+              enable: false,
+            },
           },
         },
         null,
@@ -224,7 +233,11 @@ describe("FreeBuff shared-row activation", () => {
       JSON.stringify(
         {
           mcpServers: {
-            "acl-rea": { command: command[0], args: command.slice(1), enable: false },
+            "acl-rea": {
+              command: command[0],
+              args: command.slice(1),
+              enable: false,
+            },
           },
         },
         null,

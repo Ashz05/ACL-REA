@@ -48,7 +48,9 @@ const skillDirectory = join(
   "skills",
   "acl-reverse-engineer-anything",
 );
-const expectedNames = TOOL_CONTRACTS.map((tool) => "acl-rea__" + tool.name).sort();
+const expectedNames = TOOL_CONTRACTS.map(
+  (tool) => "acl-rea__" + tool.name,
+).sort();
 let clientVersion = null;
 let expectedSkill;
 let turn = 0;
@@ -438,7 +440,10 @@ enabled = false
         }
       }
     }
-    assert.equal(await readFile(`${configPath}.acl-rea.backup`, "utf8"), original);
+    assert.equal(
+      await readFile(`${configPath}.acl-rea.backup`, "utf8"),
+      original,
+    );
     const configured = await readFile(configPath, "utf8");
     assert(
       configured.includes("unrelated-server") &&
@@ -449,7 +454,10 @@ enabled = false
     );
     assert.deepEqual(repeated.appliedActions, []);
     assert.equal(await readFile(configPath, "utf8"), configured);
-    assert.equal(await readFile(`${configPath}.acl-rea.backup`, "utf8"), original);
+    assert.equal(
+      await readFile(`${configPath}.acl-rea.backup`, "utf8"),
+      original,
+    );
     const skill = await readFile(join(skillDirectory, "SKILL.md"), "utf8");
     expectedSkill = skill
       .trimEnd()

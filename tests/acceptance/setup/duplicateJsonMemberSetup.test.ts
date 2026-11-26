@@ -77,7 +77,10 @@ for (const [layout, original] of [
       const registration = z
         .object({
           mcpServers: z.object({
-            "acl-rea": z.object({ command: z.string(), args: z.array(z.string()) }),
+            "acl-rea": z.object({
+              command: z.string(),
+              args: z.array(z.string()),
+            }),
           }),
         })
         .parse(JSON.parse(configured)).mcpServers["acl-rea"];

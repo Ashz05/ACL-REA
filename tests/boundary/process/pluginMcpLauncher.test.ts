@@ -20,7 +20,11 @@ const pluginFixture = async (runtime: string) => {
   await copyFile(launcher, entry);
   await writeFile(
     join(root, "package.json"),
-    JSON.stringify({ name: "acl-rea-agents", version: "6.8.0", type: "module" }),
+    JSON.stringify({
+      name: "acl-rea-agents",
+      version: "6.8.0",
+      type: "module",
+    }),
   );
   await writeFile(join(root, "dist/mcp/main.js"), "");
   await writeFile(join(root, "scripts/acl-rea.mjs"), runtime);

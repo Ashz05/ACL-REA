@@ -91,7 +91,13 @@ cliTest.skipIf(process.platform === "win32")(
     expect(setup.json).toMatchObject({ status: "ready" });
     await access(join(home, ".cursor", "mcp.json"));
     await access(
-      join(home, ".agents", "skills", "acl-reverse-engineer-anything", "SKILL.md"),
+      join(
+        home,
+        ".agents",
+        "skills",
+        "acl-reverse-engineer-anything",
+        "SKILL.md",
+      ),
     );
     await expect(
       access(join(workingDirectory, ".cursor", "mcp.json")),

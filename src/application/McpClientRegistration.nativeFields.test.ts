@@ -129,7 +129,8 @@ it.each([
 ] as const)(
   "supersedes $id native remote aliases while preserving ignored metadata",
   async ({ id, previous, removed, retained }) => {
-    const original = JSON.stringify({ mcpServers: { "acl-rea": previous } }) + "\n";
+    const original =
+      JSON.stringify({ mcpServers: { "acl-rea": previous } }) + "\n";
     const { path } = await settingsFixture(original);
     expect(
       await registerMcpClientOnHost(

@@ -25,7 +25,9 @@ import { createTestTempDirectory } from "../fixtures/temporaryDirectory.js";
 import { cliTest } from "../support/cli/cliFixture.js";
 
 const execute = promisify(execFile);
-const cli = fileURLToPath(new URL("../../scripts/acl-rea.mjs", import.meta.url));
+const cli = fileURLToPath(
+  new URL("../../scripts/acl-rea.mjs", import.meta.url),
+);
 
 const sha256 = (bytes: Buffer): string =>
   createHash("sha256").update(bytes).digest("hex");

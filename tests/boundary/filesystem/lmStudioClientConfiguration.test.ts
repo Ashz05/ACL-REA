@@ -166,7 +166,9 @@ describe("LM Studio registration lifecycle", () => {
     await writeFile(
       client.configPath,
       JSON.stringify({
-        mcpServers: { "acl-rea": { command: command[0], args: command.slice(1) } },
+        mcpServers: {
+          "acl-rea": { command: command[0], args: command.slice(1) },
+        },
       }),
     );
     expect(await doctorState(home)).toMatchObject({ state: "aligned" });
@@ -181,7 +183,9 @@ describe("LM Studio registration lifecycle", () => {
       ).status,
     ).toBe("configured");
     expect(
-      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers["acl-rea"],
+      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers[
+        "acl-rea"
+      ],
     ).toEqual(expectedRegistration("compact"));
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
       status: "unchanged",

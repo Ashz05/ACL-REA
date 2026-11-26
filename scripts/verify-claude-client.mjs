@@ -323,9 +323,7 @@ await withVerifierCleanup(async () => {
                   "Skill",
                   "WaitForMcpServers",
                   "mcp__acl-rea__analyze_javascript_application",
-                  ...(mode === "call"
-                    ? ["mcp__acl-rea__binary_session"]
-                    : []),
+                  ...(mode === "call" ? ["mcp__acl-rea__binary_session"] : []),
                 ],
               },
             }),

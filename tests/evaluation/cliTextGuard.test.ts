@@ -10,7 +10,10 @@ it.each([
   ["an option named for the CLI", '"or pass --semantic-precision JSON."'],
   ["CLI-only prose", '"Increase it on the CLI."'],
   ["a suggested CLI command", '"Retry, or use acl-rea decompile --resume."'],
-  ["a backticked CLI command", "`Run \\`acl-rea inspect-plist <path>\\` first.`"],
+  [
+    "a backticked CLI command",
+    "`Run \\`acl-rea inspect-plist <path>\\` first.`",
+  ],
   ["a flag spelled in a binding", 'cliFlag: "--max-heap-mb"'],
   ["a flag spelled as a message", 'userMessage: "--path is required"'],
 ])("counts %s", (_name, content) => {

@@ -245,7 +245,10 @@ it("refuses to write a bundle that holds a handle's value, naming the files but 
 
 it("refuses export if a declared handle cannot be checked", async () => {
   const config = await secretsConfig({ master: { text: VALUE } });
-  await symlink("missing", join(config, "acl-rea", "build-secrets", "unreadable"));
+  await symlink(
+    "missing",
+    join(config, "acl-rea", "build-secrets", "unreadable"),
+  );
   const { client } = await buildCaptureFakes({
     serverEnv: { XDG_CONFIG_HOME: config },
   });

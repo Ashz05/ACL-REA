@@ -103,7 +103,9 @@ it.each(["missing", "empty", "legacy", "native"] as const)(
       disabled: false,
     });
     if (shape === "legacy")
-      expect(written.mcp.servers["acl-rea"].future_policy).toEqual({ retain: true });
+      expect(written.mcp.servers["acl-rea"].future_policy).toEqual({
+        retain: true,
+      });
     expect(written.mcp["acl-rea"]).toBeUndefined();
     expect(await inspectClientConfiguration(client, {}, command)).toEqual({
       status: "already_current",

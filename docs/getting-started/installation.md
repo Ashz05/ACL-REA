@@ -395,13 +395,13 @@ a particular caller-supplied input will be valid. See
 
 Select the part you want to check:
 
-| Task                                | Readiness check                                                            |
-| ----------------------------------- | -------------------------------------------------------------------------- |
-| Static JavaScript/Electron analysis | Run `acl-rea analyze-javascript-application PATH --json` directly.         |
+| Task                                | Readiness check                                                                |
+| ----------------------------------- | ------------------------------------------------------------------------------ |
+| Static JavaScript/Electron analysis | Run `acl-rea analyze-javascript-application PATH --json` directly.             |
 | One analysis engine                 | `acl-rea doctor --provider ghidra --json` (or `hopper`, `ida`, `jadx`, `kuna`) |
-| One agent registration              | `acl-rea doctor --client codex --json` (see [client IDs](#supported-agents)) |
-| Installed workflow instructions     | `acl-rea doctor --skill --json`                                            |
-| Desktop app environment builds      | `acl-rea doctor --provider desktop_build --client claude_code --json`      |
+| One agent registration              | `acl-rea doctor --client codex --json` (see [client IDs](#supported-agents))   |
+| Installed workflow instructions     | `acl-rea doctor --skill --json`                                                |
+| Desktop app environment builds      | `acl-rea doctor --provider desktop_build --client claude_code --json`          |
 
 A scoped report has `scope.mode: "explicit"`. Its `scope_checks` determine
 `healthy` and the exit status. Other checks appear in `informational_checks`;

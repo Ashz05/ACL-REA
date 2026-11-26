@@ -92,7 +92,11 @@ describe("OMP disabledServers denylist", () => {
     expect(parseJsonc(text)).toEqual({
       mcpServers: {
         other: { command: "other-server" },
-        "acl-rea": { type: "stdio", command: command[0], args: command.slice(1) },
+        "acl-rea": {
+          type: "stdio",
+          command: command[0],
+          args: command.slice(1),
+        },
       },
       disabledServers: ["other"],
     });

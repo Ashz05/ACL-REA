@@ -357,7 +357,8 @@ const skillCheck = (skill: DesktopBuildContext["skill"]): DoctorCheck =>
     {
       classification: skill.state === "unknown" ? "unknown" : "config_drift",
       remediation:
-        skill.remediation ?? "Run acl-rea setup --skill to update the ACL-REA skill.",
+        skill.remediation ??
+        "Run acl-rea setup --skill to update the ACL-REA skill.",
     },
   );
 

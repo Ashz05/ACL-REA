@@ -144,7 +144,9 @@ describe("OMP integration maintenance", () => {
     const entry = { type: "stdio", command: entryPoint, args: ["mcp"] };
     await writeClient(
       "omp",
-      JSON.stringify({ mcpServers: { "acl-rea": { ...entry, enabled: false } } }),
+      JSON.stringify({
+        mcpServers: { "acl-rea": { ...entry, enabled: false } },
+      }),
     );
     await expect(
       existingMaintenanceScope(home, entryPoint, process.env, isolated()),
@@ -192,7 +194,10 @@ describe("maintenance activation and layered configuration", () => {
       "cursor",
       JSON.stringify({
         mcpServers: {
-          "acl-rea": { command: join(home, "removed-release", "rea"), args: ["mcp"] },
+          "acl-rea": {
+            command: join(home, "removed-release", "rea"),
+            args: ["mcp"],
+          },
         },
       }),
     );
@@ -238,7 +243,11 @@ describe("maintenance activation and layered configuration", () => {
     const originalLower = JSON.stringify({
       mcp: {
         servers: {
-          "acl-rea": { type: "local", command: [entryPoint, "mcp"], disabled: true },
+          "acl-rea": {
+            type: "local",
+            command: [entryPoint, "mcp"],
+            disabled: true,
+          },
         },
       },
     });
@@ -311,7 +320,10 @@ it("selects user registrations for maintenance even when project files override 
     "pi",
     JSON.stringify({
       mcpServers: {
-        "acl-rea": { command: "npx", args: ["-y", "acl-rea-agents@0.1.0", "mcp"] },
+        "acl-rea": {
+          command: "npx",
+          args: ["-y", "acl-rea-agents@0.1.0", "mcp"],
+        },
       },
     }),
   );
@@ -411,7 +423,9 @@ describe("registration ownership in maintenance", () => {
     await writeClient(
       "vscode",
       JSON.stringify({
-        servers: { "acl-rea": { type: "stdio", command: entryPoint, args: ["mcp"] } },
+        servers: {
+          "acl-rea": { type: "stdio", command: entryPoint, args: ["mcp"] },
+        },
       }),
     );
     expect(
@@ -610,7 +624,10 @@ describe("shared registration maintenance", () => {
       "freebuff",
       JSON.stringify({
         mcpServers: {
-          "acl-rea": { command: "npx", args: ["-y", "acl-rea-agents@0.1.0", "mcp"] },
+          "acl-rea": {
+            command: "npx",
+            args: ["-y", "acl-rea-agents@0.1.0", "mcp"],
+          },
         },
       }),
     );

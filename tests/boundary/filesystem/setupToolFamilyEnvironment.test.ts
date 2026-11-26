@@ -60,7 +60,9 @@ it.each([
     expect(JSON.parse(configured)).toMatchObject({
       theme: "caller",
       mcpServers: {
-        "acl-rea": { env: { REA_MCP_TOOL_FAMILIES: toolFamilies ?? "artifact" } },
+        "acl-rea": {
+          env: { REA_MCP_TOOL_FAMILIES: toolFamilies ?? "artifact" },
+        },
       },
     });
     expect(configured).not.toContain("UNRELATED_CALLER_VARIABLE");

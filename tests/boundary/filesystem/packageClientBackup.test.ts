@@ -29,7 +29,9 @@ it("compares backup bytes even when invalid UTF-8 decodes to the same text", asy
   const original = Buffer.from('{"existing":true,"note":"\uFFFD"}\n');
   const configured = JSON.stringify({
     existing: true,
-    mcpServers: { "acl-rea": { command: process.execPath, args: [cli, "mcp"] } },
+    mcpServers: {
+      "acl-rea": { command: process.execPath, args: [cli, "mcp"] },
+    },
   });
   const changed = Buffer.concat([
     Buffer.from('{"existing":true,"note":"'),

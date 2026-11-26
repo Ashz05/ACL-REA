@@ -54,7 +54,7 @@ const verifyMcpAdd = async ({ commands, cli, environment, npxLog, home }) => {
   const settings = JSON.parse(
     await readFile(join(home, ".config", "amp", "settings.json"), "utf8"),
   );
-  const registration = settings?.["amp.mcpServers"]?.rea;
+  const registration = settings?.["amp.mcpServers"]?.["acl-rea"];
   if (!Array.isArray(registration?.args))
     throw new Error("REA mcp add did not write the native Amp registration");
   const command = [registration.command, ...registration.args];
@@ -195,8 +195,8 @@ const verifyAbsentClaudeCodeSetup = async ({
     !first.appliedActions.includes("configured_claude_code") ||
     !(await isDirectRegistration(
       [
-        config.mcpServers?.rea?.command,
-        ...(config.mcpServers?.rea?.args ?? []),
+        config.mcpServers?.["acl-rea"]?.command,
+        ...(config.mcpServers?.["acl-rea"]?.args ?? []),
       ],
       cli,
     )) ||
@@ -298,8 +298,8 @@ export const assertClientConfig = async (cli, configPath, original) => {
     config.existing !== true ||
     !(await isDirectRegistration(
       [
-        config.mcpServers?.rea?.command,
-        ...(config.mcpServers?.rea?.args ?? []),
+        config.mcpServers?.["acl-rea"]?.command,
+        ...(config.mcpServers?.["acl-rea"]?.args ?? []),
       ],
       cli,
     ))

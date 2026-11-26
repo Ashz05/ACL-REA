@@ -125,8 +125,9 @@ cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
             "acl-rea": z.object({ env: z.record(z.string(), z.string()) }),
           }),
         })
-        .parse(JSON.parse(await readFile(configPath, "utf8"))).mcpServers["acl-rea"]
-        .env;
+        .parse(JSON.parse(await readFile(configPath, "utf8"))).mcpServers[
+        "acl-rea"
+      ].env;
 
     // Setup ran where the provider settings were not visible.
     const unconfigured = await run(

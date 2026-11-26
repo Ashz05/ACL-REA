@@ -143,7 +143,10 @@ await withVerifierCleanup(async () => {
             path: analysisDevice,
           });
         assert(
-          containsText(replies, "# mcp__acl-rea_analyze_javascript_application"),
+          containsText(
+            replies,
+            "# mcp__acl-rea_analyze_javascript_application",
+          ),
         );
         assert(
           containsText(replies, "input_path") &&
@@ -321,7 +324,10 @@ await withVerifierCleanup(async () => {
         }
       }
     }
-    assert.equal(await readFile(`${configPath}.acl-rea.backup`, "utf8"), original);
+    assert.equal(
+      await readFile(`${configPath}.acl-rea.backup`, "utf8"),
+      original,
+    );
     const configured = await readFile(configPath, "utf8");
     const registration = JSON.parse(configured);
     assert.equal(registration.mcpServers.other.command, "unrelated-server");
@@ -331,7 +337,10 @@ await withVerifierCleanup(async () => {
     );
     assert.deepEqual(repeated.appliedActions, []);
     assert.equal(await readFile(configPath, "utf8"), configured);
-    assert.equal(await readFile(`${configPath}.acl-rea.backup`, "utf8"), original);
+    assert.equal(
+      await readFile(`${configPath}.acl-rea.backup`, "utf8"),
+      original,
+    );
     expectedSkillBody = await readFile(
       join(skillDirectory, "SKILL.md"),
       "utf8",

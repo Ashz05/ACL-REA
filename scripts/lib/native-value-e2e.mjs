@@ -24,7 +24,9 @@ import { verifyLegacyValueScopeSnapshot } from "./ghidra-value-scope-snapshot-e2
 import { verifyGhidraProjectIdentity } from "./real-ghidra-project-identity.mjs";
 import { verifyGhidraSocketBoundary } from "./real-ghidra-socket-boundary.mjs";
 
-const defaultEntrypoint = fileURLToPath(new URL("../acl-rea.mjs", import.meta.url));
+const defaultEntrypoint = fileURLToPath(
+  new URL("../acl-rea.mjs", import.meta.url),
+);
 const environment = () => ({
   PATH: process.env.PATH ?? "/usr/bin:/bin",
   ...(process.env.NODE_OPTIONS === undefined

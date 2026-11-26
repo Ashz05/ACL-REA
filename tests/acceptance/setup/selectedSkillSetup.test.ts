@@ -173,7 +173,10 @@ cliTest(
       directory,
       ".claude/skills/acl-reverse-engineer-anything",
     );
-    const shared = join(directory, ".agents/skills/acl-reverse-engineer-anything");
+    const shared = join(
+      directory,
+      ".agents/skills/acl-reverse-engineer-anything",
+    );
     const run = (args: readonly string[]) =>
       cli.run({
         arguments: [...args, "--json"],

@@ -83,7 +83,9 @@ cliTest(
       },
       theme: "dark",
     });
-    expect(await readFile(`${settingsPath}.acl-rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${settingsPath}.acl-rea.backup`, "utf8")).toBe(
+      original,
+    );
     const beforeEquals = await readFile(settingsPath, "utf8");
     const beforeState = await stat(settingsPath);
     const equals = await run([]);
@@ -116,9 +118,13 @@ cliTest(
     expect(await readFile(changedReceipt.backup_path, "utf8")).toBe(
       beforeEquals,
     );
-    expect(await readFile(`${settingsPath}.acl-rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${settingsPath}.acl-rea.backup`, "utf8")).toBe(
+      original,
+    );
     expect(
-      JSON.parse(await readFile(settingsPath, "utf8"))["amp.mcpServers"]["acl-rea"],
+      JSON.parse(await readFile(settingsPath, "utf8"))["amp.mcpServers"][
+        "acl-rea"
+      ],
     ).toMatchObject({
       command,
       args: [argument, "", "--mcp"],

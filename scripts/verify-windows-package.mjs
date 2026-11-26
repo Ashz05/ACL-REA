@@ -210,10 +210,10 @@ try {
     const config = parseJsonc(text);
     const registration =
       id === "opencode"
-        ? config.mcp?.rea
+        ? config.mcp?.["acl-rea"]
         : id === "vscode"
-          ? config.servers?.rea
-          : config.mcpServers?.rea;
+          ? config.servers?.["acl-rea"]
+          : config.mcpServers?.["acl-rea"];
     const actualCommand =
       id === "opencode"
         ? registration?.command

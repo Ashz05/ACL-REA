@@ -38,7 +38,11 @@ it.each([
           }
         : {
             mcp: {
-              "acl-rea": { type: "local", command: ["acl-rea", "mcp"], enabled: true },
+              "acl-rea": {
+                type: "local",
+                command: ["acl-rea", "mcp"],
+                enabled: true,
+              },
             },
           },
     );
@@ -113,12 +117,18 @@ it("preflights a foreign legacy registration across OpenCode layers before remov
   const lower = join(directory, "opencode.json");
   const upper = join(directory, "opencode.jsonc");
   const legacy = JSON.stringify({
-    mcp: { "acl-rea": { type: "local", command: ["/usr/bin/false"], enabled: true } },
+    mcp: {
+      "acl-rea": { type: "local", command: ["/usr/bin/false"], enabled: true },
+    },
   });
   const native = JSON.stringify({
     mcp: {
       servers: {
-        "acl-rea": { type: "local", command: ["acl-rea", "mcp"], disabled: false },
+        "acl-rea": {
+          type: "local",
+          command: ["acl-rea", "mcp"],
+          disabled: false,
+        },
       },
     },
   });
@@ -163,7 +173,11 @@ it("preflights a foreign legacy registration across OpenCode layers before remov
   const foreignNative = JSON.stringify({
     mcp: {
       servers: {
-        "acl-rea": { type: "local", command: ["/usr/bin/false"], disabled: false },
+        "acl-rea": {
+          type: "local",
+          command: ["/usr/bin/false"],
+          disabled: false,
+        },
       },
     },
   });
@@ -182,7 +196,11 @@ it("preflights a foreign legacy registration across OpenCode layers before remov
     JSON.stringify({
       mcp: {
         servers: {},
-        "acl-rea": { type: "local", command: ["acl-rea", "mcp"], enabled: true },
+        "acl-rea": {
+          type: "local",
+          command: ["acl-rea", "mcp"],
+          enabled: true,
+        },
       },
     }),
   );

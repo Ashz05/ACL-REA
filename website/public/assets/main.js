@@ -145,10 +145,11 @@ async function initializeWebsite() {
       const response = await fetch(
         "https://api.github.com/repos/Ashz05/ACL-REA",
         {
-        headers: { Accept: "application/vnd.github+json" },
-        credentials: "omit",
-        signal: AbortSignal.timeout(5000),
-      });
+          headers: { Accept: "application/vnd.github+json" },
+          credentials: "omit",
+          signal: AbortSignal.timeout(5000),
+        },
+      );
       if (!response.ok) return;
       const repository = await response.json();
       const stars = repository.stargazers_count;

@@ -49,7 +49,11 @@ cliTest(
 
     const original = JSON.stringify({
       mcpServers: {
-        "acl-rea": { command: "acl-rea", args: ["mcp"], env: { CALLER_KEY: "keep" } },
+        "acl-rea": {
+          command: "acl-rea",
+          args: ["mcp"],
+          env: { CALLER_KEY: "keep" },
+        },
       },
     });
     await writeFile(config, original);

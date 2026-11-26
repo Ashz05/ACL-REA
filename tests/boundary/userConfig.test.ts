@@ -154,7 +154,9 @@ describe("loadUserConfigurationDefaults", () => {
         updateUserConfig({ HOME: root }, { JAVA_HOME: "/other" }, [], "darwin"),
       ).rejects.toThrow("regular JSON file");
       expect(await readFile(target, "utf8")).toBe(text);
-      expect(await readdir(join(root, ".config", "rea"))).toEqual(["acl-rea.json"]);
+      expect(await readdir(join(root, ".config", "rea"))).toEqual([
+        "acl-rea.json",
+      ]);
     },
   );
 });
@@ -228,7 +230,9 @@ it
       removed: [],
     });
     expect(
-      JSON.parse(await readFile(join(selectedDirectory, "acl-rea.json"), "utf8")),
+      JSON.parse(
+        await readFile(join(selectedDirectory, "acl-rea.json"), "utf8"),
+      ),
     ).toEqual(settings);
     expect(await readdir(selectedDirectory)).toEqual(["acl-rea.json"]);
     expect(await readdir(lexical)).toEqual(nested ? ["alias"] : []);
@@ -333,7 +337,9 @@ describe("updateUserConfig", () => {
       "acl-rea.json",
       "acl-rea.json.acl-rea.backup",
     ]);
-    expect((await readFile(`${path}.acl-rea.backup`)).equals(original)).toBe(true);
+    expect((await readFile(`${path}.acl-rea.backup`)).equals(original)).toBe(
+      true,
+    );
     expect(JSON.parse(await readFile(path, "utf8"))).toEqual({
       JAVA_HOME: "/other",
     });
@@ -357,7 +363,9 @@ describe("updateUserConfig", () => {
       updateUserConfig(environment, { JAVA_HOME: "/other" }, [], "darwin"),
     ).rejects.toMatchObject({ _tag: "ConfigurationError" });
     expect(await readFile(path, "utf8")).toBe(original);
-    await expect(readFile(`${path}.acl-rea.backup`, "utf8")).rejects.toMatchObject({
+    await expect(
+      readFile(`${path}.acl-rea.backup`, "utf8"),
+    ).rejects.toMatchObject({
       code: "ENOENT",
     });
   });
@@ -366,7 +374,9 @@ describe("updateUserConfig", () => {
 describe("loadUserConfiguration", () => {
   it("reports an unreadable config file as a configuration error, not a crash", async () => {
     const root = tempHome();
-    await mkdir(join(root, ".config", "acl-rea", "acl-rea.json"), { recursive: true });
+    await mkdir(join(root, ".config", "acl-rea", "acl-rea.json"), {
+      recursive: true,
+    });
     const result = await loadUserConfiguration({ HOME: root });
     expect(result.ok).toBe(false);
     if (!result.ok) {

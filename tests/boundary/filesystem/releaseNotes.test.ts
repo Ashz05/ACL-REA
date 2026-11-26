@@ -55,7 +55,10 @@ const pluginMarketplaces = [
   ".claude-plugin/marketplace.json",
   ".agents/plugins/marketplace.json",
 ] as const;
-const pluginMarketplace = (version: string, packageName = "acl-rea-agents") => ({
+const pluginMarketplace = (
+  version: string,
+  packageName = "acl-rea-agents",
+) => ({
   plugins: [
     { name: "rea", source: { source: "npm", package: packageName, version } },
   ],

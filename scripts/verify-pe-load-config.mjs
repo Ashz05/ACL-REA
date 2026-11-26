@@ -66,7 +66,12 @@ void entry(void) {}
     );
     const output = execFileSync(
       process.execPath,
-      [resolve("scripts/acl-rea.mjs"), "inspect-pe-load-config", binary, "--json"],
+      [
+        resolve("scripts/acl-rea.mjs"),
+        "inspect-pe-load-config",
+        binary,
+        "--json",
+      ],
       { encoding: "utf8", timeout: 30000 },
     );
     const evidence = JSON.parse(output);

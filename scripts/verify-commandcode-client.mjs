@@ -166,7 +166,8 @@ await withVerifierCleanup(async () => {
             "Default native deferred-tool prompt must advertise the complete ACL-REA inventory",
           );
           assert.equal(
-            tools.filter((tool) => tool.name.startsWith("mcp__acl-rea__")).length,
+            tools.filter((tool) => tool.name.startsWith("mcp__acl-rea__"))
+              .length,
             0,
             "Keep native lazy schema delivery enabled",
           );
@@ -350,7 +351,10 @@ await withVerifierCleanup(async () => {
         );
       }
     }
-    assert.equal(await readFile(`${configPath}.acl-rea.backup`, "utf8"), original);
+    assert.equal(
+      await readFile(`${configPath}.acl-rea.backup`, "utf8"),
+      original,
+    );
     const configured = await readFile(configPath, "utf8");
     assert.equal(JSON.parse(configured).preserved, "keep unrelated settings");
     assert.equal(
@@ -362,7 +366,10 @@ await withVerifierCleanup(async () => {
     );
     assert.deepEqual(repeated.appliedActions, []);
     assert.equal(await readFile(configPath, "utf8"), configured);
-    assert.equal(await readFile(`${configPath}.acl-rea.backup`, "utf8"), original);
+    assert.equal(
+      await readFile(`${configPath}.acl-rea.backup`, "utf8"),
+      original,
+    );
     const installedSkill = await readFile(
       join(skillDirectory, "SKILL.md"),
       "utf8",

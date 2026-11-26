@@ -452,11 +452,11 @@ it("releases a failed setup transaction so a queued request can configure the fi
       },
     });
     expect(queued.status).toBe("configured");
-    expect(JSON.parse(await readFile(path, "utf8")).mcpServers["acl-rea"].env).toEqual(
-      {
-        SECOND: "2",
-      },
-    );
+    expect(
+      JSON.parse(await readFile(path, "utf8")).mcpServers["acl-rea"].env,
+    ).toEqual({
+      SECOND: "2",
+    });
     expect(await readdir(root)).toEqual(["config.json"]);
     expect(await configureClientConfiguration(client)).toEqual({
       status: "unchanged",

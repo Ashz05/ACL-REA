@@ -27,7 +27,11 @@ cliTest(
     const claude = join(home, ".claude.json");
     const legacy = JSON.stringify({
       mcp: {
-        "acl-rea": { type: "local", command: ["/usr/bin/false"], enabled: true },
+        "acl-rea": {
+          type: "local",
+          command: ["/usr/bin/false"],
+          enabled: true,
+        },
       },
     });
     const native = JSON.stringify({
@@ -339,7 +343,11 @@ for (const group of groups) {
       const profiles = group.cases.map((testCase) => ({
         ...testCase,
         config: join(home, testCase.config),
-        skillDirectory: join(home, testCase.skill, "acl-reverse-engineer-anything"),
+        skillDirectory: join(
+          home,
+          testCase.skill,
+          "acl-reverse-engineer-anything",
+        ),
       }));
       const clientArguments = profiles.flatMap(({ client }) => [
         "--client",

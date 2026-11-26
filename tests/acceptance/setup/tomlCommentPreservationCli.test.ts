@@ -125,8 +125,12 @@ cliTest(
       for (const comment of comments) expect(text, path).toContain(comment);
       expect(text, path).not.toContain("acl-rea-agents@6.1.0");
       expect(unrelatedValues(text), path).toEqual(unrelated);
-      expect(parseToml(text), path).toHaveProperty("mcp_servers.acl-rea.command");
-      expect(await readFile(`${path}.acl-rea.backup`, "utf8"), path).toBe(original);
+      expect(parseToml(text), path).toHaveProperty(
+        "mcp_servers.acl-rea.command",
+      );
+      expect(await readFile(`${path}.acl-rea.backup`, "utf8"), path).toBe(
+        original,
+      );
     }
 
     const repeated = await run([...setup, "--yes"]);

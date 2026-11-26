@@ -502,7 +502,9 @@ it.runIf(process.platform === "win32")(
     await writeFile(
       configPath,
       JSON.stringify({
-        mcpServers: { "acl-rea": { command: command[0], args: command.slice(1) } },
+        mcpServers: {
+          "acl-rea": { command: command[0], args: command.slice(1) },
+        },
       }),
     );
     const matchingPi = piPath(home, "win32", {
@@ -790,7 +792,9 @@ it("attributes a Pi replacement with a missing launcher to the project file", as
   await writeFile(
     client.configPath,
     JSON.stringify({
-      mcpServers: { "acl-rea": { command: command[0], args: command.slice(1) } },
+      mcpServers: {
+        "acl-rea": { command: command[0], args: command.slice(1) },
+      },
     }),
   );
   const configPath = join(project, ".pi", "mcp.json");
@@ -904,7 +908,10 @@ describe("Pi project-scoped launcher provenance and fallback", () => {
   });
 
   it.each([
-    { reference: "acl-rea-agents@1.0.0", expected: "acl-rea setup --client pi" },
+    {
+      reference: "acl-rea-agents@1.0.0",
+      expected: "acl-rea setup --client pi",
+    },
     { reference: "acl-rea-agents", expected: "Run acl-rea setup" },
     { reference: "other-package", expected: "user-registration-file" },
   ])(
@@ -1024,7 +1031,11 @@ describe("Pi project-scoped package launcher repair", () => {
           projectConfigPath,
           JSON.stringify({
             mcpServers: {
-              "acl-rea": { command: command[0], args: command.slice(1), enabled },
+              "acl-rea": {
+                command: command[0],
+                args: command.slice(1),
+                enabled,
+              },
             },
           }),
         );

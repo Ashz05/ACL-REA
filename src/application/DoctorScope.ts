@@ -207,7 +207,8 @@ const requiredDesktopBuildChecks = (
           ok: false,
           classification: "unknown",
           detail: "This doctor host does not check desktop build hosts.",
-          remediation: "Run acl-rea doctor --provider desktop_build from the CLI.",
+          remediation:
+            "Run acl-rea doctor --provider desktop_build from the CLI.",
         },
       ];
 };

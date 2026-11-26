@@ -1462,14 +1462,14 @@ acl-rea --version --json
 }
 ```
 
-| Field                                | Meaning                                                                                                        |
-| ------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
-| `name`, `version`                    | Published package name and version; `version` matches plain `--version`.                                       |
-| `runtime.id`                         | `node` or `bun`.                                                                                               |
-| `runtime.version`                    | Version of that runtime.                                                                                       |
-| `runtime.node_compatibility_version` | Bun only: the Node.js version it reports compatibility with.                                                   |
-| `platform`, `architecture`           | Node.js `process.platform` and `process.arch`, such as `linux` and `x64`.                                      |
-| `supported_runtime.range`            | Supported Node.js range.                                                                                       |
+| Field                                | Meaning                                                                                                            |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| `name`, `version`                    | Published package name and version; `version` matches plain `--version`.                                           |
+| `runtime.id`                         | `node` or `bun`.                                                                                                   |
+| `runtime.version`                    | Version of that runtime.                                                                                           |
+| `runtime.node_compatibility_version` | Bun only: the Node.js version it reports compatibility with.                                                       |
+| `platform`, `architecture`           | Node.js `process.platform` and `process.arch`, such as `linux` and `x64`.                                          |
+| `supported_runtime.range`            | Supported Node.js range.                                                                                           |
 | `supported_runtime.satisfied`        | Whether this runtime is supported, judged as `acl-rea doctor` judges it; Bun by its Node.js compatibility version. |
 
 The field names are stable. The report contains no paths, environment values,

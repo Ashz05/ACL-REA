@@ -483,8 +483,10 @@ describe("Selected argv and client metadata preservation", () => {
     expect((await register(fixture.path, launcher)).ok).toBe(true);
     expect(
       JSON.parse(await readFile(fixture.path, "utf8"))["amp.mcpServers"],
-    ).toEqual({ "acl-rea": launcher, other: 7  });
-    expect(await readFile(`${fixture.path}.acl-rea.backup`, "utf8")).toBe(scalar);
+    ).toEqual({ "acl-rea": launcher, other: 7 });
+    expect(await readFile(`${fixture.path}.acl-rea.backup`, "utf8")).toBe(
+      scalar,
+    );
   });
 
   it.each([
@@ -747,7 +749,8 @@ describe("Registration cancellation and sibling outcomes", () => {
       { status: "not_started" },
     ]);
     expect(
-      JSON.parse(await readFile(good.path, "utf8")).mcpServers["acl-rea"].command,
+      JSON.parse(await readFile(good.path, "utf8")).mcpServers["acl-rea"]
+        .command,
     ).toBe("next");
   });
 });
@@ -886,7 +889,9 @@ describe("Client registration publication recovery", () => {
 });
 
 it("refuses a semantic no-op when the admitted file was replaced with identical bytes", async () => {
-  const original = JSON.stringify({ "amp.mcpServers": { "acl-rea": launcher } });
+  const original = JSON.stringify({
+    "amp.mcpServers": { "acl-rea": launcher },
+  });
   const { path } = await settingsFixture(original);
   const read = regularReads.readRegularFileTextSnapshot;
   let reads = 0;

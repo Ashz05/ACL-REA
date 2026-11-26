@@ -572,7 +572,9 @@ describe("MSIX Claude Desktop uninstall", () => {
   it("retains an unrelated rea-named entry when the package view is unknown", async () => {
     const { home, env, appDataConfig, container } = await windowsProfile();
     await mkdir(container, { recursive: true });
-    const unrelated = { mcpServers: { "acl-rea": { command: "unrelated-server" } } };
+    const unrelated = {
+      mcpServers: { "acl-rea": { command: "unrelated-server" } },
+    };
     await writeJson(appDataConfig, unrelated);
     const result = await runUninstall(
       false,

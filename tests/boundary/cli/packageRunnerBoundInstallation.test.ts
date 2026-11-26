@@ -201,7 +201,10 @@ cliTest.skipIf(process.platform === "win32")(
     const settings = z
       .object({
         "amp.mcpServers": z.object({
-          "acl-rea": z.object({ command: z.string(), args: z.array(z.string()) }),
+          "acl-rea": z.object({
+            command: z.string(),
+            args: z.array(z.string()),
+          }),
         }),
       })
       .parse(

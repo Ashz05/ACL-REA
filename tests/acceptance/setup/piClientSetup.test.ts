@@ -412,11 +412,11 @@ cliTest(
       appliedActions: [],
     });
     expect(await readFile(malformedPath, "utf8")).toBe(malformed);
-    await expect(readFile(`${malformedPath}.acl-rea.backup`)).rejects.toMatchObject(
-      {
-        code: "ENOENT",
-      },
-    );
+    await expect(
+      readFile(`${malformedPath}.acl-rea.backup`),
+    ).rejects.toMatchObject({
+      code: "ENOENT",
+    });
     const doctorMalformed = await runMalformed([
       "doctor",
       "--client",

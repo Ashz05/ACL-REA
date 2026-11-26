@@ -38,7 +38,13 @@ it.runIf(process.platform === "win32").each([true, false])(
     const agents = join(env.APPDATA, "dsh", "agents");
     const manifests = [
       join(agents, "skills", "acl-reverse-engineer-anything", "SKILL.md"),
-      join(home, ".claude", "skills", "acl-reverse-engineer-anything", "SKILL.md"),
+      join(
+        home,
+        ".claude",
+        "skills",
+        "acl-reverse-engineer-anything",
+        "SKILL.md",
+      ),
     ];
     const contents =
       "---\nname: acl-reverse-engineer-anything\n---\nmanaged fixture\n";

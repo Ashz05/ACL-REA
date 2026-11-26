@@ -160,7 +160,9 @@ await withVerifierCleanup(async () => {
           ++mainRequests <= 4,
           "Harness did not complete the bounded fixture workflow.",
         );
-        const rea = tools.filter((tool) => tool.name.startsWith("mcp__acl-rea__"));
+        const rea = tools.filter((tool) =>
+          tool.name.startsWith("mcp__acl-rea__"),
+        );
         const observedCatalog = rea
           .map((tool) => tool.name.slice("mcp__acl-rea__".length))
           .sort();
@@ -290,7 +292,10 @@ await withVerifierCleanup(async () => {
     lifecycle.push("dry-run");
     const setup = await runRea(["setup", "--client", "dsh", "--yes"], "setup");
     assert.equal(setup.status, "ready");
-    assert.equal(await readFile(`${configPath}.acl-rea.backup`, "utf8"), original);
+    assert.equal(
+      await readFile(`${configPath}.acl-rea.backup`, "utf8"),
+      original,
+    );
     const configured = await readFile(configPath, "utf8");
     assert.deepEqual(withoutRea(configured), withoutRea(original));
     assert(configured.includes("!!js process.cwd()"));
@@ -310,7 +315,10 @@ await withVerifierCleanup(async () => {
     );
     assert.deepEqual(repeated.appliedActions, []);
     assert.equal(await readFile(configPath, "utf8"), configured);
-    assert.equal(await readFile(`${configPath}.acl-rea.backup`, "utf8"), original);
+    assert.equal(
+      await readFile(`${configPath}.acl-rea.backup`, "utf8"),
+      original,
+    );
     lifecycle.push("idempotent-setup");
     const doctor = await runRea(
       ["doctor", "--client", "dsh", "--skill"],

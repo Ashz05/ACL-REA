@@ -269,7 +269,9 @@ cliTest(
     expect(setup.exitCode).toBe(0);
     expect(setup.json).toMatchObject({ status: "ready" });
     expect(await readFile(lower, "utf8")).toBe(originalLower);
-    expect(await readFile(higher + ".acl-rea.backup", "utf8")).toBe(originalHigher);
+    expect(await readFile(higher + ".acl-rea.backup", "utf8")).toBe(
+      originalHigher,
+    );
     expect(await readFile(higher, "utf8")).toContain("// keep this comment");
     expect(
       (await run(["doctor", "--client", "opencode", "--json"])).exitCode,

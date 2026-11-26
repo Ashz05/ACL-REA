@@ -22,7 +22,10 @@ const localDrivePath = (path: string): string =>
   path.replace(/^\\\\\?\\(?=[A-Za-z]:\\)/u, "");
 
 const guardianSource = fileURLToPath(
-  new URL("../../scripts/acl-rea-android-workspace-guardian.mjs", import.meta.url),
+  new URL(
+    "../../scripts/acl-rea-android-workspace-guardian.mjs",
+    import.meta.url,
+  ),
 );
 const readySchema = z.strictObject({
   path: z.string(),

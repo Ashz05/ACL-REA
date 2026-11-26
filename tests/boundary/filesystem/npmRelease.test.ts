@@ -16,7 +16,9 @@ const metadata = (
   tags: Record<string, string>,
 ) => ({
   name: "acl-rea-agents",
-  versions: { [version]: { name: "acl-rea-agents", version, dist: { integrity } } },
+  versions: {
+    [version]: { name: "acl-rea-agents", version, dist: { integrity } },
+  },
   "dist-tags": tags,
 });
 
@@ -162,7 +164,11 @@ it.each([
   },
   {
     name: "invalid tag facts",
-    value: { name: "acl-rea-agents", versions: {}, "dist-tags": { latest: 42 } },
+    value: {
+      name: "acl-rea-agents",
+      versions: {},
+      "dist-tags": { latest: 42 },
+    },
   },
   {
     name: "different package",

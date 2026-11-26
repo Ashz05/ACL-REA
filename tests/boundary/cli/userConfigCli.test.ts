@@ -97,7 +97,11 @@ for (const purgeData of [false, true]) {
         "rea-uninstall-provider-config-",
       );
       const environment = await registrationEnvironment(home);
-      const config = join(environment.XDG_CONFIG_HOME!, "acl-rea", "acl-rea.json");
+      const config = join(
+        environment.XDG_CONFIG_HOME!,
+        "acl-rea",
+        "acl-rea.json",
+      );
       const registration = join(home, ".claude.json");
       const cache = join(home, ".acl-rea", "cache", "sentinel");
       const malformed = "{ broken";
@@ -111,7 +115,10 @@ for (const purgeData of [false, true]) {
         registration,
         JSON.stringify({
           mcpServers: {
-            "acl-rea": { command: "npx", args: ["-y", "acl-rea-agents@1.0.0", "mcp"] },
+            "acl-rea": {
+              command: "npx",
+              args: ["-y", "acl-rea-agents@1.0.0", "mcp"],
+            },
             peer,
           },
         }),

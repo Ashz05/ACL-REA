@@ -54,16 +54,16 @@ it("setup carries explicit Hopper loader selections into Cursor without persisti
     "Mach-O",
   ]);
   const created = await readFile(path, "utf8");
-  expect(JSON.parse(created).mcpServers["acl-rea"].env.HOPPER_LOADER_ARGS_JSON).toBe(
-    environment.HOPPER_LOADER_ARGS_JSON,
-  );
+  expect(
+    JSON.parse(created).mcpServers["acl-rea"].env.HOPPER_LOADER_ARGS_JSON,
+  ).toBe(environment.HOPPER_LOADER_ARGS_JSON);
   environment.HOPPER_LOADER_ARGS_JSON = "[]";
   expect(await setup()).toMatchObject({ status: "ready" });
   expect(await loaderFromSavedRegistration()).toEqual([]);
   const updated = await readFile(path, "utf8");
-  expect(JSON.parse(updated).mcpServers["acl-rea"].env.HOPPER_LOADER_ARGS_JSON).toBe(
-    "[]",
-  );
+  expect(
+    JSON.parse(updated).mcpServers["acl-rea"].env.HOPPER_LOADER_ARGS_JSON,
+  ).toBe("[]");
   environment.HOPPER_LOADER_ARGS_JSON = "{";
   expect(await setup()).toMatchObject({
     status: "needs_human",

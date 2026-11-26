@@ -297,7 +297,9 @@ cliTest(
     });
     expect(result.exitCode, result.stdout).toBe(0);
     expect(await readFile(lower, "utf8")).toBe(originalLower);
-    expect(await readFile(`${upper}.acl-rea.backup`, "utf8")).toBe(originalUpper);
+    expect(await readFile(`${upper}.acl-rea.backup`, "utf8")).toBe(
+      originalUpper,
+    );
     expect(JSON.parse(await readFile(upper, "utf8"))).toMatchObject({
       mcp: { "acl-rea": { type: "local", environment: { CUSTOM: "keep" } } },
     });
@@ -327,6 +329,8 @@ cliTest(
       remediation: expect.stringContaining("foreign ownership"),
     });
     expect(await readFile(upper, "utf8")).toBe(foreignFragment);
-    expect(await readFile(`${upper}.acl-rea.backup`, "utf8")).toBe(originalUpper);
+    expect(await readFile(`${upper}.acl-rea.backup`, "utf8")).toBe(
+      originalUpper,
+    );
   },
 );

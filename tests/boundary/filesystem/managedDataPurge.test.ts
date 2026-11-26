@@ -457,7 +457,11 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
       join(home, ".acl-rea", "cache", "selected"),
     );
     await mkdir(outside);
-    await symlink(join(home, ".acl-rea", "cache"), join(outside, "alias"), "dir");
+    await symlink(
+      join(home, ".acl-rea", "cache"),
+      join(outside, "alias"),
+      "dir",
+    );
     const unrelated = await withEvidence(join(home, "unrelated"));
     const host = systemUninstallHost(
       home,

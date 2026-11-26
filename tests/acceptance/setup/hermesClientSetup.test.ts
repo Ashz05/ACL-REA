@@ -68,7 +68,7 @@ for (const [version, keyStyle] of [
         "timestamp: 2026-10-14T00:00:00.123456+08:00\n";
       const original =
         settings +
-        "mcp_servers:\n  acl-rea:\n    command: rea\n    args: [mcp]\n    env:\n" +
+        "mcp_servers:\n  acl-rea:\n    command: acl-rea\n    args: [mcp]\n    env:\n" +
         Object.entries(environment)
           .map(
             ([key, value]) =>
@@ -140,8 +140,8 @@ cliTest(
     const original = [
       "# Caller configuration",
       "mcp_servers:",
-      "  rea: # Registration explanation",
-      "    command: rea # Launcher explanation",
+      "  acl-rea: # Registration explanation",
+      "    command: acl-rea # Launcher explanation",
       "    args: [mcp]",
       "    env:",
       "      CALLER_SETTING: keep exactly",
@@ -228,7 +228,10 @@ cliTest(
     const home = sharedHome;
     const profile = join(home, "profile");
     const config = join(profile, "config.yaml");
-    const skill = join(profile, "skills/acl-reverse-engineer-anything/SKILL.md");
+    const skill = join(
+      profile,
+      "skills/acl-reverse-engineer-anything/SKILL.md",
+    );
     const original =
       "# user settings\nmodel: custom\nmcp_servers:\n  other:\n    command: other-server\n";
     await mkdir(profile);
@@ -283,7 +286,9 @@ cliTest(
       "acl-reverse-engineer-anything",
     );
     await expect(
-      access(join(home, ".agents/skills/acl-reverse-engineer-anything/SKILL.md")),
+      access(
+        join(home, ".agents/skills/acl-reverse-engineer-anything/SKILL.md"),
+      ),
     ).rejects.toMatchObject({ code: "ENOENT" });
     const doctor = await run([
       "doctor",
@@ -423,7 +428,9 @@ for (const selection of ["default", "custom", "suffix", "explicit"] as const) {
         await expect(access(skill)).rejects.toMatchObject({ code: "ENOENT" });
       }
       expect(await readFile(rootConfig, "utf8")).toBe("model: root-model\n");
-      await expect(access(`${rootConfig}.acl-rea.backup`)).rejects.toMatchObject({
+      await expect(
+        access(`${rootConfig}.acl-rea.backup`),
+      ).rejects.toMatchObject({
         code: "ENOENT",
       });
       await expect(
@@ -661,7 +668,7 @@ for (const name of ["missing", "deleted", "ghost", "../escape", "root"]) {
       const deletionDirectory = join(root, "profiles", ".deleted");
       const tombstone = join(deletionDirectory, name);
       const original =
-        "model: custom\nmcp_servers: {"acl-rea": {command: rea, args: [mcp]}}\n";
+        'model: custom\nmcp_servers: {"acl-rea": {command: rea, args: [mcp]}}\n';
       if (name === "deleted" || name === "ghost") {
         await mkdir(join(root, "profiles", name), { recursive: true });
         if (name === "deleted") {
@@ -703,7 +710,9 @@ for (const name of ["missing", "deleted", "ghost", "../escape", "root"]) {
           });
           const unavailable = await run(setup);
           expect(await readFile(config, "utf8")).toBe(original);
-          await expect(access(`${config}.acl-rea.backup`)).rejects.toMatchObject({
+          await expect(
+            access(`${config}.acl-rea.backup`),
+          ).rejects.toMatchObject({
             code: "ENOENT",
           });
           expect(unavailable.exitCode).not.toBe(0);
@@ -716,7 +725,9 @@ for (const name of ["missing", "deleted", "ghost", "../escape", "root"]) {
 
           const removal = await run(["uninstall", "--json"]);
           expect(await readFile(config, "utf8")).toBe(original);
-          await expect(access(`${config}.acl-rea.backup`)).rejects.toMatchObject({
+          await expect(
+            access(`${config}.acl-rea.backup`),
+          ).rejects.toMatchObject({
             code: "ENOENT",
           });
           expect(removal.exitCode).not.toBe(0);

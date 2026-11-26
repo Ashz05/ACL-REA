@@ -147,7 +147,9 @@ cliTest(
     });
     expect(await readFile(fixture.lower, "utf8")).toBe(malformed);
     expect(await readFile(fixture.upper, "utf8")).toBe(fixture.originalUpper);
-    await expect(access(`${fixture.upper}.acl-rea.backup`)).rejects.toMatchObject({
+    await expect(
+      access(`${fixture.upper}.acl-rea.backup`),
+    ).rejects.toMatchObject({
       code: "ENOENT",
     });
   },

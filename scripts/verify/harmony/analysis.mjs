@@ -37,7 +37,8 @@ assert.equal(
   "Real HarmonyOS lane requires the pinned Harmony pipeline release fixture",
 );
 const entrypoint =
-  process.env.REA_HARMONY_ENTRYPOINT ?? resolve(repository, "scripts/acl-rea.mjs");
+  process.env.REA_HARMONY_ENTRYPOINT ??
+  resolve(repository, "scripts/acl-rea.mjs");
 const execute = promisify(execFile);
 const path = resolve(hap);
 const workspaceFixture = await VerifierFixture.open({

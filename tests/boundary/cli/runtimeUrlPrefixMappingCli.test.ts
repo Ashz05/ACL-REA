@@ -135,7 +135,12 @@ const reconcileThroughCli = async (
   );
   const { stdout, stderr } = await execute(
     process.execPath,
-    ["scripts/acl-rea.mjs", "reconcile-javascript-runtime", inputPath, "--json"],
+    [
+      "scripts/acl-rea.mjs",
+      "reconcile-javascript-runtime",
+      inputPath,
+      "--json",
+    ],
     { cwd: process.cwd(), maxBuffer: 16 * 1_024 * 1_024 },
   );
   expect(stderr).toBe("");

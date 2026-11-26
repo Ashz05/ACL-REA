@@ -205,7 +205,9 @@ it.each([
       status: "configured",
     });
     const document = JSON.parse(await readFile(path, "utf8"));
-    const entry = native ? document.mcp.servers["acl-rea"] : document.mcp["acl-rea"];
+    const entry = native
+      ? document.mcp.servers["acl-rea"]
+      : document.mcp["acl-rea"];
     expect(entry.command).toEqual([launcher.command, ...launcher.args]);
     expect(entry.environment).toEqual({ KEEP: "1" });
     if (native) {
@@ -436,7 +438,10 @@ it.each(["mcp", "mcpServers"])(
       ...original,
       [key]: {
         peer: { command: "peer" },
-        "acl-rea": { ...previous, command: [launcher.command, ...launcher.args] },
+        "acl-rea": {
+          ...previous,
+          command: [launcher.command, ...launcher.args],
+        },
       },
     });
     // Match the independent native reader's selected table, including its peers.
@@ -505,7 +510,9 @@ it.each([
     expect(result.error.message).toContain("mcp");
     expect(result.error.message).toContain("mcpServers");
     expect(await readFile(path, "utf8")).toBe(original);
-    await expect(readFile(`${path}.acl-rea.backup`, "utf8")).rejects.toMatchObject({
+    await expect(
+      readFile(`${path}.acl-rea.backup`, "utf8"),
+    ).rejects.toMatchObject({
       code: "ENOENT",
     });
   },

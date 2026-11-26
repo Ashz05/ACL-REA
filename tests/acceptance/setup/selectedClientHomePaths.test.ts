@@ -86,12 +86,14 @@ cliTest.skipIf(process.platform === "win32")(
     );
     expect(await readFile(lexicalConfig, "utf8")).toBe(sentinel);
     expect(await readFile(lexicalManifest, "utf8")).toBe(sentinelSkill);
-    await expect(access(`${lexicalConfig}.acl-rea.backup`)).rejects.toMatchObject({
+    await expect(
+      access(`${lexicalConfig}.acl-rea.backup`),
+    ).rejects.toMatchObject({
       code: "ENOENT",
     });
-    await expect(access(`${lexicalManifest}.acl-rea.backup`)).rejects.toMatchObject(
-      { code: "ENOENT" },
-    );
+    await expect(
+      access(`${lexicalManifest}.acl-rea.backup`),
+    ).rejects.toMatchObject({ code: "ENOENT" });
     const before = await readFile(config);
     const repeated = await run();
     expect(repeated.exitCode, repeated.stdout + repeated.stderr).toBe(0);
@@ -161,9 +163,9 @@ cliTest.skipIf(process.platform === "win32")(
     expect(await readFile(join(skill, "SKILL.md.acl-rea.backup"), "utf8")).toBe(
       original,
     );
-    expect(await readFile(`${join(skill, reference)}.acl-rea.backup`, "utf8")).toBe(
-      oldReference,
-    );
+    expect(
+      await readFile(`${join(skill, reference)}.acl-rea.backup`, "utf8"),
+    ).toBe(oldReference);
     expect(await readFile(join(lexicalSkill, "SKILL.md"), "utf8")).toBe(
       sentinel,
     );
@@ -247,9 +249,9 @@ cliTest.skipIf(process.platform === "win32")(
           code: "ENOENT",
         });
       expect(await readFile(userNote, "utf8")).toBe("selected user note\n");
-      expect(await readFile(join(skill, "SKILL.md.acl-rea.backup"), "utf8")).toBe(
-        original,
-      );
+      expect(
+        await readFile(join(skill, "SKILL.md.acl-rea.backup"), "utf8"),
+      ).toBe(original);
       expect(
         await readFile(`${join(skill, reference)}.acl-rea.backup`, "utf8"),
       ).toBe(oldReference);

@@ -387,7 +387,9 @@ it("reads KILO_CONFIG_CONTENT as Kilo's top read-only layer", async () => {
   expect(await remediation(launcher)).toContain("KILO_CONFIG_CONTENT");
   // An inline setting overrides the registration setup would write.
   const disabled = {
-    KILO_CONFIG_CONTENT: JSON.stringify({ mcp: { "acl-rea": { enabled: false } } }),
+    KILO_CONFIG_CONTENT: JSON.stringify({
+      mcp: { "acl-rea": { enabled: false } },
+    }),
   };
   // Doctor's recovery names the layer setup cannot edit.
   expect(await status(disabled)).toMatchObject({
@@ -413,7 +415,9 @@ it("refuses a setup write that KILO_CONFIG_CONTENT would override", async () => 
   });
   await writeFile(target, registered);
   const row = await kiloRow(home, {
-    KILO_CONFIG_CONTENT: JSON.stringify({ mcp: { "acl-rea": { environment } } }),
+    KILO_CONFIG_CONTENT: JSON.stringify({
+      mcp: { "acl-rea": { environment } },
+    }),
   });
   if (row === undefined) throw new Error("Kilo row is missing");
   // Settings chosen after inspection, such as a newly installed Hopper,
@@ -689,7 +693,9 @@ it("maintains a stale Kilo registration whose KILO_CONFIG_CONTENT entry setup's 
     home,
     command[1] ?? "",
     {
-      KILO_CONFIG_CONTENT: JSON.stringify({ mcp: { "acl-rea": { enabled: true } } }),
+      KILO_CONFIG_CONTENT: JSON.stringify({
+        mcp: { "acl-rea": { enabled: true } },
+      }),
     },
     { platform: HOST_PLATFORM.platform },
   );
@@ -703,7 +709,9 @@ it("leaves an aligned Kilo registration out of update maintenance when KILO_CONF
   await mkdir(root, { recursive: true });
   await writeFile(
     join(root, "kilo.json"),
-    JSON.stringify({ mcp: { "acl-rea": { type: "local", command, enabled: true } } }),
+    JSON.stringify({
+      mcp: { "acl-rea": { type: "local", command, enabled: true } },
+    }),
   );
   const environment = {
     KILO_CONFIG_CONTENT: JSON.stringify({
@@ -744,7 +752,9 @@ it("reports a Kilo registration whose KILO_CONFIG_CONTENT differs only in a disc
   await mkdir(root, { recursive: true });
   await writeFile(
     join(root, "kilo.json"),
-    JSON.stringify({ mcp: { "acl-rea": { type: "local", command, enabled: true } } }),
+    JSON.stringify({
+      mcp: { "acl-rea": { type: "local", command, enabled: true } },
+    }),
   );
   const inline = (environment: Record<string, string>) =>
     JSON.stringify({ mcp: { "acl-rea": { environment } } });
@@ -850,7 +860,11 @@ it("leaves a Kilo file whose own launcher REA does not own out of update mainten
     join(root, "kilo.json"),
     JSON.stringify({
       mcp: {
-        "acl-rea": { type: "local", command: ["/opt/other/server"], enabled: true },
+        "acl-rea": {
+          type: "local",
+          command: ["/opt/other/server"],
+          enabled: true,
+        },
       },
     }),
   );
@@ -876,7 +890,9 @@ it("matches a discovered setting by Windows environment identity in KILO_CONFIG_
   await mkdir(root, { recursive: true });
   await writeFile(
     join(root, "kilo.json"),
-    JSON.stringify({ mcp: { "acl-rea": { type: "local", command, enabled: true } } }),
+    JSON.stringify({
+      mcp: { "acl-rea": { type: "local", command, enabled: true } },
+    }),
   );
   const environment = {
     KILO_CONFIG_CONTENT: JSON.stringify({

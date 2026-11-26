@@ -75,7 +75,9 @@ it.each(["inspect", "configure"] as const)(
         caller_setting: true,
         mcpServers: { "acl-rea": { command: "acl-rea", args: ["mcp"] } },
       });
-      expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(repaired);
+      expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(
+        repaired,
+      );
     }
   },
 );
@@ -175,7 +177,9 @@ it.each(["other", "rea"])(
         mcp: { "acl-rea": { type: "local", command: [command, "mcp"] } },
       }),
     );
-    const result = await configureClientConfiguration(client, {}, ["acl-rea", "mcp",
+    const result = await configureClientConfiguration(client, {}, [
+      "acl-rea",
+      "mcp",
     ]);
     if (command === "other") {
       expect(result).toMatchObject({
@@ -184,12 +188,16 @@ it.each(["other", "rea"])(
         detail: expect.stringContaining("foreign ownership"),
       });
       expect(await readFile(configPath, "utf8")).toBe(original);
-      await expect(readFile(`${configPath}.acl-rea.backup`)).rejects.toMatchObject({
+      await expect(
+        readFile(`${configPath}.acl-rea.backup`),
+      ).rejects.toMatchObject({
         code: "ENOENT",
       });
     } else {
       expect(result).toMatchObject({ status: "configured" });
-      expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(
+        original,
+      );
     }
   },
 );

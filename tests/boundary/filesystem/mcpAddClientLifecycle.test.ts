@@ -97,7 +97,10 @@ it.each([
 
     // An older, still REA-owned launcher: the package runner form that
     // current setup migrates to the selected installation.
-    const legacy = { command: "npx", args: ["-y", "acl-rea-agents@1.0.0", "mcp"] };
+    const legacy = {
+      command: "npx",
+      args: ["-y", "acl-rea-agents@1.0.0", "mcp"],
+    };
     const [outcome] = await registerMcpClientsOnHost(
       selected.value,
       legacy,
@@ -714,7 +717,10 @@ it.skipIf(platform === "win32")(
 
     // An inherited map under the env alias is replaced under that spelling,
     // so the merged entry never declares both env and envs.
-    await writeFile(team, 'extensions:\n  acl-rea:\n    env:\n      KEEP: "1"\n');
+    await writeFile(
+      team,
+      'extensions:\n  acl-rea:\n    env:\n      KEEP: "1"\n',
+    );
     await writeFile(row.configPath, `extensions:\n  acl-rea:\n${launcher}`);
     await expect(
       configureClientConfiguration(
@@ -743,7 +749,10 @@ it.skipIf(platform === "win32")(
     const { home, team, environment, systemPaths } = await gooseFixture(
       "rea-goose-add-alias-",
     );
-    await writeFile(team, 'extensions:\n  acl-rea:\n    env:\n      KEEP: "1"\n');
+    await writeFile(
+      team,
+      'extensions:\n  acl-rea:\n    env:\n      KEEP: "1"\n',
+    );
     const branch = join(home, "branch");
     const physical = join(home, "physical");
     const alias = join(branch, "alias");

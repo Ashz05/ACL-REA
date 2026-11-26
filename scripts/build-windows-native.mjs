@@ -49,11 +49,28 @@ const run = (command, args, cwd = root) => {
     );
   return result.stdout;
 };
-if (process.platform !== "linux")
+const resolveDlltool = () => {
+  const candidates =
+    process.platform === "win32"
+      ? ["x86_64-w64-mingw32-dlltool", "dlltool"]
+      : ["x86_64-w64-mingw32-dlltool"];
+  for (const candidate of candidates) {
+    const check = spawnSync(candidate, ["--version"], {
+      cwd: root,
+      encoding: "utf8",
+      timeout: 30_000,
+    });
+    if (check.error === undefined && check.status === 0) return candidate;
+  }
+  return candidates[0];
+};
+if (process.platform !== "linux" && process.platform !== "win32")
   throw new Error(
-    "The Windows x64 artifact build lane currently requires Linux and MinGW-w64.",
+    "The Windows x64 artifact build lane currently requires Linux or Windows with MinGW-w64.",
   );
 run(compiler, ["--version"]);
+const dlltool = resolveDlltool();
+run(dlltool, ["--version"]);
 await mkdir(cache, { recursive: true });
 await mkdir(output, { recursive: true });
 const exists = async (path) =>
@@ -145,11 +162,7 @@ try {
     `LIBRARY node.exe\nEXPORTS\n${symbols.join("\n")}\n`,
   );
   // dlltool derives PE symbols from the output operand, so pass its basename.
-  run(
-    "x86_64-w64-mingw32-dlltool",
-    ["-d", "node-api.def", "-y", "libnode-api.a"],
-    importDirectory,
-  );
+  run(dlltool, ["-d", "node-api.def", "-y", "libnode-api.a"], importDirectory);
   run(compiler, [
     "-std=c++17",
     "-O2",

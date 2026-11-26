@@ -73,7 +73,9 @@ export const parseUserConfig = (
   }
   if (settings.length > 0) {
     return err(
-      new ConfigurationError("Invalid ACL-REA user configuration", { settings }),
+      new ConfigurationError("Invalid ACL-REA user configuration", {
+        settings,
+      }),
     );
   }
   const native = parseEnvironmentValues(parsed);

@@ -9,8 +9,7 @@ import { ensureGeneratedFile } from "./generated-file.mjs";
 // instead of the bundled launcher.
 const CURSOR_PLUGIN_MANIFEST = ".cursor-plugin/plugin.json";
 const CURSOR_PLUGIN_MCP = "mcp.json";
-const AUTHORED_SKILL_DIRECTORY =
-  ".agents/skills/acl-reverse-engineer-anything";
+const AUTHORED_SKILL_DIRECTORY = ".agents/skills/acl-reverse-engineer-anything";
 const CURSOR_PLUGIN_SKILLS = ".cursor-plugin/skills";
 const CURSOR_PLUGIN_SKILL = "acl-reverse-engineer-anything";
 const CURSOR_PLUGIN_LOGO = "assets/acl-rea-plugin.png";
@@ -24,7 +23,11 @@ const failure = (code, detail) => {
   return error;
 };
 
-const cursorServerArgs = (version) => ["-y", `acl-rea-agents@${version}`, "mcp"];
+const cursorServerArgs = (version) => [
+  "-y",
+  `acl-rea-agents@${version}`,
+  "mcp",
+];
 
 /** Relative file inventory for one skill directory, in stable order. */
 const cursorPluginSkillPaths = async (directory, prefix = "") => {

@@ -104,7 +104,9 @@ describe("Kimi Code registration lifecycle", () => {
       (await configureClientConfiguration(client, {}, command)).status,
     ).toBe("configured");
     expect(
-      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers["acl-rea"],
+      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers[
+        "acl-rea"
+      ],
     ).toEqual({
       ...expectedRegistration(command),
       enabledTools,
@@ -134,7 +136,9 @@ describe("Kimi Code registration lifecycle", () => {
       backupPath: `${client.configPath}.acl-rea.backup`,
     });
     expect(
-      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers["acl-rea"],
+      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers[
+        "acl-rea"
+      ],
     ).toEqual({
       ...expectedRegistration(command),
       startupTimeoutMs: 90_000,
@@ -172,8 +176,9 @@ describe("Kimi Code registration lifecycle", () => {
       ),
     ).toMatchObject({ status: "configured" });
     expect(
-      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers["acl-rea"]
-        .toolTimeoutMs,
+      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers[
+        "acl-rea"
+      ].toolTimeoutMs,
     ).toBe(2_147_603_647);
   });
 
@@ -273,7 +278,9 @@ describe("Kimi Code input-schema profile selection", () => {
       ).status,
     ).toBe("configured");
     expect(
-      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers["acl-rea"],
+      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers[
+        "acl-rea"
+      ],
     ).toEqual(expectedRegistration(command, "compact"));
     expect(
       (
@@ -312,7 +319,9 @@ describe("Kimi Code input-schema profile selection", () => {
         ).status,
       ).toBe("configured");
       expect(
-        JSON.parse(await readFile(client.configPath, "utf8")).mcpServers["acl-rea"],
+        JSON.parse(await readFile(client.configPath, "utf8")).mcpServers[
+          "acl-rea"
+        ],
       ).toEqual(expectedRegistration(command, overrideProfile));
     },
   );
@@ -345,7 +354,9 @@ describe("Kimi Code input-schema profile selection", () => {
       status: "unchanged",
     });
     expect(
-      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers["acl-rea"],
+      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers[
+        "acl-rea"
+      ],
     ).toEqual(expectedRegistration(command, undefined, 120_000));
   });
 });
@@ -392,7 +403,9 @@ describe("Kimi Code package launchers", () => {
         (await configureClientConfiguration(client, {}, launcher)).status,
       ).toBe("configured");
       expect(
-        JSON.parse(await readFile(client.configPath, "utf8")).mcpServers["acl-rea"],
+        JSON.parse(await readFile(client.configPath, "utf8")).mcpServers[
+          "acl-rea"
+        ],
       ).toEqual(expectedRegistration(launcher));
       expect(
         (
@@ -427,7 +440,9 @@ describe("Kimi Code transport validation", () => {
         (await configureClientConfiguration(client, {}, command)).status,
       ).toBe("configured");
       expect(
-        JSON.parse(await readFile(client.configPath, "utf8")).mcpServers["acl-rea"],
+        JSON.parse(await readFile(client.configPath, "utf8")).mcpServers[
+          "acl-rea"
+        ],
       ).toEqual(expectedRegistration(command));
       expect(await configureClientConfiguration(client, {}, command)).toEqual({
         status: "unchanged",
@@ -484,8 +499,9 @@ describe("Kimi Code transport validation", () => {
       status: "unchanged",
     });
     expect(
-      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers["acl-rea"]
-        .transport,
+      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers[
+        "acl-rea"
+      ].transport,
     ).toBe("stdio");
     expect(
       (

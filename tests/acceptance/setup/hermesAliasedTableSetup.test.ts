@@ -154,7 +154,9 @@ cliTest("Hermes still registers into an explicit table", async ({ cli }) => {
     parse(original.text).mcp_servers.other,
   );
   expect(parsed.mcp_servers["acl-rea"]).toMatchObject({ enabled: true });
-  expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original.text);
+  expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(
+    original.text,
+  );
 });
 
 cliTest(

@@ -1866,9 +1866,9 @@ describe("DeepSeek Harness alias anchors", () => {
       expect(text).toContain("# caller inline comment");
       expect(text).toContain("*callerTransport # unrelated alias");
       expect(text).not.toContain("*oldLauncher");
-      expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
-        initial,
-      );
+      expect(
+        await readFile(`${client.configPath}.acl-rea.backup`, "utf8"),
+      ).toBe(initial);
     },
   );
 
@@ -2115,9 +2115,9 @@ describe("DeepSeek Harness source ownership", () => {
       expect(entries.filter(({ id }) => id === "rea-mcp")).toHaveLength(
         operation === "setup" ? 1 : 0,
       );
-      expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
-        initial,
-      );
+      expect(
+        await readFile(`${client.configPath}.acl-rea.backup`, "utf8"),
+      ).toBe(initial);
     },
   );
 
@@ -2399,9 +2399,9 @@ describe("DeepSeek Harness ownership and editability", () => {
       expect(await host.inspectClient(client)).toBeUndefined();
       expect((await host.removeClient(client)).status).toBe("removed");
       expect(parseYaml(await readFile(client.configPath, "utf8"))).toEqual([]);
-      expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
-        initial,
-      );
+      expect(
+        await readFile(`${client.configPath}.acl-rea.backup`, "utf8"),
+      ).toBe(initial);
     },
   );
 });
@@ -2447,9 +2447,9 @@ describe("DeepSeek Harness aliased mapping keys", () => {
           (await configureClientConfiguration(client, {}, command)).status,
         ).toBe("unchanged");
       }
-      expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
-        initial,
-      );
+      expect(
+        await readFile(`${client.configPath}.acl-rea.backup`, "utf8"),
+      ).toBe(initial);
     },
   );
 });
@@ -2602,9 +2602,9 @@ describe("DeepSeek Harness caller node metadata", () => {
         ).status,
       ).toBe("unchanged");
       expect(await readFile(client.configPath, "utf8")).toBe(text);
-      expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
-        initial,
-      );
+      expect(
+        await readFile(`${client.configPath}.acl-rea.backup`, "utf8"),
+      ).toBe(initial);
     },
   );
 });

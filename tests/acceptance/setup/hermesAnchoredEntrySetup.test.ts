@@ -198,7 +198,10 @@ for (const [version, style, publicCli] of scenarios) {
       const configuredValues = parse(configured, { version });
       expect(configuredValues).toMatchObject({
         model: "custom",
-        mcp_servers: { "acl-rea": { enabled: true, env: { KEEP: "off" } }, other },
+        mcp_servers: {
+          "acl-rea": { enabled: true, env: { KEEP: "off" } },
+          other,
+        },
         ...(style === "shadowed"
           ? { observer: server, later: { KEEP: "later" } }
           : {}),

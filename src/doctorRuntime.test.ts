@@ -607,13 +607,17 @@ test.each(["native", "legacy user alias"] as const)(
       await writeFile(direct, JSON.stringify({ mcp: { "acl-rea": launcher } }));
       await writeFile(
         join(home, "opencode.json"),
-        JSON.stringify({ mcp: { "acl-rea": { ...launcher, environment: setting } } }),
+        JSON.stringify({
+          mcp: { "acl-rea": { ...launcher, environment: setting } },
+        }),
       );
     } else {
       await writeFile(
         direct,
         JSON.stringify({
-          mcp: { servers: { "acl-rea": { ...launcher, environment: setting } } },
+          mcp: {
+            servers: { "acl-rea": { ...launcher, environment: setting } },
+          },
         }),
       );
     }

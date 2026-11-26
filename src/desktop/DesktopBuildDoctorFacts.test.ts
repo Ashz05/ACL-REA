@@ -596,7 +596,10 @@ it.skipIf(process.platform === "win32")(
         REA_DOCKER_COMMAND: docker,
       },
     };
-    await writeFile(file, JSON.stringify({ mcp: { servers: { "acl-rea": row } } }));
+    await writeFile(
+      file,
+      JSON.stringify({ mcp: { servers: { "acl-rea": row } } }),
+    );
     const cwd = vi.spyOn(process, "cwd").mockReturnValue(project);
     const probe = vi.fn(async (path: string) => {
       const stdout = path === runner ? "agent-env 0.9.1485" : root;

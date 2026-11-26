@@ -96,7 +96,9 @@ cliTest(
     const higher = join(project, ".opencode", "opencode.json");
     const local = (command: string) =>
       JSON.stringify({
-        mcp: { servers: { "acl-rea": { type: "local", command: [command, "mcp"] } } },
+        mcp: {
+          servers: { "acl-rea": { type: "local", command: [command, "mcp"] } },
+        },
       });
     const original = local("previous-direct-launcher");
     const overriding = local("nested-launcher");

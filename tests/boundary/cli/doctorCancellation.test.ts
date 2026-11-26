@@ -57,7 +57,13 @@ setTimeout(() => process.exit(99), 20000);
     );
     const child = processes.spawn(
       process.execPath,
-      [resolve("scripts/acl-rea.mjs"), "doctor", "--provider", provider, "--json"],
+      [
+        resolve("scripts/acl-rea.mjs"),
+        "doctor",
+        "--provider",
+        provider,
+        "--json",
+      ],
       {
         env: {
           PATH: process.env.PATH,

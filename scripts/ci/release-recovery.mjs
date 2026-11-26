@@ -226,7 +226,9 @@ async function main() {
       return undefined;
     });
     const github = githubApi(repository, process.env.GH_TOKEN);
-    const releaseResponse = await github(`releases/tags/acl-rea-agents-${version}`);
+    const releaseResponse = await github(
+      `releases/tags/acl-rea-agents-${version}`,
+    );
     if (releaseResponse.status !== 404 && !releaseResponse.ok)
       throw new Error(
         `GitHub release lookup failed: HTTP ${releaseResponse.status}`,

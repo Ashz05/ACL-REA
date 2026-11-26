@@ -78,7 +78,9 @@ it.each(["tables", "inline table"] as const)(
       ),
     ).toEqual({ status: "unchanged" });
     expect(await readFile(configPath, "utf8")).toBe(configured);
-    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(
+      original,
+    );
   },
 );
 
@@ -196,6 +198,8 @@ it.each([{ tools: ["binary_session"] }, { tools: ["*"] }, { tools: [] }])(
       await configureClientConfiguration(client, overrides, command),
     ).toEqual({ status: "unchanged" });
     expect(await status()).toMatchObject({ state: "aligned" });
-    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(
+      original,
+    );
   },
 );

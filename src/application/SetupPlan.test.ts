@@ -130,7 +130,9 @@ it.each([
     await mkdir(pathInside(workspace.root, ".cursor"));
     await writeFile(
       configPath,
-      JSON.stringify({ mcpServers: { "acl-rea": { ...launcher, ...settings } } }),
+      JSON.stringify({
+        mcpServers: { "acl-rea": { ...launcher, ...settings } },
+      }),
     );
     const registrations = await readClientRegistrationStatuses(
       home,

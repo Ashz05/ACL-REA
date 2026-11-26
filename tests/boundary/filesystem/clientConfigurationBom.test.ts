@@ -237,7 +237,9 @@ it.each(["", "\n  \n", "\uFEFF"])(
       backupPath: `${client.configPath}.acl-rea.backup`,
     });
     expect(JSON.parse(await readFile(client.configPath, "utf8"))).toEqual({
-      mcpServers: { "acl-rea": clientRegistrationEntry(client.format, command, {}) },
+      mcpServers: {
+        "acl-rea": clientRegistrationEntry(client.format, command, {}),
+      },
     });
     expect(await inspectClientConfiguration(client, {}, command)).toEqual({
       status: "already_current",

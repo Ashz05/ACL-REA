@@ -83,7 +83,11 @@ describe("client registration status", () => {
       join(home, ".cursor/mcp.json"),
       JSON.stringify({
         mcpServers: {
-          "acl-rea": { command: foreignEntry, args: ["mcp"], env: { SECRET: "x" } },
+          "acl-rea": {
+            command: foreignEntry,
+            args: ["mcp"],
+            env: { SECRET: "x" },
+          },
         },
       }),
     );
@@ -631,7 +635,9 @@ describe("Ghidra multi-function deadline registration advice", () => {
       );
       expect(configured).toMatchObject({ status: "unchanged" });
       expect(await readFile(configPath, "utf8")).toBe(original);
-      await expect(readFile(`${configPath}.acl-rea.backup`)).rejects.toMatchObject({
+      await expect(
+        readFile(`${configPath}.acl-rea.backup`),
+      ).rejects.toMatchObject({
         code: "ENOENT",
       });
     },
@@ -873,7 +879,9 @@ it("reports an unresolved client location as unknown and still inspects other cl
   const home = await createTestTempDirectory("rea-registration-unknown-path-");
   await writeFile(
     join(home, ".claude.json"),
-    JSON.stringify({ mcpServers: { "acl-rea": { command: "/old/rea", args: [] } } }),
+    JSON.stringify({
+      mcpServers: { "acl-rea": { command: "/old/rea", args: [] } },
+    }),
   );
   const statuses = await readClientRegistrationStatuses(home, "/current/rea", {
     platform: HOST_PLATFORM.platform,

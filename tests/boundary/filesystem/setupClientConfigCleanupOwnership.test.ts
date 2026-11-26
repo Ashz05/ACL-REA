@@ -392,7 +392,8 @@ it("keeps the shared registration fail-closed when ZCode's probe is unresolved",
   const fallback = join(home, ".agents", "mcp.json");
   const profile = join(home, ".zcode", "cli");
   const cursor = join(home, ".cursor", "mcp.json");
-  const original = '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}}}';
+  const original =
+    '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}}}';
   await mkdir(dirname(fallback), { recursive: true });
   await mkdir(dirname(cursor), { recursive: true });
   await writeFile(fallback, "{ malformed");
@@ -530,7 +531,7 @@ it.each([true, false])(
         },
         mcpServers: {
           "acl-rea": {
-            command: sharedOwned ? "acl-rea": "foreign-server",
+            command: sharedOwned ? "acl-rea" : "foreign-server",
             args: ["mcp"],
           },
         },

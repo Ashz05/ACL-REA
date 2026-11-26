@@ -143,7 +143,7 @@ cliTest(
     expect(
       effectiveClientServer(
         expectResultValue(parseClientConfiguration(configured, "json")),
-        "rea",
+        "acl-rea",
       ),
     ).toHaveProperty("env", selected);
 
@@ -171,7 +171,7 @@ cliTest(
     expect(saved).not.toContain("do not copy");
     const parsed = expectResultValue(parseClientConfiguration(saved, "json"));
     expect(effectiveClientServer(parsed, "foreign")).toEqual(foreign);
-    expect(effectiveClientServer(parsed, "rea")).toHaveProperty("env", {
+    expect(effectiveClientServer(parsed, "acl-rea")).toHaveProperty("env", {
       ...changed,
       REA_MCP_TOOL_FAMILIES: scope,
     });
@@ -536,7 +536,7 @@ for (const scenario of scenarios)
       const parsed = expectResultValue(
         parseClientConfiguration(text, scenario.format),
       );
-      expect(effectiveClientServer(parsed, "rea")).toMatchObject({
+      expect(effectiveClientServer(parsed, "acl-rea")).toMatchObject({
         env: {
           CALLER_SETTING: "keep exactly",
           ["__proto__"]: "retain caller key",
@@ -733,7 +733,7 @@ cliTest(
       expect(text).not.toContain("REA_UNRELATED_MARKER");
       const registration = effectiveClientServer(
         expectResultValue(parseClientConfiguration(text, format)),
-        "rea",
+        "acl-rea",
       );
       expect(registration).toMatchObject(timeout);
       expect(registration).toHaveProperty("env", selected);
@@ -773,7 +773,7 @@ cliTest(
       config:
         serverName: acl-rea
         transport: stdio
-        command: rea
+        command: acl-rea
         args: [mcp]
         env:
           REA_ANALYSIS_PROVIDER: ida
@@ -822,7 +822,7 @@ ${lookup}`;
     const recoveryFiles = async () =>
       Promise.all(
         (await readdir(dirname(cordis)))
-          .filter((name) => name.startsWith("cordis.patch.yml.rea"))
+          .filter((name) => name.startsWith("cordis.patch.yml.acl-rea"))
           .sort()
           .map(async (name) => [
             name,
@@ -933,7 +933,7 @@ XDG_CONFIG_HOME = ${JSON.stringify(clientRoot)}
       expectResultValue(
         parseClientConfiguration(await readFile(codex, "utf8"), "toml"),
       ),
-      "rea",
+      "acl-rea",
     );
     expect(registration).toMatchObject({
       tool_timeout_sec: 1920,
@@ -1004,7 +1004,7 @@ cliTest(
           "toml",
         ),
       ),
-      "rea",
+      "acl-rea",
     );
     expect.soft(registration).toMatchObject({
       tool_timeout_sec: 1020,
@@ -1140,7 +1140,7 @@ for (const [client, provider] of [
               client === "codex" ? "toml" : "kimi",
             ),
           ),
-          "rea",
+          "acl-rea",
         ),
       ).toMatchObject({
         ...(client === "codex"
@@ -1320,7 +1320,9 @@ cliTest(
     });
     expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
     expect(await readFile(defaultConfig, "utf8")).toBe(defaultOriginal);
-    await expect(access(`${defaultConfig}.acl-rea.backup`)).rejects.toMatchObject({
+    await expect(
+      access(`${defaultConfig}.acl-rea.backup`),
+    ).rejects.toMatchObject({
       code: "ENOENT",
     });
   },

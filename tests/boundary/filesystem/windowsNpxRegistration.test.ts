@@ -52,7 +52,9 @@ it.each([
       "mcp",
     ],
   },
-  { previousCommand: ["cmd", "/c", "npx", "-y", "acl-rea-agents@5.0.0", "mcp"] },
+  {
+    previousCommand: ["cmd", "/c", "npx", "-y", "acl-rea-agents@5.0.0", "mcp"],
+  },
 ])(
   "migrates Windows npx registration $previousCommand idempotently and uninstalls only REA",
   async ({ previousCommand }) => {
@@ -98,7 +100,9 @@ it.each([
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
       status: "unchanged",
     });
-    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(
+      original,
+    );
     expect(await systemUninstallHost(home).removeClient(client)).toMatchObject({
       status: "removed",
     });
@@ -166,14 +170,18 @@ it("retains rea-named custom shell registrations without writing a backup", asyn
     ["cmd.exe", "/c", "bunx", "acl-rea-agents@5.0.0", "mcp", "&", "other"],
   ]) {
     const original = JSON.stringify({
-      mcpServers: { "acl-rea": { command: command[0], args: command.slice(1) } },
+      mcpServers: {
+        "acl-rea": { command: command[0], args: command.slice(1) },
+      },
     });
     await writeFile(configPath, original);
     expect(await systemUninstallHost(home).removeClient(client)).toMatchObject({
       status: "retained",
     });
     expect(await readFile(configPath, "utf8")).toBe(original);
-    await expect(readFile(`${configPath}.acl-rea.backup`)).rejects.toMatchObject({
+    await expect(
+      readFile(`${configPath}.acl-rea.backup`),
+    ).rejects.toMatchObject({
       code: "ENOENT",
     });
   }
@@ -309,7 +317,9 @@ processTest.skipIf(process.platform !== "win32")(
     ]);
     expect(explicit.exitCode, explicit.stderr).toBe(0);
     expect(JSON.parse(await readFile(isolatedConfig, "utf8"))).toMatchObject({
-      mcpServers: { "acl-rea": { command: "custom executable", args: ["mcp"] } },
+      mcpServers: {
+        "acl-rea": { command: "custom executable", args: ["mcp"] },
+      },
     });
   },
 );

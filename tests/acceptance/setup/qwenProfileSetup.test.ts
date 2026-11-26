@@ -36,7 +36,12 @@ cliTest(
         { kind: "configure_client", target: settings },
         {
           kind: "install_skill",
-          target: join(home, ".agents", "skills", "acl-reverse-engineer-anything"),
+          target: join(
+            home,
+            ".agents",
+            "skills",
+            "acl-reverse-engineer-anything",
+          ),
         },
       ],
     });

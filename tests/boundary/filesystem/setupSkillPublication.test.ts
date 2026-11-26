@@ -280,7 +280,9 @@ it.each([
         Buffer.concat([bytes, Buffer.from(edit)]),
       ),
     ).toBe(true);
-    expect((await readFile(`${manifest}.acl-rea.backup`)).equals(bytes)).toBe(true);
+    expect((await readFile(`${manifest}.acl-rea.backup`)).equals(bytes)).toBe(
+      true,
+    );
     if (process.platform !== "win32")
       expect((await stat(manifest)).mode & 0o777).toBe(0o640);
     const { rollbackFailures } = result.error;

@@ -547,7 +547,9 @@ describe("OpenCode project-scoped registration", () => {
 
     const configuration = (argv: readonly string[]) => ({
       mcp: {
-        servers: { "acl-rea": { type: "local", command: argv, disabled: false } },
+        servers: {
+          "acl-rea": { type: "local", command: argv, disabled: false },
+        },
       },
     });
     const projectPath = join(projectDir, "opencode.json");
@@ -923,9 +925,9 @@ describe("client launcher traversal semantics", () => {
   );
 
   it("recognizes prior exact REA releases while rejecting foreign package commands", () => {
-    expect(classifyClientRegistrationCommand(["acl-rea", "mcp"], undefined)).toBe(
-      "owned",
-    );
+    expect(
+      classifyClientRegistrationCommand(["acl-rea", "mcp"], undefined),
+    ).toBe("owned");
     const cwdMatchingEntry = resolve("./rea");
     expect(
       classifyClientRegistrationCommand(["./rea", "mcp"], cwdMatchingEntry),

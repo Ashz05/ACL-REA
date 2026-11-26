@@ -95,7 +95,10 @@ it("retains lower Kilo disable/environment policy without copying its source int
     ...targetDocument,
     mcp: {
       ...targetDocument.mcp,
-      "acl-rea": { type: "local", command: [launcher.command, ...launcher.args] },
+      "acl-rea": {
+        type: "local",
+        command: [launcher.command, ...launcher.args],
+      },
     },
   });
   expect(effective([lowerText, targetText])).toMatchObject({
@@ -105,8 +108,12 @@ it("retains lower Kilo disable/environment policy without copying its source int
     custom: { source: "lower" },
   });
   expect(await readFile(lower, "utf8")).toBe(lowerText);
-  expect(await readFile(`${target}.acl-rea.backup`, "utf8")).toBe(originalTarget);
-  await expect(readFile(`${lower}.acl-rea.backup`, "utf8")).rejects.toMatchObject({
+  expect(await readFile(`${target}.acl-rea.backup`, "utf8")).toBe(
+    originalTarget,
+  );
+  await expect(
+    readFile(`${lower}.acl-rea.backup`, "utf8"),
+  ).rejects.toMatchObject({
     code: "ENOENT",
   });
 });
@@ -119,7 +126,10 @@ it("refuses a higher Kilo file launcher before creating the lower selected targe
   const higher = join(root, "outside-project", "kilo.json");
   const higherText = await write(higher, {
     mcp: {
-      "acl-rea": { type: "local", command: ["higher-server", "higher-argument"] },
+      "acl-rea": {
+        type: "local",
+        command: ["higher-server", "higher-argument"],
+      },
     },
   });
   const result = await registerMcpClientOnHost(
@@ -137,7 +147,9 @@ it("refuses a higher Kilo file launcher before creating the lower selected targe
     code: "ENOENT",
   });
   expect(await readFile(higher, "utf8")).toBe(higherText);
-  await expect(readFile(`${higher}.acl-rea.backup`, "utf8")).rejects.toMatchObject({
+  await expect(
+    readFile(`${higher}.acl-rea.backup`, "utf8"),
+  ).rejects.toMatchObject({
     code: "ENOENT",
   });
 });
@@ -399,7 +411,10 @@ it("publishes through the last repeated target layer without copying intervening
     ...targetDocument,
     mcp: {
       ...targetDocument.mcp,
-      "acl-rea": { type: "local", command: [launcher.command, ...launcher.args] },
+      "acl-rea": {
+        type: "local",
+        command: [launcher.command, ...launcher.args],
+      },
     },
   });
   expect(effective([targetText, middleText, targetText])).toMatchObject({
@@ -409,8 +424,12 @@ it("publishes through the last repeated target layer without copying intervening
     custom: { readOnly: true },
   });
   expect(await readFile(middle, "utf8")).toBe(middleText);
-  expect(await readFile(`${target}.acl-rea.backup`, "utf8")).toBe(originalTarget);
-  await expect(readFile(`${middle}.acl-rea.backup`, "utf8")).rejects.toMatchObject({
+  expect(await readFile(`${target}.acl-rea.backup`, "utf8")).toBe(
+    originalTarget,
+  );
+  await expect(
+    readFile(`${middle}.acl-rea.backup`, "utf8"),
+  ).rejects.toMatchObject({
     code: "ENOENT",
   });
 });
