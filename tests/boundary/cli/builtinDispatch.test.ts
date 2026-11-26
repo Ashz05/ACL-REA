@@ -41,8 +41,8 @@ it.for([
   expect(reply.exitCode).toBe(1);
   expect(JSON.parse(reply.stdout)).toMatchObject({
     code: "MCP_MODE_REMOVED",
-    message: expect.stringContaining("rea mcp"),
-    cta: { commands: [{ command: "rea mcp" }] },
+    message: expect.stringContaining("acl-rea mcp"),
+    cta: { commands: [{ command: "acl-rea mcp" }] },
   });
 });
 
@@ -80,7 +80,7 @@ cliTest("refuses per-command MCP through the public CLI", async ({ cli }) => {
     expect(reply.exitCode, JSON.stringify(arguments_)).toBe(1);
     expect(reply.json).toMatchObject({
       code: "MCP_MODE_REMOVED",
-      cta: { commands: [{ command: "rea mcp" }] },
+      cta: { commands: [{ command: "acl-rea mcp" }] },
     });
   }
 });
@@ -94,7 +94,7 @@ cliTest.skipIf(process.platform === "win32")(
     });
     expect(reply.exitCode).toBe(1);
     expect(reply.stdout).toContain("Error (MCP_MODE_REMOVED)");
-    expect(reply.stdout).toContain("rea mcp");
+    expect(reply.stdout).toContain("acl-rea mcp");
   },
 );
 
@@ -103,11 +103,11 @@ it.for([false, true])(
   (fullOutput) => {
     const render = (tokenCount: boolean) =>
       renderFailure(
-        { code: "MCP_MODE_REMOVED", message: "Use rea mcp" },
+        { code: "MCP_MODE_REMOVED", message: "Use acl-rea mcp" },
         { command: "doctor", duration: "0ms" },
         {
           description: "Suggested command:",
-          commands: [{ command: "rea mcp" }],
+          commands: [{ command: "acl-rea mcp" }],
         },
         {
           format: "json",

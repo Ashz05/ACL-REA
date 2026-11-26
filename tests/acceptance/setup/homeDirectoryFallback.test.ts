@@ -91,7 +91,7 @@ cliTest.skipIf(process.platform === "win32")(
     expect(setup.json).toMatchObject({ status: "ready" });
     await access(join(home, ".cursor", "mcp.json"));
     await access(
-      join(home, ".agents", "skills", "reverse-engineer-anything", "SKILL.md"),
+      join(home, ".agents", "skills", "acl-reverse-engineer-anything", "SKILL.md"),
     );
     await expect(
       access(join(workingDirectory, ".cursor", "mcp.json")),
@@ -118,14 +118,14 @@ cliTest.skipIf(process.platform === "win32")(
     const remainingConfig = parse(
       await readFile(join(home, ".cursor", "mcp.json"), "utf8"),
     );
-    expect(remainingConfig).not.toHaveProperty("mcpServers.rea");
+    expect(remainingConfig).not.toHaveProperty("mcpServers.acl-rea");
     await expect(
       access(
         join(
           home,
           ".agents",
           "skills",
-          "reverse-engineer-anything",
+          "acl-reverse-engineer-anything",
           "SKILL.md",
         ),
       ),

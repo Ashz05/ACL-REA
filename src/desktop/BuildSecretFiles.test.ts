@@ -36,17 +36,17 @@ describe("build secret files", () => {
   it("keeps secrets under the XDG config folder, or ~/.config without one", () => {
     expect(
       buildSecretsDirectory({ XDG_CONFIG_HOME: "/cfg", HOME: "/h" }, "linux"),
-    ).toBe("/cfg/rea/build-secrets");
+    ).toBe("/cfg/acl-rea/build-secrets");
     expect(
       buildSecretsDirectory({ XDG_CONFIG_HOME: "cfg", HOME: "/h" }, "linux"),
-    ).toBe("/h/.config/rea/build-secrets");
+    ).toBe("/h/.config/acl-rea/build-secrets");
     expect(buildSecretsDirectory({ HOME: "/h" }, "linux")).toBe(
-      "/h/.config/rea/build-secrets",
+      "/h/.config/acl-rea/build-secrets",
     );
     // An absolute XDG_CONFIG_HOME decides the folder without consulting the
     // host account, which a Unix UID without a passwd entry cannot answer.
     expect(buildSecretsDirectory({ XDG_CONFIG_HOME: "/cfg" }, "linux")).toBe(
-      "/cfg/rea/build-secrets",
+      "/cfg/acl-rea/build-secrets",
     );
   });
 

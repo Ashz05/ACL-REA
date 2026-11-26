@@ -13,7 +13,7 @@ import { HopperReleaseError } from "./HopperReleaseFeed.js";
 
 const linkedSkillFailure = () =>
   new SetupSkillInstallError({
-    path: "/fixture/home/.claude/skills/reverse-engineer-anything",
+    path: "/fixture/home/.claude/skills/acl-reverse-engineer-anything",
     stage: "prepare",
     reason: "Skill directory is a symbolic link",
     rollbackFailures: [],
@@ -27,7 +27,7 @@ describe("Linux publisher cache approval", () => {
     async (valid) => {
       const host = Object.assign(new FakeSetupHost("linux"), {
         linuxHopperReleaseCache: valid
-          ? ok("/caller/cache/rea/hopper-releases")
+          ? ok("/caller/cache/acl-rea/hopper-releases")
           : err(
               new HopperReleaseError(
                 "verification_unavailable",
@@ -46,7 +46,7 @@ describe("Linux publisher cache approval", () => {
         expect(
           result.plannedActions.find(({ kind }) => kind === "install_hopper")
             ?.detail,
-        ).toContain("/caller/cache/rea/hopper-releases/<launcher-sha256>");
+        ).toContain("/caller/cache/acl-rea/hopper-releases/<launcher-sha256>");
       else
         expect(result).toMatchObject({
           status: "needs_human",
@@ -157,7 +157,7 @@ describe("selected skill admission", () => {
             "/fixture/home",
             ".agents",
             "skills",
-            "reverse-engineer-anything",
+            "acl-reverse-engineer-anything",
           ),
         },
       ]);
@@ -234,7 +234,7 @@ describe("skill plan destinations", () => {
         "/fixture/home",
         ".claude",
         "skills",
-        "reverse-engineer-anything",
+        "acl-reverse-engineer-anything",
       ),
     ]);
   });
@@ -269,13 +269,13 @@ describe("skill plan destinations", () => {
         "/fixture/home",
         ".agents",
         "skills",
-        "reverse-engineer-anything",
+        "acl-reverse-engineer-anything",
       ),
       posix.join(
         "/fixture/home",
         ".claude",
         "skills",
-        "reverse-engineer-anything",
+        "acl-reverse-engineer-anything",
       ),
     ]);
   });
@@ -320,9 +320,9 @@ describe("setup workflow", () => {
         client: "cursor",
         config_path: "/cursor.json",
         command_identity: "unknown",
-        command: [process.execPath, "./rea.mjs", "mcp"],
+        command: [process.execPath, "./acl-rea.mjs", "mcp"],
         state: "stale",
-        remediation: "Run rea setup to refresh this registration.",
+        remediation: "Run acl-rea setup to refresh this registration.",
       },
     ];
 
@@ -715,7 +715,7 @@ describe("setup workflow lifecycle and provider planning", () => {
         client: "codex",
         config_path: "/codex.toml",
         command_identity: "owned",
-        command: ["rea", "mcp"],
+        command: ["acl-rea", "mcp"],
         state: "aligned",
         remediation: null,
       },
@@ -862,7 +862,7 @@ it("records verified skill installation while its staging cleanup remains incomp
   host.installSkill = async () =>
     err(
       new SetupSkillInstallError({
-        path: "/fixture/home/.agents/skills/reverse-engineer-anything/SKILL.md",
+        path: "/fixture/home/.agents/skills/acl-reverse-engineer-anything/SKILL.md",
         stage: "readback",
         reason: "Skill publication cleanup incomplete",
         completed: true,

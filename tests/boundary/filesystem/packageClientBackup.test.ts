@@ -6,7 +6,7 @@ import { assertClientConfig } from "../../../scripts/verify-package-setup.mjs";
 import { terminalModesRestored } from "../../../scripts/lib/verify-setup-terminal.mjs";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
-const cli = resolve("scripts/rea.mjs");
+const cli = resolve("scripts/acl-rea.mjs");
 
 it("requires positive canonical-input and echo terminal mode tokens", () => {
   expect(terminalModesRestored("speed 38400 baud; icanon echo isig")).toBe(
@@ -29,7 +29,7 @@ it("compares backup bytes even when invalid UTF-8 decodes to the same text", asy
   const original = Buffer.from('{"existing":true,"note":"\uFFFD"}\n');
   const configured = JSON.stringify({
     existing: true,
-    mcpServers: { rea: { command: process.execPath, args: [cli, "mcp"] } },
+    mcpServers: { "acl-rea": { command: process.execPath, args: [cli, "mcp"] } },
   });
   const changed = Buffer.concat([
     Buffer.from('{"existing":true,"note":"'),
@@ -38,7 +38,7 @@ it("compares backup bytes even when invalid UTF-8 decodes to the same text", asy
   ]);
   expect(changed.toString("utf8")).toBe(original.toString("utf8"));
   await writeFile(path, configured);
-  const backup = `${path}.rea.backup`;
+  const backup = `${path}.acl-rea.backup`;
   await writeFile(backup, original);
   await assertClientConfig(cli, path, original);
 

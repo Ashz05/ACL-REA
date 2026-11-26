@@ -93,7 +93,7 @@ it("accepts a system registration whose Windows environment names differ only in
   });
   await writeFile(
     systemPath,
-    JSON.stringify({ mcpServers: { rea: entry({ Path: "C:\\bin" }) } }),
+    JSON.stringify({ mcpServers: { "acl-rea": entry({ Path: "C:\\bin" }) } }),
   );
   expect(
     await readClientPolicyBlock(windows, undefined, entry({ PATH: "C:\\bin" })),

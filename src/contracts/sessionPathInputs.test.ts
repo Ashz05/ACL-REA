@@ -134,7 +134,7 @@ const cases: readonly PathCase[] = [
     accepts: (expected_server_path) =>
       binarySessionInputSchema.safeParse({ expected_server_path }).success,
     relative: ["dist/main.js"],
-    absolute: "/opt/rea/dist/main.js",
+    absolute: "/opt/acl-rea/dist/main.js",
     omitted: () => binarySessionInputSchema.safeParse({}).success,
   },
 ];

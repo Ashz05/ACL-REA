@@ -119,7 +119,7 @@ export const computerActionInputSchema = z.strictObject({
   secret: buildSecretHandleSchema
     .optional()
     .describe(
-      "type_secret: the handle of a secret, the name of a file the person wrote in REA's build-secrets folder on this host; REA types its value, which no result shows.",
+      "type_secret: the handle of a secret, the name of a file the person wrote in ACL-REA's build-secrets folder on this host; ACL-REA types its value, which no result shows.",
     ),
   keys: z
     .array(z.string().min(1))

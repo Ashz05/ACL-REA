@@ -83,7 +83,7 @@ processTest.skipIf(process.platform === "win32")(
     await writeFile(
       join(candidate, "package.json"),
       JSON.stringify({
-        name: "rea-agents",
+        name: "acl-rea-agents",
         version,
         type: "module",
         files: ["scripts"],
@@ -99,7 +99,7 @@ processTest.skipIf(process.platform === "win32")(
       JSON.stringify(snapshot),
     );
     await writeFile(
-      join(candidate, "scripts/rea.mjs"),
+      join(candidate, "scripts/acl-rea.mjs"),
       `
 import { fileURLToPath } from "node:url";
 if (process.argv[2] === "mcp") {
@@ -154,7 +154,7 @@ if (process.argv[2] === "mcp") {
     expect(successful.exitCode, successful.stderr).toBe(0);
     const result = JSON.parse(successful.stdout);
     expect(result).toMatchObject({
-      package: "rea-agents",
+      package: "acl-rea-agents",
       version,
       source: tarball,
       mcpTools: snapshot.tools.tools.length,
@@ -178,7 +178,7 @@ if (process.argv[2] === "mcp") {
     await writeFile(
       join(candidate, "package.json"),
       JSON.stringify({
-        name: "rea-agents",
+        name: "acl-rea-agents",
         version: "0.0.0",
         type: "module",
         files: ["scripts"],

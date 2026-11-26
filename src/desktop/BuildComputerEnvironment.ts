@@ -12,13 +12,13 @@ import { resolveProgram } from "./ProgramLookup.js";
 /** One of the build computer's settings. */
 export type BuildComputerSetting = (typeof BUILD_COMPUTER_SETTINGS)[number];
 
-/** The REA-owned folder `rea setup --desktop-build` packs runtime archives into. */
+/** The ACL-REA-owned folder `acl-rea setup --desktop-build` packs runtime archives into. */
 export const buildComputerArchiveDirectory = (
   environment: Readonly<NodeJS.ProcessEnv>,
   platform: NodeJS.Platform,
 ): string => reaCacheDirectory(environment, platform, "build-computer");
 
-/** The runtime archive packed for this REA version, named by that version. */
+/** The runtime archive packed for this ACL-REA version, named by that version. */
 export const defaultBuildComputerArchive = (
   environment: Readonly<NodeJS.ProcessEnv>,
   platform: NodeJS.Platform,
@@ -26,7 +26,7 @@ export const defaultBuildComputerArchive = (
 ): string =>
   appendCallerPath(
     directory,
-    `rea-${PRODUCT_IDENTITY.packageVersion}.tar.xz`,
+    `acl-rea-${PRODUCT_IDENTITY.packageVersion}.tar.xz`,
     platform,
   );
 

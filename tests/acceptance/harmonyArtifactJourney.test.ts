@@ -128,7 +128,7 @@ test("preserves Harmony archive formats through the public CLI/MCP lifecycle", a
   );
   const transport = new StdioClientTransport({
     command: process.execPath,
-    args: [resolve("scripts/rea.mjs"), "mcp"],
+    args: [resolve("scripts/acl-rea.mjs"), "mcp"],
     env: environment,
     stderr: "pipe",
   });

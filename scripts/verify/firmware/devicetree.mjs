@@ -49,7 +49,7 @@ await withVerifierCleanup(async () => {
   const decompiled = await exec(dtc, ["-I", "dtb", "-O", "dts", blob]);
   const evidence = JSON.parse(
     await exec(process.execPath, [
-      "scripts/rea.mjs",
+      "scripts/acl-rea.mjs",
       "inspect-devicetree",
       blob,
       "--json",

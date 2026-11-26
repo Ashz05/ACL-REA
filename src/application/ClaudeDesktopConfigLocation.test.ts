@@ -625,9 +625,9 @@ describe("package-private REA launchers", () => {
     env.APPDATA,
     "npm",
     "node_modules",
-    "rea-agents",
+    "acl-rea-agents",
     "scripts",
-    "rea.mjs",
+    "acl-rea.mjs",
   );
   const stored = join(
     packages,
@@ -636,9 +636,9 @@ describe("package-private REA launchers", () => {
     "Roaming",
     "npm",
     "node_modules",
-    "rea-agents",
+    "acl-rea-agents",
     "scripts",
-    "rea.mjs",
+    "acl-rea.mjs",
   );
 
   it("blocks private cache paths without treating other package paths as private", () => {
@@ -666,7 +666,7 @@ describe("package-private REA launchers", () => {
     );
     expect(blocker).toContain(stored);
     expect(blocker).toContain(CLAUDE_DESKTOP_PACKAGE_FAMILY);
-    expect(blocker).toContain("npm install -g rea-agents");
+    expect(blocker).toContain("npm install -g acl-rea-agents");
   });
 
   it("compares the launcher with the canonical package storage path", () => {
@@ -693,7 +693,7 @@ describe("package-private REA launchers", () => {
   it("allows ordinary and unresolvable launchers", () => {
     expect(
       packagePrivateLauncherBlocker(
-        ["cmd.exe", "/d", "/c", "npx", "-y", "rea-agents@6.4.0", "mcp"],
+        ["cmd.exe", "/d", "/c", "npx", "-y", "acl-rea-agents@6.4.0", "mcp"],
         packages,
         () => {
           throw new Error("package runners are not resolved");
@@ -734,7 +734,7 @@ describe("writes from a redirected AppData view", () => {
 
   it("compares aliases through the existing parent of a new destination", () => {
     const alias = join(home, "skill-alias");
-    const target = join(alias, "skills", "reverse-engineer-anything");
+    const target = join(alias, "skills", "acl-reverse-engineer-anything");
     const blocker = redirectedWriteBlocker(
       view,
       [target],

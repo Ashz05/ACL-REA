@@ -9,7 +9,7 @@ appended signature trailer. It does not require a Linux host or the `modinfo`
 program.
 
 ```bash
-rea inspect-kernel-module /absolute/path/to/module.ko --json
+acl-rea inspect-kernel-module /absolute/path/to/module.ko --json
 ```
 
 The CLI resolves relative paths against the caller's working directory. MCP
@@ -179,11 +179,11 @@ esac
 cat /out/package.txt
 sha256sum /out/module.ko
 CONTAINER
-node scripts/rea.mjs inspect-kernel-module "$module_lane/module.ko" --json > "$module_lane/rea.json"
+node scripts/acl-rea.mjs inspect-kernel-module "$module_lane/module.ko" --json > "$module_lane/acl-rea.json"
 python3 - "$module_lane" <<'PY'
 import json, pathlib, sys
 root = pathlib.Path(sys.argv[1])
-report = json.loads((root / 'rea.json').read_text())['normalized_result']
+report = json.loads((root / 'acl-rea.json').read_text())['normalized_result']
 entries = report['modinfo']['entries']
 assert entries and all(entry['status'] == 'observed' for entry in entries)
 keys = [entry['key'] for entry in entries]

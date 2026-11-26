@@ -50,7 +50,7 @@ describe.each(["vscode", "copilot_cli", "opencode", "commandcode"])(
         const command = [process.execPath, currentCommandPath, "mcp"];
         expect(await inspectClientConfiguration(client, {}, command)).toEqual({
           status: "update",
-          backupPath: `${client.configPath}.rea.backup`,
+          backupPath: `${client.configPath}.acl-rea.backup`,
         });
         expect(await clientConfigurationAligned(client, {}, command)).toBe(
           false,
@@ -58,7 +58,7 @@ describe.each(["vscode", "copilot_cli", "opencode", "commandcode"])(
         expect(await configureClientConfiguration(client, {}, command)).toEqual(
           {
             status: "configured",
-            backupPath: `${client.configPath}.rea.backup`,
+            backupPath: `${client.configPath}.acl-rea.backup`,
           },
         );
         const updated = await readFile(client.configPath, "utf8");
@@ -115,7 +115,7 @@ describe.each(["vscode", "copilot_cli", "opencode", "commandcode"])(
         ).toBe(0);
         expect(
           Buffer.compare(
-            await readFile(`${client.configPath}.rea.backup`),
+            await readFile(`${client.configPath}.acl-rea.backup`),
             Buffer.from(original),
           ),
         ).toBe(0);
@@ -124,7 +124,7 @@ describe.each(["vscode", "copilot_cli", "opencode", "commandcode"])(
   },
 );
 
-it.each(['\uFEFF{"servers": {"rea": @}}', '\uFEFF{"setting":\uFEFFtrue}'])(
+it.each(['\uFEFF{"servers": {"acl-rea": @}}', '\uFEFF{"setting":\uFEFFtrue}'])(
   "rejects malformed BOM placement without mutation: %j",
   async (original) => {
     const home = await createTestTempDirectory(
@@ -148,10 +148,10 @@ it.each(['\uFEFF{"servers": {"rea": @}}', '\uFEFF{"setting":\uFEFFtrue}'])(
     });
 
     expect(
-      await inspectClientConfiguration(client, {}, ["rea", "mcp"]),
+      await inspectClientConfiguration(client, {}, ["acl-rea", "mcp"]),
     ).toMatchObject({ status: "invalid" });
     expect(
-      await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+      await configureClientConfiguration(client, {}, ["acl-rea", "mcp"]),
     ).toEqual({ status: "failed", reason: "readback" });
     expect(
       Buffer.compare(await readFile(configPath), Buffer.from(original)),
@@ -175,7 +175,7 @@ it("preserves BOM-prefixed JSONC values and comments through update and removal"
 
   if (CURRENT_ENTRYPOINT_PATH === undefined)
     throw new Error("test runner entrypoint is unavailable");
-  const firstCommand = ["rea", "mcp"];
+  const firstCommand = ["acl-rea", "mcp"];
   const updatedCommand = [process.execPath, CURRENT_ENTRYPOINT_PATH, "mcp"];
   expect(
     await configureClientConfiguration(client, {}, firstCommand),
@@ -209,7 +209,7 @@ it("preserves BOM-prefixed JSONC values and comments through update and removal"
   );
   expect(
     Buffer.compare(
-      await readFile(`${client.configPath}.rea.backup`),
+      await readFile(`${client.configPath}.acl-rea.backup`),
       Buffer.from(original),
     ),
   ).toBe(0);
@@ -226,18 +226,18 @@ it.each(["", "\n  \n", "\uFEFF"])(
       throw new Error("missing Antigravity JSON config");
     await mkdir(dirname(client.configPath), { recursive: true });
     await writeFile(client.configPath, original);
-    const command = ["rea", "mcp"];
+    const command = ["acl-rea", "mcp"];
 
     expect(await inspectClientConfiguration(client, {}, command)).toEqual({
       status: "update",
-      backupPath: `${client.configPath}.rea.backup`,
+      backupPath: `${client.configPath}.acl-rea.backup`,
     });
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
       status: "configured",
-      backupPath: `${client.configPath}.rea.backup`,
+      backupPath: `${client.configPath}.acl-rea.backup`,
     });
     expect(JSON.parse(await readFile(client.configPath, "utf8"))).toEqual({
-      mcpServers: { rea: clientRegistrationEntry(client.format, command, {}) },
+      mcpServers: { "acl-rea": clientRegistrationEntry(client.format, command, {}) },
     });
     expect(await inspectClientConfiguration(client, {}, command)).toEqual({
       status: "already_current",

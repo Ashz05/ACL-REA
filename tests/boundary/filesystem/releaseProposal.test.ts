@@ -366,7 +366,7 @@ function historyPage(
 }
 
 function releaseRecord(version: string, sha = baseline) {
-  const tagName = `rea-agents-${version}`;
+  const tagName = `acl-rea-agents-${version}`;
   return {
     name: version,
     tag: { name: tagName },
@@ -396,7 +396,7 @@ const defaultConfiguration = {
   "include-v-in-tag": false,
   packages: {
     ".": {
-      "package-name": "rea-agents",
+      "package-name": "acl-rea-agents",
       "extra-files": [{ type: "generic", path: "version.txt" }],
     },
   },
@@ -410,11 +410,11 @@ function releaseFileEntries(
     "release-please-config.json": configuration,
     ".release-please-manifest.json": releasedVersions,
     "package.json": {
-      name: "rea-agents",
+      name: "acl-rea-agents",
       version: releasedVersions["."] ?? "0.0.0",
     },
     "pkg/package.json": {
-      name: "rea-agents",
+      name: "acl-rea-agents",
       version: releasedVersions.pkg ?? "0.0.0",
     },
   };
@@ -578,7 +578,7 @@ const mergedRelease = {
   merge_commit_sha: latest,
   base: { ref: "main" },
   head: {
-    ref: "release-please--branches--main--components--rea-agents",
+    ref: "release-please--branches--main--components--acl-rea-agents",
     repo: { full_name: "fixture/rea" },
   },
   labels: [],
@@ -846,7 +846,7 @@ it.each([
     name: "package exclusion",
     config: {
       packages: {
-        ".": { "package-name": "rea-agents", "exclude-paths": ["docs"] },
+        ".": { "package-name": "acl-rea-agents", "exclude-paths": ["docs"] },
       },
     },
     excluded: true,
@@ -868,7 +868,7 @@ it.each([
   },
   {
     name: "subpackage",
-    config: { packages: { pkg: { "package-name": "rea-agents" } } },
+    config: { packages: { pkg: { "package-name": "acl-rea-agents" } } },
     excluded: true,
   },
 ])("retains file-backed semantics for $name", async ({ config, excluded }) => {
@@ -947,7 +947,7 @@ it("uses a tag-only manifest release and excludes older version overrides", asyn
   const fixture = await releaseFixture({
     releasedVersions: { ".": "6.8.0" },
     releases: [],
-    tags: [{ name: "rea-agents-6.8.0", commit: { sha: baseline } }],
+    tags: [{ name: "acl-rea-agents-6.8.0", commit: { sha: baseline } }],
     commits: [
       { sha: latest, message: "fix: current change", files: ["src/change.ts"] },
       {
@@ -999,12 +999,12 @@ it("recuts the abandoned patch from the last published manifest version", async 
       },
       {
         sha: "c".repeat(40),
-        message: "chore(main): release rea-agents 6.10.1",
+        message: "chore(main): release acl-rea-agents 6.10.1",
         files: [".release-please-manifest.json"],
       },
       {
         sha: baseline,
-        message: "chore(main): release rea-agents 6.10.0",
+        message: "chore(main): release acl-rea-agents 6.10.0",
         files: [".release-please-manifest.json"],
       },
     ],
@@ -1213,7 +1213,7 @@ it("preserves complete mixed bootstrap history with all known release boundaries
     releasedVersions: { ".": "6.7.0", pkg: "0.0.0" },
     config: {
       packages: {
-        ".": { "package-name": "rea-agents" },
+        ".": { "package-name": "acl-rea-agents" },
         pkg: { "package-name": "unreleased" },
       },
     },

@@ -22,7 +22,7 @@ import { createMcpSchemaValidation } from "../../fixtures/mcpSchemaValidation.js
 
 const registrationSchema = z.object({
   mcpServers: z.object({
-    rea: z.object({ command: z.string(), args: z.array(z.string()) }),
+    "acl-rea": z.object({ command: z.string(), args: z.array(z.string()) }),
   }),
 });
 
@@ -76,7 +76,7 @@ cliTest.skipIf(process.platform === "win32")(
     const configPath = join(home, ".omp", "agent", "mcp.json");
     const original = await readFile(configPath, "utf8");
     const registration = registrationSchema.parse(JSON.parse(original))
-      .mcpServers.rea;
+      .mcpServers["acl-rea"];
     const alias = registration.args[0];
     expect(alias).toBeDefined();
     if (alias === undefined) throw new Error("Missing registered entrypoint");
@@ -183,7 +183,7 @@ cliTest.skipIf(process.platform === "win32")(
     const bin = join(home, `bin 'quoted' "double"`);
     await mkdir(bin);
     const alias = join(bin, "rea");
-    await symlink(resolve("scripts/rea.mjs"), alias);
+    await symlink(resolve("scripts/acl-rea.mjs"), alias);
     const result = await processes.run(
       process.execPath,
       [alias, "mcp", "add", "--agent", "amp"],
@@ -201,7 +201,7 @@ cliTest.skipIf(process.platform === "win32")(
     const settings = z
       .object({
         "amp.mcpServers": z.object({
-          rea: z.object({ command: z.string(), args: z.array(z.string()) }),
+          "acl-rea": z.object({ command: z.string(), args: z.array(z.string()) }),
         }),
       })
       .parse(
@@ -209,9 +209,9 @@ cliTest.skipIf(process.platform === "win32")(
           await readFile(join(home, ".config", "amp", "settings.json"), "utf8"),
         ),
       );
-    expect(settings["amp.mcpServers"].rea.args).toEqual([alias, "mcp"]);
+    expect(settings["amp.mcpServers"]["acl-rea"].args).toEqual([alias, "mcp"]);
     const start = await processes.run(
-      settings["amp.mcpServers"].rea.command,
+      settings["amp.mcpServers"]["acl-rea"].command,
       [alias, "--version"],
       { cwd: home },
     );

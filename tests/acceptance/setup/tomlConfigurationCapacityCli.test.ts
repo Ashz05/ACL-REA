@@ -50,7 +50,7 @@ for (const scenario of [
         status: "ready",
         clients: { [scenario.client]: { status: "configured" } },
       });
-      expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
       const configured = await readFile(config, "utf8");
       expect(configured.startsWith(original.trimEnd())).toBe(true);
       expect(parseToml(configured)).toMatchObject({
@@ -71,6 +71,6 @@ for (const scenario of [
       const remaining = await readFile(config, "utf8");
       expect(remaining.startsWith(original.trimEnd())).toBe(true);
       expect(parseToml(remaining)).toEqual(parseToml(original));
-      expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
     },
   );

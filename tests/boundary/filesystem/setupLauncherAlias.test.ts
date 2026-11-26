@@ -28,7 +28,13 @@ it.skipIf(process.platform === "win32")(
     const old = join(installs, "old");
     const next = join(installs, "next");
     const scriptWithin = (tag: string) =>
-      join("node_modules", ".mise", `rea-agents@${tag}`, "scripts", "rea.mjs");
+      join(
+        "node_modules",
+        ".mise",
+        `acl-rea-agents@${tag}`,
+        "scripts",
+        "acl-rea.mjs",
+      );
     for (const [version, tag] of [
       [old, "old"],
       [next, "next"],
@@ -37,12 +43,12 @@ it.skipIf(process.platform === "win32")(
       const script = join(version, scriptWithin(tag));
       await mkdir(dirname(script), { recursive: true });
       await writeFile(script, "#!/usr/bin/env node\n", { mode: 0o700 });
-      await symlink(script, join(version, "bin", "rea"));
+      await symlink(script, join(version, "bin", "acl-rea"));
     }
     const latest = join(installs, "latest");
     await symlink(old, latest, "dir");
     const unstable = join(latest, scriptWithin("old"));
-    const alias = join(latest, "bin", "rea");
+    const alias = join(latest, "bin", "acl-rea");
     const command = currentClientRegistrationCommand({
       platform: "linux",
       entrypointPath: unstable,
@@ -113,7 +119,7 @@ it.skipIf(process.platform === "win32")(
     const root = await createTestTempDirectory("rea-session-entrypoint-");
     const directory = join(root, "custom-session");
     await mkdir(directory);
-    const script = join(root, "rea.mjs");
+    const script = join(root, "acl-rea.mjs");
     const entrypoint = join(directory, "rea");
     await writeFile(script, "// installed REA script\n");
     await symlink(script, entrypoint);
@@ -142,7 +148,7 @@ it.skipIf(process.platform === "win32")(
     const missing = join(root, "missing");
     const valid = join(root, "valid");
     const runtime = javaScriptRuntime(process.versions).id;
-    const script = join(root, "rea.mjs");
+    const script = join(root, "acl-rea.mjs");
     await writeFile(script, "// selected REA script\n");
     for (const directory of [foreign, missing, valid]) await mkdir(directory);
     await writeFile(join(foreign, runtime), '#!/bin/sh\nexec node "$@"\n', {
@@ -217,7 +223,7 @@ it.skipIf(process.platform === "win32")(
   async () => {
     const home = await createTestTempDirectory("rea-removed-runtime-");
     const executable = join(home, "node");
-    const script = join(home, "rea.mjs");
+    const script = join(home, "acl-rea.mjs");
     const config = join(home, ".cursor", "mcp.json");
     await symlink(process.execPath, executable);
     await writeFile(script, "// selected REA script\n");
@@ -225,7 +231,7 @@ it.skipIf(process.platform === "win32")(
     const command = [executable, script, "mcp"];
     const original = JSON.stringify({
       mcpServers: {
-        rea: { command: executable, args: [script, "mcp"] },
+        "acl-rea": { command: executable, args: [script, "mcp"] },
       },
     });
     await writeFile(config, original);

@@ -109,7 +109,7 @@ const captureProductionCli = async (
   }>((finish, reject) => {
     const child = spawn(
       process.execPath,
-      [resolve("scripts/rea.mjs"), ...arguments_],
+      [resolve("scripts/acl-rea.mjs"), ...arguments_],
       {
         cwd: process.cwd(),
         env: withCompileCache(environment),
@@ -213,7 +213,7 @@ const withoutOutputProfile = (
 it("recognizes a hot/cold initial catalog and its inventory identity", async () => {
   const result = await runCachedMcpDoctor({
     command: process.execPath,
-    args: [resolve("scripts/rea.mjs"), "mcp"],
+    args: [resolve("scripts/acl-rea.mjs"), "mcp"],
     cwd: process.cwd(),
     // The product default output profile, not the test suite's.
     environment: {
@@ -294,7 +294,7 @@ describe("production MCP doctor", () => {
         checks: [{ name: "transport", ok: false }],
       },
       meta: {
-        command: "rea mcp doctor",
+        command: "acl-rea mcp doctor",
         duration: expect.stringMatching(/^\d+ms$/u),
       },
     });
@@ -305,7 +305,7 @@ describe("production MCP doctor", () => {
     async ({ environment, identity, cliParity }) => {
       const result = await runCachedMcpDoctor({
         command: process.execPath,
-        args: [resolve("scripts/rea.mjs"), "mcp"],
+        args: [resolve("scripts/acl-rea.mjs"), "mcp"],
         cwd: process.cwd(),
         environment: { ...process.env, ...environment },
       });
@@ -357,7 +357,7 @@ describe("production MCP doctor family scopes", () => {
       };
       const result = await runCachedMcpDoctor({
         command: process.execPath,
-        args: [resolve("scripts/rea.mjs"), "mcp"],
+        args: [resolve("scripts/acl-rea.mjs"), "mcp"],
         cwd: process.cwd(),
         environment,
       });
@@ -397,7 +397,7 @@ describe("production MCP doctor family scopes", () => {
     async (families) => {
       const result = await runCachedMcpDoctor({
         command: process.execPath,
-        args: [resolve("scripts/rea.mjs"), "mcp"],
+        args: [resolve("scripts/acl-rea.mjs"), "mcp"],
         cwd: process.cwd(),
         environment: { ...process.env, REA_MCP_TOOL_FAMILIES: families },
       });
@@ -439,7 +439,7 @@ describe("production MCP doctor family scopes", () => {
   it("fails startup instead of misreporting inventory for an invalid scope", async () => {
     const result = await runCachedMcpDoctor({
       command: process.execPath,
-      args: [resolve("scripts/rea.mjs"), "mcp"],
+      args: [resolve("scripts/acl-rea.mjs"), "mcp"],
       cwd: process.cwd(),
       environment: { ...process.env, REA_MCP_TOOL_FAMILIES: "session,typo" },
     });
@@ -528,7 +528,7 @@ describe("production MCP doctor output", () => {
           ? {
               ok: false,
               error: { healthy: false },
-              meta: { command: "rea mcp doctor" },
+              meta: { command: "acl-rea mcp doctor" },
             }
           : { healthy: false },
       });
@@ -603,7 +603,7 @@ describe("production MCP doctor probe validation", () => {
       );
       const transport = new StdioClientTransport({
         command: process.execPath,
-        args: [resolve("scripts/rea.mjs"), "mcp"],
+        args: [resolve("scripts/acl-rea.mjs"), "mcp"],
         cwd: process.cwd(),
         env: withCompileCache(environment),
         stderr: "pipe",

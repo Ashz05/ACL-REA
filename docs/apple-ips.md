@@ -8,7 +8,7 @@ match. It reads the file without executing a target and does not require Xcode,
 atos, a disassembler, or pwntools.
 
 ```bash
-rea inspect-apple-ips /absolute/path/to/report.ips --json
+acl-rea inspect-apple-ips /absolute/path/to/report.ips --json
 ```
 
 The CLI resolves relative paths against the caller's working directory. MCP
@@ -99,7 +99,7 @@ commands are compared in hexadecimal, so an uppercase `dwarfdump --uuid` value
 and a lowercase report `uuid` match.
 
 ```bash
-rea inspect-apple-ips /absolute/path/to/report.ips \
+acl-rea inspect-apple-ips /absolute/path/to/report.ips \
   --join-path /absolute/path/to/App.app/Contents/MacOS/App --json
 ```
 
@@ -163,7 +163,7 @@ buffer. An exhausted allowance reports a typed resource error without partial
 success or truncated integer facts.
 
 ```bash
-rea inspect-apple-ips /absolute/path/to/report.ips --max-integer-text-bytes 16777216 --json
+acl-rea inspect-apple-ips /absolute/path/to/report.ips --max-integer-text-bytes 16777216 --json
 ```
 
 `max_join_bytes` (`--max-join-bytes`) independently bounds the join artifact

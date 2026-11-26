@@ -32,7 +32,7 @@ workspaceCliTest.skipIf(process.platform === "win32")(
       return result.stdout;
     };
     const entropy = ["inspect-byte-entropy", workspace.path("sample.bin")];
-    const notice = "Update available for rea-agents:";
+    const notice = "Update available for acl-rea-agents:";
     expect(await run(entropy)).toContain(notice);
     expect(await run([...entropy, "--full-output"])).toContain(notice);
     for (const flags of [[], ["--full-output"], ["--token-limit", "10"]]) {

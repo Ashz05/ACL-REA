@@ -4,7 +4,7 @@
       "command": "npx",
       "args": [
         "-y",
-        "acl-rea-agents@6.10.1",
+        "acl-rea-agents@1.0.0",
         "mcp"
       ]
     }

@@ -240,7 +240,7 @@ describe.skipIf(process.platform === "win32")(
           },
         },
       });
-      expect(projected.remediation.action).not.toContain("rea doctor");
+      expect(projected.remediation.action).not.toContain("acl-rea doctor");
     });
 
     it("keeps the cgroup evidence while a sampled file's failed close is retained", async () => {
@@ -276,7 +276,7 @@ describe.skipIf(process.platform === "win32")(
       const projected = await failedOperation("sigkill_tools");
       expect(projected.code).toBe("execution_failure");
       expect(projected.message).toContain("SIGKILL");
-      expect(projected.message).not.toContain("rea doctor");
+      expect(projected.message).not.toContain("acl-rea doctor");
       expect(projected.details).toMatchObject({
         diagnostics: { exit_signal: "SIGKILL" },
       });

@@ -232,7 +232,7 @@ it("reports missing sources for a retained dossier with a large link set", async
   await client.connect(
     new StdioClientTransport({
       command: process.execPath,
-      args: [resolve("scripts/rea.mjs"), "mcp"],
+      args: [resolve("scripts/acl-rea.mjs"), "mcp"],
     }),
   );
   const base = FUNCTION_COMPARISON_EXAMPLE.left;

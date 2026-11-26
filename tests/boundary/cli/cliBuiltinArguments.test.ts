@@ -128,7 +128,7 @@ describe("project-scoped Amp registration launcher", () => {
     ]) {
       const result = spawnSync(
         process.execPath,
-        [resolve("scripts/rea.mjs"), ...args],
+        [resolve("scripts/acl-rea.mjs"), ...args],
         {
           cwd: workingDirectory,
           env: {

@@ -3,7 +3,7 @@ exit: 0
 --- stdout
 rea read-bytes — Read provider memory bytes; Ghidra memory may include loader fixups and differ from file bytes
 
-Usage: rea read-bytes <path> <address> [options]
+Usage: acl-rea read-bytes <path> <address> [options]
 
 Arguments:
   path     Local executable path

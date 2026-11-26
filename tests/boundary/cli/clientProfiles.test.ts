@@ -44,7 +44,7 @@ cliTest(
     const home = join(root, "home");
     const cwd = join(root, "work");
     const config = join(home, ".claude.json");
-    const backup = `${config}.rea.backup`;
+    const backup = `${config}.acl-rea.backup`;
     const skill = join(home, ".claude", "skills", PRODUCT_IDENTITY.skillName);
     const cwdSkill = join(cwd, "skills", PRODUCT_IDENTITY.skillName);
     const original = JSON.stringify({
@@ -167,7 +167,7 @@ for (const policy of [{ excluded: ["rea"] }, { allowed: ["other"] }]) {
       const original = JSON.stringify({
         mcp: policy,
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: "npx",
             args: ["-y", PRODUCT_IDENTITY.registrationPackageSpecifier, "mcp"],
           },
@@ -196,7 +196,7 @@ for (const policy of [{ excluded: ["rea"] }, { allowed: ["other"] }]) {
         remediation: expect.stringContaining("mcp." + Object.keys(policy)[0]),
       });
       expect(await readFile(config, "utf8")).toBe(original);
-      await expect(access(config + ".rea.backup")).rejects.toMatchObject({
+      await expect(access(config + ".acl-rea.backup")).rejects.toMatchObject({
         code: "ENOENT",
       });
       const doctor = await run(["doctor", "--client", "gemini_cli", "--json"]);
@@ -227,7 +227,7 @@ cliTest(
     const higher = join(directory, "opencode.jsonc");
     const originalLower = JSON.stringify({
       mcp: {
-        rea: {
+        "acl-rea": {
           type: "local",
           command: [
             "npx",
@@ -241,7 +241,7 @@ cliTest(
       },
     });
     const originalHigher =
-      '// keep this comment\n{"mcp":{"rea":{"enabled":false}},"theme":"system"}\n';
+      '// keep this comment\n{"mcp":{"acl-rea":{"enabled":false}},"theme":"system"}\n';
     await writeFile(lower, originalLower);
     await writeFile(higher, originalHigher);
     const run = (arguments_: readonly string[]) =>
@@ -269,7 +269,7 @@ cliTest(
     expect(setup.exitCode).toBe(0);
     expect(setup.json).toMatchObject({ status: "ready" });
     expect(await readFile(lower, "utf8")).toBe(originalLower);
-    expect(await readFile(higher + ".rea.backup", "utf8")).toBe(originalHigher);
+    expect(await readFile(higher + ".acl-rea.backup", "utf8")).toBe(originalHigher);
     expect(await readFile(higher, "utf8")).toContain("// keep this comment");
     expect(
       (await run(["doctor", "--client", "opencode", "--json"])).exitCode,
@@ -318,7 +318,7 @@ cliTest(
     });
     expect(await readFile(lower, "utf8")).toBe("malformed");
     expect(await readFile(higher, "utf8")).toBe("{}");
-    await expect(access(higher + ".rea.backup")).rejects.toMatchObject({
+    await expect(access(higher + ".acl-rea.backup")).rejects.toMatchObject({
       code: "ENOENT",
     });
   },
@@ -356,7 +356,7 @@ cliTest(
     await expect(
       access(join(home, ".gemini/settings.json")),
     ).rejects.toMatchObject({ code: "ENOENT" });
-    await expect(access(policy + ".rea.backup")).rejects.toMatchObject({
+    await expect(access(policy + ".acl-rea.backup")).rejects.toMatchObject({
       code: "ENOENT",
     });
   },
@@ -517,14 +517,14 @@ cliTest(
       defaults,
       JSON.stringify({
         mcpServers: {
-          rea: { command: "managed-default", env: { EXTRA: "default" } },
+          "acl-rea": { command: "managed-default", env: { EXTRA: "default" } },
         },
       }),
     );
     expect((await run(command)).exitCode).toBe(0);
     const original = await readFile(user, "utf8");
     const managed = JSON.stringify({
-      mcpServers: { rea: { command: "managed-override", args: [] } },
+      mcpServers: { "acl-rea": { command: "managed-override", args: [] } },
       unrelated: true,
     });
     await writeFile(system, managed);
@@ -543,7 +543,7 @@ cliTest(
           expect.objectContaining({
             client: "gemini_cli",
             state: "stale",
-            remediation: expect.stringContaining("mcpServers.rea"),
+            remediation: expect.stringContaining("mcpServers.acl-rea"),
           }),
         ]),
       },
@@ -562,7 +562,7 @@ cliTest(
       (await run(["doctor", "--client", "gemini_cli", "--json"])).exitCode,
     ).toBe(0);
     expect(await readFile(system, "utf8")).toBe(aligned);
-    await expect(access(system + ".rea.backup")).rejects.toMatchObject({
+    await expect(access(system + ".acl-rea.backup")).rejects.toMatchObject({
       code: "ENOENT",
     });
   },
@@ -621,10 +621,10 @@ cliTest(
       global,
       JSON.stringify({
         mcp: {
-          rea: {
+          "acl-rea": {
             type: "local",
             command: currentClientRegistrationCommand({
-              entrypointPath: resolve("scripts/rea.mjs"),
+              entrypointPath: resolve("scripts/acl-rea.mjs"),
             }),
             enabled: true,
           },
@@ -680,12 +680,12 @@ cliTest(
     const owned = {
       type: "local",
       command: currentClientRegistrationCommand({
-        entrypointPath: resolve("scripts/rea.mjs"),
+        entrypointPath: resolve("scripts/acl-rea.mjs"),
       }),
       enabled: true,
     };
     const original = JSON.stringify({
-      mcp: { rea: owned, other: { type: "local", command: ["other"] } },
+      mcp: { "acl-rea": owned, other: { type: "local", command: ["other"] } },
     });
     await writeFile(global, original);
     await writeFile(custom, "{}");
@@ -801,7 +801,7 @@ cliTest(
     expect(JSON.parse(await readFile(workspace, "utf8"))).toEqual({
       mcp: { allowed: ["other"] },
     });
-    await expect(access(workspace + ".rea.backup")).rejects.toMatchObject({
+    await expect(access(workspace + ".acl-rea.backup")).rejects.toMatchObject({
       code: "ENOENT",
     });
   },
@@ -826,7 +826,7 @@ cliTest(
       cli.run({ arguments: args, cwd: project, environment });
     const command = ["setup", "--client", "gemini_cli", "--yes", "--json"];
     const original = JSON.stringify({
-      mcpServers: { rea: { command: "project-server", args: [] } },
+      mcpServers: { "acl-rea": { command: "project-server", args: [] } },
     });
     await writeFile(workspace, original);
     expect((await run(command)).json).toMatchObject({
@@ -852,7 +852,7 @@ cliTest(
       (await run(["doctor", "--client", "gemini_cli", "--json"])).exitCode,
     ).toBe(0);
     expect(await readFile(workspace, "utf8")).toBe(original);
-    await expect(access(workspace + ".rea.backup")).rejects.toMatchObject({
+    await expect(access(workspace + ".acl-rea.backup")).rejects.toMatchObject({
       code: "ENOENT",
     });
   },

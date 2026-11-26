@@ -21,7 +21,7 @@ import { writeFile } from "node:fs/promises";
 import { join } from "node:path";
 export async function runUpdate(previousVersion, host) {
   await writeFile(join(host.root, "package.json"), JSON.stringify({ version: "6.9.0" }));
-  return { status: "updated", previousVersion, latestVersion: "6.9.0", installedVersion: "6.9.0", command: ["npm", "install", "rea-agents@6.9.0"] };
+  return { status: "updated", previousVersion, latestVersion: "6.9.0", installedVersion: "6.9.0", command: ["npm", "install", "acl-rea-agents@6.9.0"] };
 }
 `;
 const prerequisiteProgram = `
@@ -48,11 +48,11 @@ appendFileSync(process.env.REA_RELEASE_NPM_LOG, JSON.stringify({ entry: ${JSON.s
 if (args[0] === "view") process.stdout.write(JSON.stringify(["6.8.0"]));
 else if (args[0] === "install") {
   const prefix = args[args.indexOf("--prefix") + 1];
-  const root = join(prefix, "lib/node_modules/rea-agents");
+  const root = join(prefix, "lib/node_modules/acl-rea-agents");
   mkdirSync(root, { recursive: true });
   writeFileSync(join(root, "package.json"), JSON.stringify({ version: "6.8.0" }));
   mkdirSync(join(prefix, "bin"), { recursive: true });
-  writeFileSync(join(prefix, "bin/rea-agents"), ${JSON.stringify(`#!${process.execPath}
+  writeFileSync(join(prefix, "bin/acl-rea-agents"), ${JSON.stringify(`#!${process.execPath}
 process.stdout.write("  update  Update REA\\n");
 `)}, { mode: 0o700 });
 } else if (args[0] === "root") process.stdout.write(join(process.env.npm_config_prefix, "lib/node_modules"));
@@ -148,14 +148,14 @@ processTest.skipIf(process.platform === "win32").for([true, false])(
       workspace,
     ]);
     expect(calls.map(({ arguments: args }) => args)).toEqual([
-      ["view", "rea-agents", "versions", "--json"],
+      ["view", "acl-rea-agents", "versions", "--json"],
       [
         "install",
         "--global",
         "--ignore-scripts",
         "--prefix",
         join(workspace, "update-prefix"),
-        "rea-agents@6.8.0",
+        "acl-rea-agents@6.8.0",
       ],
       ["root", "--global"],
     ]);

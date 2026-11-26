@@ -232,7 +232,7 @@ await withVerifierCleanup(async () => {
   await runStage("extracted plugin MCP tools and evidence", () =>
     verifyPackageMcp({
       commands,
-      cli: join(extractedDirectory, "package", "scripts", "rea.mjs"),
+      cli: join(extractedDirectory, "package", "scripts", "acl-rea.mjs"),
       environment: environmentData.environment,
       evidenceRoot,
       artifactArchive,

@@ -79,7 +79,7 @@ it.skipIf(process.platform === "win32")(
         const cli = spawnSync(
           process.execPath,
           [
-            "scripts/rea.mjs",
+            "scripts/acl-rea.mjs",
             name.replaceAll("_", "-"),
             "device",
             ...(name === "pull_adb_file" ? ["/sdcard/file"] : []),

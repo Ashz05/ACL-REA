@@ -232,7 +232,7 @@ export const readmeFactIssues = async (root) => {
 export const documentationFactIssues = async (root, catalog) => {
   const issues = [
     ...(await skillReferenceIssues(
-      join(root, "skills/reverse-engineer-anything"),
+      join(root, "skills/acl-reverse-engineer-anything"),
     )),
     ...(await literalToolCountIssues(root)),
     ...(await readmeFactIssues(root)),
@@ -245,7 +245,7 @@ export const documentationFactIssues = async (root, catalog) => {
   // Setup accepts every catalog client ID, so the skill's registration repair
   // list must name each one for an agent choosing a `--client` value.
   const repairPath =
-    ".agents/skills/reverse-engineer-anything/references/connection-and-recovery.md";
+    ".agents/skills/acl-reverse-engineer-anything/references/connection-and-recovery.md";
   const repair = await readFile(join(root, repairPath), "utf8");
   for (const client of catalog.setup_clients)
     requireText(issues, repairPath, repair, `\`${client.id}\``);

@@ -8,7 +8,7 @@ it.skipIf(process.platform !== "win32")(
   async () => {
     const guardian = await readFile(
       new URL(
-        "../../../scripts/rea-android-workspace-guardian.mjs",
+        "../../../scripts/acl-rea-android-workspace-guardian.mjs",
         import.meta.url,
       ),
       "utf8",

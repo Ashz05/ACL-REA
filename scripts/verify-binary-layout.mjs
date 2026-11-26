@@ -54,7 +54,7 @@ const CROSS_TOOLCHAINS = [
   ["mipsel-linux-gnu", "EM_MIPS", 32, "little"],
 ];
 const entrypoint =
-  process.argv[2] ?? fileURLToPath(new URL("./rea.mjs", import.meta.url));
+  process.argv[2] ?? fileURLToPath(new URL("./acl-rea.mjs", import.meta.url));
 const root = await VerifierFixture.open({
   prefix: "rea-layout-verifier-",
 });

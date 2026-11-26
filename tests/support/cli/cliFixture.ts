@@ -208,7 +208,7 @@ export const createTestCli = (
   }) => {
     if (terminal === true && input !== undefined)
       throw new Error("A terminal run has an empty stdin.");
-    const rea = [resolve("scripts/rea.mjs"), ...arguments_];
+    const rea = [resolve("scripts/acl-rea.mjs"), ...arguments_];
     const { command, arguments: commandArguments } =
       terminal === true
         ? terminalStdoutInvocation(process.execPath, rea)

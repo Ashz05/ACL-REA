@@ -352,7 +352,7 @@ if (report === undefined)
 try {
   report.file_offsets = await verifyGhidraFileOffsets(
     targetPath,
-    resolve(root, "scripts", "rea.mjs"),
+    resolve(root, "scripts", "acl-rea.mjs"),
     fixture.calleeAddress,
   );
 } catch (cause) {

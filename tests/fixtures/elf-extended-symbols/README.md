@@ -13,7 +13,7 @@ npm run build:cached
 for file in "$out"/*.o; do
   readelf -sW "$file"
   readelf -SW "$file"
-  node scripts/rea.mjs inspect-native-initializers "$file" --json
+  node scripts/acl-rea.mjs inspect-native-initializers "$file" --json
 done
 ```
 

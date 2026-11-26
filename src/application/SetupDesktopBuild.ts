@@ -158,7 +158,7 @@ const applyActions = async (
     failures.push(
       kind === "install_agentenv"
         ? `Installing agentenv failed: ${failure} Run ${AGENTENV_INSTALL_COMMAND} yourself, then rerun setup.`
-        : `Packing REA's build-computer runtime failed: ${failure} Fix the reported problem, then rerun setup with --desktop-build.`,
+        : `Packing ACL-REA's build-computer runtime failed: ${failure} Fix the reported problem, then rerun setup with --desktop-build.`,
     );
   }
   return failures.length === 0 ? undefined : failures.join(" ");
@@ -170,7 +170,7 @@ const installAction = (agentEnv: string): SetupAction => ({
   label: `agentenv-framework ${DESKTOP_EXPORT_FRAMEWORK_VERSION}`,
   target: agentEnv,
   detail:
-    "Install the agentenv-framework release that desktop bundles target as a uv tool; REA runs its agent-env program for build computers.",
+    "Install the agentenv-framework release that desktop bundles target as a uv tool; ACL-REA runs its agent-env program for build computers.",
   external: true,
   operation: "install",
   networkOrigins: ["https://pypi.org", "https://files.pythonhosted.org"],
@@ -180,10 +180,10 @@ const installAction = (agentEnv: string): SetupAction => ({
 const packAction = (archive: string): SetupAction => ({
   id: "pack_build_runtime",
   kind: "pack_build_runtime",
-  label: "REA build-computer runtime",
+  label: "ACL-REA build-computer runtime",
   target: archive,
   detail:
-    "Pack this REA checkout as the runtime a build computer installs: npm pack, its production dependencies from npm ci --omit=dev --omit=optional, then a .tar.xz named by this REA version, packed again when the version changes.",
+    "Pack this ACL-REA checkout as the runtime a build computer installs: npm pack, its production dependencies from npm ci --omit=dev --omit=optional, then a .tar.xz named by this ACL-REA version, packed again when the version changes.",
   external: true,
   operation: "create",
   networkOrigins: ["https://registry.npmjs.org"],

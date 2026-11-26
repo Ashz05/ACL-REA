@@ -41,7 +41,7 @@ const kiloRow = async (home: string, environment: NodeJS.ProcessEnv = {}) =>
     ({ name }) => name === "kilo",
   );
 
-/** The user-scope file `rea mcp add --agent kilo` selects from the same layers. */
+/** The user-scope file `acl-rea mcp add --agent kilo` selects from the same layers. */
 const mcpAddTarget = async (home: string, environment: NodeJS.ProcessEnv) => {
   const selected = await resolveMcpRegistrationClients(
     { agents: ["kilo"], global: true, cwd: home, home, platform, environment },
@@ -115,7 +115,7 @@ it("keeps comments, settings and other servers through setup and uninstall of ki
     expect(parsed.mcp.other).toEqual({ type: "local", command: ["x"] });
     return parsed;
   };
-  expect((await preserved()).mcp.rea).toMatchObject({
+  expect((await preserved()).mcp["acl-rea"]).toMatchObject({
     type: "local",
     command,
     enabled: true,
@@ -125,7 +125,7 @@ it("keeps comments, settings and other servers through setup and uninstall of ki
   expect((await preserved()).mcp).not.toHaveProperty("rea");
 });
 
-it("selects the last present Kilo layer, as rea mcp add does", async () => {
+it("selects the last present Kilo layer, as acl-rea mcp add does", async () => {
   const home = await createTestTempDirectory("rea-kilo-layers-");
   const root = join(home, ".config", "kilo");
   await mkdir(root, { recursive: true });
@@ -219,7 +219,7 @@ it("lets doctor and setup accept REA's entry that only KILO_CONFIG_CONTENT defin
   await mkdir(join(home, ".config", "kilo"), { recursive: true });
   const environment = {
     KILO_CONFIG_CONTENT: JSON.stringify({
-      mcp: { rea: { type: "local", command, enabled: true } },
+      mcp: { "acl-rea": { type: "local", command, enabled: true } },
     }),
   };
   const statuses = await readClientRegistrationStatuses(home, command[1], {
@@ -288,7 +288,7 @@ it("keeps incomplete Windows paths unresolved for Kilo's file and roots", () => 
   }
 });
 
-it("lets doctor and uninstall act on the Kilo layer rea mcp add wrote", async () => {
+it("lets doctor and uninstall act on the Kilo layer acl-rea mcp add wrote", async () => {
   const home = await createTestTempDirectory("rea-kilo-lifecycle-");
   const legacy = join(home, ".kilocode");
   await mkdir(legacy);
@@ -338,7 +338,7 @@ it("reads KILO_CONFIG_CONTENT as Kilo's top read-only layer", async () => {
   await mkdir(root, { recursive: true });
   const target = join(root, "kilo.json");
   const registered = JSON.stringify({
-    mcp: { rea: { type: "local", command, enabled: true } },
+    mcp: { "acl-rea": { type: "local", command, enabled: true } },
   });
   await writeFile(target, registered);
   const status = async (environment: NodeJS.ProcessEnv) =>
@@ -374,7 +374,7 @@ it("reads KILO_CONFIG_CONTENT as Kilo's top read-only layer", async () => {
   // An inline launcher replaces the one setup wrote; its owner is unknown.
   const launcher = {
     KILO_CONFIG_CONTENT: JSON.stringify({
-      mcp: { rea: { command: ["/opt/other/rea", "mcp"] } },
+      mcp: { "acl-rea": { command: ["/opt/other/rea", "mcp"] } },
     }),
   };
   // Doctor and setup name the layer the unowned launcher may come from.
@@ -387,7 +387,7 @@ it("reads KILO_CONFIG_CONTENT as Kilo's top read-only layer", async () => {
   expect(await remediation(launcher)).toContain("KILO_CONFIG_CONTENT");
   // An inline setting overrides the registration setup would write.
   const disabled = {
-    KILO_CONFIG_CONTENT: JSON.stringify({ mcp: { rea: { enabled: false } } }),
+    KILO_CONFIG_CONTENT: JSON.stringify({ mcp: { "acl-rea": { enabled: false } } }),
   };
   // Doctor's recovery names the layer setup cannot edit.
   expect(await status(disabled)).toMatchObject({
@@ -409,11 +409,11 @@ it("refuses a setup write that KILO_CONFIG_CONTENT would override", async () => 
   const target = join(root, "kilo.json");
   const environment = { HOPPER_LAUNCHER_PATH: "/opt/first/hopper" };
   const registered = JSON.stringify({
-    mcp: { rea: { type: "local", command, enabled: true, environment } },
+    mcp: { "acl-rea": { type: "local", command, enabled: true, environment } },
   });
   await writeFile(target, registered);
   const row = await kiloRow(home, {
-    KILO_CONFIG_CONTENT: JSON.stringify({ mcp: { rea: { environment } } }),
+    KILO_CONFIG_CONTENT: JSON.stringify({ mcp: { "acl-rea": { environment } } }),
   });
   if (row === undefined) throw new Error("Kilo row is missing");
   // Settings chosen after inspection, such as a newly installed Hopper,
@@ -460,7 +460,7 @@ it("reports an unreadable Kilo config root without stopping other clients", asyn
   ).toBeUndefined();
 });
 
-it("registers Kilo through its table row in rea mcp add", async () => {
+it("registers Kilo through its table row in acl-rea mcp add", async () => {
   const home = await createTestTempDirectory("rea-kilo-mcp-add-row-");
   const resources = new ArtifactResourceScope();
   const select = (environment: NodeJS.ProcessEnv) =>
@@ -482,7 +482,7 @@ it("registers Kilo through its table row in rea mcp add", async () => {
   // The row's inline layer still decides what Kilo loads.
   const selected = await select({
     KILO_CONFIG_CONTENT: JSON.stringify({
-      mcp: { rea: { command: ["/opt/other/rea", "mcp"] } },
+      mcp: { "acl-rea": { command: ["/opt/other/rea", "mcp"] } },
     }),
   });
   if (!selected.ok) throw selected.error;
@@ -523,13 +523,13 @@ it("refuses to uninstall when removal would expose a lower Kilo layer's unowned 
   await mkdir(root, { recursive: true });
   const lower = join(root, "kilo.json");
   const unowned = JSON.stringify({
-    mcp: { rea: { type: "local", command: ["/opt/other/rea", "mcp"] } },
+    mcp: { "acl-rea": { type: "local", command: ["/opt/other/rea", "mcp"] } },
   });
   await writeFile(lower, unowned);
   await mkdir(join(home, ".kilo"));
   const upper = join(home, ".kilo", "kilo.json");
   const owned = JSON.stringify({
-    mcp: { rea: { type: "local", command, enabled: true } },
+    mcp: { "acl-rea": { type: "local", command, enabled: true } },
   });
   await writeFile(upper, owned);
   const { kilo, details } = await uninstallKilo(home, {});
@@ -545,12 +545,12 @@ it("refuses to uninstall while KILO_CONFIG_CONTENT keeps REA's entry in effect",
   await mkdir(root, { recursive: true });
   const target = join(root, "kilo.json");
   const owned = JSON.stringify({
-    mcp: { rea: { type: "local", command, enabled: true } },
+    mcp: { "acl-rea": { type: "local", command, enabled: true } },
   });
   await writeFile(target, owned);
   const { kilo, details } = await uninstallKilo(home, {
     KILO_CONFIG_CONTENT: JSON.stringify({
-      mcp: { rea: { type: "local", command } },
+      mcp: { "acl-rea": { type: "local", command } },
     }),
   });
   expect(kilo?.status).toBe("failed");
@@ -569,7 +569,7 @@ it("reports REA's Kilo entry that only KILO_CONFIG_CONTENT sets instead of calli
   await writeFile(join(home, ".kilo", "kilo.json"), other);
   const { kilo, details } = await uninstallKilo(home, {
     KILO_CONFIG_CONTENT: JSON.stringify({
-      mcp: { rea: { type: "local", command, enabled: true } },
+      mcp: { "acl-rea": { type: "local", command, enabled: true } },
     }),
   });
   expect(kilo?.status).toBe("failed");
@@ -589,13 +589,13 @@ it.each(["lower", "upper"])(
     await mkdir(upperRoot);
     const lower = join(lowerRoot, "kilo.json");
     const upper = join(upperRoot, "kilo.json");
-    const disabled = JSON.stringify({ mcp: { rea: { enabled: false } } });
+    const disabled = JSON.stringify({ mcp: { "acl-rea": { enabled: false } } });
     const other = JSON.stringify({ mcp: { other: { command: ["x"] } } });
     await writeFile(lower, layer === "lower" ? disabled : other);
     await writeFile(upper, layer === "upper" ? disabled : other);
     const environment = {
       KILO_CONFIG_CONTENT: JSON.stringify({
-        mcp: { rea: { type: "local", command } },
+        mcp: { "acl-rea": { type: "local", command } },
       }),
     };
     const row = await kiloRow(home, environment);
@@ -607,14 +607,14 @@ it.each(["lower", "upper"])(
     );
     expect(before).toMatchObject({
       ok: true,
-      value: { document: { servers: { rea: { enabled: false } } } },
+      value: { document: { servers: { "acl-rea": { enabled: false } } } },
     });
     const { kilo } = await uninstallKilo(home, environment);
     expect(kilo).toBeDefined();
     expect(kilo?.status).not.toBe("failed");
     const enabled = await uninstallKilo(home, {
       KILO_CONFIG_CONTENT: JSON.stringify({
-        mcp: { rea: { type: "local", command, enabled: true } },
+        mcp: { "acl-rea": { type: "local", command, enabled: true } },
       }),
     });
     expect(enabled.kilo?.status).toBe("failed");
@@ -633,7 +633,7 @@ it("leaves a stale Kilo registration KILO_CONFIG_CONTENT pins out of update main
   const environment = {
     KILO_CONFIG_CONTENT: JSON.stringify({
       mcp: {
-        rea: {
+        "acl-rea": {
           type: "local",
           command: [
             "npx",
@@ -672,7 +672,7 @@ it("maintains a stale Kilo registration whose KILO_CONFIG_CONTENT entry setup's 
     join(root, "kilo.json"),
     JSON.stringify({
       mcp: {
-        rea: {
+        "acl-rea": {
           type: "local",
           command: [
             "npx",
@@ -689,7 +689,7 @@ it("maintains a stale Kilo registration whose KILO_CONFIG_CONTENT entry setup's 
     home,
     command[1] ?? "",
     {
-      KILO_CONFIG_CONTENT: JSON.stringify({ mcp: { rea: { enabled: true } } }),
+      KILO_CONFIG_CONTENT: JSON.stringify({ mcp: { "acl-rea": { enabled: true } } }),
     },
     { platform: HOST_PLATFORM.platform },
   );
@@ -703,11 +703,11 @@ it("leaves an aligned Kilo registration out of update maintenance when KILO_CONF
   await mkdir(root, { recursive: true });
   await writeFile(
     join(root, "kilo.json"),
-    JSON.stringify({ mcp: { rea: { type: "local", command, enabled: true } } }),
+    JSON.stringify({ mcp: { "acl-rea": { type: "local", command, enabled: true } } }),
   );
   const environment = {
     KILO_CONFIG_CONTENT: JSON.stringify({
-      mcp: { rea: { environment: { FOO: "bar" } } },
+      mcp: { "acl-rea": { environment: { FOO: "bar" } } },
     }),
   };
   const [status] = await readClientRegistrationStatuses(
@@ -744,10 +744,10 @@ it("reports a Kilo registration whose KILO_CONFIG_CONTENT differs only in a disc
   await mkdir(root, { recursive: true });
   await writeFile(
     join(root, "kilo.json"),
-    JSON.stringify({ mcp: { rea: { type: "local", command, enabled: true } } }),
+    JSON.stringify({ mcp: { "acl-rea": { type: "local", command, enabled: true } } }),
   );
   const inline = (environment: Record<string, string>) =>
-    JSON.stringify({ mcp: { rea: { environment } } });
+    JSON.stringify({ mcp: { "acl-rea": { environment } } });
   const hopper = "/Applications/Hopper Disassembler.app/Contents/MacOS/hopper";
   const scope = await existingMaintenanceScope(
     home,
@@ -765,7 +765,7 @@ it("reports a Kilo registration whose KILO_CONFIG_CONTENT differs only in a disc
       client: "kilo",
       state: "unknown",
       remediation: expect.stringMatching(
-        /KILO_CONFIG_CONTENT sets HOPPER_LAUNCHER_PATH .*Run rea setup to check and refresh it\.$/,
+        /KILO_CONFIG_CONTENT sets HOPPER_LAUNCHER_PATH .*Run acl-rea setup to check and refresh it\.$/,
       ),
     }),
   ]);
@@ -809,7 +809,7 @@ it("reports a Kilo registration whose matching KILO_CONFIG_CONTENT sets a discov
     join(root, "kilo.json"),
     JSON.stringify({
       mcp: {
-        rea: {
+        "acl-rea": {
           type: "local",
           command,
           enabled: true,
@@ -823,7 +823,7 @@ it("reports a Kilo registration whose matching KILO_CONFIG_CONTENT sets a discov
     command[1] ?? "",
     {
       KILO_CONFIG_CONTENT: JSON.stringify({
-        mcp: { rea: { environment: { HOPPER_LAUNCHER_PATH: hopper } } },
+        mcp: { "acl-rea": { environment: { HOPPER_LAUNCHER_PATH: hopper } } },
       }),
     },
     { platform: HOST_PLATFORM.platform },
@@ -850,7 +850,7 @@ it("leaves a Kilo file whose own launcher REA does not own out of update mainten
     join(root, "kilo.json"),
     JSON.stringify({
       mcp: {
-        rea: { type: "local", command: ["/opt/other/server"], enabled: true },
+        "acl-rea": { type: "local", command: ["/opt/other/server"], enabled: true },
       },
     }),
   );
@@ -858,7 +858,7 @@ it("leaves a Kilo file whose own launcher REA does not own out of update mainten
     home,
     command[1] ?? "",
     {
-      KILO_CONFIG_CONTENT: JSON.stringify({ mcp: { rea: { command } } }),
+      KILO_CONFIG_CONTENT: JSON.stringify({ mcp: { "acl-rea": { command } } }),
     },
     { platform: HOST_PLATFORM.platform },
   );
@@ -876,11 +876,11 @@ it("matches a discovered setting by Windows environment identity in KILO_CONFIG_
   await mkdir(root, { recursive: true });
   await writeFile(
     join(root, "kilo.json"),
-    JSON.stringify({ mcp: { rea: { type: "local", command, enabled: true } } }),
+    JSON.stringify({ mcp: { "acl-rea": { type: "local", command, enabled: true } } }),
   );
   const environment = {
     KILO_CONFIG_CONTENT: JSON.stringify({
-      mcp: { rea: { environment: { Java_Home: "/opt/java" } } },
+      mcp: { "acl-rea": { environment: { Java_Home: "/opt/java" } } },
     }),
   };
   const kilo = await kiloRow(home, environment);
@@ -915,7 +915,7 @@ it("inspects REA's Kilo entry that only KILO_CONFIG_CONTENT sets when no Kilo fo
       platform: HOST_PLATFORM.platform,
       environment: {
         KILO_CONFIG_CONTENT: JSON.stringify({
-          mcp: { rea: { type: "local", command, enabled: true } },
+          mcp: { "acl-rea": { type: "local", command, enabled: true } },
         }),
       },
     },

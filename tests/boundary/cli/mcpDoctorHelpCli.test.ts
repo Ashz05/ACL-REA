@@ -64,7 +64,7 @@ cliTest(
         exitCode: 0,
         stderr: "",
       });
-      expect(result.stdout).toContain("Usage: rea mcp doctor [options]");
+      expect(result.stdout).toContain("Usage: acl-rea mcp doctor [options]");
       expect(result.stdout).toContain("--format <toon|json|yaml|md|jsonl>");
       expect(result.stdout).toContain("--full-output");
       expect(result.stdout).toContain("--help, -h");
@@ -154,12 +154,12 @@ cliTest(
     const lines = timed.stderr.trim().split("\n");
     expect(lines).toHaveLength(1);
     const record = JSON.parse(lines[0]!) as {
-      rea_timings: { version: number; command_ms: number };
+      acl_rea_timings: { version: number; command_ms: number };
     };
     expect(record).toMatchObject({
-      rea_timings: { version: 1, command_ms: expect.any(Number) },
+      acl_rea_timings: { version: 1, command_ms: expect.any(Number) },
     });
-    expect(Number.isFinite(record.rea_timings.command_ms)).toBe(true);
-    expect(record.rea_timings.command_ms).toBeGreaterThanOrEqual(0);
+    expect(Number.isFinite(record.acl_rea_timings.command_ms)).toBe(true);
+    expect(record.acl_rea_timings.command_ms).toBeGreaterThanOrEqual(0);
   },
 );

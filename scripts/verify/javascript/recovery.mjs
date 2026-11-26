@@ -24,7 +24,7 @@ if (!process.env.REA_WAKARU_COMMAND)
     "Provide REA_WAKARU_COMMAND for the official Wakaru 1.14.0 Linux x64 binary",
   );
 const entrypoint =
-  process.argv[2] ?? fileURLToPath(new URL("../../rea.mjs", import.meta.url));
+  process.argv[2] ?? fileURLToPath(new URL("../../acl-rea.mjs", import.meta.url));
 const rootFixture = await VerifierFixture.open({
   prefix: "rea-real-recovery-",
 });

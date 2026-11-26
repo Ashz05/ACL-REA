@@ -31,7 +31,7 @@ cliTest(
         client: "opencode",
         path: join(home, ".config", "opencode", "opencode.json"),
         original:
-          '{"mcp":{"rea":{"type":"local","command":["rea","mcp"],"environment":{"EXAMPLE_SETTING":17}}}}\n',
+          '{"mcp":{"acl-rea":{"type":"local","command":["acl-rea", "mcp"],"environment":{"EXAMPLE_SETTING":17}}}}\n',
         reason: "environment.EXAMPLE_SETTING",
       },
     ];
@@ -74,7 +74,7 @@ cliTest(
 
     for (const { path, original } of clients) {
       expect(await readFile(path, "utf8"), path).toBe(original);
-      await expect(access(`${path}.rea.backup`)).rejects.toMatchObject({
+      await expect(access(`${path}.acl-rea.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
     }
@@ -96,7 +96,7 @@ cliTest(
     const higher = join(project, ".opencode", "opencode.json");
     const local = (command: string) =>
       JSON.stringify({
-        mcp: { servers: { rea: { type: "local", command: [command, "mcp"] } } },
+        mcp: { servers: { "acl-rea": { type: "local", command: [command, "mcp"] } } },
       });
     const original = local("previous-direct-launcher");
     const overriding = local("nested-launcher");
@@ -118,7 +118,7 @@ cliTest(
     expect(await readFile(selected, "utf8")).toBe(original);
     expect(await readFile(higher, "utf8")).toBe(overriding);
     for (const path of [selected, higher])
-      await expect(access(`${path}.rea.backup`)).rejects.toMatchObject({
+      await expect(access(`${path}.acl-rea.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
 
@@ -127,9 +127,9 @@ cliTest(
       0,
     );
     expect(JSON.parse(await readFile(selected, "utf8"))).toMatchObject({
-      mcp: { servers: { rea: { command: ["rea", "mcp"] } } },
+      mcp: { servers: { "acl-rea": { command: ["acl-rea", "mcp"] } } },
     });
-    expect(await readFile(`${selected}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${selected}.acl-rea.backup`, "utf8")).toBe(original);
 
     const fresh = join(root, "new-project");
     await mkdir(fresh);
@@ -139,7 +139,7 @@ cliTest(
     expect(
       JSON.parse(await readFile(join(fresh, "opencode.jsonc"), "utf8")),
     ).toMatchObject({
-      mcp: { rea: { command: ["rea", "mcp"] } },
+      mcp: { "acl-rea": { command: ["acl-rea", "mcp"] } },
     });
   },
 );
@@ -164,7 +164,7 @@ cliTest.skipIf(process.platform === "win32")(
         }),
       );
       expect(result.exitCode, userPath).toBe(1);
-      for (const path of [selected, userPath, `${selected}.rea.backup`])
+      for (const path of [selected, userPath, `${selected}.acl-rea.backup`])
         await expect(access(path), path).rejects.toMatchObject({
           code: "ENOENT",
         });
@@ -194,7 +194,7 @@ cliTest.skipIf(process.platform === "win32")(
     const selected = join(project, "opencode.jsonc");
     const higher = join(project, ".opencode", "opencode.json");
     const original =
-      '{"mcp":{"servers":{"rea":{"type":"local","command":["previous-direct-launcher","mcp"]}}}}';
+      '{"mcp":{"servers":{"acl-rea":{"type":"local","command":["previous-direct-launcher","mcp"]}}}}';
     await mkdir(join(project, ".git"), { recursive: true });
     await mkdir(dirname(higher));
     await writeFile(selected, original);
@@ -213,9 +213,9 @@ cliTest.skipIf(process.platform === "win32")(
     });
     expect(await readlink(higher)).toBe(selected);
     expect(JSON.parse(await readFile(higher, "utf8"))).toMatchObject({
-      mcp: { servers: { rea: { command: ["rea", "mcp"] } } },
+      mcp: { servers: { "acl-rea": { command: ["acl-rea", "mcp"] } } },
     });
-    expect(await readFile(`${selected}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${selected}.acl-rea.backup`, "utf8")).toBe(original);
   },
 );
 
@@ -232,7 +232,7 @@ const addOpenCodeProject = (
       "--agent",
       "opencode",
       "--command",
-      "rea mcp",
+      "acl-rea mcp",
       "--json",
     ],
     cwd,

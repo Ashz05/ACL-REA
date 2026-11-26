@@ -42,16 +42,16 @@ cliTest(
     expect(JSON.parse(configured)).toMatchObject({
       mcpServers: {
         peer: { command: "peer" },
-        rea: { args: expect.arrayContaining(["mcp"]) },
+        "acl-rea": { args: expect.arrayContaining(["mcp"]) },
       },
     });
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
     await expect(
       access(join(home, ".factory", "mcp.json")),
     ).rejects.toMatchObject({ code: "ENOENT" });
     const second = await run();
     expect(second.exitCode, second.stdout).toBe(0);
     expect(await readFile(config, "utf8")).toBe(configured);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
   },
 );

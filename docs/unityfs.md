@@ -74,7 +74,7 @@ and paging; full Evidence remains available.
 ## CLI
 
 ```sh
-rea inspect-artifact assets/hotfix.bundle --detail summary \
+acl-rea inspect-artifact assets/hotfix.bundle --detail summary \
   --evidence_output evidence/hotfix.json --json
 rea extract-artifact assets/hotfix.bundle --json
 ```

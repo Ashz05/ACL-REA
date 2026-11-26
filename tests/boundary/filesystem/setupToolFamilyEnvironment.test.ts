@@ -46,7 +46,7 @@ it.each([
       expect(first.appliedActions).toEqual([]);
       expect(first.remediation).toContain("REA_MCP_TOOL_FAMILIES");
       await expect(
-        access(`${client.configPath}.rea.backup`),
+        access(`${client.configPath}.acl-rea.backup`),
       ).rejects.toMatchObject({
         code: "ENOENT",
       });
@@ -60,7 +60,7 @@ it.each([
     expect(JSON.parse(configured)).toMatchObject({
       theme: "caller",
       mcpServers: {
-        rea: { env: { REA_MCP_TOOL_FAMILIES: toolFamilies ?? "artifact" } },
+        "acl-rea": { env: { REA_MCP_TOOL_FAMILIES: toolFamilies ?? "artifact" } },
       },
     });
     expect(configured).not.toContain("UNRELATED_CALLER_VARIABLE");

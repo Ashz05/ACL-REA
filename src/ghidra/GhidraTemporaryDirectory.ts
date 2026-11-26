@@ -46,7 +46,7 @@ const writeProbe = async (
       await open(path, "wx", 0o600),
       resources,
       undefined,
-      (handle) => handle.writeFile("rea doctor probe\n"),
+      (handle) => handle.writeFile("acl-rea doctor probe\n"),
     );
   } finally {
     if (resources.hasPending)

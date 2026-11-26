@@ -26,7 +26,7 @@ cliTest(
     const original = codexToolPolicySource(
       "tables",
       currentClientRegistrationCommand({
-        entrypointPath: resolve("scripts/rea.mjs"),
+        entrypointPath: resolve("scripts/acl-rea.mjs"),
       }),
     );
     await mkdir(dirname(config), { recursive: true });
@@ -89,7 +89,7 @@ cliTest(
       model: "caller-model",
       mcp_servers: {
         other: { command: "other" },
-        rea: {
+        "acl-rea": {
           ...codexToolPolicy,
           startup_timeout_sec: 19,
           tool_timeout_sec: 999,
@@ -100,9 +100,9 @@ cliTest(
         },
       },
     });
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
     await assertMode(config);
-    await assertMode(`${config}.rea.backup`);
+    await assertMode(`${config}.acl-rea.backup`);
     assertAligned((await run(doctorArguments)).json);
     const repeated = await run([...setupArguments, "--yes"]);
     expect(repeated.exitCode, repeated.stdout).toBe(0);
@@ -111,9 +111,9 @@ cliTest(
       appliedActions: [],
     });
     expect(await readFile(config, "utf8")).toBe(configured);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
     await assertMode(config);
-    await assertMode(`${config}.rea.backup`);
+    await assertMode(`${config}.acl-rea.backup`);
 
     const removed = await run(["uninstall", "--json"]);
     expect(removed.exitCode, removed.stdout).toBe(0);
@@ -121,6 +121,6 @@ cliTest(
       model: "caller-model",
       mcp_servers: { other: { command: "other" } },
     });
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
   },
 );

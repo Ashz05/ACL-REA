@@ -39,7 +39,7 @@ vi.mock(
 it("decompresses a gzip seed file once to check it for known secrets and its size", async () => {
   // A secret the folder holds, so the export scans every file for it too.
   const config = await createTestTempDirectory("xdg-config-");
-  const folder = join(config, "rea", "build-secrets");
+  const folder = join(config, "acl-rea", "build-secrets");
   await mkdir(folder, { recursive: true, mode: 0o700 });
   await writeFile(join(folder, "master"), VALUE);
   await chmod(join(folder, "master"), 0o600);

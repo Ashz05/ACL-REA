@@ -16,8 +16,8 @@ SDK-layout-specific snapshot parsers applicable.
 
 ```sh
 rea identify-flutter-build /targets/Example.apk
-rea inspect-dart-aot /targets/Example.apk
-rea inspect-dart-aot /targets/Example.apk --abi armeabi-v7a
+acl-rea inspect-dart-aot /targets/Example.apk
+acl-rea inspect-dart-aot /targets/Example.apk --abi armeabi-v7a
 ```
 
 The equivalent MCP methods are `identify_flutter_build` (with `path`) and
@@ -221,8 +221,8 @@ temporary parent so each CLI/MCP process can own and release its own snapshots.
 `inspect_dart_aot` accepts `pool_policy`; the CLI uses `--pool-policy` JSON:
 
 ```sh
-rea inspect-dart-aot app.apk --pool-policy '{"contains":"package:my_app/"}'
-rea inspect-dart-aot app.apk --pool-policy '{"uri_limit":2000,"token_limit":4000,"run_bytes":4096,"token_bytes":256}'
+acl-rea inspect-dart-aot app.apk --pool-policy '{"contains":"package:my_app/"}'
+acl-rea inspect-dart-aot app.apk --pool-policy '{"uri_limit":2000,"token_limit":4000,"run_bytes":4096,"token_bytes":256}'
 ```
 
 A literal, case-sensitive `contains` filter runs before distinct collection,
@@ -241,7 +241,7 @@ applies to the next call without a REA restart; explicit choices stay in Evidenc
 For a larger package-URI inventory, select the category and its relevant budget:
 
 ```sh
-rea inspect-dart-aot app.apk --pool-policy '{"contains":"package:","uri_limit":2048}'
+acl-rea inspect-dart-aot app.apk --pool-policy '{"contains":"package:","uri_limit":2048}'
 ```
 
 The equivalent MCP input is `pool_policy: {contains: "package:", uri_limit: 2048}`.

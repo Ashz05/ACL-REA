@@ -59,7 +59,7 @@ root.releaseAfter(() => commands.close());
 const cli = async (binary) =>
   JSON.parse(
     (
-      await run(process.execPath, ["scripts/rea.mjs", ...binary], {
+      await run(process.execPath, ["scripts/acl-rea.mjs", ...binary], {
         env: {
           ...process.env,
           TMPDIR: root.path,

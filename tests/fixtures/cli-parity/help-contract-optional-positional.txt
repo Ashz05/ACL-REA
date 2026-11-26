@@ -1,9 +1,9 @@
-$ rea instructions --help
+$ acl-rea instructions --help
 exit: 0
 --- stdout
-rea instructions — Read every raw instruction without decompiling. Supply at least one of the positional address or --procedure. Equal values are accepted; conflicts fail.
+acl-rea instructions — Read every raw instruction without decompiling. Supply at least one of the positional address or --procedure. Equal values are accepted; conflicts fail.
 
-Usage: rea instructions <path> [address] [options]
+Usage: acl-rea instructions <path> [address] [options]
 
 Arguments:
   path     App or program path

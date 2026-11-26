@@ -64,7 +64,7 @@ describe("ZCode configuration paths", () => {
         ({ path }) => path,
       ),
     ).toEqual([
-      join("/home/a", ".zcode", "skills", "reverse-engineer-anything"),
+      join("/home/a", ".zcode", "skills", "acl-reverse-engineer-anything"),
     ]);
   });
 });
@@ -84,7 +84,7 @@ describe("ZCode JSON registration", () => {
       client.configPath,
       `{
   "mcp": {
-    "rea": { "unrelated": true },
+    "acl-rea": { "unrelated": true },
     "servers": {
       "other": { "command": "other-server" }
     }
@@ -96,9 +96,9 @@ describe("ZCode JSON registration", () => {
       (await configureClientConfiguration(client, {}, command)).status,
     ).toBe("configured");
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
-    expect(parsed.mcp.rea).toEqual({ unrelated: true });
+    expect(parsed.mcp["acl-rea"]).toEqual({ unrelated: true });
     expect(parsed.mcp.servers.other).toEqual({ command: "other-server" });
-    expect(parsed.mcp.servers.rea).toEqual({
+    expect(parsed.mcp.servers["acl-rea"]).toEqual({
       command: command[0],
       args: command.slice(1),
     });
@@ -127,7 +127,7 @@ describe("ZCode JSON registration", () => {
     ).toBe("configured");
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
     expect(parsed.ui).toEqual({ theme: "dark" });
-    expect(parsed.mcp.servers.rea).toEqual({
+    expect(parsed.mcp.servers["acl-rea"]).toEqual({
       command: command[0],
       args: command.slice(1),
     });
@@ -140,7 +140,7 @@ describe("ZCode JSON registration", () => {
       (await configureClientConfiguration(client, {}, command)).status,
     ).toBe("configured");
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
-    expect(parsed.mcp.servers.rea).toEqual({
+    expect(parsed.mcp.servers["acl-rea"]).toEqual({
       command: command[0],
       args: command.slice(1),
     });
@@ -163,7 +163,7 @@ describe("ZCode JSON registration", () => {
     );
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
     expect(parsed.mcp.servers.other).toEqual({ command: "other-server" });
-    expect(parsed.mcp.servers.rea).toBeUndefined();
+    expect(parsed.mcp.servers["acl-rea"]).toBeUndefined();
   });
 });
 
@@ -182,8 +182,8 @@ describe("ZCode .agents fallback preservation", () => {
           {
             mcpServers: {
               other: { command: "other-server", env: { TOKEN: "x" } },
-              rea: {
-                command: "rea",
+              "acl-rea": {
+                command: "acl-rea",
                 args: ["mcp"],
                 env: {
                   REA_MCP_INPUT_SCHEMA_PROFILE: "compact",
@@ -206,7 +206,7 @@ describe("ZCode .agents fallback preservation", () => {
         command: "other-server",
         env: { TOKEN: "x" },
       });
-      expect(parsed.mcp.servers.rea).toEqual({
+      expect(parsed.mcp.servers["acl-rea"]).toEqual({
         command: command[0],
         args: command.slice(1),
         env: {
@@ -216,7 +216,7 @@ describe("ZCode .agents fallback preservation", () => {
         },
       });
       if (original !== undefined) {
-        expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+        expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
           original,
         );
         if (JSON.parse(original).ui !== undefined)
@@ -259,7 +259,7 @@ describe("ZCode .agents fallback preservation", () => {
     expect(parsed.mcp.servers.existing).toEqual({
       command: "existing-server",
     });
-    expect(parsed.mcp.servers.rea).toEqual({
+    expect(parsed.mcp.servers["acl-rea"]).toEqual({
       command: command[0],
       args: command.slice(1),
     });
@@ -308,7 +308,7 @@ describe("ZCode fallback uninstall", () => {
       const edited = await readFile(fallbackPath(home), "utf8");
       expect(edited).not.toContain('"rea"');
       expect(edited).toContain("other-server");
-      expect(await readFile(`${fallbackPath(home)}.rea.backup`, "utf8")).toBe(
+      expect(await readFile(`${fallbackPath(home)}.acl-rea.backup`, "utf8")).toBe(
         original,
       );
     },
@@ -318,7 +318,7 @@ describe("ZCode fallback uninstall", () => {
     const { home, client } = await zcodeClient();
     await writeFile(
       client.configPath,
-      JSON.stringify({ mcp: { servers: { rea: owned } } }),
+      JSON.stringify({ mcp: { servers: { "acl-rea": owned } } }),
     );
     const original = await writeFallback(home, {
       rea: owned,
@@ -337,7 +337,7 @@ describe("ZCode fallback uninstall", () => {
       ui: { keep: true },
       mcpServers: {},
     });
-    expect(await readFile(`${fallbackPath(home)}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${fallbackPath(home)}.acl-rea.backup`, "utf8")).toBe(
       original,
     );
   });
@@ -347,7 +347,7 @@ describe("ZCode fallback uninstall", () => {
     { rea: owned, other: { command: "other-server" } },
   ])("refuses to activate retained fallback servers: %j", async (servers) => {
     const { home, client } = await zcodeClient();
-    const native = JSON.stringify({ mcp: { servers: { rea: owned } } });
+    const native = JSON.stringify({ mcp: { servers: { "acl-rea": owned } } });
     await writeFile(client.configPath, native);
     const fallback = await writeFallback(home, servers);
     const cursor = supportedClients(home, HOST_PLATFORM.platform).find(
@@ -355,7 +355,7 @@ describe("ZCode fallback uninstall", () => {
     );
     if (cursor === undefined) throw new Error("missing Cursor client");
     await mkdir(dirname(cursor.configPath), { recursive: true });
-    const otherClient = JSON.stringify({ mcpServers: { rea: owned } });
+    const otherClient = JSON.stringify({ mcpServers: { "acl-rea": owned } });
     await writeFile(cursor.configPath, otherClient);
     const result = await runUninstall(false, systemUninstallHost(home));
     expect(result.status).toBe("failed");
@@ -363,16 +363,16 @@ describe("ZCode fallback uninstall", () => {
     expect(await readFile(fallbackPath(home), "utf8")).toBe(fallback);
     expect(await readFile(cursor.configPath, "utf8")).toBe(otherClient);
     await expect(
-      readFile(`${client.configPath}.rea.backup`),
+      readFile(`${client.configPath}.acl-rea.backup`),
     ).rejects.toMatchObject({ code: "ENOENT" });
     await expect(
-      readFile(`${cursor.configPath}.rea.backup`),
+      readFile(`${cursor.configPath}.acl-rea.backup`),
     ).rejects.toMatchObject({ code: "ENOENT" });
   });
 
   it("refuses last-native removal when the fallback cannot be interpreted", async () => {
     const { home, client } = await zcodeClient();
-    const native = JSON.stringify({ mcp: { servers: { rea: owned } } });
+    const native = JSON.stringify({ mcp: { servers: { "acl-rea": owned } } });
     await writeFile(client.configPath, native);
     await mkdir(join(home, ".agents"), { recursive: true });
     await writeFile(fallbackPath(home), "{invalid");
@@ -387,11 +387,11 @@ describe("ZCode fallback uninstall", () => {
     await writeFile(
       client.configPath,
       JSON.stringify({
-        mcp: { servers: { rea: owned, other: { command: "other-server" } } },
+        mcp: { servers: { "acl-rea": owned, other: { command: "other-server" } } },
       }),
     );
     const fallback = await writeFallback(home, {
-      rea: { command: "/usr/bin/false" },
+      "acl-rea": { command: "/usr/bin/false" },
     });
     const result = await runUninstall(false, systemUninstallHost(home));
     expect(result.status).toBe("complete");
@@ -431,7 +431,7 @@ describe("ZCode fallback admission", () => {
       const { home, client } = await zcodeClient();
       await mkdir(join(home, ".agents"), { recursive: true });
       const original = JSON.stringify({
-        mcpServers: { rea: { command: "rea", args: ["mcp"], env } },
+        mcpServers: { "acl-rea": { command: "acl-rea", args: ["mcp"], env } },
       });
       await writeFile(fallbackPath(home), original);
       expect(
@@ -510,7 +510,7 @@ describe("ZCode disabled registrations", () => {
         {
           mcp: {
             servers: {
-              rea: {
+              "acl-rea": {
                 command: command[0],
                 args: command.slice(1),
                 enable: false,
@@ -533,7 +533,7 @@ describe("ZCode disabled registrations", () => {
     // and is the working repair; doctor must keep recommending it.
     expect(await statusFor()).toMatchObject({
       state: "stale",
-      remediation: expect.stringContaining("rea setup"),
+      remediation: expect.stringContaining("acl-rea setup"),
     });
     expect(await statusFor()).not.toHaveProperty("manual_conflict");
 
@@ -552,7 +552,7 @@ describe("ZCode disabled registrations", () => {
       fallback,
       JSON.stringify({
         mcpServers: {
-          rea: { command: command[0], args: command.slice(1) },
+          "acl-rea": { command: command[0], args: command.slice(1) },
         },
       }),
     );
@@ -597,7 +597,7 @@ describe("ZCode disabled registrations", () => {
       fallback,
       JSON.stringify({
         mcpServers: {
-          rea: { command: command[0], args: command.slice(1), enable: false },
+          "acl-rea": { command: command[0], args: command.slice(1), enable: false },
         },
       }),
     );
@@ -628,7 +628,7 @@ describe("ZCode disabled registrations", () => {
       fallback,
       JSON.stringify({
         mcpServers: {
-          rea: { command: "fallback-command", args: ["mcp"] },
+          "acl-rea": { command: "fallback-command", args: ["mcp"] },
         },
       }),
     );
@@ -636,7 +636,7 @@ describe("ZCode disabled registrations", () => {
       client.configPath,
       JSON.stringify({
         mcp: {
-          servers: { rea: { command: command[0], args: command.slice(1) } },
+          servers: { "acl-rea": { command: command[0], args: command.slice(1) } },
         },
       }),
     );
@@ -671,7 +671,7 @@ describe("ZCode strict native JSON", () => {
       });
       expect(await readFile(client.configPath, "utf8")).toBe(original);
       await expect(
-        readFile(`${client.configPath}.rea.backup`),
+        readFile(`${client.configPath}.acl-rea.backup`),
       ).rejects.toMatchObject({ code: "ENOENT" });
       expect(
         (

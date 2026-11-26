@@ -194,7 +194,7 @@ const prepareLaunch = async (
     command: [
       "--import",
       linuxGate,
-      resolve("scripts/rea.mjs"),
+      resolve("scripts/acl-rea.mjs"),
     ] as readonly string[],
     env: cliProcessEnvironment(
       {

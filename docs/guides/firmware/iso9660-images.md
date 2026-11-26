@@ -120,7 +120,7 @@ unallocated sentinel `0xfffffff0` there, and the entry carries a limitation
 saying its `source_location` names no stored bytes.
 
 ```sh
-rea inspect-artifact ./installer.iso --detail summary \
+acl-rea inspect-artifact ./installer.iso --detail summary \
   --evidence_output installer.evidence.json --json
 rea extract-artifact ./installer.iso --json
 ```

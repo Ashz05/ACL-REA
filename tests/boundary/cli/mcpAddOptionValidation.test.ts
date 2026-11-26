@@ -63,7 +63,7 @@ cliTest(
     const { run, settingsPath } = await isolatedRegistration(cli);
     const directory = dirname(settingsPath);
     const original =
-      '{"amp.mcpServers":{"rea":{"command":"old","env":{"KEEP":"1"}}},"theme":"dark"}\n';
+      '{"amp.mcpServers":{"acl-rea":{"command":"old","env":{"KEEP":"1"}}},"theme":"dark"}\n';
     await mkdir(directory, { recursive: true });
     await writeFile(settingsPath, original);
     const before = await stat(settingsPath);
@@ -91,11 +91,11 @@ cliTest(
     });
     expect(JSON.parse(await readFile(settingsPath, "utf8"))).toEqual({
       "amp.mcpServers": {
-        rea: { command: "node", args: ["--version"], env: { KEEP: "1" } },
+        "acl-rea": { command: "node", args: ["--version"], env: { KEEP: "1" } },
       },
       theme: "dark",
     });
-    expect(await readFile(`${settingsPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${settingsPath}.acl-rea.backup`, "utf8")).toBe(original);
   },
 );
 

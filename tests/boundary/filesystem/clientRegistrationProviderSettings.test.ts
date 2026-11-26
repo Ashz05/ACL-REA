@@ -23,7 +23,7 @@ const selected = {
 const entry = (env: unknown) =>
   JSON.stringify({
     mcpServers: {
-      rea: {
+      "acl-rea": {
         command: process.execPath,
         args: [CURRENT_ENTRYPOINT_PATH, "mcp"],
         ...(env === undefined ? {} : { env }),
@@ -115,7 +115,7 @@ it("retains the comparison on a stale launcher, which setup can still repair", a
     join(home, ".claude.json"),
     JSON.stringify({
       mcpServers: {
-        rea: {
+        "acl-rea": {
           command: "npx",
           args: ["-y", PRODUCT_IDENTITY.registrationPackageSpecifier, "mcp"],
         },
@@ -138,7 +138,7 @@ it("reads Codex's environment table", async () => {
   await mkdir(join(home, ".codex"));
   await writeFile(
     join(home, ".codex/config.toml"),
-    `[mcp_servers.rea]\ncommand = ${JSON.stringify(process.execPath)}\nargs = [${JSON.stringify(CURRENT_ENTRYPOINT_PATH)}, "mcp"]\nstartup_timeout_sec = 30\ntool_timeout_sec = 3600\n[mcp_servers.rea.env]\nGHIDRA_INSTALL_DIR = "/opt/ghidra"\n`,
+    `[mcp_servers.acl-rea]\ncommand = ${JSON.stringify(process.execPath)}\nargs = [${JSON.stringify(CURRENT_ENTRYPOINT_PATH)}, "mcp"]\nstartup_timeout_sec = 30\ntool_timeout_sec = 3600\n[mcp_servers.acl-rea.env]\nGHIDRA_INSTALL_DIR = "/opt/ghidra"\n`,
   );
   const [status] = await readClientRegistrationStatuses(
     home,
@@ -166,7 +166,7 @@ it("reads OpenCode's differently named environment member", async () => {
     join(home, ".config/opencode/opencode.json"),
     JSON.stringify({
       mcp: {
-        rea: {
+        "acl-rea": {
           type: "local",
           command: [process.execPath, CURRENT_ENTRYPOINT_PATH, "mcp"],
           environment: { JAVA_HOME: "/opt/jdk" },
@@ -199,7 +199,7 @@ it("reads the effective view of layered OpenCode files", async () => {
   const layer = (environment: Readonly<Record<string, string>>) =>
     JSON.stringify({
       mcp: {
-        rea: {
+        "acl-rea": {
           type: "local",
           command: [process.execPath, CURRENT_ENTRYPOINT_PATH, "mcp"],
           environment,
@@ -235,7 +235,7 @@ it("keeps a Cordis expression unresolved instead of absent or different", async 
     - id: rea-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: ${JSON.stringify(process.execPath)}
         args: [${JSON.stringify(CURRENT_ENTRYPOINT_PATH)}, mcp]
@@ -260,7 +260,7 @@ it("keeps a Cordis expression unresolved instead of absent or different", async 
 
 it("folds recorded environment names on Windows", () => {
   const servers = {
-    rea: { env: { java_home: "/opt/jdk" } },
+    "acl-rea": { env: { java_home: "/opt/jdk" } },
   };
   const parsed = {
     document: { mcpServers: servers },
@@ -290,7 +290,7 @@ it("folds recorded environment names on Windows", () => {
 });
 
 it("compares selected Windows aliases once using the winning caller spelling", () => {
-  const servers = { rea: { env: { JAVA_HOME: "/opt/jdk" } } };
+  const servers = { "acl-rea": { env: { JAVA_HOME: "/opt/jdk" } } };
   const observed: [string, string][] = [];
   const owned: [string, string][] = [];
   expect(
@@ -323,7 +323,7 @@ it("compares selected Windows aliases once using the winning caller spelling", (
 });
 
 it("does not treat a map it could not read as absent", () => {
-  const servers = { rea: { env: { GHIDRA_INSTALL_DIR: 1 } } };
+  const servers = { "acl-rea": { env: { GHIDRA_INSTALL_DIR: 1 } } };
   expect(
     recordedProviderSettings(
       {
@@ -346,7 +346,7 @@ it("does not treat a map it could not read as absent", () => {
 });
 
 it("does not classify an unresolved Qwen expression as a differing literal", () => {
-  const servers = { rea: { env: { REA_KUNA_COMMAND: "${KUNA}" } } };
+  const servers = { "acl-rea": { env: { REA_KUNA_COMMAND: "${KUNA}" } } };
   const parsed = {
     document: { mcpServers: servers },
     servers,

@@ -93,7 +93,7 @@ section, or bytes between the sequential layout and a recovery DTBO, are named
 in limitations instead of being invented as entries.
 
 ```sh
-rea inspect-artifact boot.img --detail summary \
+acl-rea inspect-artifact boot.img --detail summary \
   --evidence_output boot.evidence.json --json
 rea extract-artifact vendor_boot.img --json
 ```

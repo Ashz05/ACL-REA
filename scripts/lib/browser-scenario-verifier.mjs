@@ -133,7 +133,7 @@ export async function runScenarioCli(scenario) {
   const { stdout } = await execute(
     process.execPath,
     [
-      "scripts/rea.mjs",
+      "scripts/acl-rea.mjs",
       "capture-browser-scenario",
       JSON.stringify(scenario),
       "--json",
@@ -169,7 +169,7 @@ export async function verifyScenarioFailureEvidence(executable, origin) {
   assertFailedNavigation(cliFailure, scenario.start_url.url);
   const transport = new StdioClientTransport({
     command: process.execPath,
-    args: [fileURLToPath(new URL("../rea.mjs", import.meta.url)), "mcp"],
+    args: [fileURLToPath(new URL("../acl-rea.mjs", import.meta.url)), "mcp"],
     env: process.env,
     stderr: "pipe",
   });

@@ -107,7 +107,7 @@ const registerBundlePublicationCases = () => {
     const { root, input, directory } = await prepare(
       "rea-environment-export-tarball-",
     );
-    const tarball = join(root, "rea-agents-0.0.0.tgz");
+    const tarball = join(root, "acl-rea-agents-0.0.0.tgz");
     await writeFile(tarball, Buffer.from([0x1f, 0x8b, 8, 0, 1, 2, 3]));
     const exported = await exportEnvironmentBundle({
       ...input,
@@ -121,18 +121,18 @@ const registerBundlePublicationCases = () => {
       path: tarball,
     });
     expect(exported.value.files).toContainEqual({
-      path: "envs/replay-copy/rea-agents.tgz",
+      path: "envs/replay-copy/acl-rea-agents.tgz",
       bytes: 7,
     });
     expect(
       Buffer.compare(
-        await readFile(join(directory, "envs/replay-copy/rea-agents.tgz")),
+        await readFile(join(directory, "envs/replay-copy/acl-rea-agents.tgz")),
         await readFile(tarball),
       ),
     ).toBe(0);
     expect(
       await readFile(join(directory, "envs/replay-copy/Dockerfile"), "utf8"),
-    ).toContain("COPY rea-agents.tgz /tmp/");
+    ).toContain("COPY acl-rea-agents.tgz /tmp/");
   });
 };
 

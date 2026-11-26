@@ -154,7 +154,7 @@ export const loadWindowsNativeAuthority = (
     return {
       available: false,
       failureStage: "host",
-      reason: "REA Windows native controls require a Windows x64 host.",
+      reason: "ACL-REA Windows native controls require a Windows x64 host.",
     };
   const nodeApiVersion = Number(host.nodeApiVersion);
   if (
@@ -164,7 +164,7 @@ export const loadWindowsNativeAuthority = (
     return {
       available: false,
       failureStage: "host",
-      reason: "REA Windows native controls require Node-API 8 or newer.",
+      reason: "ACL-REA Windows native controls require Node-API 8 or newer.",
     };
   try {
     const manifest = parseWindowsNativeManifest(
@@ -185,7 +185,7 @@ export const loadWindowsNativeAuthority = (
       return {
         available: false,
         failureStage: "load",
-        reason: `REA Windows native controls are unavailable: Windows refused to load the verified native/windows/build/rea-windows-x64.node: ${errorMessage(cause)} ${WINDOWS_NATIVE_LOAD_REFUSED_REMEDIATION}`,
+        reason: `ACL-REA Windows native controls are unavailable: Windows refused to load the verified native/windows/build/rea-windows-x64.node: ${errorMessage(cause)} ${WINDOWS_NATIVE_LOAD_REFUSED_REMEDIATION}`,
       };
     }
     const binding = bindingSchema.parse(loadedModule);
@@ -197,7 +197,7 @@ export const loadWindowsNativeAuthority = (
         available: false,
         failureStage: "self-test",
         retryable: true,
-        reason: `REA Windows native self-test failed: ${errorMessage(cause)}`,
+        reason: `ACL-REA Windows native self-test failed: ${errorMessage(cause)}`,
       };
     }
     const parsed = inspectionSchema.safeParse(observed);
@@ -205,7 +205,7 @@ export const loadWindowsNativeAuthority = (
       return {
         available: false,
         failureStage: "inspection",
-        reason: `REA Windows native inspection is invalid: ${parsed.error.message}`,
+        reason: `ACL-REA Windows native inspection is invalid: ${parsed.error.message}`,
       };
     const inspection = parsed.data;
     return { available: true, authority: { call: binding.call, inspection } };
@@ -213,7 +213,7 @@ export const loadWindowsNativeAuthority = (
     return {
       available: false,
       failureStage: "artifact",
-      reason: `REA Windows native controls are unavailable: ${errorMessage(cause)}`,
+      reason: `ACL-REA Windows native controls are unavailable: ${errorMessage(cause)}`,
     };
   }
 };

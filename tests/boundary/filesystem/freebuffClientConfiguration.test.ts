@@ -158,7 +158,7 @@ describe("FreeBuff configuration paths", () => {
     ).toEqual([
       {
         client: "shared",
-        path: join("/home/a", ".agents", "skills", "reverse-engineer-anything"),
+        path: join("/home/a", ".agents", "skills", "acl-reverse-engineer-anything"),
       },
     ]);
   });
@@ -196,7 +196,7 @@ describe("FreeBuff shared-row activation", () => {
       JSON.stringify(
         {
           mcpServers: {
-            rea: { command: command[0], args: command.slice(1), enable: false },
+            "acl-rea": { command: command[0], args: command.slice(1), enable: false },
           },
         },
         null,
@@ -207,7 +207,7 @@ describe("FreeBuff shared-row activation", () => {
       (await configureClientConfiguration(client, {}, command)).status,
     );
     const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
-    expect(parsed.mcpServers.rea).toMatchObject({
+    expect(parsed.mcpServers["acl-rea"]).toMatchObject({
       command: command[0],
       args: command.slice(1),
       enable: false,
@@ -224,7 +224,7 @@ describe("FreeBuff shared-row activation", () => {
       JSON.stringify(
         {
           mcpServers: {
-            rea: { command: command[0], args: command.slice(1), enable: false },
+            "acl-rea": { command: command[0], args: command.slice(1), enable: false },
           },
         },
         null,
@@ -256,8 +256,8 @@ describe("uninstall applicability for shared FreeBuff storage", () => {
     await mkdir(dirname(codex.configPath), { recursive: true });
     await writeFile(codex.configPath, "");
     await configureClientConfiguration(codex, {}, command);
-    await mkdir(join(home, ".rea", "cache"), { recursive: true });
-    await writeFile(join(home, ".rea", "cache", "owned"), "owned");
+    await mkdir(join(home, ".acl-rea", "cache"), { recursive: true });
+    await writeFile(join(home, ".acl-rea", "cache", "owned"), "owned");
     const result = await runUninstall(
       true,
       systemUninstallHost(home, undefined, {}),
@@ -359,7 +359,7 @@ describe("uninstall applicability for shared FreeBuff storage", () => {
       throw new Error("freebuff discovery path missing");
     await mkdir(profile, { recursive: true });
     await configureClientConfiguration(client, {}, command);
-    const state = join(home, ".rea", "state.json");
+    const state = join(home, ".acl-rea", "state.json");
     await mkdir(dirname(state), { recursive: true });
     await writeFile(state, "{}\n");
     const denied = () => Object.assign(new Error("denied"), { code: "EACCES" });

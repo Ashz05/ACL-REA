@@ -25,9 +25,9 @@ for (const [setting, profile] of [
       const config = join(agent, "mcp.json");
       const original = JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             type: "stdio",
-            command: "rea",
+            command: "acl-rea",
             args: ["mcp"],
             env: { [setting]: profile },
           },
@@ -74,7 +74,7 @@ for (const [setting, profile] of [
         },
       });
       expect(await readFile(config, "utf8")).toBe(original);
-      await expect(readFile(`${config}.rea.backup`)).rejects.toMatchObject({
+      await expect(readFile(`${config}.acl-rea.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
     },
@@ -93,10 +93,10 @@ cliTest(
     };
     const original = JSON.stringify({
       mcpServers: {
-        rea: {
+        "acl-rea": {
           type: "stdio",
           command: "npx",
-          args: ["-y", "rea-agents@1.0.0", "mcp"],
+          args: ["-y", "acl-rea-agents@1.0.0", "mcp"],
           env: custom,
         },
       },
@@ -148,14 +148,14 @@ cliTest(
     const registration = z
       .object({
         mcpServers: z.object({
-          rea: z.object({
+          "acl-rea": z.object({
             command: z.string(),
             args: z.array(z.string()),
             env: z.record(z.string(), z.string()).optional(),
           }),
         }),
       })
-      .parse(JSON.parse(configured)).mcpServers.rea;
+      .parse(JSON.parse(configured)).mcpServers["acl-rea"];
     const transport = new StdioClientTransport({
       command: registration.command,
       args: registration.args,
@@ -190,7 +190,7 @@ cliTest(
       await transport.close();
     }
     expect(registration.env).toMatchObject(custom);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
     const repeated = await cli.run({
       arguments: arguments_,
       cwd: home,
@@ -213,13 +213,13 @@ cliTest(
     const config = join(agent, "mcp.json");
     const skill = join(
       home,
-      ".agents/skills/reverse-engineer-anything/SKILL.md",
+      ".agents/skills/acl-reverse-engineer-anything/SKILL.md",
     );
     const original =
       '{ "mcpServers": { "other": { "command": "other-server" } }, "autoEnableCodemode": false }\n';
     await mkdir(agent);
     await writeFile(config, original);
-    const cliPath = resolve("scripts/rea.mjs");
+    const cliPath = resolve("scripts/acl-rea.mjs");
     const run = (arguments_: readonly string[]) =>
       cli.run({
         arguments: arguments_,
@@ -262,7 +262,7 @@ cliTest(
       appliedActions: [],
     });
     expect(await readFile(config, "utf8")).toBe(original);
-    await expect(readFile(`${config}.rea.backup`)).rejects.toMatchObject({
+    await expect(readFile(`${config}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
     await expect(readFile(skill)).rejects.toMatchObject({ code: "ENOENT" });
@@ -285,7 +285,7 @@ cliTest(
     expect(JSON.parse(configured)).toMatchObject({
       mcpServers: {
         other: { command: "other-server" },
-        rea: {
+        "acl-rea": {
           type: "stdio",
           command: process.execPath,
           args: [cliPath, "mcp"],
@@ -293,9 +293,9 @@ cliTest(
       },
       autoEnableCodemode: false,
     });
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
     expect(await readFile(skill, "utf8")).toContain(
-      "reverse-engineer-anything",
+      "acl-reverse-engineer-anything",
     );
 
     const doctor = await run(["doctor", "--client", "pi", "--json"]);
@@ -317,7 +317,7 @@ cliTest(
       appliedActions: [],
     });
     expect(await readFile(config, "utf8")).toBe(configured);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
 
     // Uninstall is global; there is no --client or --yes on this CLI surface.
     const help = await run(["uninstall", "--help"]);
@@ -328,7 +328,7 @@ cliTest(
     expect(JSON.parse(await readFile(config, "utf8"))).toEqual(
       JSON.parse(original),
     );
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
     await expect(readFile(skill)).rejects.toMatchObject({ code: "ENOENT" });
   },
 );
@@ -361,7 +361,7 @@ cliTest(
     const text = await readFile(config, "utf8");
     expect(() => JSON.parse(text)).not.toThrow();
     expect(JSON.parse(text)).toMatchObject({
-      mcpServers: { rea: { type: "stdio" } },
+      mcpServers: { "acl-rea": { type: "stdio" } },
     });
     const doctor = await run(["doctor", "--client", "pi", "--json"]);
     expect(doctor.exitCode).toBe(0);
@@ -375,7 +375,7 @@ cliTest(
     });
     await run(["uninstall", "--json"]);
     expect(
-      JSON.parse(await readFile(config, "utf8")).mcpServers.rea,
+      JSON.parse(await readFile(config, "utf8")).mcpServers["acl-rea"],
     ).toBeUndefined();
 
     const blocked = await createTestTempDirectory("rea-pi-cli-malformed-");
@@ -412,7 +412,7 @@ cliTest(
       appliedActions: [],
     });
     expect(await readFile(malformedPath, "utf8")).toBe(malformed);
-    await expect(readFile(`${malformedPath}.rea.backup`)).rejects.toMatchObject(
+    await expect(readFile(`${malformedPath}.acl-rea.backup`)).rejects.toMatchObject(
       {
         code: "ENOENT",
       },

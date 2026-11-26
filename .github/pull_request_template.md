@@ -16,13 +16,13 @@ describe the use case and observable outcome. -->
 
 ## Change and scope
 
-<!-- Explain the chosen approach, why it fits REA's architecture, and what is
+<!-- Explain the chosen approach, why it fits ACL-REA's architecture, and what is
 intentionally not included. If adding complexity for a speculative or vanishingly
 unlikely race or security edge case, record the concrete failure mode, likelihood,
 complexity cost, and the user's buy-in obtained before implementation. Do not
 silently expand scope for theoretical robustness. -->
 
-Follow the [contribution scope](https://github.com/morluto/rea/blob/main/CONTRIBUTING.md#contribution-scope).
+Follow the [contribution scope](https://github.com/Ashz05/ACL-REA/blob/main/CONTRIBUTING.md#contribution-scope).
 Unresolved scope, authority, side effects, or required verification block
 integration. Link the required maintainer scope decision for new providers or
 capabilities involving target execution, injection, mutation, or protection
@@ -46,7 +46,7 @@ Use "none" or "not applicable" only when established. -->
 - Provider, bridge, target-format, or platform compatibility:
 - Evidence, artifact, provenance, or reconstruction contract:
 - Target selection, authority, upstream behavior, and cleanup details (if applicable):
-- Generated metadata (`docs/public/product-catalog.json`), package, or installation impact (CI generates and validates ignored catalogs and `skills/`; edit authored instructions in `.agents/skills/reverse-engineer-anything/` and never commit build outputs):
+- Generated metadata (`docs/public/product-catalog.json`), package, or installation impact (CI generates and validates ignored catalogs and `skills/`; edit authored instructions in `.agents/skills/acl-reverse-engineer-anything/` and never commit build outputs):
 
 Expected effects (check known effects; use documentation-only on its own).
 Unchecked items do not establish absence; leave uncertainties visible.
@@ -73,8 +73,8 @@ source, link, or rendered-document checks. -->
 - User-visible CLI/MCP output (if applicable):
 - Remaining proof gaps:
 
-For boundary fixes, identify the applicable [boundary regressions](https://github.com/morluto/rea/blob/main/docs/development/testing.md#boundary-regressions)
-and [lifecycle regressions](https://github.com/morluto/rea/blob/main/docs/development/testing.md#lifecycle-regressions)
+For boundary fixes, identify the applicable [boundary regressions](https://github.com/Ashz05/ACL-REA/blob/main/docs/development/testing.md#boundary-regressions)
+and [lifecycle regressions](https://github.com/Ashz05/ACL-REA/blob/main/docs/development/testing.md#lifecycle-regressions)
 covered by the evidence above, and explain relevant gaps.
 
 For evidence-bearing changes:
@@ -133,7 +133,7 @@ authority questions before requesting integration. -->
 - [ ] I ran every test, build, or measurement needed to validate this change, reported a browser, GPU, or environment gap only when that runtime or hardware is unavailable, and reported the checks I ran and their results without presenting inferred correctness or speedups as measured.
 - [ ] Comments explain constraints or non-obvious decisions; task history and conversations stay out of code and docs.
 - [ ] Documentation is concise and factual, without punchy slogans or promotional language.
-- [ ] This change fixes the root cause and follows the engineering rules in [AGENTS.md](https://github.com/morluto/rea/blob/main/AGENTS.md#architecture-and-cleanup).
-- [ ] Formatted input is interpreted once at the owning boundary, and consumers use the owner's parsed facts. See [Interpret boundary facts once](https://github.com/morluto/rea/blob/main/docs/development/tool-design.md#interpret-boundary-facts-once).
-- [ ] Combined failures preserve partial observations, remaining resources, and cleanup facts. See [Own the lifecycle](https://github.com/morluto/rea/blob/main/docs/development/tool-design.md#own-the-lifecycle).
-- [ ] A hardcoded limit is an `REA_` runtime setting with a default, floor, and maximum, unless a fixed ceiling has a stated reason. See [Adding a runtime setting](https://github.com/morluto/rea/blob/main/docs/reference/limits-and-recovery.md#adding-a-runtime-setting).
+- [ ] This change fixes the root cause and follows the engineering rules in [AGENTS.md](https://github.com/Ashz05/ACL-REA/blob/main/AGENTS.md#architecture-and-cleanup).
+- [ ] Formatted input is interpreted once at the owning boundary, and consumers use the owner's parsed facts. See [Interpret boundary facts once](https://github.com/Ashz05/ACL-REA/blob/main/docs/development/tool-design.md#interpret-boundary-facts-once).
+- [ ] Combined failures preserve partial observations, remaining resources, and cleanup facts. See [Own the lifecycle](https://github.com/Ashz05/ACL-REA/blob/main/docs/development/tool-design.md#own-the-lifecycle).
+- [ ] A hardcoded limit is an `REA_` runtime setting with a default, floor, and maximum, unless a fixed ceiling has a stated reason. See [Adding a runtime setting](https://github.com/Ashz05/ACL-REA/blob/main/docs/reference/limits-and-recovery.md#adding-a-runtime-setting).

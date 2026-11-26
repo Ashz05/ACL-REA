@@ -453,7 +453,7 @@ use. Capture it with `--package-file` naming that file (see
 can download that same file from:
 
 ```sh
-rea capture-desktop-application --executable varicad --package-file ~/Downloads/varicad2026-en_2.03_amd64.deb --output ./varicad-capture
+acl-rea capture-desktop-application --executable varicad --package-file ~/Downloads/varicad2026-en_2.03_amd64.deb --output ./varicad-capture
 rea export-desktop-application ./varicad-capture ./varicad-bundle --package-url https://files.example.com/varicad2026-en_2.03_amd64.deb
 ```
 

@@ -6,7 +6,7 @@ message: '' is not a command for 'rea'. Did you mean 'mcp'?
 cta:
   description: "Suggested commands:"
   commands[2]:
-    - command: rea mcp
+    - command: acl-rea mcp
     - command: rea --help
       description: see all available commands
 <end>

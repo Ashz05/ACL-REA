@@ -14,7 +14,7 @@ describe("macOS Hopper setup failure projection", () => {
       HOPPER_PUBLISHER.bundleIdentifier,
       HOPPER_PUBLISHER.teamIdentifier,
       "HOPPER_LAUNCHER_PATH",
-      "rea setup",
+      "acl-rea setup",
     ])
       expect(result.remediation).toContain(fact);
     expect(result.remediation).toMatch(/nothing was copied or launched/i);
@@ -87,7 +87,7 @@ describe("Linux package-manager setup failure projection", () => {
     });
     expect(result.remediation).toMatch(/package.manager/i);
     expect(result.remediation).toMatch(/Linux runtime dependencies/i);
-    expect(result.remediation).toContain("rea setup");
+    expect(result.remediation).toContain("acl-rea setup");
   });
 
   it("keeps truncated package output within its excerpt budget", () => {

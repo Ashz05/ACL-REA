@@ -15,7 +15,7 @@ support. See [Not supported yet](#not-supported-yet).
 CLI:
 
 ```bash
-rea inspect /absolute/path/to/main.dol --target-format gamecube-dol --provider ghidra --json
+acl-rea inspect /absolute/path/to/main.dol --target-format gamecube-dol --provider ghidra --json
 rea function /absolute/path/to/main.dol 0x80003130 --target-format gamecube-dol --provider ghidra --json
 ```
 

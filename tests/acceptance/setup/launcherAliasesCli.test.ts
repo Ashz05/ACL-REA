@@ -35,7 +35,7 @@ const sessionLaunchers = async (home: string) => {
   const installedBin = join(home, "fnm-install", "bin");
   const outsideBin = join(home, "outside-bin");
   const durableBin = join(home, "manager", "bin");
-  const persistentScript = resolve("scripts/rea.mjs");
+  const persistentScript = resolve("scripts/acl-rea.mjs");
   await mkdir(join(runtimeDirectory, "fnm_multishells"), { recursive: true });
   await mkdir(installedBin, { recursive: true });
   await mkdir(durableBin, { recursive: true });
@@ -125,7 +125,7 @@ cliTest.skipIf(process.platform === "win32").for([
     });
     expect(initial.exitCode, initial.stdout).toBe(0);
     const installed = await read();
-    expect(installed.rea).toMatchObject({
+    expect(installed["acl-rea"]).toMatchObject({
       command: join(durableBin, "node"),
       args: [persistentScript, "mcp"],
     });
@@ -135,7 +135,11 @@ cliTest.skipIf(process.platform === "win32").for([
     const legacy = serialize({
       [rootKey]: {
         ...installed,
-        rea: { ...installed.rea, command: interpreter, args: [script, "mcp"] },
+        "acl-rea": {
+          ...installed["acl-rea"],
+          command: interpreter,
+          args: [script, "mcp"],
+        },
       },
     });
     await writeFile(config, legacy);
@@ -150,11 +154,11 @@ cliTest.skipIf(process.platform === "win32").for([
     });
     const preview = await run([...setup, "--dry-run"]);
     expect(preview.exitCode, preview.stdout).toBe(0);
-    expect((await read()).rea?.command).toBe(interpreter);
+    expect((await read())["acl-rea"]?.command).toBe(interpreter);
     const refresh = await run([...setup, "--yes"]);
     expect(refresh.exitCode, refresh.stdout).toBe(0);
     const repaired = await read();
-    expect(repaired.rea).toMatchObject({
+    expect(repaired["acl-rea"]).toMatchObject({
       command: process.execPath,
       args: [persistentScript, "mcp"],
     });
@@ -162,8 +166,8 @@ cliTest.skipIf(process.platform === "win32").for([
 
     await rm(runtimeDirectory, { recursive: true });
     const transport = new StdioClientTransport({
-      command: repaired.rea!.command,
-      args: repaired.rea!.args!,
+      command: repaired["acl-rea"]!.command,
+      args: repaired["acl-rea"]!.args!,
       cwd: home,
       env: { PATH: subprocessPath },
       stderr: "pipe",
@@ -213,7 +217,7 @@ cliTest.skipIf(process.platform === "win32")(
     const home = await createTestTempDirectory("rea-registration-interpreter-");
     const profile = join(home, ".qwen");
     const config = join(profile, "settings.json");
-    const entrypoint = resolve("scripts/rea.mjs");
+    const entrypoint = resolve("scripts/acl-rea.mjs");
     const restrictedPath = await registrationPathWithoutRuntime(home);
     const retainedEnvironment = {
       PATH: restrictedPath,
@@ -222,7 +226,7 @@ cliTest.skipIf(process.platform === "win32")(
     const unrelated = { command: "other-server", args: ["keep"] };
     const original = JSON.stringify({
       mcpServers: {
-        rea: {
+        "acl-rea": {
           command: entrypoint,
           args: ["mcp"],
           env: retainedEnvironment,
@@ -276,7 +280,7 @@ cliTest.skipIf(process.platform === "win32")(
     const document = z
       .object({
         mcpServers: z.object({
-          rea: z.object({
+          "acl-rea": z.object({
             command: z.string(),
             args: z.array(z.string()),
             env: z.record(z.string(), z.string()),
@@ -285,14 +289,14 @@ cliTest.skipIf(process.platform === "win32")(
         }),
       })
       .parse(JSON.parse(configured));
-    const registration = document.mcpServers.rea;
+    const registration = document.mcpServers["acl-rea"];
     expect(registration).toMatchObject({
       command: process.execPath,
       args: [entrypoint, "mcp"],
       env: retainedEnvironment,
     });
     expect(document.mcpServers.unrelated).toEqual(unrelated);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
 
     const transport = new StdioClientTransport({
       command: registration.command,
@@ -330,13 +334,13 @@ cliTest.skipIf(process.platform === "win32")(
       appliedActions: [],
     });
     expect(await readFile(config, "utf8")).toBe(configured);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
   },
 );
 
 cliTest.skipIf(process.platform === "win32").for([
-  ["rea", "rea-agents"],
-  ["rea-agents", "rea"],
+  ["acl-rea", "acl-rea-agents"],
+  ["acl-rea-agents", "acl-rea"],
 ] as const)(
   "recognizes setup through %s when doctor and uninstall use %s",
   async ([registered, alternate], { processes }) => {
@@ -348,7 +352,7 @@ cliTest.skipIf(process.platform === "win32").for([
     const unrelated = { command: "other-server", args: [] };
     await writeFile(config, JSON.stringify({ mcpServers: { unrelated } }));
     for (const name of [registered, alternate])
-      await symlink(resolve("scripts/rea.mjs"), join(root, name));
+      await symlink(resolve("scripts/acl-rea.mjs"), join(root, name));
     const run = (alias: string, arguments_: readonly string[]) =>
       processes.run(process.execPath, [join(root, alias), ...arguments_], {
         cwd: home,
@@ -417,7 +421,7 @@ cliTest.skipIf(process.platform === "win32").for([
         : [process.execPath, launcher, "mcp"];
     const original = JSON.stringify({
       mcpServers: {
-        rea: { command: command[0], args: command.slice(1) },
+        "acl-rea": { command: command[0], args: command.slice(1) },
         unrelated: { command: "other-server" },
       },
     });
@@ -467,7 +471,7 @@ cliTest.skipIf(process.platform === "win32")(
     const config = join(home, ".cursor/mcp.json");
     await mkdir(join(home, ".cursor"), { recursive: true });
     const current = join(root, "rea");
-    await symlink(resolve("scripts/rea.mjs"), current);
+    await symlink(resolve("scripts/acl-rea.mjs"), current);
     const other = join(root, "other");
     await mkdir(join(other, "child"), { recursive: true });
     await writeFile(join(other, "rea"), "#!/bin/sh\nprintf foreign\n", {
@@ -478,7 +482,7 @@ cliTest.skipIf(process.platform === "win32")(
     expect(await readFile(candidate, "utf8")).toContain("printf foreign");
     const original = JSON.stringify({
       mcpServers: {
-        rea: { command: candidate, args: ["mcp"] },
+        "acl-rea": { command: candidate, args: ["mcp"] },
         unrelated: { command: "other-server" },
       },
     });

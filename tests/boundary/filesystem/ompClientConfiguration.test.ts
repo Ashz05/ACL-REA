@@ -92,7 +92,7 @@ describe("OMP disabledServers denylist", () => {
     expect(parseJsonc(text)).toEqual({
       mcpServers: {
         other: { command: "other-server" },
-        rea: { type: "stdio", command: command[0], args: command.slice(1) },
+        "acl-rea": { type: "stdio", command: command[0], args: command.slice(1) },
       },
       disabledServers: ["other"],
     });
@@ -118,7 +118,7 @@ describe("OMP disabledServers denylist", () => {
     await writeFile(
       client.configPath,
       JSON.stringify({
-        mcpServers: { rea: registration },
+        mcpServers: { "acl-rea": registration },
         disabledServers: ["rea"],
       }),
     );
@@ -135,13 +135,13 @@ describe("OMP disabledServers denylist", () => {
     const disabledEntry = { ...registration, enabled: false };
     await writeFile(
       client.configPath,
-      JSON.stringify({ mcpServers: { rea: disabledEntry } }),
+      JSON.stringify({ mcpServers: { "acl-rea": disabledEntry } }),
     );
     expect(await status()).toMatchObject({ state: "stale" });
     await writeFile(
       client.configPath,
       JSON.stringify({
-        mcpServers: { rea: disabledEntry },
+        mcpServers: { "acl-rea": disabledEntry },
         enabledServers: ["rea"],
       }),
     );
@@ -149,7 +149,7 @@ describe("OMP disabledServers denylist", () => {
     await writeFile(
       client.configPath,
       JSON.stringify({
-        mcpServers: { rea: disabledEntry },
+        mcpServers: { "acl-rea": disabledEntry },
         enabledServers: ["rea"],
         disabledServers: ["rea"],
       }),
@@ -158,13 +158,13 @@ describe("OMP disabledServers denylist", () => {
     // OMP infers stdio for a command entry without an explicit type.
     await writeFile(
       client.configPath,
-      JSON.stringify({ mcpServers: { rea: registration } }),
+      JSON.stringify({ mcpServers: { "acl-rea": registration } }),
     );
     expect(await status()).toMatchObject({ state: "aligned" });
     await writeFile(
       client.configPath,
       JSON.stringify({
-        mcpServers: { rea: { ...registration, type: "http" } },
+        mcpServers: { "acl-rea": { ...registration, type: "http" } },
       }),
     );
     expect(await status()).toMatchObject({ state: "invalid" });

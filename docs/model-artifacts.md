@@ -12,15 +12,15 @@ unknown, rather than inferring big-endian from an unrecognized little-endian
 value.
 
 ```bash
-rea inspect-model-artifact /absolute/path/model.gguf --json
-rea inspect-model-artifact /absolute/path/model.safetensors --hash full --json
+acl-rea inspect-model-artifact /absolute/path/model.gguf --json
+acl-rea inspect-model-artifact /absolute/path/model.safetensors --hash full --json
 ```
 
 The CLI defaults to complete Evidence. For compact delivery with portable access
 to every retained observation:
 
 ```bash
-rea inspect-model-artifact /absolute/path/model.gguf \
+acl-rea inspect-model-artifact /absolute/path/model.gguf \
   --detail summary --evidence_output /absolute/path/model-evidence.json --json
 ```
 

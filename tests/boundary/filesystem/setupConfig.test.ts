@@ -44,7 +44,7 @@ it.skipIf(process.platform === "win32")(
     const configPath = join(home, ".cursor", "mcp.json");
     const original = JSON.stringify({
       mcpServers: {
-        rea: { command: alias, args: ["mcp"], future_policy: { retain: true } },
+        "acl-rea": { command: alias, args: ["mcp"], future_policy: { retain: true } },
       },
     });
     await writeFile(configPath, original);
@@ -64,16 +64,16 @@ it.skipIf(process.platform === "win32")(
       await configureClientConfiguration(client, {}, [real, "mcp"]),
     ).toEqual({ status: "unchanged" });
     expect(await readFile(configPath, "utf8")).toBe(original);
-    await expect(readFile(`${configPath}.rea.backup`)).rejects.toThrow();
+    await expect(readFile(`${configPath}.acl-rea.backup`)).rejects.toThrow();
     const other = join(home, "another-launcher");
     await writeFile(other, "different launcher\n");
     expect(
       await configureClientConfiguration(client, {}, [other, "mcp"]),
     ).toMatchObject({ status: "configured" });
     expect(JSON.parse(await readFile(configPath, "utf8"))).toMatchObject({
-      mcpServers: { rea: { command: other, future_policy: { retain: true } } },
+      mcpServers: { "acl-rea": { command: other, future_policy: { retain: true } } },
     });
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
   },
 );
 
@@ -90,14 +90,14 @@ it.skipIf(process.platform === "win32")(
     await mkdir(join(home, ".codex"));
     const configPath = join(home, ".codex", "config.toml");
     const original = [
-      "[mcp_servers.rea]",
+      "[mcp_servers.acl-rea]",
       `command = ${JSON.stringify(alias)}`,
       'args = ["mcp"]',
       "startup_timeout_sec = 0",
       "tool_timeout_sec = 450",
       "future_policy = { retain = true }",
       "",
-      "[mcp_servers.rea.env]",
+      "[mcp_servers.acl-rea.env]",
       'CALLER_SETTING = "keep exactly"',
       "",
     ].join("\n");
@@ -114,7 +114,7 @@ it.skipIf(process.platform === "win32")(
     const configured = await readFile(configPath, "utf8");
     expect(parseToml(configured)).toMatchObject({
       mcp_servers: {
-        rea: {
+        "acl-rea": {
           command: alias,
           args: ["mcp"],
           startup_timeout_sec: 30,
@@ -124,12 +124,12 @@ it.skipIf(process.platform === "win32")(
         },
       },
     });
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
     expect(
       await configureClientConfiguration(client, {}, [real, "mcp"]),
     ).toEqual({ status: "unchanged" });
     expect(await readFile(configPath, "utf8")).toBe(configured);
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
   },
 );
 
@@ -156,14 +156,14 @@ it.skipIf(process.platform === "win32").each([false, true])(
       }),
     ).toMatchObject({ status: "configured" });
     expect(JSON.parse(await readFile(selected, "utf8"))).toMatchObject({
-      mcpServers: { rea: { command: registrationCommand[0] } },
+      mcpServers: { "acl-rea": { command: registrationCommand[0] } },
     });
     expect(await readFile(unrelated, "utf8")).toBe(original);
-    await expect(lstat(`${unrelated}.rea.backup`)).rejects.toMatchObject({
+    await expect(lstat(`${unrelated}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
     if (exists)
-      expect(await readFile(`${selected}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${selected}.acl-rea.backup`, "utf8")).toBe(original);
     expect(
       await resolveClientConfigTransactionPath(`${root}/absent/../config.json`),
     ).toBeUndefined();
@@ -271,12 +271,12 @@ describe("JSON client configuration transaction: writing configuration through s
       format: "json",
     });
     expect(result.status).toBe("configured");
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
     expect(JSON.parse(await readFile(configPath, "utf8"))).toMatchObject({
       theme: "dark",
       mcpServers: {
         other: { command: "other" },
-        rea: {
+        "acl-rea": {
           command: registrationCommand[0],
           args: registrationCommand.slice(1),
         },
@@ -301,11 +301,11 @@ describe("JSON client configuration transaction: writing configuration through s
       }),
     ).toMatchObject({ status: "configured" });
     expect((await lstat(configPath)).isSymbolicLink()).toBe(true);
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
     expect(JSON.parse(await readFile(targetPath, "utf8"))).toMatchObject({
       theme: "dark",
       mcpServers: {
-        rea: {
+        "acl-rea": {
           command: registrationCommand[0],
           args: registrationCommand.slice(1),
         },
@@ -341,7 +341,7 @@ describe("JSON client configuration transaction: writing configuration through s
     });
     expect((await lstat(configPath)).isSymbolicLink()).toBe(true);
     await expect(
-      readFile(`${configPath}.rea.backup`, "utf8"),
+      readFile(`${configPath}.acl-rea.backup`, "utf8"),
     ).rejects.toThrow();
   });
 });
@@ -352,7 +352,7 @@ describe("JSON client configuration transaction: keeping matching configuration 
     const configPath = join(directory, "mcp.json");
     await writeFile(
       configPath,
-      `${JSON.stringify({ mcpServers: { rea: { command: registrationCommand[0], args: registrationCommand.slice(1) } } })}\n`,
+      `${JSON.stringify({ mcpServers: { "acl-rea": { command: registrationCommand[0], args: registrationCommand.slice(1) } } })}\n`,
     );
     expect(
       await configureClientConfiguration({
@@ -365,7 +365,7 @@ describe("JSON client configuration transaction: keeping matching configuration 
       status: "unchanged",
     });
     await expect(
-      readFile(`${configPath}.rea.backup`, "utf8"),
+      readFile(`${configPath}.acl-rea.backup`, "utf8"),
     ).rejects.toThrow();
   });
 
@@ -376,7 +376,7 @@ describe("JSON client configuration transaction: keeping matching configuration 
       configPath,
       `${JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             env: {
               JAVA_HOME: "/usr/lib/jvm/jdk-21",
               GHIDRA_INSTALL_DIR: "/opt/ghidra",
@@ -403,7 +403,7 @@ describe("JSON client configuration transaction: keeping matching configuration 
       ),
     ).toEqual({ status: "unchanged" });
     await expect(
-      readFile(`${configPath}.rea.backup`, "utf8"),
+      readFile(`${configPath}.acl-rea.backup`, "utf8"),
     ).rejects.toThrow();
   });
 });
@@ -413,7 +413,7 @@ describe("JSON client configuration migration and provider paths", () => {
     const directory = await createTestTempDirectory("rea-setup-");
     const configPath = join(directory, "mcp.json");
     const original =
-      '{"theme":"dark","mcpServers":{"rea":{"command":"npx","args":["-y","rea-agents","mcp"]},"other":{"command":"other"}}}\n';
+      '{"theme":"dark","mcpServers":{"acl-rea":{"command":"npx","args":["-y","acl-rea-agents","mcp"]},"other":{"command":"other"}}}\n';
     await writeFile(configPath, original);
 
     expect(
@@ -428,14 +428,14 @@ describe("JSON client configuration migration and provider paths", () => {
     expect(JSON.parse(await readFile(configPath, "utf8"))).toEqual({
       theme: "dark",
       mcpServers: {
-        rea: {
+        "acl-rea": {
           command: registrationCommand[0],
           args: registrationCommand.slice(1),
         },
         other: { command: "other" },
       },
     });
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
   });
 
   it("persists a custom Hopper launcher and remains idempotent", async () => {
@@ -459,7 +459,7 @@ describe("JSON client configuration migration and provider paths", () => {
     });
     expect(JSON.parse(await readFile(configPath, "utf8"))).toMatchObject({
       mcpServers: {
-        rea: {
+        "acl-rea": {
           command: registrationCommand[0],
           args: registrationCommand.slice(1),
           env: { HOPPER_LAUNCHER_PATH: hopperPath },
@@ -478,7 +478,7 @@ describe("JSON client configuration migration and provider paths", () => {
         HOPPER_LAUNCHER_PATH: "/opt/hopper/bin/Hopper",
       }),
     ).toMatchObject({ status: "configured" });
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
   });
 
   it("adds exact BYO Ghidra and Java paths without installing dependencies", async () => {
@@ -502,7 +502,7 @@ describe("JSON client configuration migration and provider paths", () => {
     });
     expect(JSON.parse(await readFile(configPath, "utf8"))).toMatchObject({
       mcpServers: {
-        rea: {
+        "acl-rea": {
           env: {
             GHIDRA_INSTALL_DIR: environment.GHIDRA_INSTALL_DIR,
             JAVA_HOME: environment.JAVA_HOME,
@@ -553,7 +553,7 @@ describe("invalid JSON client configuration preservation", () => {
     });
     expect(await readFile(configPath, "utf8")).toBe(original);
     await expect(
-      readFile(`${configPath}.rea.backup`, "utf8"),
+      readFile(`${configPath}.acl-rea.backup`, "utf8"),
     ).rejects.toThrow();
   });
 
@@ -576,7 +576,7 @@ describe("invalid JSON client configuration preservation", () => {
     });
     expect(await readFile(configPath, "utf8")).toBe(original);
     await expect(
-      readFile(`${configPath}.rea.backup`, "utf8"),
+      readFile(`${configPath}.acl-rea.backup`, "utf8"),
     ).rejects.toThrow();
   });
 });
@@ -586,13 +586,13 @@ describe("JSON client configuration shape diagnostics", () => {
     {
       format: "json" as const,
       original:
-        '{"__proto__":{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}}',
+        '{"__proto__":{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}}}}',
       serversKey: "mcpServers",
     },
     {
       format: "opencode" as const,
       original:
-        '{"mcp":{"__proto__":{"servers":{"rea":{"type":"local","command":["rea","mcp"]}}}}}',
+        '{"mcp":{"__proto__":{"servers":{"acl-rea":{"type":"local","command":["acl-rea", "mcp"]}}}}}',
       serversKey: "mcp",
     },
   ])(
@@ -610,16 +610,16 @@ describe("JSON client configuration shape diagnostics", () => {
       };
       await writeFile(configPath, original);
       expect(
-        await inspectClientConfiguration(client, {}, ["rea", "mcp"]),
+        await inspectClientConfiguration(client, {}, ["acl-rea", "mcp"]),
       ).toMatchObject({ status: "update" });
       expect(
-        await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+        await configureClientConfiguration(client, {}, ["acl-rea", "mcp"]),
       ).toMatchObject({ status: "configured" });
       const document = JSON.parse(await readFile(configPath, "utf8"));
       expect(Object.hasOwn(document, serversKey)).toBe(true);
-      expect(Object.hasOwn(document[serversKey], "rea")).toBe(true);
-      expect(document[serversKey].rea.command).toEqual(
-        format === "json" ? "rea" : ["rea", "mcp"],
+      expect(Object.hasOwn(document[serversKey], "acl-rea")).toBe(true);
+      expect(document[serversKey]["acl-rea"].command).toEqual(
+        format === "json" ? "acl-rea" : ["acl-rea", "mcp"],
       );
       const originalDocument = JSON.parse(original);
       expect(
@@ -629,9 +629,9 @@ describe("JSON client configuration shape diagnostics", () => {
           ? originalDocument.__proto__
           : originalDocument[serversKey].__proto__,
       );
-      expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
       expect(
-        await inspectClientConfiguration(client, {}, ["rea", "mcp"]),
+        await inspectClientConfiguration(client, {}, ["acl-rea", "mcp"]),
       ).toMatchObject({ status: "already_current" });
     },
   );
@@ -659,7 +659,7 @@ describe("JSON client configuration shape diagnostics", () => {
       expect(read.error.detail).toContain(problem);
       expect(read.error.detail).toContain("object");
       expect(
-        await inspectClientConfiguration(client, {}, ["rea", "mcp"]),
+        await inspectClientConfiguration(client, {}, ["acl-rea", "mcp"]),
       ).toEqual({
         status: "invalid",
         remediation: read.error.detail,
@@ -769,7 +769,7 @@ it("keeps setup and registration diagnostics blocked for an unrecognized Claude 
     "claude_desktop_config.json",
   );
   await mkdir(join(environment.APPDATA, "Claude"), { recursive: true });
-  const original = '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}\n';
+  const original = '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}}}\n';
   await writeFile(config, original);
   const client = supportedClients(home, "win32", environment).find(
     (client) => client.name === "claude_desktop",

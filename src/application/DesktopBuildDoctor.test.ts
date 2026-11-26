@@ -18,7 +18,7 @@ const ready: DesktopBuildFacts = {
     version: "0.9.1485",
   },
   archive: {
-    path: "/home/ada/.cache/rea/build-computer/rea-6.8.0.tar.xz",
+    path: "/home/ada/.cache/acl-rea/build-computer/acl-rea-6.8.0.tar.xz",
     source: "cache",
     status: "current",
   },
@@ -59,7 +59,7 @@ const failed = async (
   return check as DoctorCheck & { readonly remediation: string };
 };
 
-describe("rea doctor --provider desktop_build", () => {
+describe("acl-rea doctor --provider desktop_build", () => {
   it("requires the build checks in order and reports the rest", async () => {
     const report = await diagnose(buildHost());
 
@@ -214,7 +214,7 @@ describe("desktop build tool checks", () => {
       "desktop_build-archive",
     );
     expect(check.classification).toBe("config_drift");
-    expect(check.remediation).toContain("rea setup");
+    expect(check.remediation).toContain("acl-rea setup");
     expect(check.remediation).toContain("--desktop-build");
   });
 
@@ -370,7 +370,7 @@ describe("desktop build registration settings", () => {
       ],
     });
     expect(check.remediation).toContain(
-      "rea setup --client claude_code --desktop-build",
+      "acl-rea setup --client claude_code --desktop-build",
     );
   });
 
@@ -405,7 +405,7 @@ describe("desktop build registration settings", () => {
       "desktop_build-skill",
     );
     expect(check.classification).toBe("config_drift");
-    expect(check.remediation).toContain("rea setup");
+    expect(check.remediation).toContain("acl-rea setup");
   });
 });
 

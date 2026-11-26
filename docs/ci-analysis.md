@@ -1,18 +1,18 @@
 # Static analysis in GitHub Actions
 
-The [minimal workflow](https://github.com/morluto/rea/blob/main/examples/github-actions/rea-analysis.yml) builds a small
+The [minimal workflow](https://github.com/Ashz05/ACL-REA/blob/main/examples/github-actions/acl-rea-analysis.yml) builds a small
 JavaScript application, analyzes its files without executing them, and uploads
 machine-readable results. It uses the existing CLI, not a separate GitHub Action
-or an MCP client. It does not promise support for every REA provider.
+or an MCP client. It does not promise support for every ACL-REA provider.
 
 ## Run the example
 
-1. Copy the example to `.github/workflows/rea-analysis.yml` in your repository and
+1. Copy the example to `.github/workflows/acl-rea-analysis.yml` in your repository and
    commit it to the default branch. No existing application or package manifest is
    needed for the self-contained demonstration.
-2. Enable GitHub Actions if necessary. Select **REA static analysis example** in
+2. Enable GitHub Actions if necessary. Select **ACL-REA static analysis example** in
    the Actions tab and choose **Run workflow**.
-3. Download the `rea-analysis` artifact after the run. Its files are:
+3. Download the `acl-rea-analysis` artifact after the run. Its files are:
 
    | File              | Meaning                                                                                            |
    | ----------------- | -------------------------------------------------------------------------------------------------- |

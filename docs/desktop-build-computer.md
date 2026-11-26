@@ -12,31 +12,31 @@ agent's computer-use actions to it through three MCP tools:
 | `close_build_computer`  | Tears the computer down, by agentenv's teardown or by removing its sandbox's containers    |
 
 The tools are MCP-only, like the debugger sessions: the computer lives as long
-as the REA MCP server that started it, or until it is closed. Capturing the
+as the ACL-REA MCP server that started it, or until it is closed. Capturing the
 app, exporting its bundle and witnessing the task on such a computer are in
-[Building and witnessing an environment](desktop-build-witness.md), and REA's
+[Building and witnessing an environment](desktop-build-witness.md), and ACL-REA's
 skill for doing all of it from a request is
-[desktop builds](https://github.com/morluto/rea/blob/main/.agents/skills/reverse-engineer-anything/references/desktop-build.md).
+[desktop builds](https://github.com/Ashz05/ACL-REA/blob/main/.agents/skills/acl-reverse-engineer-anything/references/desktop-build.md).
 
 ## Set up a build host
 
-On a Linux host with Node.js and Docker, from a REA
-[checkout](getting-started/installation.md#run-rea-from-a-checkout):
+On a Linux host with Node.js and Docker, from an ACL-REA
+[checkout](getting-started/installation.md#run-acl-rea-from-a-checkout):
 
 ```bash
-rea setup --client claude_code --desktop-build --install-agentenv
-rea doctor --provider desktop_build --client claude_code
+acl-rea setup --client claude_code --desktop-build --install-agentenv
+acl-rea doctor --provider desktop_build --client claude_code
 ```
 
 Setup shows its plan and asks before it changes anything; `--dry-run` only
-prints it and `--yes` approves it. It packs REA's runtime archive into
-`~/.cache/rea/build-computer/rea-<version>.tar.xz` (under `$XDG_CACHE_HOME`
-when set, `~/Library/Caches` on macOS), and packs again once REA's version
+prints it and `--yes` approves it. It packs ACL-REA's runtime archive into
+`~/.cache/acl-rea/build-computer/acl-rea-<version>.tar.xz` (under `$XDG_CACHE_HOME`
+when set, `~/Library/Caches` on macOS), and packs again once ACL-REA's version
 changes; an archive `REA_BUILD_COMPUTER_REA_ARCHIVE` already names is
 recorded instead. It records `REA_AGENT_ENV_COMMAND`, `REA_DOCKER_COMMAND` and
-`REA_BUILD_COMPUTER_REA_ARCHIVE` as absolute paths in that client's REA
+`REA_BUILD_COMPUTER_REA_ARCHIVE` as absolute paths in that client's ACL-REA
 registration, keeping a value the registration already has other than an
-archive setup packed for an earlier REA version, and refreshes the skill.
+archive setup packed for an earlier ACL-REA version, and refreshes the skill.
 `--install-agentenv` runs `uv tool install agentenv-framework==0.9.1485`
 when `uv` is on `PATH`, and otherwise prints the command. Setup never
 installs Docker or Node.js and never runs `sudo`. Restart the client
@@ -45,18 +45,18 @@ afterwards.
 Doctor is read-only and checks, in order: a Linux amd64 or arm64 host,
 Node.js, procps `ps`, the Docker CLI, a Docker daemon reachable without
 `sudo`, 20 GB free where Docker keeps images, agentenv-framework 0.9.1485,
-the runtime archive of this REA version, the build settings in the
+the runtime archive of this ACL-REA version, the build settings in the
 registration or the environment, and the skill. Each failure names its fix.
 Doctor reads the selected runtime archive without extracting it. The archive
-must supply one launcher at `scripts/rea.mjs` under a visible top folder.
+must supply one launcher at `scripts/acl-rea.mjs` under a visible top folder.
 When doctor can identify the intended folder, it reports its declared package
 version even if the launcher is unusable.
 It also reports, without counting them against `healthy`, whether a model
 endpoint for solver runs is configured and which agentenv containers
 earlier builds left. Pass `--json` for the full report.
 
-When a setting is unset where the server starts, REA uses `agent-env` and
-`docker` on `PATH` and the archive setup packed for this REA version. The
+When a setting is unset where the server starts, ACL-REA uses `agent-env` and
+`docker` on `PATH` and the archive setup packed for this ACL-REA version. The
 rest of this page is the same setup by hand.
 
 ## Requirements
@@ -66,8 +66,8 @@ rest of this page is the same setup by hand.
   natively; a host builds only its own architecture.
 - Node.js at the version in `.nvmrc`, installed with
   [nvm](https://github.com/nvm-sh/nvm) or from
-  [nodejs.org](https://nodejs.org/en/download), and REA
-  [run from a checkout](getting-started/installation.md#run-rea-from-a-checkout).
+  [nodejs.org](https://nodejs.org/en/download), and ACL-REA
+  [run from a checkout](getting-started/installation.md#run-acl-rea-from-a-checkout).
 - [Docker Engine](https://docs.docker.com/engine/install/) and its
   [post-install steps](https://docs.docker.com/engine/install/linux-postinstall/):
   add yourself to the `docker` group, then log in again.
@@ -78,16 +78,16 @@ rest of this page is the same setup by hand.
   program, normally `$HOME/.local/bin/agent-env`; `command -v agent-env`
   shows the path when its install directory is on your `PATH`. Installing it
   with pip into a virtual environment instead needs `python3.12-venv` on
-  stock Ubuntu. REA runs its
+  stock Ubuntu. ACL-REA runs its
   helper, `bridge/agentenv/computer.py`, with that runner's Python: the
   interpreter on the program's `#!` line, or the `python3` beside it in its
   virtual environment.
-- `REA_DOCKER_COMMAND`, the absolute path of the Docker CLI, lets REA remove a
-  computer whose agentenv teardown was not confirmed. Without it, REA names the
+- `REA_DOCKER_COMMAND`, the absolute path of the Docker CLI, lets ACL-REA remove a
+  computer whose agentenv teardown was not confirmed. Without it, ACL-REA names the
   command to run instead.
 - For a request, `REA_BUILD_COMPUTER_REA_ARCHIVE`: the absolute path of a tar
-  archive of a runnable REA, with its production dependencies, whose one top
-  folder holds `scripts/rea.mjs`. The computer runs REA from it. From a
+  archive of a runnable ACL-REA, with its production dependencies, whose one top
+  folder holds `scripts/acl-rea.mjs`. The computer runs ACL-REA from it. From a
   checkout, `npm run pack:build-computer-runtime -- /path/to/rea-prod.tar.xz`
   writes one: `npm pack`, its package folder as
   `rea-prod` with the lockfile, `npm ci --omit=dev --omit=optional`, then
@@ -99,9 +99,9 @@ that is already running.
 
 ## Claude Code
 
-Without `--desktop-build`, `rea setup --client claude_code` registers REA
+Without `--desktop-build`, `acl-rea setup --client claude_code` registers ACL-REA
 without these variables. Either
-export them in the shell that starts `claude`, which starts REA's server with
+export them in the shell that starts `claude`, which starts ACL-REA's server with
 its environment:
 
 ```bash
@@ -111,15 +111,15 @@ export REA_BUILD_COMPUTER_REA_ARCHIVE="$HOME/rea-runtime/rea-prod.tar.xz"
 claude
 ```
 
-or set them, as absolute paths, in the `env` of the `mcpServers.rea` entry
+or set them, as absolute paths, in the `env` of the `mcpServers.acl-rea` entry
 setup wrote, such as in `~/.claude.json`:
 
 ```json
 {
   "mcpServers": {
-    "rea": {
+    "acl-rea": {
       "command": "/absolute/path/to/node",
-      "args": ["/absolute/path/to/rea/scripts/rea.mjs", "mcp"],
+      "args": ["/absolute/path/to/acl-rea/scripts/acl-rea.mjs", "mcp"],
       "env": {
         "REA_AGENT_ENV_COMMAND": "/home/ada/.local/bin/agent-env",
         "REA_DOCKER_COMMAND": "/usr/bin/docker",
@@ -132,14 +132,14 @@ setup wrote, such as in `~/.claude.json`:
 
 `measure_build_task` runs solves through agentenv, which refuses them without
 a model endpoint: export `LITELLM_BASE_URL` and `LITELLM_API_KEY` in the shell
-that starts `claude`, whose REA server inherits them, or set `base_url` and
+that starts `claude`, whose ACL-REA server inherits them, or set `base_url` and
 `api_key` under `[model]` in `.agentenv/config.toml`. REA passes them on to
 agentenv and never reads the key.
 
 Claude Code asks before each MCP tool call its permission settings do not
 allow, and a build makes dozens of `act_on_build_computer` calls. You can
 allow REA's tools in those settings' `permissions.allow` list:
-`mcp__rea__act_on_build_computer` allows that tool, and `mcp__rea` allows all
+`mcp__acl-rea__act_on_build_computer` allows that tool, and `mcp__rea` allows all
 of REA's.
 
 A headless run, `claude -p`, ends when the skill asks its upfront questions,

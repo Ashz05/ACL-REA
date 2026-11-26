@@ -7,8 +7,8 @@ reads the selected files without executing them and does not search the
 filesystem or the network.
 
 ```bash
-rea inspect-elf-debug-link /absolute/path/to/program --json
-rea inspect-elf-debug-link /absolute/path/to/program --candidate-path /absolute/path/to/program.debug --json
+acl-rea inspect-elf-debug-link /absolute/path/to/program --json
+acl-rea inspect-elf-debug-link /absolute/path/to/program --candidate-path /absolute/path/to/program.debug --json
 ```
 
 The CLI resolves relative paths against the caller's working directory. MCP

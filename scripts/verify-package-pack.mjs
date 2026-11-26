@@ -143,7 +143,7 @@ export async function verifyPackagePack({ root, workspace, commands }) {
     "package/package.json",
     "package/npm-shrinkwrap.json",
     "package/node_modules/@lydell/node-pty/package.json",
-    "package/skills/reverse-engineer-anything/SKILL.md",
+    "package/skills/acl-reverse-engineer-anything/SKILL.md",
     "package/.claude-plugin/plugin.json",
     "package/.codex-plugin/plugin.json",
     "package/.codex-plugin/mcp.json",
@@ -167,7 +167,7 @@ export async function verifyPackagePack({ root, workspace, commands }) {
   const readPackedJson = async (archivePath) =>
     JSON.parse(await readPackedText(archivePath));
   const packedManifest = await readPackedJson("package/package.json");
-  if (packedManifest.mcpName !== "io.github.morluto/rea")
+  if (packedManifest.mcpName !== "io.github.Ashz05/acl-rea")
     throw new Error("package did not retain its MCP Registry ownership marker");
   const packedLock = await readPackedJson("package/npm-shrinkwrap.json");
   if (
@@ -208,8 +208,8 @@ export async function verifyPackagePack({ root, workspace, commands }) {
   )
     throw new Error("package retained a lifecycle-dependent PTY installation");
   if (
-    packedManifest.bin?.rea !== "scripts/rea.mjs" ||
-    packedManifest.bin?.["rea-agents"] !== "scripts/rea.mjs"
+    packedManifest.bin?.["acl-rea"] !== "scripts/acl-rea.mjs" ||
+    packedManifest.bin?.["acl-rea-agents"] !== "scripts/acl-rea.mjs"
   )
     throw new Error("package did not expose both rea command entry points");
   if (!packedFiles.includes("package/scripts/lib/cli-process-environment.mjs"))
@@ -227,7 +227,7 @@ export async function verifyPackagePack({ root, workspace, commands }) {
   if (packedFiles.some((path) => path.startsWith("package/.cache/")))
     throw new Error("package included development cache or test metadata");
   const skill = await readPackedText(
-    "package/skills/reverse-engineer-anything/SKILL.md",
+    "package/skills/acl-reverse-engineer-anything/SKILL.md",
   );
   const skillMetadata = parseSkillManifestMetadata(skill);
   if (
@@ -256,11 +256,11 @@ export async function verifyPackagePack({ root, workspace, commands }) {
       manifest.skills !== "./skills" ||
       (path.startsWith(".codex")
         ? manifest.mcpServers !== "./.codex-plugin/mcp.json" ||
-          serverConfig.mcpServers?.rea?.cwd !== "." ||
-          serverConfig.mcpServers?.rea?.startup_timeout_sec !== 30
+          serverConfig.mcpServers?.["acl-rea"]?.cwd !== "." ||
+          serverConfig.mcpServers?.["acl-rea"]?.startup_timeout_sec !== 30
         : false) ||
-      serverConfig.mcpServers?.rea?.command !== "node" ||
-      JSON.stringify(serverConfig.mcpServers?.rea?.args) !==
+      serverConfig.mcpServers?.["acl-rea"]?.command !== "node" ||
+      JSON.stringify(serverConfig.mcpServers?.["acl-rea"]?.args) !==
         JSON.stringify(expectedArgs)
     )
       throw new Error(
@@ -271,7 +271,7 @@ export async function verifyPackagePack({ root, workspace, commands }) {
       : [manifest.icon];
     for (const icon of icons)
       if (
-        icon !== "./assets/rea-plugin.png" ||
+        icon !== "./assets/acl-rea-plugin.png" ||
         !packedFiles.includes(`package/${icon.slice(2)}`)
       )
         throw new Error(`Packaged plugin ${path} is missing its shared icon`);
@@ -282,14 +282,14 @@ export async function verifyPackagePack({ root, workspace, commands }) {
   const cursorServer = await readPackedJson("package/mcp.json");
   const cursorLogo = String(cursorManifest.logo ?? "").replace(/^\.\//u, "");
   const cursorSkill =
-    "package/.cursor-plugin/skills/reverse-engineer-anything/SKILL.md";
+    "package/.cursor-plugin/skills/acl-reverse-engineer-anything/SKILL.md";
   if (
     cursorManifest.version !== packedManifest.version ||
     cursorManifest.skills !== ".cursor-plugin/skills" ||
-    cursorLogo !== "assets/rea-plugin.png" ||
+    cursorLogo !== "assets/acl-rea-plugin.png" ||
     cursorManifest.mcpServers !== undefined ||
-    cursorServer.mcpServers?.rea?.command !== "npx" ||
-    JSON.stringify(cursorServer.mcpServers?.rea?.args) !==
+    cursorServer.mcpServers?.["acl-rea"]?.command !== "npx" ||
+    JSON.stringify(cursorServer.mcpServers?.["acl-rea"]?.args) !==
       JSON.stringify([
         "-y",
         `${packedManifest.name}@${packedManifest.version}`,

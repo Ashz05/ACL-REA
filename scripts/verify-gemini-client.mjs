@@ -63,7 +63,7 @@ const skillPath = join(
   profile,
   ".agents",
   "skills",
-  "reverse-engineer-anything",
+  "acl-reverse-engineer-anything",
   "SKILL.md",
 );
 let clientVersion = null;
@@ -144,7 +144,7 @@ await withVerifierCleanup(async () => {
     ]) {
       const result = await commands.exec(
         process.execPath,
-        [join(runtimeRoot, "scripts/rea.mjs"), ...args, "--json"],
+        [join(runtimeRoot, "scripts/acl-rea.mjs"), ...args, "--json"],
         { env: environment, cwd: workspace, timeout: 60_000, stdin: "pipe" },
       );
       const parsed = JSON.parse(result.stdout);
@@ -184,7 +184,7 @@ await withVerifierCleanup(async () => {
         result.stdout,
       );
     }
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.acl-rea.backup`, "utf8"), original);
     const configured = await readFile(configPath, "utf8");
     assert.deepEqual(JSON.parse(configured).mcpServers.other, {
       command: "unrelated-server",
@@ -192,7 +192,7 @@ await withVerifierCleanup(async () => {
     const repeated = await commands.exec(
       process.execPath,
       [
-        join(runtimeRoot, "scripts/rea.mjs"),
+        join(runtimeRoot, "scripts/acl-rea.mjs"),
         "setup",
         "--client",
         "gemini_cli",
@@ -203,9 +203,9 @@ await withVerifierCleanup(async () => {
     );
     assert.deepEqual(JSON.parse(repeated.stdout).appliedActions, []);
     assert.equal(await readFile(configPath, "utf8"), configured);
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.acl-rea.backup`, "utf8"), original);
     const installedSkill = await readFile(skillPath, "utf8");
-    assert(installedSkill.includes("name: reverse-engineer-anything"));
+    assert(installedSkill.includes("name: acl-reverse-engineer-anything"));
     const frontmatter = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n([\s\S]*))?/u.exec(
       installedSkill,
     );
@@ -317,14 +317,14 @@ await withVerifierCleanup(async () => {
             {
               functionCall: {
                 name: skill.name,
-                args: { name: "reverse-engineer-anything" },
+                args: { name: "acl-reverse-engineer-anything" },
               },
             },
           ];
         }
         assert(
           skillLoaded,
-          "Gemini must load the installed personal REA skill",
+          "Gemini must load the installed personal ACL-REA skill",
         );
         return [
           {
@@ -345,7 +345,7 @@ await withVerifierCleanup(async () => {
             "--approval-mode",
             mode === "chat" ? "default" : "yolo",
             "--allowed-mcp-server-names",
-            "rea",
+            "acl-rea",
             "--output-format",
             "stream-json",
             "-p",

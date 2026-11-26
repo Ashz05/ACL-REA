@@ -6,7 +6,7 @@ DWARF 2 through 5, including compressed ELF sections. It does not execute the
 image and does not require a disassembler.
 
 ```bash
-rea inspect-dwarf-units /absolute/path/to/program --json
+acl-rea inspect-dwarf-units /absolute/path/to/program --json
 ```
 
 The CLI resolves relative paths against the caller's working directory. MCP

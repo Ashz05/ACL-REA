@@ -172,7 +172,7 @@ it.each([
   async ({ previousBackup }) => {
     const root = await createTestTempDirectory("rea-config-rollback-");
     const path = join(root, "client.json");
-    const firstBackup = `${path}.rea.backup`;
+    const firstBackup = `${path}.acl-rea.backup`;
     const original = '{"keep":"current"}\n';
     await writeFile(path, original);
     if (previousBackup !== undefined)
@@ -187,7 +187,7 @@ it.each([
         format: "json",
       },
       {},
-      ["rea", "mcp"],
+      ["acl-rea", "mcp"],
     );
 
     const backupPath =
@@ -209,7 +209,7 @@ it.each([
       expect(await readFile(firstBackup, "utf8")).toBe(previousBackup);
     expect(JSON.parse(await readFile(path, "utf8"))).toMatchObject({
       keep: "current",
-      mcpServers: { rea: { command: "rea", args: ["mcp"] } },
+      mcpServers: { "acl-rea": { command: "acl-rea", args: ["mcp"] } },
     });
   },
 );
@@ -220,7 +220,7 @@ it("does not write config when a recovery copy disappears before verification", 
   const firstOriginal = '{"keep":"first"}\n';
   const currentOriginal = '{"keep":"current"}\n';
   await writeFile(path, currentOriginal);
-  await writeFile(`${path}.rea.backup`, firstOriginal);
+  await writeFile(`${path}.acl-rea.backup`, firstOriginal);
   state.removeCopiedRecovery = true;
   let published = false;
   state.afterPublication = async () => {
@@ -235,12 +235,12 @@ it("does not write config when a recovery copy disappears before verification", 
       format: "json",
     },
     {},
-    ["rea", "mcp"],
+    ["acl-rea", "mcp"],
   );
   expect(published).toBe(false);
   expect(result).toEqual({ status: "failed", reason: "backup" });
   expect(await readFile(path, "utf8")).toBe(currentOriginal);
-  expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(firstOriginal);
+  expect(await readFile(`${path}.acl-rea.backup`, "utf8")).toBe(firstOriginal);
 });
 
 it("does not roll back or remove config when its initial read cleanup fails", async () => {
@@ -270,7 +270,7 @@ it("does not roll back or remove config when its initial read cleanup fails", as
         format: "json",
       },
       {},
-      ["rea", "mcp"],
+      ["acl-rea", "mcp"],
     ),
   ).rejects.toBe(failure);
   expect(await readFile(path, "utf8")).toBe(original);
@@ -292,7 +292,7 @@ it("retains first-run configuration for manual recovery without deleting by path
       format: "json",
     },
     {},
-    ["rea", "mcp"],
+    ["acl-rea", "mcp"],
   );
 
   expect(result).toMatchObject({
@@ -307,7 +307,7 @@ it("retains first-run configuration for manual recovery without deleting by path
   });
   expect(result).not.toHaveProperty("backupPath");
   expect(JSON.parse(await readFile(path, "utf8"))).toMatchObject({
-    mcpServers: { rea: { command: "rea", args: ["mcp"] } },
+    mcpServers: { "acl-rea": { command: "acl-rea", args: ["mcp"] } },
   });
 });
 
@@ -345,7 +345,7 @@ it("retains readback cleanup ownership when rollback also fails", async () => {
         format: "json",
       },
       {},
-      ["rea", "mcp"],
+      ["acl-rea", "mcp"],
     );
   } catch (cause: unknown) {
     caught = cause;
@@ -355,7 +355,7 @@ it("retains readback cleanup ownership when rollback also fails", async () => {
 
   if (!(caught instanceof ConfigurationError)) throw caught;
   expect(caught.message).toContain("injected restore write failure");
-  expect(caught.message).toContain(`${path}.rea.backup`);
+  expect(caught.message).toContain(`${path}.acl-rea.backup`);
   const cleanupOwnerError = caught.cause;
   if (!(cleanupOwnerError instanceof RegularFileCleanupFailure))
     throw new Error("Configuration failure lost its read owner");
@@ -365,7 +365,7 @@ it("retains readback cleanup ownership when rollback also fails", async () => {
     cleanupCause: expect.any(AggregateError),
   });
   expect(cleanupOwnerError.owner).toBe(owner);
-  expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+  expect(await readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
 });
 
 it.each(["existing", "first-run"] as const)(
@@ -395,14 +395,14 @@ it.each(["existing", "first-run"] as const)(
         format: "json",
       },
       {},
-      ["rea", "mcp"],
+      ["acl-rea", "mcp"],
     );
 
     expect(await fs.readFile(replacement, "utf8")).toBe(foreign);
     expect((await fs.lstat(path)).isSymbolicLink()).toBe(true);
     expect(result).toMatchObject({ status: "failed", reason: "conflict" });
     if (kind === "existing")
-      expect(await fs.readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+      expect(await fs.readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
   },
 );
 
@@ -429,12 +429,12 @@ it("retains a replacement regular file when readback fails", async () => {
       format: "json",
     },
     {},
-    ["rea", "mcp"],
+    ["acl-rea", "mcp"],
   );
 
   expect(await fs.readFile(path, "utf8")).toBe(foreign);
   expect(result).toMatchObject({ status: "failed", reason: "conflict" });
-  expect(await fs.readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+  expect(await fs.readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
 });
 
 it("retains and retries both readback and publication descriptors after mixed close failures", async () => {
@@ -473,7 +473,7 @@ it("retains and retries both readback and publication descriptors after mixed cl
           format: "json",
         },
         {},
-        ["rea", "mcp"],
+        ["acl-rea", "mcp"],
       ),
     ).rejects.toBeInstanceOf(ConfigurationError);
     expect(state.publicationHandles).toHaveLength(1);
@@ -520,11 +520,11 @@ it("rejects a replaced publication even when the replacement passes registration
         format: "json",
       },
       {},
-      ["rea", "mcp"],
+      ["acl-rea", "mcp"],
     ),
   ).toMatchObject({ status: "failed", reason: "conflict" });
   expect(await fs.readFile(path, "utf8")).toBe(foreign);
-  expect(await fs.readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+  expect(await fs.readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
 });
 
 it("retains concurrent edits to the published inode rather than overwriting them", async () => {
@@ -548,11 +548,11 @@ it("retains concurrent edits to the published inode rather than overwriting them
         format: "json",
       },
       {},
-      ["rea", "mcp"],
+      ["acl-rea", "mcp"],
     ),
   ).toMatchObject({ status: "failed", reason: "conflict" });
   expect(await fs.readFile(path, "utf8")).toBe(edited);
-  expect(await fs.readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+  expect(await fs.readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
 });
 
 it("does not adopt a descriptor named by an opaque publication close rejection", async () => {
@@ -590,7 +590,7 @@ it("does not adopt a descriptor named by an opaque publication close rejection",
           format: "json",
         },
         {},
-        ["rea", "mcp"],
+        ["acl-rea", "mcp"],
       ),
     ).rejects.toBeInstanceOf(ConfigurationError);
     state.rejectPublicationClose = false;
@@ -619,7 +619,7 @@ it.each(["symlink", "regular", "valid-readback"] as const)(
         "node:fs/promises",
       );
     const original =
-      '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}},"keep":"original"}\n';
+      '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}},"keep":"original"}\n';
     const foreign = '{"keep":"replacement"}\n';
     await fs.writeFile(path, original);
     await fs.writeFile(replacement, foreign);
@@ -646,7 +646,7 @@ it.each(["symlink", "regular", "valid-readback"] as const)(
       }
       expect(result.status).toBe("failed");
       expect(result.detail).not.toContain("The original was restored");
-      expect(await fs.readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+      expect(await fs.readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
     } finally {
       await host.close?.();
     }
@@ -661,7 +661,7 @@ it("uninstall retains concurrent edits to the published inode and reports failur
       "node:fs/promises",
     );
   const original =
-    '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}},"keep":"original"}\n';
+    '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}},"keep":"original"}\n';
   const edited = '{"keep":"concurrent edit"}\n';
   await fs.writeFile(path, original);
   state.failReadback = false;
@@ -682,7 +682,7 @@ it("uninstall retains concurrent edits to the published inode and reports failur
     expect(result.status).toBe("failed");
     expect(result.detail).not.toContain("The original was restored");
     expect(await fs.readFile(path, "utf8")).toBe(edited);
-    expect(await fs.readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+    expect(await fs.readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
   } finally {
     await host.close?.();
   }
@@ -697,7 +697,7 @@ it("uninstall retains both readback and publication owners until cleanup retry",
     );
   await fs.writeFile(
     path,
-    '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}\n',
+    '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}}}\n',
   );
   const readOwner = await ownReadHandle(path);
   const closeRead = readOwner.handle.close.bind(readOwner.handle);
@@ -749,7 +749,7 @@ it("uninstall retains the exact owner of a failed initial config read", async ()
     await vi.importActual<typeof import("node:fs/promises")>(
       "node:fs/promises",
     );
-  const original = '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}\n';
+  const original = '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}}}\n';
   await fs.writeFile(path, original);
   const owner = await ownReadHandle(path);
   const close = owner.handle.close.bind(owner.handle);
@@ -780,7 +780,7 @@ it("uninstall retains the exact owner of a failed initial config read", async ()
     expect(await host.close?.()).toBeUndefined();
     expect(owner.handle.fd).toBe(-1);
     expect(await fs.readFile(path, "utf8")).toBe(original);
-    await expect(fs.readFile(`${path}.rea.backup`)).rejects.toMatchObject({
+    await expect(fs.readFile(`${path}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
   } finally {
@@ -801,7 +801,7 @@ it("uninstall close joins a publication already admitted by its host", async () 
     );
   await fs.writeFile(
     path,
-    '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}\n',
+    '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}}}\n',
   );
   const publication = phaseGate();
   state.afterPublication = async () => {
@@ -886,7 +886,7 @@ it("preserves physical read origin through failed readback cleanup and rollback"
         format: "json",
       },
       {},
-      ["rea", "mcp"],
+      ["acl-rea", "mcp"],
     ).catch((cause: unknown) => cause);
     expect(failure).toBeInstanceOf(ClientConfigurationCleanupRollbackFailure);
     if (!(failure instanceof ClientConfigurationCleanupRollbackFailure))
@@ -972,7 +972,7 @@ it("uninstall progresses when a peer leaves a denied-close descriptor pending", 
     );
   await fs.writeFile(
     path,
-    '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}\n',
+    '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}}}\n',
   );
   await fs.writeFile(other, "{}");
   const owner = await ownReadHandle(other);
@@ -1056,7 +1056,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
         "node:fs/promises",
       );
     const original =
-      '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}\n';
+      '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}}}\n';
     await fs.writeFile(path, original);
     await fs.chmod(path, 0o400);
     await fs.writeFile(foreign, "foreign");
@@ -1104,7 +1104,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
         "node:fs/promises",
       );
     const original =
-      '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}\n';
+      '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}}}\n';
     await fs.writeFile(path, original);
     await fs.chmod(path, 0o400);
     state.rejectPublicationMode = true;
@@ -1152,7 +1152,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
         "node:fs/promises",
       );
     const original =
-      '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}},"keep":true}\n';
+      '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}},"keep":true}\n';
     await fs.writeFile(path, original);
     await fs.chmod(path, 0o400);
     const host = systemUninstallHost(root);
@@ -1167,7 +1167,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
       expect(result.detail).toContain("The original was restored");
       expect(await fs.readFile(path, "utf8")).toBe(original);
       expect((await fs.lstat(path)).mode & 0o777).toBe(0o400);
-      expect(await fs.readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+      expect(await fs.readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
       expect(state.publicationHandles[0]!.fd).toBe(-1);
     } finally {
       await host.close?.();
@@ -1190,7 +1190,7 @@ it.each(["setup", "uninstall"] as const)(
     const original =
       operation === "setup"
         ? '{"keep":"original"}\n'
-        : '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}},"keep":"original"}\n';
+        : '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}},"keep":"original"}\n';
     const unrelated = '{"keep":"foreign"}\n';
     await fs.writeFile(path, original);
     await fs.writeFile(foreign, unrelated);
@@ -1211,7 +1211,7 @@ it.each(["setup", "uninstall"] as const)(
               format: "json",
             },
             {},
-            ["rea", "mcp"],
+            ["acl-rea", "mcp"],
           )
         ).status,
       ).toBe("failed");
@@ -1234,7 +1234,7 @@ it.each(["setup", "uninstall"] as const)(
     }
     expect(await fs.readFile(foreign, "utf8")).toBe(unrelated);
     expect((await fs.lstat(path)).isSymbolicLink()).toBe(true);
-    expect(await fs.readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+    expect(await fs.readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
   },
 );
 
@@ -1282,7 +1282,7 @@ it.each([
         "node:fs/promises",
       );
     const original =
-      '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}},"keep":true}\n';
+      '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}},"keep":true}\n';
     const edited = '{"changed":"by client"}\n';
     await fs.writeFile(path, original);
     state.failReadback = false;
@@ -1296,7 +1296,7 @@ it.each([
     );
     if (change === "edit") expect(await fs.readFile(path, "utf8")).toBe(edited);
     else await expect(fs.lstat(path)).rejects.toMatchObject({ code: "ENOENT" });
-    expect(await fs.readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+    expect(await fs.readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
     expect(
       (await fs.readdir(root)).filter((name) =>
         name.startsWith(".rea-config-"),
@@ -1315,7 +1315,7 @@ it.each(["setup", "uninstall"] as const)(
         "node:fs/promises",
       );
     const original =
-      '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}},"keep":true}\n';
+      '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}},"keep":true}\n';
     const edited = '{"changed":"during staging"}\n';
     await fs.writeFile(path, original);
     state.failReadback = false;
@@ -1327,7 +1327,7 @@ it.each(["setup", "uninstall"] as const)(
       "failed",
     );
     expect(await fs.readFile(path, "utf8")).toBe(edited);
-    expect(await fs.readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+    expect(await fs.readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
     expect(
       (await fs.readdir(root)).filter((name) =>
         name.startsWith(".rea-config-"),
@@ -1368,7 +1368,7 @@ it.each(["setup", "uninstall"] as const)(
       );
     await fs.writeFile(
       path,
-      '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}},"keep":true}\n',
+      '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}},"keep":true}\n',
     );
     state.failReadback = false;
     state.rejectStageRemoval = true;
@@ -1507,7 +1507,7 @@ it.each(["setup", "uninstall"] as const)(
     await fs.mkdir(foreign);
     await fs.symlink(selected, alias, "dir");
     const original =
-      '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}},"keep":true}\n';
+      '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}},"keep":true}\n';
     const unrelated = '{"foreign":true}\n';
     await fs.writeFile(join(selected, "client.json"), original);
     await fs.writeFile(join(foreign, "client.json"), unrelated);
@@ -1533,7 +1533,7 @@ it.each(["setup", "uninstall"] as const)(
       unrelated,
     );
     expect(
-      await fs.readFile(join(selected, "client.json.rea.backup"), "utf8"),
+      await fs.readFile(join(selected, "client.json.acl-rea.backup"), "utf8"),
     ).toBe(original);
   },
 );

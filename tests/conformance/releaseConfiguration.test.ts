@@ -62,8 +62,8 @@ describe("release configuration", () => {
     };
 
     expect(packageJson).toMatchObject({
-      name: "rea-agents",
-      mcpName: "io.github.morluto/rea",
+      name: "acl-rea-agents",
+      mcpName: "io.github.Ashz05/acl-rea",
     });
     expect(serverJson).toMatchObject({
       name: packageJson.mcpName,
@@ -110,7 +110,7 @@ describe("plugin manifests", () => {
           {
             source: {
               source: "npm",
-              package: "rea-agents",
+              package: "acl-rea-agents",
               version: pkg.version,
             },
           },
@@ -142,13 +142,13 @@ describe("Cursor Marketplace release pin", () => {
     expect(await readJson(cursorPluginManifest)).toMatchObject({
       version: packageJson.version,
       skills: ".cursor-plugin/skills",
-      logo: "assets/rea-plugin.png",
+      logo: "assets/acl-rea-plugin.png",
     });
     expect(await readJson(cursorPluginServer)).toEqual({
       mcpServers: {
-        rea: {
+        "acl-rea": {
           command: "npx",
-          args: ["-y", `rea-agents@${packageJson.version}`, "mcp"],
+          args: ["-y", `acl-rea-agents@${packageJson.version}`, "mcp"],
         },
       },
     });
@@ -197,8 +197,8 @@ it("advances the version exposed in metadata, installation examples, and plugin 
   const installationBefore = await readFile(installation, "utf8");
   const installationAfter = updated.get(installation) ?? "";
   for (const example of [
-    /npx -y rea-agents@(\S+) doctor --provider ghidra --json/gu,
-    /"command":\s*"npx",\s*"args":\s*\["-y",\s*"rea-agents@([^"]+)",\s*"mcp"\]/gu,
+    /npx -y acl-rea-agents@(\S+) doctor --provider ghidra --json/gu,
+    /"command":\s*"npx",\s*"args":\s*\["-y",\s*"acl-rea-agents@([^"]+)",\s*"mcp"\]/gu,
   ]) {
     expect(
       [...installationBefore.matchAll(example)].map((match) => match[1]),
@@ -214,8 +214,8 @@ it("advances the version exposed in metadata, installation examples, and plugin 
     for (const [block] of content.matchAll(
       /<!-- x-release-please-start-version -->[\s\S]*?<!-- x-release-please-end -->/gu,
     ))
-      expect(new Set(block.match(/rea-agents@[^\s"`]+/gu))).toEqual(
-        new Set([`rea-agents@${pin}`]),
+      expect(new Set(block.match(/acl-rea-agents@[^\s"`]+/gu))).toEqual(
+        new Set([`acl-rea-agents@${pin}`]),
       );
   }
   expect(updated.get("src/generatedPackageMetadata.ts")).toContain(
@@ -225,12 +225,12 @@ it("advances the version exposed in metadata, installation examples, and plugin 
     JSON.parse(updated.get(path) ?? "null") as unknown;
   expect(updatedJson("server.json")).toMatchObject({
     version: nextVersion,
-    packages: [{ identifier: "rea-agents", version: nextVersion }],
+    packages: [{ identifier: "acl-rea-agents", version: nextVersion }],
   });
   expect(updatedJson(".claude-plugin/plugin.json")).toMatchObject({
     version: nextVersion,
     mcpServers: {
-      rea: {
+      "acl-rea": {
         args: [
           "${CLAUDE_PLUGIN_ROOT}/scripts/plugin-mcp-launcher.mjs",
           nextVersion,
@@ -243,7 +243,7 @@ it("advances the version exposed in metadata, installation examples, and plugin 
   });
   expect(updatedJson(pluginServerConfig)).toMatchObject({
     mcpServers: {
-      rea: {
+      "acl-rea": {
         args: ["./scripts/plugin-mcp-launcher.mjs", nextVersion],
       },
     },
@@ -254,9 +254,9 @@ it("advances the version exposed in metadata, installation examples, and plugin 
   });
   expect(updatedJson(cursorPluginServer)).toMatchObject({
     mcpServers: {
-      rea: {
+      "acl-rea": {
         command: "npx",
-        args: ["-y", `rea-agents@${nextVersion}`, "mcp"],
+        args: ["-y", `acl-rea-agents@${nextVersion}`, "mcp"],
       },
     },
   });
@@ -269,7 +269,7 @@ it("advances the version exposed in metadata, installation examples, and plugin 
         {
           source: {
             source: "npm",
-            package: "rea-agents",
+            package: "acl-rea-agents",
             version: nextVersion,
           },
         },
@@ -285,7 +285,7 @@ describe("plugin release pins", () => {
 
     expect(await readJson(pluginServerConfig)).toMatchObject({
       mcpServers: {
-        rea: {
+        "acl-rea": {
           command: "node",
           args: ["./scripts/plugin-mcp-launcher.mjs", packageJson.version],
           cwd: ".",
@@ -337,7 +337,7 @@ describe("plugin release pins", () => {
   it("carries the owned Codex startup timeout in the companion server entry", async () => {
     expect(await readJson(pluginServerConfig)).toMatchObject({
       mcpServers: {
-        rea: {
+        "acl-rea": {
           startup_timeout_sec: MCP_STARTUP_POLICY.codexStartupTimeoutSeconds,
         },
       },

@@ -53,10 +53,10 @@ const skillDirectory = join(
   account,
   ".agents",
   "skills",
-  "reverse-engineer-anything",
+  "acl-reverse-engineer-anything",
 );
 const expectedNames = TOOL_CONTRACTS.map(
-  (tool) => "mcp__rea__" + tool.name,
+  (tool) => "mcp__acl-rea__" + tool.name,
 ).sort();
 let clientVersion = null;
 let expectedSkill;
@@ -126,13 +126,13 @@ await withVerifierCleanup(async () => {
     const validateCatalog = async (text) => {
       const entries = [
         ...text.matchAll(
-          /^### (mcp__rea__[A-Za-z0-9_]+)\n[\s\S]*?\nParameters:\n```json\n([\s\S]*?)\n```/gm,
+          /^### (mcp__acl-rea__[A-Za-z0-9_]+)\n[\s\S]*?\nParameters:\n```json\n([\s\S]*?)\n```/gm,
         ),
       ];
       assert.deepEqual(
         entries.map((entry) => entry[1]).sort(),
         expectedNames,
-        "Native exact-name search must return every REA input schema",
+        "Native exact-name search must return every ACL-REA input schema",
       );
       for (const entry of entries) {
         const schema = JSON.parse(entry[2]);
@@ -155,7 +155,7 @@ await withVerifierCleanup(async () => {
           const names = [
             ...new Set(
               strings.flatMap(
-                (text) => text.match(/mcp__rea__[A-Za-z0-9_]+/g) ?? [],
+                (text) => text.match(/mcp__acl-rea__[A-Za-z0-9_]+/g) ?? [],
               ),
             ),
           ].sort();
@@ -163,10 +163,10 @@ await withVerifierCleanup(async () => {
           assert.deepEqual(
             names,
             expectedNames,
-            "Default native deferred-tool prompt must advertise the complete REA inventory",
+            "Default native deferred-tool prompt must advertise the complete ACL-REA inventory",
           );
           assert.equal(
-            tools.filter((tool) => tool.name.startsWith("mcp__rea__")).length,
+            tools.filter((tool) => tool.name.startsWith("mcp__acl-rea__")).length,
             0,
             "Keep native lazy schema delivery enabled",
           );
@@ -174,7 +174,7 @@ await withVerifierCleanup(async () => {
             tools
               .find((tool) => tool.name === "activate_skill")
               ?.parameters.properties.name.enum.includes(
-                "reverse-engineer-anything",
+                "acl-reverse-engineer-anything",
               ),
           );
           inventoryChecked = true;
@@ -189,7 +189,7 @@ await withVerifierCleanup(async () => {
         }
         if (stage === 0) {
           const request = call("activate_skill", {
-            name: "reverse-engineer-anything",
+            name: "acl-reverse-engineer-anything",
           });
           skillCallId = request.tool_calls[0].id;
           return request;
@@ -237,14 +237,14 @@ await withVerifierCleanup(async () => {
               sha256: catalogDigest,
             };
             const query =
-              "const fs=require('node:fs'),crypto=require('node:crypto');const text=fs.readFileSync(process.argv[1],'utf8');const schemas=[...text.matchAll(/^### (mcp__rea__[A-Za-z0-9_]+)\\n/gm)].length;console.log(JSON.stringify({rea_catalog:{schemas,sha256:crypto.createHash('sha256').update(text).digest('hex')}}));";
+              "const fs=require('node:fs'),crypto=require('node:crypto');const text=fs.readFileSync(process.argv[1],'utf8');const schemas=[...text.matchAll(/^### (mcp__acl-rea__[A-Za-z0-9_]+)\\n/gm)].length;console.log(JSON.stringify({rea_catalog:{schemas,sha256:crypto.createHash('sha256').update(text).digest('hex')}}));";
             return call("shell_command", {
               command: process.execPath,
               args: ["-e", query, catalogArtifact],
             });
           }
           await validateCatalog(last);
-          return call("mcp__rea__analyze_javascript_application", {
+          return call("mcp__acl-rea__analyze_javascript_application", {
             input_path: target,
             format: "directory",
           });
@@ -259,7 +259,7 @@ await withVerifierCleanup(async () => {
           );
           assert.deepEqual(JSON.parse(line).rea_catalog, catalogProjection);
           artifactProjectionSeen = true;
-          return call("mcp__rea__analyze_javascript_application", {
+          return call("mcp__acl-rea__analyze_javascript_application", {
             input_path: target,
             format: "directory",
           });
@@ -304,7 +304,7 @@ await withVerifierCleanup(async () => {
     const rea = (args) =>
       commands.exec(
         process.execPath,
-        [join(runtimeRoot, "scripts/rea.mjs"), ...args, "--json"],
+        [join(runtimeRoot, "scripts/acl-rea.mjs"), ...args, "--json"],
         { env: environment, cwd: workspace, timeout: 60_000, stdin: "pipe" },
       );
     clientVersion = (
@@ -350,7 +350,7 @@ await withVerifierCleanup(async () => {
         );
       }
     }
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.acl-rea.backup`, "utf8"), original);
     const configured = await readFile(configPath, "utf8");
     assert.equal(JSON.parse(configured).preserved, "keep unrelated settings");
     assert.equal(
@@ -362,7 +362,7 @@ await withVerifierCleanup(async () => {
     );
     assert.deepEqual(repeated.appliedActions, []);
     assert.equal(await readFile(configPath, "utf8"), configured);
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.acl-rea.backup`, "utf8"), original);
     const installedSkill = await readFile(
       join(skillDirectory, "SKILL.md"),
       "utf8",

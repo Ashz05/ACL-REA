@@ -37,7 +37,7 @@ const executionObservationMs = 2_000;
 /** Exercise native browser runtime attribution through public CLI and stdio MCP, including arming. */
 export async function verifyBrowserRuntime(
   executable,
-  entrypoint = fileURLToPath(new URL("../rea.mjs", import.meta.url)),
+  entrypoint = fileURLToPath(new URL("../acl-rea.mjs", import.meta.url)),
 ) {
   await requireOrdinaryWindowsVerifierCaller();
   await access(executable);

@@ -8,7 +8,7 @@ that join is known. It reads the file without executing it and does not invoke
 the dynamic loader, `ldd`, or a disassembler.
 
 ```bash
-rea inspect-elf-dependencies /absolute/path/to/program --json
+acl-rea inspect-elf-dependencies /absolute/path/to/program --json
 ```
 
 The CLI resolves relative paths against the caller's working directory. MCP

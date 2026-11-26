@@ -43,7 +43,7 @@ tiny-member reads independently of output bytes.
 ## CLI
 
 ```sh
-rea inspect-artifact app.wxapkg --detail summary \
+acl-rea inspect-artifact app.wxapkg --detail summary \
   --evidence_output evidence/package.json --json
 rea extract-artifact app.wxapkg --json
 ```

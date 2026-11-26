@@ -228,10 +228,10 @@ it("shares a helper only for the default toolchain and an absolute home", () => 
       moduleCachePath: undefined,
       ...overrides,
     });
-  expect(select({})).toBe("/Users/analyst/Library/Caches/rea/process-helper");
+  expect(select({})).toBe("/Users/analyst/Library/Caches/acl-rea/process-helper");
   // An empty module cache setting keeps the default, as documented.
   expect(select({ moduleCachePath: "" })).toBe(
-    "/Users/analyst/Library/Caches/rea/process-helper",
+    "/Users/analyst/Library/Caches/acl-rea/process-helper",
   );
   expect(select({ moduleCachePath: "/boundary/modules" })).toBeUndefined();
   expect(select({ compilerSelected: true })).toBeUndefined();
@@ -242,7 +242,7 @@ it("shares a helper only for the default toolchain and an absolute home", () => 
 it("keeps the caller's home path segments instead of normalizing them", () => {
   // A symlink followed by `..` must resolve on the filesystem, not lexically.
   expect(defaultDarwinHelperCacheDirectory("/Users/analyst/link/../home")).toBe(
-    "/Users/analyst/link/../home/Library/Caches/rea/process-helper",
+    "/Users/analyst/link/../home/Library/Caches/acl-rea/process-helper",
   );
 });
 
@@ -521,7 +521,7 @@ it.skipIf(!onDarwin)(
   "reuses the real default-toolchain helper in a later host without compiling",
   async () => {
     const home = await createTestTempDirectory("rea-helper-cache-home-");
-    const cacheRoot = join(home, "Library/Caches/rea/process-helper");
+    const cacheRoot = join(home, "Library/Caches/acl-rea/process-helper");
     const environment: NodeJS.ProcessEnv = { ...process.env, HOME: home };
     delete environment.REA_DARWIN_SWIFTC_PATH;
     delete environment.REA_DARWIN_MODULE_CACHE_PATH;

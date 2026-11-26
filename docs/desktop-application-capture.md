@@ -1,6 +1,6 @@
 # Desktop application capture
 
-`rea capture-desktop-application` launches an installed Linux desktop
+`acl-rea capture-desktop-application` launches an installed Linux desktop
 application, watches it while a person or a driver uses it, and records what
 it is, which windows it opened and how the files under the home directory
 changed. The result is the starting point for turning the application into an
@@ -29,8 +29,8 @@ Name the application by its desktop entry id, the entry's absolute path, or an
 executable:
 
 ```sh
-rea capture-desktop-application --desktop-entry org.xfce.mousepad --output ./mousepad-capture
-rea capture-desktop-application --executable gnucash --argument /home/ada/books.gnucash --output ./gnucash-capture
+acl-rea capture-desktop-application --desktop-entry org.xfce.mousepad --output ./mousepad-capture
+acl-rea capture-desktop-application --executable gnucash --argument /home/ada/books.gnucash --output ./gnucash-capture
 ```
 
 Desktop entries are looked up in `$XDG_DATA_HOME/applications` and then each

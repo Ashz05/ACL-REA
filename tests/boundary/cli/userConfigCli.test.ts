@@ -11,7 +11,7 @@ cliTest(
   async ({ cli }) => {
     const home = await createTestTempDirectory("rea-user-config-cli-");
     const xdg = join(home, ".config");
-    const config = join(xdg, "rea", "rea.json");
+    const config = join(xdg, "acl-rea", "acl-rea.json");
     const saved = join(home, "java-saved");
     const override = join(home, "java-env");
     const environment = {
@@ -97,9 +97,9 @@ for (const purgeData of [false, true]) {
         "rea-uninstall-provider-config-",
       );
       const environment = await registrationEnvironment(home);
-      const config = join(environment.XDG_CONFIG_HOME!, "rea", "rea.json");
+      const config = join(environment.XDG_CONFIG_HOME!, "acl-rea", "acl-rea.json");
       const registration = join(home, ".claude.json");
-      const cache = join(home, ".rea", "cache", "sentinel");
+      const cache = join(home, ".acl-rea", "cache", "sentinel");
       const malformed = "{ broken";
       const cacheContents = "owned cache";
       const peer = { command: "other-server" };
@@ -111,7 +111,7 @@ for (const purgeData of [false, true]) {
         registration,
         JSON.stringify({
           mcpServers: {
-            rea: { command: "npx", args: ["-y", "rea-agents@1.0.0", "mcp"] },
+            "acl-rea": { command: "npx", args: ["-y", "acl-rea-agents@1.0.0", "mcp"] },
             peer,
           },
         }),
@@ -186,7 +186,7 @@ cliTest(
 
     await save(firstDefault);
     const initial = await setup();
-    expect(initial.mcpServers.rea.env ?? {}).not.toHaveProperty(
+    expect(initial.mcpServers["acl-rea"].env ?? {}).not.toHaveProperty(
       "REA_IDA_MCP_CONFIG",
     );
 
@@ -194,15 +194,15 @@ cliTest(
     expect(
       (await run(["config", "--get", "REA_IDA_MCP_CONFIG", "--json"])).json,
     ).toMatchObject({ value: secondDefault, source: "config" });
-    expect((await setup()).mcpServers.rea.env ?? {}).not.toHaveProperty(
+    expect((await setup()).mcpServers["acl-rea"].env ?? {}).not.toHaveProperty(
       "REA_IDA_MCP_CONFIG",
     );
 
     expect(
       (await setup({ ...environment, REA_IDA_MCP_CONFIG: clientOverride }))
-        .mcpServers.rea.env,
+        .mcpServers["acl-rea"].env,
     ).toMatchObject({ REA_IDA_MCP_CONFIG: clientOverride });
-    expect((await setup()).mcpServers.rea.env).toMatchObject({
+    expect((await setup()).mcpServers["acl-rea"].env).toMatchObject({
       REA_IDA_MCP_CONFIG: clientOverride,
     });
   },
@@ -214,7 +214,7 @@ cliTest(
     const home = await createTestTempDirectory("rea-client-settings-origin-");
     const terminalConfigHome = join(home, "terminal-config");
     const clientConfigHome = join(home, "client-config");
-    const clientConfig = join(clientConfigHome, "rea", "rea.json");
+    const clientConfig = join(clientConfigHome, "acl-rea", "acl-rea.json");
     const codexHome = join(home, ".codex");
     const codexConfig = join(codexHome, "config.toml");
     const terminalIda = join(home, "terminal-ida.json");
@@ -228,7 +228,7 @@ cliTest(
       REA_IDA_MCP_CONFIG: undefined,
     };
     const save = async (configHome: string, providerConfig: string) => {
-      const path = join(configHome, "rea", "rea.json");
+      const path = join(configHome, "acl-rea", "acl-rea.json");
       await mkdir(dirname(path), { recursive: true });
       await writeFile(
         path,
@@ -238,17 +238,17 @@ cliTest(
     await save(terminalConfigHome, terminalIda);
     await save(clientConfigHome, clientIda);
     await mkdir(codexHome);
-    const cliPath = join(process.cwd(), "scripts", "rea.mjs");
+    const cliPath = join(process.cwd(), "scripts", "acl-rea.mjs");
     const writeRegistration = (explicit?: string) =>
       writeFile(
         codexConfig,
         [
-          "[mcp_servers.rea]",
+          "[mcp_servers.acl-rea]",
           `command = ${JSON.stringify(process.execPath)}`,
           `args = ${JSON.stringify([cliPath, "mcp"])}`,
           "startup_timeout_sec = 30",
           "tool_timeout_sec = 450",
-          "[mcp_servers.rea.env]",
+          "[mcp_servers.acl-rea.env]",
           `XDG_CONFIG_HOME = ${JSON.stringify(clientConfigHome)}`,
           ...(explicit === undefined
             ? []
@@ -352,7 +352,7 @@ cliTest.skipIf(process.platform === "win32")(
   async ({ cli, processes }) => {
     const home = await createTestTempDirectory("rea-user-config-fifo-");
     const xdg = join(home, "xdg");
-    const config = join(xdg, "rea", "rea.json");
+    const config = join(xdg, "acl-rea", "acl-rea.json");
     await mkdir(dirname(config), { recursive: true });
     const created = await processes.run("mkfifo", [config], {
       timeoutMs: 5_000,
@@ -376,7 +376,7 @@ cliTest.skipIf(process.platform === "win32")(
       expect(diagnostic).toContain("regular JSON file");
     }
     expect((await lstat(config)).isFIFO()).toBe(true);
-    expect(await readdir(dirname(config))).toEqual(["rea.json"]);
+    expect(await readdir(dirname(config))).toEqual(["acl-rea.json"]);
   },
 );
 
@@ -387,7 +387,7 @@ cliTest.runIf(process.platform === "darwin")(
   async ({ cli }) => {
     const home = await createTestTempDirectory("rea-static-provider-settings-");
     const configHome = join(home, "client-config");
-    const savedConfig = join(configHome, "rea", "rea.json");
+    const savedConfig = join(configHome, "acl-rea", "acl-rea.json");
     const codexHome = join(home, ".codex");
     const codexConfig = join(codexHome, "config.toml");
     const hopper = join(home, "selected-hopper");
@@ -405,16 +405,16 @@ cliTest.runIf(process.platform === "darwin")(
         REA_ILSPY_CMD_PATH: ilspy,
       }),
     );
-    const cliPath = join(process.cwd(), "scripts", "rea.mjs");
+    const cliPath = join(process.cwd(), "scripts", "acl-rea.mjs");
     await writeFile(
       codexConfig,
       [
-        "[mcp_servers.rea]",
+        "[mcp_servers.acl-rea]",
         `command = ${JSON.stringify(process.execPath)}`,
         `args = ${JSON.stringify([cliPath, "mcp"])}`,
         "startup_timeout_sec = 30",
         "tool_timeout_sec = 450",
-        "[mcp_servers.rea.env]",
+        "[mcp_servers.acl-rea.env]",
         `XDG_CONFIG_HOME = ${JSON.stringify(configHome)}`,
       ].join("\n"),
     );

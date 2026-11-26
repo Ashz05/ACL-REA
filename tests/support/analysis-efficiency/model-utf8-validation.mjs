@@ -94,7 +94,7 @@ async function runMcpTask() {
   const client = new Client({ name: "model-utf8-validation", version: "1" });
   const transport = new StdioClientTransport({
     command: process.execPath,
-    args: [join(values.runtime, "scripts/rea.mjs"), "mcp"],
+    args: [join(values.runtime, "scripts/acl-rea.mjs"), "mcp"],
     env: {
       HOME: account,
       PATH: process.env.PATH,

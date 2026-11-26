@@ -39,7 +39,7 @@ export async function connectLocalToolsMcp(
     ...transportOptions,
     command: process.execPath,
     args: [
-      fileURLToPath(new URL("../../scripts/rea.mjs", import.meta.url)),
+      fileURLToPath(new URL("../../scripts/acl-rea.mjs", import.meta.url)),
       "mcp",
     ],
     env: localToolsMcpEnvironment(environment),

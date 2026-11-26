@@ -68,7 +68,7 @@ cliTest(
       ...cliError,
       remediation: undefined,
     });
-    expect(cliError.remediation.action).toContain("rea inspect-go-binary");
+    expect(cliError.remediation.action).toContain("acl-rea inspect-go-binary");
     expect(mcpError.remediation.action).toContain("inspect_go_binary");
     await client.ping();
   },

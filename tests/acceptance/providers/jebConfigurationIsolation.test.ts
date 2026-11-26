@@ -68,7 +68,7 @@ test("retains the selected endpoint when a direct JEB connection fails", async (
     });
     const transport = new StdioClientTransport({
       command: process.execPath,
-      args: [resolve("scripts/rea.mjs"), "mcp"],
+      args: [resolve("scripts/acl-rea.mjs"), "mcp"],
       cwd: workspace.root,
       env: {
         ...isolatedEnvironment(workspace),
@@ -146,7 +146,7 @@ test("starts production stdio MCP and retains peer requests around a JEB configu
 }) => {
   const transport = new StdioClientTransport({
     command: process.execPath,
-    args: [resolve("scripts/rea.mjs"), "mcp"],
+    args: [resolve("scripts/acl-rea.mjs"), "mcp"],
     cwd: workspace.root,
     env: isolatedEnvironment(workspace),
     stderr: "pipe",

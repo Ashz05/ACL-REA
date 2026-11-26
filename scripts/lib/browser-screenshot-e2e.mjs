@@ -19,7 +19,7 @@ import { createVerifierCommands } from "./verify-commands.mjs";
 /** Verify a real, large PNG through production CLI and stdio MCP boundaries. */
 export async function verifyLargeScreenshotE2e(endpoint, origin) {
   const commands = await createVerifierCommands();
-  const entrypoint = fileURLToPath(new URL("../rea.mjs", import.meta.url));
+  const entrypoint = fileURLToPath(new URL("../acl-rea.mjs", import.meta.url));
   const env = {
     PATH: process.env.PATH ?? "/usr/bin:/bin",
     REA_LOG_LEVEL: "silent",

@@ -56,7 +56,7 @@ await withVerifierFixture(root, async () => {
       (
         await run(
           process.execPath,
-          ["scripts/rea.mjs", command, binary, "--json"],
+          ["scripts/acl-rea.mjs", command, binary, "--json"],
           {
             env: {
               ...process.env,

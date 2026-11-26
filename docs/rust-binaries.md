@@ -7,7 +7,7 @@ without running it and requires no Rust installation, active binary target,
 Hopper, Ghidra, or IDA.
 
 ```bash
-rea inspect-rust-binary /absolute/path/to/application --json
+acl-rea inspect-rust-binary /absolute/path/to/application --json
 ```
 
 The CLI resolves relative paths against the caller's working directory. MCP
@@ -77,7 +77,7 @@ The CLI uses the same views and requires an exclusive output bundle for compact
 delivery so the complete Evidence survives process exit:
 
 ```bash
-rea inspect-rust-binary /artifacts/application --json \
+acl-rea inspect-rust-binary /artifacts/application --json \
   --view '{"collection":"packages","names":["serde"],"fields":["name","version"]}' \
   --evidence_output /artifacts/rust-evidence.json
 ```

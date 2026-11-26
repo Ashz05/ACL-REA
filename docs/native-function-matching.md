@@ -122,14 +122,14 @@ the same analysis-profile identity. Empty leaf-function buckets are excluded.
 dossier link preserves the full supporting facts. Group membership does not
 assert that every member pair is a candidate or equivalent.
 
-CLI uses the same service and JSON input. `rea list-procedures` produces each
+CLI uses the same service and JSON input. `acl-rea list-procedures` produces each
 `list_procedures` inventory. `search --kind procedures` returns a pattern-filtered
 `search_procedures` result, which matching refuses as an inventory.
 
 ```bash
-rea list-procedures left.exe --provider ghidra \
+acl-rea list-procedures left.exe --provider ghidra \
   --detail summary --evidence_output left-bundle.json --json
-rea list-procedures right.exe --provider ghidra \
+acl-rea list-procedures right.exe --provider ghidra \
   --detail summary --evidence_output right-bundle.json --json
 # request.json: {"left": {"kind": "retained-evidence", "evidence_id": "<left parent_evidence_id>"},
 #                "right": {"kind": "retained-evidence", "evidence_id": "<right parent_evidence_id>"}}
@@ -172,7 +172,7 @@ The allowance defaults to 96 MiB and is the runtime setting
 `native.matching_representation_bytes`, from 1 byte to 1 GiB. On MCP, call
 `update_analysis_settings` with that setting and retry; it applies to the next
 operation without restarting REA. For CLI or future REA processes, set
-`REA_NATIVE_MATCHING_REPRESENTATION_BYTES` in the launch environment; `rea
+`REA_NATIVE_MATCHING_REPRESENTATION_BYTES` in the launch environment; `acl-rea
 setup` copies it into client registrations. An invalid launch value is refused
 by matching only, and a runtime value repairs it. A refusal carries
 `details.limit` with the effective value, its source and bounds. Raising the
@@ -186,7 +186,7 @@ raise the allowance. Repeated provenance remains
 part of the complete member contract; splitting inventories into separate matches
 would change global name/body uniqueness and is not an equivalent workaround.
 
-The self-owned source fixture is [nativeFunctionMatching.c](https://github.com/morluto/rea/blob/main/tests/fixtures/nativeFunctionMatching.c).
+The self-owned source fixture is [nativeFunctionMatching.c](https://github.com/Ashz05/ACL-REA/blob/main/tests/fixtures/nativeFunctionMatching.c).
 On Linux x86-64, compile with `cc -O2 -g0 -fno-pie -no-pie -DVERSION=1` and
 `-DVERSION=2`; copy the second binary and run `strip --strip-all` on that copy.
 It includes unchanged/changed code, a byte-identical rename, a removed/added

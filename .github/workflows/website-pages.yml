@@ -1,4 +1,4 @@
-name: Publish REA website
+name: Publish ACL-REA website
 
 on:
   workflow_dispatch:
@@ -160,7 +160,7 @@ jobs:
           def open_public(url, accept=None):
               headers = {
                   "Cache-Control": "no-cache",
-                  "User-Agent": "REA-Website-Verifier/1.0 (+https://github.com/morluto/rea)",
+                  "User-Agent": "ACL-REA-Website-Verifier/1.0 (+https://github.com/Ashz05/ACL-REA)",
               }
               if accept:
                   headers["Accept"] = accept

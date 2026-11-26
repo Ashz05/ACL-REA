@@ -117,7 +117,7 @@ it
           ],
         },
       });
-      expect(stdout).not.toContain("rea doctor");
+      expect(stdout).not.toContain("acl-rea doctor");
       expect(process.exitCode).toBe(1);
     }
   },

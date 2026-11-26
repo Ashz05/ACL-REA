@@ -10,7 +10,8 @@ import type {
 import type { SetupOptions, SetupProviderEnvironment } from "./SetupTypes.js";
 import { supportedClientRegistrationProfile } from "../../tests/fixtures/clientRegistrationProfile.js";
 
-const ARCHIVE = "/home/ada/.cache/rea/build-computer/rea-6.8.0.tar.xz";
+const ARCHIVE =
+  "/home/ada/.cache/acl-rea/build-computer/acl-rea-6.8.0.tar.xz";
 const SETTINGS = {
   REA_AGENT_ENV_COMMAND: "/home/ada/.local/bin/agent-env",
   REA_DOCKER_COMMAND: "/usr/bin/docker",
@@ -148,7 +149,7 @@ describe("desktop setup cancellation", () => {
   );
 });
 
-describe("rea setup --desktop-build", () => {
+describe("acl-rea setup --desktop-build", () => {
   it("plans packing and the build settings without applying them", async () => {
     const { host, calls } = desktopHost();
 

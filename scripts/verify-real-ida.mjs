@@ -54,7 +54,7 @@ const packageRoot = resolve(
   values["package-root"] ?? fileURLToPath(new URL("..", import.meta.url)),
 );
 const target = resolve(values.target);
-const entry = join(packageRoot, "scripts", "rea.mjs");
+const entry = join(packageRoot, "scripts", "acl-rea.mjs");
 const importBuilt = (path) =>
   import(pathToFileURL(join(packageRoot, "dist", path)).href);
 const [

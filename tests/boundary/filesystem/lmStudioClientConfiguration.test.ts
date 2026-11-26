@@ -108,7 +108,7 @@ describe("LM Studio registration lifecycle", () => {
       ).toBe("configured");
       expect(
         JSON.parse(await readFile(join(directory, "mcp.json"), "utf8")),
-      ).toEqual({ mcpServers: { rea: expectedRegistration() } });
+      ).toEqual({ mcpServers: { "acl-rea": expectedRegistration() } });
       expect(await doctorState(home)).toMatchObject({
         state: "aligned",
         command,
@@ -131,18 +131,18 @@ describe("LM Studio registration lifecycle", () => {
 
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
       status: "configured",
-      backupPath: `${client.configPath}.rea.backup`,
+      backupPath: `${client.configPath}.acl-rea.backup`,
     });
     const text = await readFile(client.configPath, "utf8");
     expect(JSON.parse(text)).toEqual({
       mcpServers: {
         other: { command: "other-server", args: ["--stdio"], cwd: "/srv" },
-        rea: expectedRegistration(),
+        "acl-rea": expectedRegistration(),
       },
     });
     expect(text).not.toContain('"type"');
     expect(text).not.toContain('"timeout"');
-    expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
       original,
     );
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
@@ -166,7 +166,7 @@ describe("LM Studio registration lifecycle", () => {
     await writeFile(
       client.configPath,
       JSON.stringify({
-        mcpServers: { rea: { command: command[0], args: command.slice(1) } },
+        mcpServers: { "acl-rea": { command: command[0], args: command.slice(1) } },
       }),
     );
     expect(await doctorState(home)).toMatchObject({ state: "aligned" });
@@ -181,7 +181,7 @@ describe("LM Studio registration lifecycle", () => {
       ).status,
     ).toBe("configured");
     expect(
-      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.rea,
+      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers["acl-rea"],
     ).toEqual(expectedRegistration("compact"));
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
       status: "unchanged",
@@ -202,6 +202,6 @@ describe("LM Studio registration lifecycle", () => {
       reason: "readback",
     });
     expect(await readFile(client.configPath, "utf8")).toBe(original);
-    expect(await exists(`${client.configPath}.rea.backup`)).toBe(false);
+    expect(await exists(`${client.configPath}.acl-rea.backup`)).toBe(false);
   });
 });

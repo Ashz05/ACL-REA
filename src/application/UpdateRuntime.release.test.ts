@@ -11,8 +11,8 @@ import { systemUpdateHost } from "./UpdateRuntime.js";
 
 const installation = {
   manager: "npm",
-  prefix: "/opt/rea",
-  packageRoot: "/opt/rea/lib/node_modules/rea-agents",
+  prefix: "/opt/acl-rea",
+  packageRoot: "/opt/acl-rea/lib/node_modules/acl-rea-agents",
 } as const;
 
 const lookup = async (

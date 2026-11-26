@@ -67,7 +67,7 @@ cliTest(
       });
       expect(result.exitCode).toBe(1);
       expect(result.stdout).not.toContain(secret);
-      expect(result.stdout).not.toContain("rea inspect-web-network-capture ");
+      expect(result.stdout).not.toContain("acl-rea inspect-web-network-capture ");
       expect(result.stdout).toContain("COMMAND_NOT_FOUND");
     }
   },
@@ -110,7 +110,7 @@ cliTest(
     });
     expect(ordinary.exitCode).toBe(1);
     expect(ordinary.stdout).toContain(
-      "rea inspect-web-network-capture ordinary.har har --json",
+      "acl-rea inspect-web-network-capture ordinary.har har --json",
     );
     const sameNameData = await cli.run({
       arguments: [
@@ -121,7 +121,7 @@ cliTest(
       ],
     });
     expect(sameNameData.stdout).toContain(
-      "rea inspect-web-network-capture inspect-web-network-captur har --json",
+      "acl-rea inspect-web-network-capture inspect-web-network-captur har --json",
     );
     const unsafe = await cli.run({
       arguments: [
@@ -132,7 +132,7 @@ cliTest(
       ],
     });
     expect(unsafe.exitCode).toBe(1);
-    expect(unsafe.stdout).not.toContain("rea inspect-web-network-capture ");
+    expect(unsafe.stdout).not.toContain("acl-rea inspect-web-network-capture ");
     expect(unsafe.stdout).toContain("rea --help");
   },
 );

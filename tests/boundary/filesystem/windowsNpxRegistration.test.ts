@@ -31,7 +31,7 @@ vi.mock(
     return {
       ...actual,
       CURRENT_ENTRYPOINT_PATH: fileURLToPath(
-        new URL("../../../scripts/rea.mjs", import.meta.url),
+        new URL("../../../scripts/acl-rea.mjs", import.meta.url),
       ),
     };
   },
@@ -39,7 +39,7 @@ vi.mock(
 
 const configurationSchema = z.object({
   mcpServers: z.object({
-    rea: z.object({ command: z.string(), args: z.array(z.string()) }),
+    "acl-rea": z.object({ command: z.string(), args: z.array(z.string()) }),
   }),
 });
 
@@ -52,7 +52,7 @@ it.each([
       "mcp",
     ],
   },
-  { previousCommand: ["cmd", "/c", "npx", "-y", "rea-agents@5.0.0", "mcp"] },
+  { previousCommand: ["cmd", "/c", "npx", "-y", "acl-rea-agents@5.0.0", "mcp"] },
 ])(
   "migrates Windows npx registration $previousCommand idempotently and uninstalls only REA",
   async ({ previousCommand }) => {
@@ -62,7 +62,7 @@ it.each([
       theme: "dark",
       mcpServers: {
         other: { command: "another-server" },
-        rea: {
+        "acl-rea": {
           command: previousCommand[0],
           args: previousCommand.slice(1),
         },
@@ -98,7 +98,7 @@ it.each([
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
       status: "unchanged",
     });
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
     expect(await systemUninstallHost(home).removeClient(client)).toMatchObject({
       status: "removed",
     });
@@ -115,7 +115,7 @@ it("keeps the Windows direct launcher aligned through Codex TOML setup and remov
   await mkdir(join(home, ".codex"));
   const configPath = join(home, ".codex", "config.toml");
   const original =
-    '\uFEFF# Keep this explanation.\nnotify = ["a", "b"]\nliteral = \'C:\\demo\\path\'\ndisabled_mcp_servers = ["rea"]\n\n[mcp_servers.other]\ncommand = "another-server"\n';
+    '\uFEFF# Keep this explanation.\nnotify = ["a", "b"]\nliteral = \'C:\\demo\\path\'\ndisabled_mcp_servers = ["acl-rea"]\n\n[mcp_servers.other]\ncommand = "another-server"\n';
   await writeFile(configPath, original);
   const client = {
     name: "codex",
@@ -138,7 +138,7 @@ it("keeps the Windows direct launcher aligned through Codex TOML setup and remov
   expect(await configureClientConfiguration(client, {}, command)).toEqual({
     status: "unchanged",
   });
-  expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+  expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
   expect(await systemUninstallHost(home).removeClient(client)).toMatchObject({
     status: "removed",
   });
@@ -156,24 +156,24 @@ it("retains rea-named custom shell registrations without writing a backup", asyn
   } as const;
   for (const command of [
     ["cmd.exe", "/d", "/c", "node", "custom.js", "mcp"],
-    ["cmd.exe", "/k", "npx", "-y", "rea-agents@5.0.0", "mcp"],
-    ["cmd.exe", "/c", "npx -y rea-agents@5.0.0 mcp"],
+    ["cmd.exe", "/k", "npx", "-y", "acl-rea-agents@5.0.0", "mcp"],
+    ["cmd.exe", "/c", "npx -y acl-rea-agents@5.0.0 mcp"],
     ["cmd.exe", "/c", "npx", "-y", "another-package", "mcp"],
-    ["cmd.exe", "/c", "npx", "-y", "rea-agents@5.0.0", "mcp", "&", "other"],
-    ["cmd.exe", "/c", "npx", "-y", "rea-agents@5.0.0 & other", "mcp"],
+    ["cmd.exe", "/c", "npx", "-y", "acl-rea-agents@5.0.0", "mcp", "&", "other"],
+    ["cmd.exe", "/c", "npx", "-y", "acl-rea-agents@5.0.0 & other", "mcp"],
     ["cmd.exe", "/c", "bunx", "another-package", "mcp"],
-    ["cmd.exe", "/c", "bunx", "-y", "rea-agents@5.0.0", "mcp"],
-    ["cmd.exe", "/c", "bunx", "rea-agents@5.0.0", "mcp", "&", "other"],
+    ["cmd.exe", "/c", "bunx", "-y", "acl-rea-agents@5.0.0", "mcp"],
+    ["cmd.exe", "/c", "bunx", "acl-rea-agents@5.0.0", "mcp", "&", "other"],
   ]) {
     const original = JSON.stringify({
-      mcpServers: { rea: { command: command[0], args: command.slice(1) } },
+      mcpServers: { "acl-rea": { command: command[0], args: command.slice(1) } },
     });
     await writeFile(configPath, original);
     expect(await systemUninstallHost(home).removeClient(client)).toMatchObject({
       status: "retained",
     });
     expect(await readFile(configPath, "utf8")).toBe(original);
-    await expect(readFile(`${configPath}.rea.backup`)).rejects.toMatchObject({
+    await expect(readFile(`${configPath}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
   }
@@ -198,7 +198,7 @@ it.skipIf(process.platform !== "win32")(
     });
     const registration = configurationSchema.parse(
       JSON.parse(await readFile(configPath, "utf8")),
-    ).mcpServers.rea;
+    ).mcpServers["acl-rea"];
     expect([registration.command, ...registration.args]).toEqual(command);
     expect(isAbsolute(registration.command)).toBe(true);
     const marker = join(home, "runner-called.txt");
@@ -251,17 +251,17 @@ processTest.skipIf(process.platform !== "win32")(
       CLAUDE_CONFIG_DIR: home,
     });
     const isolatedConfig = join(home, ".claude.json");
-    const installed = join(home, "installed", "rea.mjs");
+    const installed = join(home, "installed", "acl-rea.mjs");
     const privateEntry = join(
       home,
       "localappdata",
       "Packages",
       "Fixture_123",
       "LocalCache",
-      "rea.mjs",
+      "acl-rea.mjs",
     );
     const original = '{"mcpServers":{"other":{"command":"unchanged"}}}\n';
-    const launcher = `import ${JSON.stringify(pathToFileURL(resolve("scripts/rea.mjs")).href)};\n`;
+    const launcher = `import ${JSON.stringify(pathToFileURL(resolve("scripts/acl-rea.mjs")).href)};\n`;
     for (const entry of [installed, privateEntry]) {
       await mkdir(dirname(entry), { recursive: true });
       await writeFile(entry, launcher);
@@ -288,18 +288,18 @@ processTest.skipIf(process.platform !== "win32")(
     });
     expect(await readFile(isolatedConfig, "utf8")).toBe(original);
     await expect(
-      readFile(`${isolatedConfig}.rea.backup`, "utf8"),
+      readFile(`${isolatedConfig}.acl-rea.backup`, "utf8"),
     ).rejects.toMatchObject({ code: "ENOENT" });
 
     const allowed = await run(installed);
     expect(allowed.exitCode, allowed.stderr).toBe(0);
     expect(JSON.parse(await readFile(isolatedConfig, "utf8"))).toMatchObject({
       mcpServers: {
-        rea: { command: process.execPath, args: [installed, "mcp"] },
+        "acl-rea": { command: process.execPath, args: [installed, "mcp"] },
         other: { command: "unchanged" },
       },
     });
-    expect(await readFile(`${isolatedConfig}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${isolatedConfig}.acl-rea.backup`, "utf8")).toBe(
       original,
     );
 
@@ -309,7 +309,7 @@ processTest.skipIf(process.platform !== "win32")(
     ]);
     expect(explicit.exitCode, explicit.stderr).toBe(0);
     expect(JSON.parse(await readFile(isolatedConfig, "utf8"))).toMatchObject({
-      mcpServers: { rea: { command: "custom executable", args: ["mcp"] } },
+      mcpServers: { "acl-rea": { command: "custom executable", args: ["mcp"] } },
     });
   },
 );

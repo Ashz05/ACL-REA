@@ -99,7 +99,7 @@ describe("Qwen Code client lifecycle", () => {
       model: { name: "qwen3-coder-plus" },
       mcpServers: {
         other: { command: "other-server" },
-        rea: { command: command[0], args: command.slice(1) },
+        "acl-rea": { command: command[0], args: command.slice(1) },
       },
     });
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
@@ -125,7 +125,7 @@ describe("Qwen Code client lifecycle", () => {
       client.configPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: command[0],
             args: command.slice(1),
             env: {
@@ -147,7 +147,7 @@ describe("Qwen Code client lifecycle", () => {
       ).status,
     ).toBe("configured");
     const text = await readFile(client.configPath, "utf8");
-    expect(parseJsonc(text).mcpServers.rea.env).toEqual({
+    expect(parseJsonc(text).mcpServers["acl-rea"].env).toEqual({
       PATH: "/opt/bin:${PATH}",
       REA_GHIDRA_PROJECT_PATH: projectPath,
       REA_GHIDRA_LANGUAGE_ID: language,
@@ -207,7 +207,7 @@ describe("Qwen Code profile setup", () => {
       const skill = join(home, ".agents", "skills", PRODUCT_IDENTITY.skillName);
       await writeFile(join(skill, "user-notes.txt"), "user-authored");
       expect(await readFile(join(skill, "SKILL.md"), "utf8")).toContain(
-        "reverse-engineer-anything",
+        "acl-reverse-engineer-anything",
       );
       expect(await setup.clientNeedsConfigure(client, {}, command)).toBe(false);
       expect(await setup.skillNeedsInstall([client.name])).toBe(false);

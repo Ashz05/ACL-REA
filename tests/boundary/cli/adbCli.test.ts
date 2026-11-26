@@ -70,7 +70,7 @@ exit 1
     const result = await execFileOutput(
       process.execPath,
       [
-        "scripts/rea.mjs",
+        "scripts/acl-rea.mjs",
         "capture-adb-screen",
         "device",
         "--output-directory",
@@ -153,7 +153,7 @@ exit 1
   const result = await execFileOutput(
     process.execPath,
     [
-      "scripts/rea.mjs",
+      "scripts/acl-rea.mjs",
       "push-adb-file",
       "device",
       source,
@@ -344,7 +344,7 @@ it.skipIf(process.platform === "win32")(
     delete environment.REA_ADB_PATH;
     const stdout = await execFileOutput(
       process.execPath,
-      ["scripts/rea.mjs", "inspect-adb-client", "--json"],
+      ["scripts/acl-rea.mjs", "inspect-adb-client", "--json"],
       {
         env: environment,
         timeout: 20_000,
@@ -513,7 +513,7 @@ it.each([16, 17])(
     const result = await execFileOutput(
       process.execPath,
       [
-        "scripts/rea.mjs",
+        "scripts/acl-rea.mjs",
         "start-adb-activity",
         "emulator-5554",
         "android.intent.action.VIEW",

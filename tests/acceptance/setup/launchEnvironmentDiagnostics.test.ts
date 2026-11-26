@@ -49,7 +49,7 @@ cliTest(
 
     const original = JSON.stringify({
       mcpServers: {
-        rea: { command: "rea", args: ["mcp"], env: { CALLER_KEY: "keep" } },
+        "acl-rea": { command: "acl-rea", args: ["mcp"], env: { CALLER_KEY: "keep" } },
       },
     });
     await writeFile(config, original);
@@ -61,14 +61,14 @@ cliTest(
     });
     expect(existing.stdout).toContain("REA_BRIDGE_MAX_REQUEST_BYTES");
     expect(await readFile(config, "utf8")).toBe(original);
-    await expect(access(`${config}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${config}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
 
     const invalidFile = JSON.stringify({
       mcpServers: {
-        rea: {
-          command: "rea",
+        "acl-rea": {
+          command: "acl-rea",
           args: ["mcp"],
           env: { HOPPER_LOADER_ARGS_JSON: "not-json" },
         },

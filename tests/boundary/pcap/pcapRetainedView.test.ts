@@ -81,7 +81,7 @@ it.runIf(process.platform === "linux")(
     const complete = await promisify(execFile)(
       process.execPath,
       [
-        join(import.meta.dirname, "../../../scripts/rea.mjs"),
+        join(import.meta.dirname, "../../../scripts/acl-rea.mjs"),
         "inspect-pcap-capture",
         path,
         "--json",
@@ -187,7 +187,7 @@ it.runIf(process.platform === "linux")(
       JSON.stringify({ source: { kind: "inline", evidence: parent }, view }),
     );
     const portable = await promisify(execFile)(process.execPath, [
-      join(import.meta.dirname, "../../../scripts/rea.mjs"),
+      join(import.meta.dirname, "../../../scripts/acl-rea.mjs"),
       "inspect-analysis-view",
       workflow,
       "--json",

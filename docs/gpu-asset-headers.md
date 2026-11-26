@@ -71,7 +71,7 @@ only up to 16 MiB. A larger or invalid JSON chunk stays a region, and
 ## CLI
 
 ```sh
-rea inspect-artifact Duck.glb --detail summary --json
+acl-rea inspect-artifact Duck.glb --detail summary --json
 rea extract-artifact texture.ktx2 --json
 ```
 

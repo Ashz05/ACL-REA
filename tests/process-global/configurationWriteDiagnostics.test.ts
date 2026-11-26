@@ -75,7 +75,7 @@ it.each([
     expect(result).toMatchObject({
       status: "failed",
       reason: "write",
-      backupPath: `${path}.rea.backup`,
+      backupPath: `${path}.acl-rea.backup`,
       failure: {
         kind: "write",
         operation: expectedOperation,
@@ -96,10 +96,10 @@ it.each([
         gid: expect.any(Number),
       });
     expect(await readFile(path, "utf8")).toBe(original);
-    expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
     expect((await readdir(root)).sort()).toEqual([
       "config.json",
-      "config.json.rea.backup",
+      "config.json.acl-rea.backup",
     ]);
   },
 );

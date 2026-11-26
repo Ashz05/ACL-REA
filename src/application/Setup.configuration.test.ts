@@ -415,7 +415,7 @@ it("offers shared skill intent when the detected personal copy is current", asyn
         host.homeDirectory,
         ".agents",
         "skills",
-        "reverse-engineer-anything",
+        "acl-reverse-engineer-anything",
       ),
     }),
   ]);
@@ -641,7 +641,7 @@ describe("setup configuration failure recovery", () => {
         configPath: "/agent.json",
       },
     ];
-    const backupPath = `/agent.json.rea.backup.${"a".repeat(64)}.recovery`;
+    const backupPath = `/agent.json.acl-rea.backup.${"a".repeat(64)}.recovery`;
     host.clientResults.set("cursor", {
       status: "failed",
       reason: "readback",

@@ -51,8 +51,8 @@ and exact-owner retries.
 For the MCP follow-up call, pass the same literal-loopback endpoint and the selected target ID to `inspect_electron_page`. REA rediscovers targets and validates the ID against the live endpoint before inspection.
 
 ```bash
-rea list-electron-targets http://127.0.0.1:9223 --json
-rea inspect-electron-page http://127.0.0.1:9223 TARGET_ID \
+acl-rea list-electron-targets http://127.0.0.1:9223 --json
+acl-rea inspect-electron-page http://127.0.0.1:9223 TARGET_ID \
   --observation-ms 100 --json
 ```
 
@@ -60,7 +60,7 @@ Script content is excluded by default. Setting `include_script_sources` in the
 request returns the selected target's script sources:
 
 ```bash
-rea inspect-electron-page http://127.0.0.1:9223 TARGET_ID \
+acl-rea inspect-electron-page http://127.0.0.1:9223 TARGET_ID \
   --include-script-sources \
   --json
 ```

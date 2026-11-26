@@ -54,7 +54,7 @@ const { java, jvmArguments } = configuration;
 const execute = promisify(execFile);
 await execute(java, ["-version"], { timeout: 10_000 });
 const entrypoint =
-  process.env.REA_ANDROID_ENTRYPOINT ?? resolve(repository, "scripts/rea.mjs");
+  process.env.REA_ANDROID_ENTRYPOINT ?? resolve(repository, "scripts/acl-rea.mjs");
 const environment = { ...process.env, REA_JADX_MCP_JAR: resolve(jar) };
 const path = resolve(apk);
 const bridge = resolve(

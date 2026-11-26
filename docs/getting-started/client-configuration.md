@@ -9,7 +9,7 @@ acceptance is verified only where explicitly recorded.
 ## Launchers and PATH
 
 A client launched from a desktop app, IDE or service can inherit a different
-`PATH` from your terminal. An absolute path to `rea-agents` does not resolve its
+`PATH` from your terminal. An absolute path to `acl-rea-agents` does not resolve its
 interpreter: the npm launcher's `#!/usr/bin/env node` still searches `PATH` for
 Node. Running that command successfully in a terminal does not establish that
 the client can launch it.
@@ -40,7 +40,7 @@ switches between the two supported shim formats.
 
 Setup forwards supported, explicitly selected REA settings into client
 configuration, but does not copy unrelated ambient environment values. To refresh an older registration, preview
-`rea setup --client <client-id> --skill=false --dry-run`, then run the same command
+`acl-rea setup --client <client-id> --skill=false --dry-run`, then run the same command
 without `--dry-run` and approve the displayed changes. Setup preserves unrelated
 settings, backs up changed configuration and leaves an aligned registration
 unchanged. Restart the client after applying the update.
@@ -67,13 +67,13 @@ that client's native transport selectors; a higher-priority remote selector can
 leave the command owned while alignment remains unknown. Metadata that is not a
 native connection selector is preserved rather than interpreted as a transport.
 
-`rea mcp doctor --json` tests the production MCP adapter using the runtime
+`acl-rea mcp doctor --json` tests the production MCP adapter using the runtime
 executable and environment of the terminal running doctor. It does not launch
 the client's configured command or reproduce the client's environment. If doctor
 passes but the client disconnects, inspect the client's startup error and registered
 launcher; see [verification scope](../development/client-verification.md#launch-environment-verification).
 
-`rea doctor` has the same limit for provider checks, and reports a provider setting
+`acl-rea doctor` has the same limit for provider checks, and reports a provider setting
 the registration's file does not carry as a
 [non-blocking unknown](installation.md#check-readiness-for-your-task).
 
@@ -85,7 +85,7 @@ launching REA:
 
 ```powershell
 $env:REA_MCP_OUTPUT_SCHEMA_PROFILE = "compact"
-rea mcp doctor --json
+acl-rea mcp doctor --json
 ```
 
 The assignment applies to the current PowerShell process and commands it launches.
@@ -106,10 +106,10 @@ value does not undo a selection already saved by setup.
 
 `update_analysis_settings` changes curated defaults inside the running REA
 server. It does not edit the client registration, extend the client's tool-call
-deadline, or recompute timeout values previously derived by `rea setup`. When
+deadline, or recompute timeout values previously derived by `acl-rea setup`. When
 raising a REA startup or operation deadline, separately ensure the client allows
 enough time for the full request. Use `inspect_analysis_settings` for the running
-server's defaults; `rea doctor` checks launch configuration and cannot observe
+server's defaults; `acl-rea doctor` checks launch configuration and cannot observe
 another process's runtime overrides. See the
 [analysis settings and recovery](../reference/limits-and-recovery.md#precedence-and-lifetime)
 for precedence and lifetime.
@@ -117,7 +117,7 @@ for precedence and lifetime.
 ## Client tool names and discovery
 
 REA advertises canonical names such as `binary_session`. The MCP host decides
-how to expose them to its model: a name such as `mcp__rea__binary_session` is a
+how to expose them to its model: a name such as `mcp__acl-rea__binary_session` is a
 client convention, not a prefix REA can enforce. Use the active client's tool
 listing and server association to find the operation. A valid registration or
 installed skill does not prove that those tools reached the model. Doctor reports
@@ -141,8 +141,8 @@ the connection. REA then advertises a small initial catalog and loads other
 named tools through `discover_tools`. Setup can record the explicit choice:
 
 ```bash
-rea setup --client codex --tool-catalog-profile hot-cold --dry-run
-rea setup --client codex --tool-catalog-profile hot-cold
+acl-rea setup --client codex --tool-catalog-profile hot-cold --dry-run
+acl-rea setup --client codex --tool-catalog-profile hot-cold
 ```
 
 The plan shows `REA_MCP_TOOL_CATALOG_PROFILE=hot-cold` before approval. This
@@ -179,7 +179,7 @@ without replacing other feature or REA settings:
 [features]
 mcp_tool_list_changed = true
 
-[mcp_servers.rea.env]
+[mcp_servers.acl-rea.env]
 REA_MCP_TOOL_CATALOG_PROFILE = "hot-cold"
 ```
 
@@ -232,12 +232,12 @@ preserving your REA client entry. See the
 
 ## VS Code
 
-`rea setup --client vscode` configures the default VS Code user profile's
+`acl-rea setup --client vscode` configures the default VS Code user profile's
 `mcp.json`. Setup honors `VSCODE_PORTABLE` and `VSCODE_APPDATA` when they are
 present in its environment. It cannot infer a running window's named profile
 or `--user-data-dir`; configure that profile separately when needed.
 
-`rea setup --client copilot_cli` instead configures Copilot's user
+`acl-rea setup --client copilot_cli` instead configures Copilot's user
 `mcp-config.json`. VS Code can forward eligible profile servers to Copilot
 sessions; see the [VS Code MCP configuration reference](https://code.visualstudio.com/docs/agents/reference/mcp-configuration).
 
@@ -267,7 +267,7 @@ Windows remain unverified; see [native client verification](../development/testi
 
 ## Claude Desktop
 
-Setup registers `mcpServers.rea` in `claude_desktop_config.json`: under
+Setup registers `mcpServers.acl-rea` in `claude_desktop_config.json`: under
 `~/Library/Application Support/Claude` on macOS, under
 `$XDG_CONFIG_HOME/Claude` (default `~/.config/Claude`) on Linux, and on Windows
 in the file the installed app reads:
@@ -328,7 +328,7 @@ read it. From that redirected view, setup and uninstall refuse to change other
 clients' files there (VS Code, Trae, Devin and Hermes) and skill directories
 there. `npm install -g` run from such a process installs into the package's
 `LocalCache\Roaming\npm`, which other processes cannot see at the `%APPDATA%`
-path. Setup and the default `rea mcp add` launcher reject runtimes and REA
+path. Setup and the default `acl-rea mcp add` launcher reject runtimes and REA
 scripts stored in any MSIX package's private storage. Install REA from an
 ordinary terminal and retry the registration there.
 
@@ -370,7 +370,7 @@ and Claude Code reports that autocompact is thrashing. To avoid this:
   `tool_reference` among its supported content blocks, so this setting may cause
   its requests to fail.
 - To remove entire tool families from the upfront catalog, run
-  `rea setup --client claude_code --tool-families <ids>` with the families the
+  `acl-rea setup --client claude_code --tool-families <ids>` with the families the
   workflow needs (see [the advertising scope contract](../reference/mcp-contracts.md#tool-family-advertising-scope)).
   Out-of-scope tools are not advertised and their calls fail with the SDK's
   disabled-tool error, so widen the selection when a task needs another
@@ -391,7 +391,7 @@ profiles](../reference/mcp-contracts.md#output-schemas).
 
 Setup registers `rea` in `~/.kimi-code/mcp.json`, or
 `$KIMI_CODE_HOME/mcp.json` when set, while preserving unrelated settings and
-creating a `.rea.backup` before updating an existing file. Kimi Code infers
+creating a `.acl-rea.backup` before updating an existing file. Kimi Code infers
 stdio from the `command` entry, so setup does not add a `type` field. New
 registrations include `startupTimeoutMs = 30000` and a `toolTimeoutMs` derived
 from REA's known provider allowance plus 120 seconds of operation
@@ -446,7 +446,7 @@ Start a new Kimi Code session to pick up MCP and skill changes.
 
 ## LM Studio
 
-For [LM Studio](https://lmstudio.ai/docs/app/mcp), setup writes `mcpServers.rea`
+For [LM Studio](https://lmstudio.ai/docs/app/mcp), setup writes `mcpServers.acl-rea`
 into `mcp.json` in the LM Studio home directory. Setup finds that directory as
 LM Studio does: the path stored in `~/.lmstudio-home-pointer`, otherwise
 `~/.cache/lm-studio` when it exists, otherwise `~/.lmstudio`. Setup only reads
@@ -461,11 +461,11 @@ Windows remain unverified.
 ## Pi
 
 For [Pi](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/mcp.md),
-setup writes a `type: "stdio"` entry under `mcpServers.rea` in the user-level
+setup writes a `type: "stdio"` entry under `mcpServers.acl-rea` in the user-level
 `~/.pi/agent/mcp.json` and installs the bundled skill under `~/.agents/skills`.
-Use `rea setup --client pi --dry-run --json` to inspect the plan, then
-`rea setup --client pi --yes --json` to approve it. Check the registration with
-`rea doctor --client pi --json`. Pi reads `mcp.json` as strict JSON, like its
+Use `acl-rea setup --client pi --dry-run --json` to inspect the plan, then
+`acl-rea setup --client pi --yes --json` to approve it. Check the registration with
+`acl-rea doctor --client pi --json`. Pi reads `mcp.json` as strict JSON, like its
 own loader: comments, trailing commas, a byte-order mark, or an empty existing
 file are invalid, and setup reports them instead of rewriting the file. Repair
 such a file to plain JSON first, then rerun setup.
@@ -489,8 +489,8 @@ entry if it defines a launcher or type, or overrides only its enabled state and
 exposure when omitting those fields. Doctor discovers project-scoped
 registrations in `.pi/mcp.json` for the current working directory in trusted
 projects and evaluates them with project precedence; its remediation text
-points to the project file. Plain `rea uninstall` removes user registrations.
-Use `rea uninstall --project DIR` to select a trusted Pi project's
+points to the project file. Plain `acl-rea uninstall` removes user registrations.
+Use `acl-rea uninstall --project DIR` to select a trusted Pi project's
 `.pi/mcp.json`. REA verifies ownership and the effect of removal, backs up the
 file before changing it, and verifies the write. Project flags that only
 override a user registration are preserved.
@@ -522,7 +522,7 @@ Setup installs its selected skill copy there.
 
 ## Cursor
 
-For Cursor, setup writes `mcpServers.rea` into the user-level `~/.cursor/mcp.json`
+For Cursor, setup writes `mcpServers.acl-rea` into the user-level `~/.cursor/mcp.json`
 (`%USERPROFILE%\.cursor\mcp.json` on Windows). Entries carry `command`, `args`,
 and `env`; stdio is the default transport. Setup manages only this user-scope
 file. Cursor has no client-specific skill directory, so setup installs the
@@ -530,7 +530,7 @@ bundled skill under the shared `~/.agents/skills`.
 
 ## Windsurf
 
-For Windsurf, setup writes `mcpServers.rea` into the user-level
+For Windsurf, setup writes `mcpServers.acl-rea` into the user-level
 `~/.codeium/windsurf/mcp_config.json` (`%USERPROFILE%\.codeium\windsurf\mcp_config.json`
 on Windows). Entries carry `command`, `args`, and `env`; stdio is the default
 transport. Setup manages only this user-scope file. Windsurf has no
@@ -539,7 +539,7 @@ shared `~/.agents/skills`.
 
 ## Command Code
 
-For Command Code, setup writes `mcpServers.rea` into the user-level
+For Command Code, setup writes `mcpServers.acl-rea` into the user-level
 `~/.commandcode/mcp.json` (`%USERPROFILE%\.commandcode\mcp.json` on Windows).
 Entries carry `transport: "stdio"`, `enabled: true`, `command`, `args`, and
 `env`. Doctor reads the entry's transport from `transport`, falling back to
@@ -564,7 +564,7 @@ system overrides. Workspace trust follows `GEMINI_CLI_TRUST_WORKSPACE`,
 `GEMINI_RESTRICTED_MODE`, the effective `security.folderTrust.enabled` setting,
 and the selected `trustedFolders.json` (including
 `GEMINI_CLI_TRUSTED_FOLDERS_PATH`). Settings in an untrusted workspace do not
-participate. A workspace or system `mcpServers.rea` replaces the entire user
+participate. A workspace or system `mcpServers.acl-rea` replaces the entire user
 entry; setup stops if the winning definition conflicts with its planned entry.
 Setup checks user policy against the file snapshot it is inspecting or about to
 update, including confirmed absence; an earlier discovery snapshot does not veto
@@ -588,7 +588,7 @@ REA manages its launcher and selected provider settings in the client
 registration. Codex's server and per-tool approval policies are user choices.
 Setup patches REA's connection fields in the selected file and retains other
 server settings, including `default_tools_approval_mode`, nested
-`[mcp_servers.rea.tools.<name>]` tables, tool allow/deny lists, and unrecognized
+`[mcp_servers.acl-rea.tools.<name>]` tables, tool allow/deny lists, and unrecognized
 client settings. Doctor accepts Codex's per-tool policy tables. Known malformed
 policy values block setup before it writes the configuration or a backup, and
 the diagnostic identifies the setting to repair. See the
@@ -688,7 +688,7 @@ it. Run setup under each profile that should load REA.
 
 ## Hermes
 
-For Hermes, setup writes a `mcp_servers.rea` entry to `config.yaml`, preserving
+For Hermes, setup writes a `mcp_servers.acl-rea` entry to `config.yaml`, preserving
 comments and unrelated settings. It resolves that file from `HERMES_HOME`, else
 from the platform default Hermes itself uses — `%LOCALAPPDATA%\hermes` on
 Windows, `~/.hermes` elsewhere — including any `HERMES_DATA_DIR_SUFFIX`. Hermes
@@ -747,7 +747,7 @@ configuration and skill destinations; doctor and uninstall use those same paths.
 ## Qoder CLI
 
 For [Qoder](https://docs.qoder.com/cli/mcp-reference), setup writes
-`mcpServers.rea` into the user-level `~/.qoder/settings.json` (the
+`mcpServers.acl-rea` into the user-level `~/.qoder/settings.json` (the
 `QODER_CONFIG_DIR` override is honored). Entries carry `command`, `args`, and
 `env`; stdio is the default transport. Qoder CLI discovers personal skills
 from `~/.qoder/skills` (following `QODER_CONFIG_DIR` when set), so setup
@@ -756,7 +756,7 @@ installs its skill copy there.
 ## Factory Droid
 
 For [Factory Droid](https://docs.factory.com/harness/mcp), setup writes
-`mcpServers.rea` into the user-level `~/.factory/mcp.json` (the
+`mcpServers.acl-rea` into the user-level `~/.factory/mcp.json` (the
 `FACTORY_HOME_OVERRIDE` override replaces the home that contains `.factory`).
 Entries carry `command`, `args`, and `env`. Droid discovers personal skills
 from `~/.factory/skills` ([skills](https://docs.factory.com/harness/skills),
@@ -766,7 +766,7 @@ there.
 ## Trae
 
 For [Trae](https://docs.trae.ai/ide/add-mcp-servers), setup writes
-`mcpServers.rea` into the user-scope `mcp.json` under Trae's VS Code-style
+`mcpServers.acl-rea` into the user-scope `mcp.json` under Trae's VS Code-style
 user directory (`%APPDATA%\Trae\User` on Windows,
 `~/Library/Application Support/Trae/User` on macOS, and
 `~/.config/Trae/User` elsewhere). Entries carry `command`, `args`, and
@@ -780,7 +780,7 @@ loading this registration in Trae remains unverified.
 
 ## CodeBuddy
 
-For CodeBuddy, setup writes `mcpServers.rea` into the global
+For CodeBuddy, setup writes `mcpServers.acl-rea` into the global
 `~/.codebuddy/mcp.json` (a standard `mcpServers` JSON file at the user home
 root on every platform). Entries carry `command`, `args`, and `env`; stdio is
 the default transport. CodeBuddy discovers personal skills from
@@ -792,13 +792,13 @@ bundled skill, and real REA tool calls through CodeBuddy are verified.
 
 ## Cline
 
-MCP registration already supports both clients: `rea mcp add --agent cline`
+MCP registration already supports both clients: `acl-rea mcp add --agent cline`
 (or `cline-vscode`) configures the VS Code extension, while
-`rea mcp add --agent cline-cli` configures the CLI. The setup lifecycle uses
-`rea setup --client cline` and `rea doctor --client cline` for the CLI.
-`rea uninstall` also removes its REA-owned Cline CLI entry.
+`acl-rea mcp add --agent cline-cli` configures the CLI. The setup lifecycle uses
+`acl-rea setup --client cline` and `acl-rea doctor --client cline` for the CLI.
+`acl-rea uninstall` also removes its REA-owned Cline CLI entry.
 
-For Cline's CLI, setup writes `mcpServers.rea` into
+For Cline's CLI, setup writes `mcpServers.acl-rea` into
 `~/.cline/data/settings/cline_mcp_settings.json`; set `CLINE_MCP_SETTINGS_PATH`
 to select another file. Otherwise `CLINE_DATA_DIR` selects the data directory,
 then `CLINE_DIR` selects the root containing `data`; blank overrides are ignored.
@@ -827,8 +827,8 @@ and `--skill-client cline` resolves to that shared directory; setup does not
 write a second copy under `~/.cline/skills`.
 
 The IDE extension keeps its own MCP settings, reached from the Cline panel's
-**Configure MCP Servers** action. Use `rea mcp add --agent cline` for that
-registration; `rea setup --client cline` configures the CLI only.
+**Configure MCP Servers** action. Use `acl-rea mcp add --agent cline` for that
+registration; `acl-rea setup --client cline` configures the CLI only.
 
 Restart Cline after setup so the client reloads `mcpServers`. Cline's default
 MCP tool-call timeout is 120 seconds; native provider work that spends longer
@@ -840,7 +840,7 @@ removal are covered by `tests/acceptance/setup/clineClientSetup.test.ts`.
 
 ## Cline VS Code extension, Kiro, Mastra Code, Zed and Amp
 
-Setup, doctor, update, uninstall and `rea mcp add` share one definition for each
+Setup, doctor, update, uninstall and `acl-rea mcp add` share one definition for each
 of these clients. Setup offers a client when its directory exists.
 
 | Client                  | `--client`     | User configuration                                                                                                              | Server table      |
@@ -857,7 +857,7 @@ it. `cline_vscode_insiders`, `cline_vscodium`, `cline_cursor` and
 (`Code - Insiders`, `VSCodium`, `Cursor` or `Windsurf` in place of `Code`), and
 setup offers each where that editor's Cline settings folder exists.
 `VSCODE_APPDATA` applies to all of them; `VSCODE_PORTABLE` only to VS Code.
-`rea mcp add --agent cline` keeps add-mcp's meaning, VS Code. A same-named server in a Kiro,
+`acl-rea mcp add --agent cline` keeps add-mcp's meaning, VS Code. A same-named server in a Kiro,
 Mastra Code, Zed or Amp project file overrides the user registration; doctor
 reports the user file. Mastra Code keeps enabled state outside `mcp.json`, and
 Amp's managed settings and `amp.mcpPermissions` can block a server; doctor
@@ -872,8 +872,8 @@ was run to verify loading.
 
 ## MCPorter
 
-`rea setup --client mcporter` and `rea mcp add --agent mcporter` write
-`mcpServers.rea` into MCPorter's home file: the file `MCPORTER_CONFIG` names,
+`acl-rea setup --client mcporter` and `acl-rea mcp add --agent mcporter` write
+`mcpServers.acl-rea` into MCPorter's home file: the file `MCPORTER_CONFIG` names,
 otherwise the first existing of `$XDG_CONFIG_HOME/mcporter/mcporter.json[c]`
 (an absolute `XDG_CONFIG_HOME` only) and `~/.mcporter/mcporter.json[c]`. A new
 file goes to the XDG path when `XDG_CONFIG_HOME` is set, as
@@ -891,7 +891,7 @@ Update and uninstall refresh and remove the row REA wrote. A project
 
 ## fx
 
-Setup and `rea mcp add` write `mcpServers.rea` into fx's profile,
+Setup and `acl-rea mcp add` write `mcpServers.acl-rea` into fx's profile,
 `~/.fx/mcp.json`, or `$FX_HOME/mcp.json` when `FX_HOME` is set. fx accepts only
 an absolute `FX_HOME` other than the root and home folders, so REA refuses other
 values before writing. An existing profile that still uses fx's older `mcp`
@@ -904,12 +904,12 @@ not written by REA.
 
 ## Junie
 
-Setup and `rea mcp add` write `mcpServers.rea` into `~/.junie/mcp/mcp.json`, or
+Setup and `acl-rea mcp add` write `mcpServers.acl-rea` into `~/.junie/mcp/mcp.json`, or
 `$JUNIE_HOME/mcp/mcp.json` when `JUNIE_HOME` is set (Junie CLI honors it; the
 JetBrains plugin reads `~/.junie`). A relative `JUNIE_HOME` depends on Junie's
 working directory, so REA refuses it until it is made absolute (on Windows,
 with a drive letter or UNC share). Junie loads that
-file only while its default MCP locations are enabled. Setup, `rea mcp add` and doctor all refuse or report
+file only while its default MCP locations are enabled. Setup, `acl-rea mcp add` and doctor all refuse or report
 a registration Junie would not load: `JUNIE_MCP_DEFAULT_LOCATIONS=false`, or
 `mcp-default-locations: false` in `~/.junie/config.json` unless
 `JUNIE_CONFIG_DEFAULT_LOCATIONS=false` skips that file. While
@@ -919,7 +919,7 @@ Project registration writes `.junie/mcp/mcp.json`.
 
 ## Goose
 
-Setup and `rea mcp add` write `extensions.rea` into Goose's user file:
+Setup and `acl-rea mcp add` write `extensions.acl-rea` into Goose's user file:
 `~/.config/goose/config.yaml` (an absolute `XDG_CONFIG_HOME` replaces
 `~/.config`), `%APPDATA%\Block\goose\config\config.yaml` on Windows, or
 `$GOOSE_PATH_ROOT/config/config.yaml` when that root is absolute. Goose also
@@ -938,7 +938,7 @@ startup; restart it after setup.
 ## Kilo Code
 
 For [Kilo Code](https://kilo.ai/docs/automate/mcp/using-in-kilo-code), setup
-and `rea mcp add` write `mcp.rea` into the last user-scope file Kilo loads.
+and `acl-rea mcp add` write `mcp.acl-rea` into the last user-scope file Kilo loads.
 Kilo's config root is `$XDG_CONFIG_HOME/kilo` when `XDG_CONFIG_HOME` is set,
 otherwise `~/.config/kilo`, on every OS including Windows. Kilo reads that
 root's `config.json`, `kilo.json`, `kilo.jsonc`, `opencode.json` and
@@ -948,10 +948,10 @@ root's `config.json`, `kilo.json`, `kilo.jsonc`, `opencode.json` and
 the root (or in an empty `KILO_CONFIG_DIR`). A relative Kilo path depends on
 Kilo's working directory, so REA refuses it. The entry is
 `{ "type": "local", "command": [exe, ...args], "enabled": true }`, plus
-`environment` only when it is non-empty. `rea mcp add` preserves an existing
-`enabled: false`; `rea setup` sets `enabled: true`.
+`environment` only when it is non-empty. `acl-rea mcp add` preserves an existing
+`enabled: false`; `acl-rea setup` sets `enabled: true`.
 `KILO_CONFIG_CONTENT` is Kilo's highest layer and is never edited (see
-[installation](installation.md)); project registration with `rea mcp add` is in
+[installation](installation.md)); project registration with `acl-rea mcp add` is in
 the [CLI guide](cli.md). Kilo also reads its legacy extension MCP files
 (`mcpServers` in the VS Code extension's `mcp_settings.json`, and the project
 `.kilocode/mcp.json` and `.kilo/mcp.json`) at the lowest precedence, below any
@@ -960,7 +960,7 @@ there by hand stays in effect after uninstall.
 
 ## WorkBuddy
 
-For [WorkBuddy](https://www.workbuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/MCP-Guide), setup writes `mcpServers.rea` into the
+For [WorkBuddy](https://www.workbuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/MCP-Guide), setup writes `mcpServers.acl-rea` into the
 global `~/.workbuddy/mcp.json` (a standard `mcpServers` JSON file at the user
 home root on every platform). Entries carry `command`, `args`, and `env`;
 stdio is the default transport. WorkBuddy discovers personal skills from
@@ -974,7 +974,7 @@ user-level file only. Loading this registration and real REA tool calls
 through WorkBuddy are verified.
 
 For CodeBuddy and WorkBuddy, REA's write checks cover their documented stdio
-entries. If an existing `rea` row contains fields whose native interpretation is
+entries. If an existing `acl-rea` row contains fields whose native interpretation is
 unclassified, setup preserves it and reports unknown write applicability before
 changing the file. Doctor retains any established launcher ownership while
 reporting alignment as unknown. This does not prevent safe removal of a row
@@ -1010,7 +1010,7 @@ writing a registration ZCode cannot load.
 
 ## FreeBuff
 
-For FreeBuff, `rea setup --client freebuff` writes `mcpServers.rea` into the
+For FreeBuff, `acl-rea setup --client freebuff` writes `mcpServers.acl-rea` into the
 user-scope `~/.agents/mcp.json` shared-agent file. Entries carry `command`,
 `args`, and `env`; stdio is the default transport. The personal skill location
 is `~/.agents/skills`, so setup installs its skill copy there. Because the same
@@ -1031,19 +1031,19 @@ FreeBuff or ZCode product applicability is established or unresolved, the same
 malformed shared file stops uninstall before removals. See
 [Diagnose, update, and remove](installation.md#diagnose-update-and-remove).
 
-FreeBuff setup support requires `rea-agents@6.8.0` or later (including the
+FreeBuff setup support requires `acl-rea-agents@6.8.0` or later (including the
 current npm `latest` release). Older versions reject
-`rea setup --client freebuff` as an unsupported client. See the
+`acl-rea setup --client freebuff` as an unsupported client. See the
 [installation guide](installation.md#supported-agents) for client availability.
 
 ## DeepSeek Harness
 
 DeepSeek Harness registers MCP clients through a Cordis YAML patch sequence
-rather than a `mcpServers` object. `rea setup --client dsh` appends (or
+rather than a `mcpServers` object. `acl-rea setup --client dsh` appends (or
 replaces) the REA entry in the home patch `$DSH_HOME/cordis.patch.yml`
 (`~/.dsh/cordis.patch.yml` when `DSH_HOME` is unset), preserving unrelated
-patches and comments. `rea doctor --client dsh` checks that same entry id.
-`rea uninstall` removes it by scanning supported clients; uninstall takes no
+patches and comments. `acl-rea doctor --client dsh` checks that same entry id.
+`acl-rea uninstall` removes it by scanning supported clients; uninstall takes no
 `--client` flag. The home patch applies to every Harness profile, so the
 registration is written once and no per-profile edit is needed.
 
@@ -1060,10 +1060,10 @@ The written entry is:
     - id: rea-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: /absolute/path/to/node
-        args: ["/absolute/path/to/rea/scripts/rea.mjs", mcp]
+        args: ["/absolute/path/to/acl-rea/scripts/acl-rea.mjs", mcp]
         toolCallTimeoutMs: 450000
 ```
 
@@ -1084,19 +1084,19 @@ that produces the entire REA config, or a group-targeted REA insertion. Use a
 literal config and a root-level insertion as shown above.
 
 For a global npm installation, the launcher is under
-`$(npm root -g)/rea-agents/scripts/rea.mjs`. Restart Harness after setup; it
-exposes tools as `mcp__rea__<tool_name>`. Run `rea setup --skill --dry-run`,
-review the destination, then `rea setup --skill --yes` to install the workflow
+`$(npm root -g)/acl-rea-agents/scripts/acl-rea.mjs`. Restart Harness after setup; it
+exposes tools as `mcp__acl-rea__<tool_name>`. Run `acl-rea setup --skill --dry-run`,
+review the destination, then `acl-rea setup --skill --yes` to install the workflow
 in `~/.agents/skills` (`$DSH_AGENTS_HOME/skills` when configured); Harness
 discovers that directory, and its native `skill` tool can load
-`reverse-engineer-anything`.
+`acl-reverse-engineer-anything`.
 
 Keep the default `full` catalog with Harness 0.2.0-rc.2. In a headless
 loopback-model probe, `discover_tools` activated the requested tool. Harness
 re-fetched `tools/list` and received the new definition, but its next model
 request still omitted that tool. Verify that an active task can call a newly
 listed tool before opting into hot/cold on another Harness version. To restore
-upfront advertisement, run `rea setup --client dsh --tool-catalog-profile full`
+upfront advertisement, run `acl-rea setup --client dsh --tool-catalog-profile full`
 and restart Harness.
 
 REA's optional [native client verification](../development/testing.md#end-to-end-integration-and-golden-evidence)
@@ -1118,17 +1118,17 @@ Install REA in a persistent location so the configuration below can use a stable
 entrypoint. For a project-local installation, run this in your chosen directory:
 
 ```bash
-npm install --save-exact rea-agents
+npm install --save-exact acl-rea-agents
 ```
 
 Or install it globally:
 
 ```bash
-npm install --global rea-agents
+npm install --global acl-rea-agents
 ```
 
 See [package runners and global installation](installation.md#package-runners-and-global-installation)
-for runtime requirements and installation options. Running `npx rea-agents setup`
+for runtime requirements and installation options. Running `npx acl-rea-agents setup`
 alone does not create either installation; do not use its temporary package-cache path.
 Use a llama.cpp build whose `llama-server --help` lists
 `--mcp-servers-config`; older builds without that option cannot use this route.
@@ -1140,9 +1140,9 @@ Save a JSON file, for example `rea-mcp.json`:
 ```json
 {
   "mcpServers": {
-    "rea": {
+    "acl-rea": {
       "command": "/absolute/path/to/node",
-      "args": ["/absolute/path/to/rea-agents/scripts/rea.mjs", "mcp"],
+      "args": ["/absolute/path/to/acl-rea-agents/scripts/acl-rea.mjs", "mcp"],
       "timeout_ms": 450000
     }
   }
@@ -1151,8 +1151,8 @@ Save a JSON file, for example `rea-mcp.json`:
 
 Replace both paths with your installation's actual paths. For a project-local npm
 installation, run `npm root` in that project; the script is under
-`$(npm root)/rea-agents/scripts/rea.mjs`. For a global installation, use
-`$(npm root -g)/rea-agents/scripts/rea.mjs` instead. Write the resulting absolute
+`$(npm root)/acl-rea-agents/scripts/acl-rea.mjs`. For a global installation, use
+`$(npm root -g)/acl-rea-agents/scripts/acl-rea.mjs` instead. Write the resulting absolute
 paths as JSON strings; llama-server does not expand shell expressions there.
 On Windows, use forward slashes, such as `"C:/Program Files/nodejs/node.exe"`,
 or double each backslash, as in `"C:\\Program Files\\nodejs\\node.exe"`.
@@ -1205,10 +1205,10 @@ checks from model behavior and lists the tested versions.
 
 ## Other client settings
 
-For OpenCode, setup writes the V1 `mcp.rea` entry, which OpenCode V1 and V2
+For OpenCode, setup writes the V1 `mcp.acl-rea` entry, which OpenCode V1 and V2
 both load. If the configuration already uses OpenCode V2's native
 `mcp.servers` table, setup registers REA there instead and replaces any earlier
-`mcp.rea` entry from REA. Setup honors `OPENCODE_CONFIG_DIR` and
+`mcp.acl-rea` entry from REA. Setup honors `OPENCODE_CONFIG_DIR` and
 `OPENCODE_CONFIG`, preferring the later-loaded JSONC file when both JSON and
 JSONC exist. The ordinary XDG global configuration still participates when a
 custom directory is selected. OpenCode V2 discovers project configuration
@@ -1223,14 +1223,14 @@ native row in the selected upper file whenever a loaded layer uses
 named `servers` that conflicts with the native table requires manual repair.
 Doctor checks the effective registration and reports its scope. For a project
 registration, run provider probes separately with settings you explicitly
-select in the terminal. Plain `rea uninstall` removes user
-registrations. Use `rea uninstall --project DIR` to select a project; REA
+select in the terminal. Plain `acl-rea uninstall` removes user
+registrations. Use `acl-rea uninstall --project DIR` to select a project; REA
 can remove an owned registration defined in that directory and checks whether
 removal would expose another launcher. Ancestors remain read-only.
 
-Grok Build loads `[mcp_servers.rea]` from `$GROK_HOME/config.toml`, or from
+Grok Build loads `[mcp_servers.acl-rea]` from `$GROK_HOME/config.toml`, or from
 `~/.grok/config.toml` when `GROK_HOME` is unset or empty. Setup edits that server
-table, `[mcp_servers.rea.env]`, and a root `disabled_mcp_servers` entry that
+table, `[mcp_servers.acl-rea.env]`, and a root `disabled_mcp_servers` entry that
 names `rea`. It defaults `startup_timeout_sec` to 30 seconds, preserves an
 existing positive timeout, and leaves every other name in that list.
 [Grok supports longer startup timeouts](https://docs.x.ai/build/features/mcp-servers)
@@ -1248,17 +1248,17 @@ the data directory as aligned. Ask the Grok Bot chat to add a custom MCP
 server named `rea` that runs on the Bot's computer:
 
 ```bash
-npx -y rea-agents@<version> mcp
+npx -y acl-rea-agents@<version> mcp
 ```
 
-Do not put credentials in that command or its arguments. `rea doctor --client grok_bot`
-reports this manual step. `rea uninstall` does not remove the account connector.
+Do not put credentials in that command or its arguments. `acl-rea doctor --client grok_bot`
+reports this manual step. `acl-rea uninstall` does not remove the account connector.
 
 ## Skill selection and maintenance
 
 With no client selected, the interactive skill choice targets the shared
 `~/.agents/skills` copy. Selecting a client targets its personal destination
-when supported. Use `rea setup --skill-client shared --skill` for the shared
+when supported. Use `acl-rea setup --skill-client shared --skill` for the shared
 copy, or `--skill-client claude_code --skill` for that client's copy. Setup
 resolves the final selection before deciding which files need installation.
 Doctor retains each selected stale or missing path and names the matching
@@ -1287,11 +1287,11 @@ policy.
 
 ## Persisted provider settings
 
-Use `rea config --set NAME=VALUE` to save a provider path in
-`${XDG_CONFIG_HOME:-~/.config}/rea/rea.json`. `rea config --get NAME --json`
+Use `acl-rea config --set NAME=VALUE` to save a provider path in
+`${XDG_CONFIG_HOME:-~/.config}/rea/acl-rea.json`. `acl-rea config --get NAME --json`
 shows the value and its source. For Hopper on macOS and Linux, it reports
 the launcher path the provider would try when no value is set.
-`rea config --unset NAME` removes the saved value. Environment variables override the file, and absent settings
+`acl-rea config --unset NAME` removes the saved value. Environment variables override the file, and absent settings
 use provider discovery. When setup relies on saved defaults from a non-default
 `XDG_CONFIG_HOME`, it records that directory only if the client registration
 does not already define `XDG_CONFIG_HOME`. Each MCP start reads the saved
@@ -1305,6 +1305,6 @@ Hopper and ILSpy. Setup leaves values from the saved file in that file so a
 later edit takes effect at the next MCP start.
 
 An edit to an existing file retains its original contents in
-`rea.json.rea.backup`. If doctor reports malformed or unreadable configuration,
+`acl-rea.json.acl-rea.backup`. If doctor reports malformed or unreadable configuration,
 repair the named file or restore the verified backup. MCP startup reports the
 same file error.

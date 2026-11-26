@@ -27,13 +27,13 @@ cliTest(
     const claude = join(home, ".claude.json");
     const legacy = JSON.stringify({
       mcp: {
-        rea: { type: "local", command: ["/usr/bin/false"], enabled: true },
+        "acl-rea": { type: "local", command: ["/usr/bin/false"], enabled: true },
       },
     });
     const native = JSON.stringify({
       mcp: {
         servers: {
-          rea: {
+          "acl-rea": {
             type: "local",
             command: [PRODUCT_IDENTITY.cliBinary, "mcp"],
             disabled: false,
@@ -45,7 +45,7 @@ cliTest(
     await writeFile(upper, native);
     const claudeOriginal = JSON.stringify({
       mcpServers: {
-        rea: { command: PRODUCT_IDENTITY.cliBinary, args: ["mcp"] },
+        "acl-rea": { command: PRODUCT_IDENTITY.cliBinary, args: ["mcp"] },
       },
     });
     await writeFile(claude, claudeOriginal);
@@ -74,16 +74,16 @@ cliTest(
     expect(await readFile(lower, "utf8")).toBe(legacy);
     expect(await readFile(upper, "utf8")).toBe(native);
     expect(await readFile(claude, "utf8")).toBe(claudeOriginal);
-    await expect(access(`${claude}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${claude}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
-    await expect(access(`${upper}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${upper}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
     // A foreign later fragment can inherit fields from an owned V1 entry.
     const ownedLegacy = JSON.stringify({
       mcp: {
-        rea: {
+        "acl-rea": {
           type: "local",
           command: [PRODUCT_IDENTITY.cliBinary, "mcp"],
           enabled: true,
@@ -91,7 +91,7 @@ cliTest(
       },
     });
     const foreignPartial = JSON.stringify({
-      mcp: { rea: { command: ["/usr/bin/false"] } },
+      mcp: { "acl-rea": { command: ["/usr/bin/false"] } },
     });
     await writeFile(lower, ownedLegacy);
     await writeFile(upper, foreignPartial);
@@ -101,7 +101,7 @@ cliTest(
     expect(await readFile(lower, "utf8")).toBe(ownedLegacy);
     expect(await readFile(upper, "utf8")).toBe(foreignPartial);
     expect(await readFile(claude, "utf8")).toBe(claudeOriginal);
-    await expect(access(`${lower}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${lower}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
 
@@ -126,16 +126,16 @@ cliTest(
     const second = join(directory, "opencode.jsonc");
     const original = JSON.stringify({
       mcp: {
-        rea: {
+        "acl-rea": {
           type: "local",
-          command: ["npx", "-y", "rea-agents@6.7.0", "mcp"],
+          command: ["npx", "-y", "acl-rea-agents@6.7.0", "mcp"],
         },
       },
       unrelated: "keep",
     });
     await writeFile(first, original);
     await writeFile(second, original);
-    await mkdir(`${second}.rea.backup`);
+    await mkdir(`${second}.acl-rea.backup`);
     const run = () =>
       cli.run({
         arguments: ["uninstall", "--json"],
@@ -181,10 +181,10 @@ cliTest(
       mcp: {},
       unrelated: "keep",
     });
-    expect(await readFile(`${first}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${first}.acl-rea.backup`, "utf8")).toBe(original);
     expect(await readFile(second, "utf8")).toBe(original);
 
-    await rm(`${second}.rea.backup`, { recursive: true });
+    await rm(`${second}.acl-rea.backup`, { recursive: true });
     const recovered = await run();
     expect(recovered.exitCode, recovered.stderr).toBe(0);
     expect(recovered.json).toMatchObject({ status: "complete" });
@@ -192,8 +192,8 @@ cliTest(
       mcp: {},
       unrelated: "keep",
     });
-    expect(await readFile(`${first}.rea.backup`, "utf8")).toBe(original);
-    expect(await readFile(`${second}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${first}.acl-rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${second}.acl-rea.backup`, "utf8")).toBe(original);
   },
 );
 
@@ -289,7 +289,7 @@ cliTest(
       await mkdir(join(unrelated, name), { recursive: true });
       await writeFile(join(unrelated, name, "keep.txt"), `unrelated ${name}`);
     }
-    const managedRoot = join(home, ".rea");
+    const managedRoot = join(home, ".acl-rea");
     await symlink(
       unrelated,
       managedRoot,
@@ -339,7 +339,7 @@ for (const group of groups) {
       const profiles = group.cases.map((testCase) => ({
         ...testCase,
         config: join(home, testCase.config),
-        skillDirectory: join(home, testCase.skill, "reverse-engineer-anything"),
+        skillDirectory: join(home, testCase.skill, "acl-reverse-engineer-anything"),
       }));
       const clientArguments = profiles.flatMap(({ client }) => [
         "--client",
@@ -385,7 +385,7 @@ for (const group of groups) {
         await expect(access(config)).resolves.toBeUndefined();
         expect(
           await readFile(join(skillDirectory, "SKILL.md"), "utf8"),
-        ).toContain("reverse-engineer-anything");
+        ).toContain("acl-reverse-engineer-anything");
       }
       await expect(access(join(home, "config.toml"))).rejects.toMatchObject({
         code: "ENOENT",
@@ -416,8 +416,8 @@ for (const group of groups) {
         if (client === "grok_build") {
           const original = await readFile(config, "utf8");
           const disabled = original.replace(
-            "[mcp_servers.rea]",
-            "[mcp_servers.rea]\ndisabled = true",
+            "[mcp_servers.acl-rea]",
+            "[mcp_servers.acl-rea]\ndisabled = true",
           );
           expect(disabled).not.toBe(original);
           await writeFile(config, disabled);

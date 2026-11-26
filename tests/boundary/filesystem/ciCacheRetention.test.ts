@@ -343,7 +343,7 @@ describe("npm download duplicate retention", () => {
 });
 
 describe("retention orchestration", () => {
-  const repository = "morluto/rea";
+  const repository = "Ashz05/ACL-REA";
   const prefix = "rea-static-v1-Linux-X64-";
 
   it("deletes nothing when a later list is incomplete", async () => {
@@ -379,7 +379,7 @@ describe("retention orchestration", () => {
 });
 
 describe("cache listing and retention", () => {
-  const repository = "morluto/rea";
+  const repository = "Ashz05/ACL-REA";
   const prefix = "rea-static-v1-Linux-X64-";
 
   it("deletes nothing when the cache listing reaches the page cap", async () => {
@@ -513,7 +513,7 @@ describe("cache listing and retention", () => {
 });
 
 describe("repeated cache ids", () => {
-  const repository = "morluto/rea";
+  const repository = "Ashz05/ACL-REA";
   const prefix = "rea-static-v1-Linux-X64-";
 
   it("treats one cache id on two pages as a single snapshot", () => {
@@ -572,7 +572,7 @@ exit 1
       env: {
         ...process.env,
         PATH: `${root}${delimiter}${process.env.PATH ?? ""}`,
-        CI_REPOSITORY: "morluto/rea",
+        CI_REPOSITORY: "Ashz05/ACL-REA",
         CACHE_PREFIX: "npm-download-Linux-x64-",
         CACHE_KEEP_KEY: "npm-download-Linux-x64-lock",
       },

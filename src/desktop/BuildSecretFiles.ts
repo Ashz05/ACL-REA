@@ -39,7 +39,7 @@ import { decodeStrictUtf8 } from "../domain/strictUtf8.js";
 /** The most bytes a secret file of at most `characters` may hold: those in UTF-8 and a line break. */
 const maxFileBytes = (characters: number) => characters * 4 + 2;
 
-/** The folder of secret files on the build host: `rea/build-secrets` under the XDG config folder, or `~/.config`. */
+/** The folder of secret files on the build host: `acl-rea/build-secrets` under the XDG config folder, or `~/.config`. */
 export const buildSecretsDirectory = (
   environment: Readonly<NodeJS.ProcessEnv>,
   platform: NodeJS.Platform,
@@ -50,7 +50,7 @@ export const buildSecretsDirectory = (
     // XDG_CONFIG_HOME leaves it unused.
     join(homeDirectoryFromEnvironment(environment, platform), ".config"),
   );
-  return join(root, "rea", "build-secrets");
+  return join(root, "acl-rea", "build-secrets");
 };
 
 const errorCode = (cause: unknown): unknown =>

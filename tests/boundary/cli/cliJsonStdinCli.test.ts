@@ -41,7 +41,7 @@ cliTest.for([false, true])(
     const child = processes.spawn(
       process.execPath,
       [
-        resolve("scripts/rea.mjs"),
+        resolve("scripts/acl-rea.mjs"),
         ...(snapshot
           ? ["environment-serve", "-", "--evidence", "{}"]
           : ["compare-wasm-interfaces", "-"]),
@@ -137,7 +137,7 @@ cliTest.skipIf(process.platform === "win32").for(
   async ({ command, signal, exitCode }, { processes }) => {
     const child = processes.spawn(
       process.execPath,
-      [resolve("scripts/rea.mjs"), command, "-", "--json"],
+      [resolve("scripts/acl-rea.mjs"), command, "-", "--json"],
       {
         env: {
           ...process.env,

@@ -43,7 +43,7 @@ it.each(["missing", "empty", "legacy", "native"] as const)(
     const originalLower = JSON.stringify({
       mcp: {
         servers: {
-          rea: { type: "local", command, disabled: true },
+          "acl-rea": { type: "local", command, disabled: true },
           other: { type: "local", command: ["other"], disabled: true },
         },
       },
@@ -57,7 +57,7 @@ it.each(["missing", "empty", "legacy", "native"] as const)(
           ...(shape === "legacy"
             ? {
                 mcp: {
-                  rea: {
+                  "acl-rea": {
                     type: "local",
                     command,
                     enabled: true,
@@ -97,14 +97,14 @@ it.each(["missing", "empty", "legacy", "native"] as const)(
         : effectiveClientServer(effective, "rea"),
     ).toMatchObject({ disabled: false });
     const written = JSON.parse(await readFile(upper, "utf8"));
-    expect(written.mcp.servers.rea).toMatchObject({
+    expect(written.mcp.servers["acl-rea"]).toMatchObject({
       type: "local",
       command,
       disabled: false,
     });
     if (shape === "legacy")
-      expect(written.mcp.servers.rea.future_policy).toEqual({ retain: true });
-    expect(written.mcp.rea).toBeUndefined();
+      expect(written.mcp.servers["acl-rea"].future_policy).toEqual({ retain: true });
+    expect(written.mcp["acl-rea"]).toBeUndefined();
     expect(await inspectClientConfiguration(client, {}, command)).toEqual({
       status: "already_current",
     });
@@ -126,7 +126,7 @@ const layered = async (lower: unknown, upper: unknown) => {
   const sources = [lower, upper].map((environment) =>
     JSON.stringify({
       mcp: {
-        rea: {
+        "acl-rea": {
           ...clientRegistrationEntry("opencode", command, {}),
           environment,
         },
@@ -152,7 +152,7 @@ const layered = async (lower: unknown, upper: unknown) => {
   const unchanged = async () => {
     for (const [index, path] of paths.entries()) {
       expect(await readFile(path, "utf8")).toBe(sources[index]);
-      await expect(access(`${path}.rea.backup`)).rejects.toMatchObject({
+      await expect(access(`${path}.acl-rea.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
     }
@@ -288,7 +288,7 @@ it("keeps higher-priority values and does not copy inherited settings into the w
     },
   );
   expect(
-    await readFile(`${fixture.client.configPath}.rea.backup`, "utf8"),
+    await readFile(`${fixture.client.configPath}.acl-rea.backup`, "utf8"),
   ).toBe(fixture.sources[1]);
   expect(await fixture.status()).toMatchObject({ state: "aligned" });
   expect(await clientConfigurationAligned(fixture.client, {}, command)).toBe(
@@ -378,7 +378,7 @@ it("uses inherited settings when creating a missing write layer", async () => {
   expect(await readFile(fixture.paths[0]!, "utf8")).toBe(fixture.sources[0]);
   expect(await fixture.status()).toMatchObject({ state: "aligned" });
   await expect(
-    access(`${fixture.client.configPath}.rea.backup`),
+    access(`${fixture.client.configPath}.acl-rea.backup`),
   ).rejects.toMatchObject({ code: "ENOENT" });
 });
 
@@ -406,7 +406,7 @@ it("replaces the selected write layer rather than the last loaded layer", async 
     ...overrides,
   });
   expect(await readFile(fixture.paths[1]!, "utf8")).toBe(fixture.sources[1]);
-  expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+  expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
     fixture.sources[0],
   );
   expect(await clientConfigurationAligned(client, {}, command)).toBe(true);

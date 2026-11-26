@@ -74,7 +74,7 @@ the opener and the artifact readers. An opener alone never advertises an Apple
 resource route; opening resources switches away from the active binary session.
 Workflows missing a required tool are omitted from `prompts/list`, and
 `prompts/get` reports them as not found. Rendering, the server identity digest,
-and `rea mcp doctor` use the same scoped contracts, so guidance never directs
+and `acl-rea mcp doctor` use the same scoped contracts, so guidance never directs
 the agent to a disabled call.
 
 Every rendered prompt provides optional starting points using current REA tool
@@ -91,7 +91,7 @@ For a JavaScript/Electron application directory, `investigate_feature` points
 directly to `analyze_javascript_application` with `input_path`; it does not
 require `open_binary`. When that Evidence, or `inspect_binary_layout` Evidence,
 is already retained, it suggests `inspect_analysis_view` before tracing a
-feature seed. The CLI equivalent is `rea analyze <directory>`.
+feature seed. The CLI equivalent is `acl-rea analyze <directory>`.
 `open_binary` and the doctor target check admit files and Apple bundle
 directories (`.app`, `.appex`, `.framework`, `.xpc`, `.systemextension`,
 `.bundle` and `.plugin`). Another Apple bundle type is refused as unsupported,

@@ -39,7 +39,7 @@ const rootFixture = await VerifierFixture.open({
 });
 const root = rootFixture.path;
 const resources = new ArtifactResourceScope();
-const entrypoint = resolve("scripts/rea.mjs");
+const entrypoint = resolve("scripts/acl-rea.mjs");
 const environment = Object.fromEntries(
   Object.entries(process.env).filter(([, value]) => typeof value === "string"),
 );

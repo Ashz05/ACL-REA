@@ -1,4 +1,4 @@
-$ rea setup --dry-run  # stdout is a terminal
+$ acl-rea setup --dry-run  # stdout is a terminal
 exit: 0
 --- stdout
 <end>

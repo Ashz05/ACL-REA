@@ -60,7 +60,7 @@ it.each<{
       await writeFile(
         configPath,
         JSON.stringify({
-          mcpServers: { rea: { command: "rea", args: ["mcp"], env: stored } },
+          mcpServers: { "acl-rea": { command: "acl-rea", args: ["mcp"], env: stored } },
         }),
       );
     const result = await readClientConfigurationFiles(

@@ -34,9 +34,9 @@ cliTest(
     const original = JSON.stringify(
       {
         "amp.mcpServers": {
-          rea: {
+          "acl-rea": {
             command: "npx",
-            args: ["-y", "rea-agents@6.8.0", "mcp"],
+            args: ["-y", "acl-rea-agents@6.8.0", "mcp"],
             env: { KEEP_ME: "1" },
             disabled: false,
           },
@@ -67,13 +67,13 @@ cliTest(
       {
         client: "amp",
         status: "configured",
-        backup_path: `${settingsPath}.rea.backup`,
+        backup_path: `${settingsPath}.acl-rea.backup`,
       },
     ]);
     const after = JSON.parse(await readFile(settingsPath, "utf8"));
     expect(after).toMatchObject({
       "amp.mcpServers": {
-        rea: {
+        "acl-rea": {
           command: firstReport.command,
           args: firstReport.args,
           env: { KEEP_ME: "1" },
@@ -83,7 +83,7 @@ cliTest(
       },
       theme: "dark",
     });
-    expect(await readFile(`${settingsPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${settingsPath}.acl-rea.backup`, "utf8")).toBe(original);
     const beforeEquals = await readFile(settingsPath, "utf8");
     const beforeState = await stat(settingsPath);
     const equals = await run([]);
@@ -96,7 +96,7 @@ cliTest(
     expect(equals.stderr).not.toContain("backup retained");
     expect(await readdir(join(home, ".config", "amp"))).toEqual([
       "settings.json",
-      "settings.json.rea.backup",
+      "settings.json.acl-rea.backup",
     ]);
     const command = String.raw`C:\Program Files\server.exe`;
     const argument = String.raw`C:\data\file`;
@@ -116,9 +116,9 @@ cliTest(
     expect(await readFile(changedReceipt.backup_path, "utf8")).toBe(
       beforeEquals,
     );
-    expect(await readFile(`${settingsPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${settingsPath}.acl-rea.backup`, "utf8")).toBe(original);
     expect(
-      JSON.parse(await readFile(settingsPath, "utf8"))["amp.mcpServers"].rea,
+      JSON.parse(await readFile(settingsPath, "utf8"))["amp.mcpServers"]["acl-rea"],
     ).toMatchObject({
       command,
       args: [argument, "", "--mcp"],
@@ -133,7 +133,7 @@ cliTest(
   async ({ cli }) => {
     const root = await createTestTempDirectory("rea-amp-rejected-");
     for (const [index, source] of [
-      '{ "amp.mcpServers": { "rea": {} ',
+      '{ "amp.mcpServers": { "acl-rea": {} ',
       "null\n",
       '{"amp.mcpServers": []}\n',
       '{"amp.mcpServers": {}}\n',
@@ -143,7 +143,7 @@ cliTest(
       const settingsPath = ampSettings(home);
       await mkdir(join(home, ".config", "amp"), { recursive: true });
       await writeFile(settingsPath, source);
-      if (index === 3) await mkdir(`${settingsPath}.rea.backup`);
+      if (index === 3) await mkdir(`${settingsPath}.acl-rea.backup`);
       const rejected = await cli.run({
         arguments: ["mcp", "add", "--agent", "amp", "--json"],
         cwd: root,
@@ -163,7 +163,7 @@ cliTest(
       expect(await readFile(settingsPath, "utf8")).toBe(source);
       expect(await readdir(join(home, ".config", "amp"))).toEqual(
         index === 3
-          ? ["settings.json", "settings.json.rea.backup"]
+          ? ["settings.json", "settings.json.acl-rea.backup"]
           : ["settings.json"],
       );
     }
@@ -174,7 +174,7 @@ it("keeps the first registration backup and secures later recovery copies", asyn
   const root = await createTestTempDirectory("rea-amp-backup-permissions-");
   const settingsPath = join(root, "settings.json");
   const settingsText =
-    '{"amp.mcpServers":{"rea":{"env":{"TOKEN":"secret"}}}}\n';
+    '{"amp.mcpServers":{"acl-rea":{"env":{"TOKEN":"secret"}}}}\n';
   await writeFile(settingsPath, settingsText);
   const backup = await writeClientRegistrationBackup(
     settingsPath,
@@ -211,7 +211,7 @@ it("keeps the first registration backup and secures later recovery copies", asyn
 it("returns a tagged failure when the registration backup path is occupied", async () => {
   const root = await createTestTempDirectory("rea-amp-backup-occupied-");
   const settingsPath = join(root, "settings.json");
-  const backupPath = `${settingsPath}.rea.backup`;
+  const backupPath = `${settingsPath}.acl-rea.backup`;
   await writeFile(settingsPath, "{}\n");
   await mkdir(backupPath);
   expect(

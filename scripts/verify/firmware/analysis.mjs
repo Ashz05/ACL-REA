@@ -26,7 +26,7 @@ const MAX_STDOUT_BYTES = 16 * 1024 * 1024;
 const REPO_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 const ENTRYPOINT = resolve(
   process.env.REA_FIRMWARE_TEST_ENTRYPOINT ??
-    join(REPO_ROOT, "scripts/rea.mjs"),
+    join(REPO_ROOT, "scripts/acl-rea.mjs"),
 );
 const FIXTURE_ROOT = resolve(
   process.env.REA_FIRMWARE_FIXTURE_ROOT ??

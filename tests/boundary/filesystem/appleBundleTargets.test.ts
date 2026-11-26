@@ -234,7 +234,7 @@ describe("Apple bundle directories that fail closed", () => {
     });
     expect(projected.remediation.action).toContain(plist);
     expect(projected.remediation.action).toContain("inspect_plist");
-    expect(projected.remediation.action).not.toContain("rea inspect-plist");
+    expect(projected.remediation.action).not.toContain("acl-rea inspect-plist");
   });
 
   it("names the Info.plist when the declared program file is absent", async () => {

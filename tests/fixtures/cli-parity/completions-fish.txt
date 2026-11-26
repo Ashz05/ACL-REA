@@ -1,4 +1,4 @@
-$ rea completions fish
+$ acl-rea completions fish
 exit: 0
 --- stdout
 complete --keep-order --exclusive --command rea \

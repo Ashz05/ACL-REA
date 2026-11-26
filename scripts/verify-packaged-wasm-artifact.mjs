@@ -50,9 +50,9 @@ const verifiedOutput = await withVerifierCleanup(async () => {
     ...(process.platform === "win32"
       ? ["node_modules"]
       : ["lib", "node_modules"]),
-    "rea-agents",
+    "acl-rea-agents",
     "scripts",
-    "rea.mjs",
+    "acl-rea.mjs",
   );
   const verified = await commands.exec(
     process.execPath,

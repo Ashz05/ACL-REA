@@ -19,7 +19,7 @@ pyelftools 0.33 and Unicorn 2.1.2:
 
 ```sh
 REA_PWNTOOLS_PYTHON=/absolute/isolated-env/bin/python \
-  rea inspect-binary-layout ./selected.elf --json
+  acl-rea inspect-binary-layout ./selected.elf --json
 ```
 
 ```json
@@ -32,7 +32,7 @@ REA_PWNTOOLS_PYTHON=/absolute/isolated-env/bin/python \
 REA never installs Python, packages or GDB, changes a user init file, launches
 the selected object as a host process, or requests runtime library resolution. The Python process
 uses isolated mode and an owned cache. Exact upstream profiles are recorded in
-[upstream provenance](https://github.com/morluto/rea/blob/main/third_party/pwntools/README.md).
+[upstream provenance](https://github.com/Ashz05/ACL-REA/blob/main/third_party/pwntools/README.md).
 
 The adapter skips pwntools kernel configuration and version discovery: those
 memory-content scans supply none of this report's fields. Ordinary `IKCFG_ST`
@@ -216,7 +216,7 @@ the session until release succeeds.
 A kernel or container OOM killer ends Ghidra with `SIGKILL` and prints no
 `OutOfMemoryError`. When a process or protocol failure records
 `exit_signal: "SIGKILL"` and no `stop_requested`, REA reports the signal
-instead of generic `rea doctor` advice. The process supervisor records
+instead of generic `acl-rea doctor` advice. The process supervisor records
 `stop_requested: true` once REA begins stopping Ghidra, before it sends any
 signal, so REA's own SIGKILL is never reported as an outside kill.
 
@@ -285,7 +285,7 @@ in the file. Import rows carry `iat_va` beside `iat_rva`. Export rows keep
 PE32+ file without an active target, native engine, Python, or Windows SDK:
 
 ```sh
-rea inspect-pe-resources ./selected.exe --json
+acl-rea inspect-pe-resources ./selected.exe --json
 ```
 
 ```json
@@ -351,8 +351,8 @@ normalization remains lexical and does not probe source-discovered paths.
 without an analysis engine, execution, extraction or network access.
 
 ```sh
-rea inspect-byte-entropy ./firmware.bin --block-size 4096 --json
-rea inspect-byte-entropy ./firmware.bin --offset 4096 --length 65536 --json
+acl-rea inspect-byte-entropy ./firmware.bin --block-size 4096 --json
+acl-rea inspect-byte-entropy ./firmware.bin --offset 4096 --length 65536 --json
 ```
 
 ```json
@@ -436,7 +436,7 @@ explicit PE or ELF image on any supported host, without an active target,
 native engine, `objdump` or Windows SDK:
 
 ```sh
-rea inspect-native-exports ./runtimes/linux-x64/native/libexample.so --json
+acl-rea inspect-native-exports ./runtimes/linux-x64/native/libexample.so --json
 ```
 
 ```json
@@ -489,7 +489,7 @@ does not make a partial source complete. Retained views never reopen the file.
 The CLI uses the same projector and requires a durable bundle for a summary:
 
 ```sh
-rea inspect-native-exports ./libexample.so --detail summary --evidence_output ./exports.bundle.json --json
+acl-rea inspect-native-exports ./libexample.so --detail summary --evidence_output ./exports.bundle.json --json
 # Pass the summary's parent ID and the same view as JSON to inspect-analysis-view,
 # together with --evidence-bundle ./exports.bundle.json.
 ```
@@ -586,7 +586,7 @@ image on any supported host, without executing it, invoking the dynamic
 loader, or opening a disassembler:
 
 ```sh
-rea inspect-elf-dependencies ./program --json
+acl-rea inspect-elf-dependencies ./program --json
 ```
 
 It reports needed libraries, search paths, symbol versions and versioned

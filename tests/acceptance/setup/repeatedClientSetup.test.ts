@@ -143,9 +143,9 @@ cliTest(
     const removed = await run(["uninstall"]);
     expect(removed.exitCode, removed.stderr).toBe(0);
     expect(removed.json).toMatchObject({ status: "complete" });
-    const recovery = `${config}.rea.backup.${createHash("sha256").update(current).digest("hex")}.recovery`;
+    const recovery = `${config}.acl-rea.backup.${createHash("sha256").update(current).digest("hex")}.recovery`;
     expect(await readFile(recovery, "utf8")).toBe(current);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
     expect(JSON.parse(await readFile(config, "utf8"))).toEqual({
       mcpServers: { other: { command: "edited-server" } },
     });

@@ -35,7 +35,7 @@ describe("client registration status", () => {
       join(home, ".claude.json"),
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: "npx",
             args: ["-y", PRODUCT_IDENTITY.registrationPackageSpecifier, "mcp"],
           },
@@ -77,13 +77,13 @@ describe("client registration status", () => {
     ]);
     await writeFile(
       join(home, ".codex/config.toml"),
-      `[mcp_servers.rea]\ncommand = ${JSON.stringify(currentCommand[0])}\nargs = ${JSON.stringify(currentCommand.slice(1))}\nstartup_timeout_sec = 30\ntool_timeout_sec = 450\n`,
+      `[mcp_servers.acl-rea]\ncommand = ${JSON.stringify(currentCommand[0])}\nargs = ${JSON.stringify(currentCommand.slice(1))}\nstartup_timeout_sec = 30\ntool_timeout_sec = 450\n`,
     );
     await writeFile(
       join(home, ".cursor/mcp.json"),
       JSON.stringify({
         mcpServers: {
-          rea: { command: foreignEntry, args: ["mcp"], env: { SECRET: "x" } },
+          "acl-rea": { command: foreignEntry, args: ["mcp"], env: { SECRET: "x" } },
         },
       }),
     );
@@ -151,7 +151,7 @@ describe("client registration environment validation", () => {
       join(home, ".lmstudio/mcp.json"),
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: "npx",
             args: ["-y", PRODUCT_IDENTITY.registrationPackageSpecifier, "mcp"],
             env: { REA_MCP_INPUT_SCHEMA_PROFILE: "invalid" },
@@ -179,7 +179,7 @@ describe("client registration environment validation", () => {
       join(home, ".cursor/mcp.json"),
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: "npx",
             args: ["-y", PRODUCT_IDENTITY.registrationPackageSpecifier, "mcp"],
             env: { REA_MCP_TOOL_FAMILIES: "session,typo" },
@@ -216,16 +216,16 @@ describe("client registration environment validation", () => {
     };
     await writeFile(
       join(home, ".cursor/mcp.json"),
-      JSON.stringify({ mcpServers: { rea: entry } }),
+      JSON.stringify({ mcpServers: { "acl-rea": entry } }),
     );
     for (const path of [".lmstudio/mcp.json", ".kimi-code/mcp.json"])
       await writeFile(
         join(home, path),
-        JSON.stringify({ mcpServers: { rea: entry } }),
+        JSON.stringify({ mcpServers: { "acl-rea": entry } }),
       );
     await writeFile(
       join(home, ".codex/config.toml"),
-      `[mcp_servers.rea]\ncommand = "npx"\nargs = ["-y", "${PRODUCT_IDENTITY.registrationPackageSpecifier}", "mcp"]\n`,
+      `[mcp_servers.acl-rea]\ncommand = "npx"\nargs = ["-y", "${PRODUCT_IDENTITY.registrationPackageSpecifier}", "mcp"]\n`,
     );
     const resolveProviderRequestBudget = async () =>
       err(new ConfigurationError("budget unavailable"));
@@ -256,11 +256,11 @@ describe("client registration launcher identity", () => {
     await mkdir(join(home, ".codex"));
     await writeFile(
       join(home, ".codex", "config.toml"),
-      '[mcp_servers.rea]\ncommand = "npx"\nargs = ["-y", "rea-agents", "mcp"]\nstartup_timeout_sec = 30\ntool_timeout_sec = 450\n',
+      '[mcp_servers.acl-rea]\ncommand = "npx"\nargs = ["-y", "acl-rea-agents", "mcp"]\nstartup_timeout_sec = 30\ntool_timeout_sec = 450\n',
     );
     await writeFile(
       join(home, ".claude.json"),
-      '{"mcpServers":{"rea":{"command":"bunx","args":["rea-agents","mcp"]}}}',
+      '{"mcpServers":{"acl-rea":{"command":"bunx","args":["acl-rea-agents","mcp"]}}}',
     );
 
     const statuses = await readClientRegistrationStatuses(home, undefined, {
@@ -269,16 +269,16 @@ describe("client registration launcher identity", () => {
     expect(statuses).toEqual([
       expect.objectContaining({
         client: "claude_code",
-        command: ["bunx", "rea-agents", "mcp"],
+        command: ["bunx", "acl-rea-agents", "mcp"],
         command_identity: "owned",
-        package_reference: "rea-agents",
+        package_reference: "acl-rea-agents",
         state: "stale",
       }),
       expect.objectContaining({
         client: "codex",
-        command: ["npx", "-y", "rea-agents", "mcp"],
+        command: ["npx", "-y", "acl-rea-agents", "mcp"],
         command_identity: "owned",
-        package_reference: "rea-agents",
+        package_reference: "acl-rea-agents",
         state: "stale",
       }),
     ]);
@@ -287,10 +287,10 @@ describe("client registration launcher identity", () => {
   it("preserves direct command identity as unknown when the current entrypoint is absent", async () => {
     const home = await createTestTempDirectory("rea-registration-unknown-");
     await mkdir(join(home, ".cursor"));
-    const command = ["/opt/rea/bin/rea", "mcp"];
+    const command = ["/opt/acl-rea/bin/acl-rea", "mcp"];
     const config = join(home, ".cursor/mcp.json");
     const original = JSON.stringify({
-      mcpServers: { rea: { command: command[0], args: [command[1]] } },
+      mcpServers: { "acl-rea": { command: command[0], args: [command[1]] } },
     });
     await writeFile(config, original);
 
@@ -321,17 +321,17 @@ describe("client registration launcher identity", () => {
   it("does not use the REA process cwd to resolve a client's relative launcher path", async () => {
     const home = await createTestTempDirectory("rea-registration-relative-");
     await mkdir(join(home, ".cursor"));
-    const currentEntry = resolve("./rea.mjs");
+    const currentEntry = resolve("./acl-rea.mjs");
     const configPath = join(home, ".cursor/mcp.json");
     const registration = (
       scriptPath: string,
       executable = process.execPath,
     ) => ({
       mcpServers: {
-        rea: { command: executable, args: [scriptPath, "mcp"] },
+        "acl-rea": { command: executable, args: [scriptPath, "mcp"] },
       },
     });
-    await writeFile(configPath, JSON.stringify(registration("./rea.mjs")));
+    await writeFile(configPath, JSON.stringify(registration("./acl-rea.mjs")));
 
     const [relativeStatus] = await readClientRegistrationStatuses(
       home,
@@ -339,7 +339,7 @@ describe("client registration launcher identity", () => {
       { platform: HOST_PLATFORM.platform },
     );
     expect(relativeStatus).toMatchObject({
-      command: [process.execPath, "./rea.mjs", "mcp"],
+      command: [process.execPath, "./acl-rea.mjs", "mcp"],
       state: "unknown",
     });
 
@@ -382,11 +382,11 @@ describe("client registration package version identity", () => {
         "rea-registration-version-drift-",
       );
       await mkdir(join(home, ".codex"));
-      const reference = `rea-agents@${version}`;
+      const reference = `acl-rea-agents@${version}`;
       const command = ["npx", "-y", reference, "mcp"];
       await writeFile(
         join(home, ".codex/config.toml"),
-        `[mcp_servers.rea]\ncommand = "${command[0]}"\nargs = ["${command[1]}", "${command[2]}", "${command[3]}"]\n`,
+        `[mcp_servers.acl-rea]\ncommand = "${command[0]}"\nargs = ["${command[1]}", "${command[2]}", "${command[3]}"]\n`,
       );
 
       const [status] = await readClientRegistrationStatuses(home, undefined, {
@@ -409,14 +409,14 @@ describe("client registration package version identity", () => {
         expect(status?.remediation).toContain(
           "does not resolve package-runner",
         );
-        expect(status?.remediation).toContain("rea setup --client codex");
+        expect(status?.remediation).toContain("acl-rea setup --client codex");
       } else {
         expect(status?.remediation).not.toContain("current REA CLI package");
         expect(status?.remediation).not.toContain(
           "does not resolve package-runner",
         );
       }
-      expect(status?.remediation).toContain("rea setup");
+      expect(status?.remediation).toContain("acl-rea setup");
     },
   );
 });
@@ -429,11 +429,11 @@ describe("commandcode registration status", () => {
     await mkdir(join(home, ".commandcode"));
     await writeFile(
       join(home, ".commandcode/mcp.json"),
-      JSON.stringify({ mcpServers: { rea: registration } }),
+      JSON.stringify({ mcpServers: { "acl-rea": registration } }),
     );
   };
 
-  const entry = resolve("scripts/rea.mjs");
+  const entry = resolve("scripts/acl-rea.mjs");
   const ownedArgs = (): readonly string[] => [entry, "mcp"];
 
   // Published command-code1.88.5 file loading accepts defaults and type aliases;
@@ -512,7 +512,7 @@ describe("commandcode registration status", () => {
 it("reports activation using only the key each client honors", async () => {
   const home = await createTestTempDirectory("rea-registration-activation-");
   const platform = HOST_PLATFORM.platform;
-  const entry = resolve("scripts/rea.mjs");
+  const entry = resolve("scripts/acl-rea.mjs");
   const launcher = { command: process.execPath, args: [entry, "mcp"] };
   const codex = join(home, ".codex", "config.toml");
   const kimi = join(home, ".kimi-code", "mcp.json");
@@ -530,13 +530,13 @@ it("reports activation using only the key each client honors", async () => {
     const disabled = expected === "disabled";
     await writeFile(
       codex,
-      `[mcp_servers.rea]\ncommand = ${JSON.stringify(launcher.command)}\nargs = ${JSON.stringify(launcher.args)}\nstartup_timeout_sec = 30\ntool_timeout_sec = 450\n${disabled ? "enabled = false" : "disabled = true"}\n`,
+      `[mcp_servers.acl-rea]\ncommand = ${JSON.stringify(launcher.command)}\nargs = ${JSON.stringify(launcher.args)}\nstartup_timeout_sec = 30\ntool_timeout_sec = 450\n${disabled ? "enabled = false" : "disabled = true"}\n`,
     );
     await writeFile(
       kimi,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             ...launcher,
             env: { REA_MCP_INPUT_SCHEMA_PROFILE: "compact" },
             startupTimeoutMs: 30_000,
@@ -550,7 +550,7 @@ it("reports activation using only the key each client honors", async () => {
       devin,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             ...launcher,
             ...(disabled ? { disabled: true } : { enabled: false }),
           },
@@ -606,7 +606,7 @@ describe("Ghidra multi-function deadline registration advice", () => {
       const configPath = join(home, ".codex/config.toml");
       // Two 600-second Ghidra decompiles plus startup/headroom would need an
       // estimated 1650 seconds. A caller's shorter or longer choice stays theirs.
-      const original = `[mcp_servers.rea]\ncommand = ${JSON.stringify(process.execPath)}\nargs = [${JSON.stringify(entry)}, "mcp"]\nstartup_timeout_sec = 30\ntool_timeout_sec = ${timeout}\n[mcp_servers.rea.env]\nREA_ANALYSIS_PROVIDER = "${provider}"\nREA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS = "600"\n`;
+      const original = `[mcp_servers.acl-rea]\ncommand = ${JSON.stringify(process.execPath)}\nargs = [${JSON.stringify(entry)}, "mcp"]\nstartup_timeout_sec = 30\ntool_timeout_sec = ${timeout}\n[mcp_servers.acl-rea.env]\nREA_ANALYSIS_PROVIDER = "${provider}"\nREA_GHIDRA_DECOMPILE_TIMEOUT_SECONDS = "600"\n`;
       await writeFile(configPath, original);
       const [status] = await readClientRegistrationStatuses(home, entry, {
         platform: HOST_PLATFORM.platform,
@@ -631,7 +631,7 @@ describe("Ghidra multi-function deadline registration advice", () => {
       );
       expect(configured).toMatchObject({ status: "unchanged" });
       expect(await readFile(configPath, "utf8")).toBe(original);
-      await expect(readFile(`${configPath}.rea.backup`)).rejects.toMatchObject({
+      await expect(readFile(`${configPath}.acl-rea.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
     },
@@ -641,13 +641,13 @@ describe("Ghidra multi-function deadline registration advice", () => {
 describe("launcher and timeout policy", () => {
   it("keeps caller deadlines aligned and distinguishes direct launch and Grok disablement", async () => {
     const home = await createTestTempDirectory("rea-registration-timeouts-");
-    const entry = resolve("scripts/rea.mjs");
+    const entry = resolve("scripts/acl-rea.mjs");
     const codex = join(home, ".codex", "config.toml");
     const grok = join(home, ".grok", "config.toml");
     await mkdir(dirname(codex));
     await mkdir(dirname(grok));
     const command = `command = ${JSON.stringify(process.execPath)}\nargs = [${JSON.stringify(entry)}, "mcp"]\n`;
-    const prefix = "[mcp_servers.rea]\n";
+    const prefix = "[mcp_servers.acl-rea]\n";
     const timeouts = "startup_timeout_sec = 1\ntool_timeout_sec = 10\n";
     const grokRegistration = `${prefix}${command}startup_timeout_sec = 90\n`;
     const read = () =>
@@ -679,7 +679,7 @@ describe("launcher and timeout policy", () => {
     );
     await writeFile(
       grok,
-      `disabled_mcp_servers = ["rea"]\n${grokRegistration}`,
+      `disabled_mcp_servers = ["acl-rea"]\n${grokRegistration}`,
     );
     expect(await read()).toMatchObject([
       {
@@ -689,7 +689,7 @@ describe("launcher and timeout policy", () => {
           command: [entry, "mcp"],
           command_identity: "owned",
           state: "stale",
-          remediation: expect.stringContaining("rea setup"),
+          remediation: expect.stringContaining("acl-rea setup"),
         },
       },
       {
@@ -704,12 +704,12 @@ describe("launcher and timeout policy", () => {
     async ({ tools }) => {
       const home = await createTestTempDirectory("rea-node-copilot-");
       await mkdir(join(home, ".copilot"));
-      const entry = resolve("scripts/rea.mjs");
+      const entry = resolve("scripts/acl-rea.mjs");
       await writeFile(
         join(home, ".copilot/mcp-config.json"),
         JSON.stringify({
           mcpServers: {
-            rea: {
+            "acl-rea": {
               type: "stdio",
               command: process.execPath,
               args: [entry, "mcp"],
@@ -774,7 +774,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
     await writeFile(
       target,
       JSON.stringify({
-        mcpServers: { rea: { command: "rea", args: ["mcp"] } },
+        mcpServers: { "acl-rea": { command: "acl-rea", args: ["mcp"] } },
       }),
     );
     const path = join(home, ".claude.json");
@@ -873,7 +873,7 @@ it("reports an unresolved client location as unknown and still inspects other cl
   const home = await createTestTempDirectory("rea-registration-unknown-path-");
   await writeFile(
     join(home, ".claude.json"),
-    JSON.stringify({ mcpServers: { rea: { command: "/old/rea", args: [] } } }),
+    JSON.stringify({ mcpServers: { "acl-rea": { command: "/old/rea", args: [] } } }),
   );
   const statuses = await readClientRegistrationStatuses(home, "/current/rea", {
     platform: HOST_PLATFORM.platform,

@@ -8,7 +8,7 @@ import type { McpRegistrationClient } from "../../src/application/McpRegistratio
 import { HOST_PLATFORM } from "../../src/platform/HostPlatform.js";
 
 /**
- * `rea mcp add` for clients resolved for the running host, as the CLI runs it.
+ * `acl-rea mcp add` for clients resolved for the running host, as the CLI runs it.
  * Tests that resolve clients for another platform call the owner directly.
  */
 export const registerMcpClientOnHost = (
@@ -25,7 +25,7 @@ export const registerMcpClientOnHost = (
     HOST_PLATFORM.platform,
   );
 
-/** Register each host-resolved client in order, as `rea mcp add` does. */
+/** Register each host-resolved client in order, as `acl-rea mcp add` does. */
 export const registerMcpClientsOnHost = (
   clients: readonly McpRegistrationClient[],
   launcher: ClientRegistrationCommand,

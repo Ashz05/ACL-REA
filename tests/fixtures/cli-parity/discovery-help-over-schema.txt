@@ -3,7 +3,7 @@ exit: 0
 --- stdout
 rea inspect-byte-entropy — Inspect file-wide and block byte entropy without executing the file
 
-Usage: rea inspect-byte-entropy <path> [options]
+Usage: acl-rea inspect-byte-entropy <path> [options]
 
 Arguments:
   path  Local file

@@ -1,6 +1,6 @@
-# Contributing to REA
+# Contributing to ACL-REA
 
-REA welcomes focused bug fixes, documentation improvements, tests, and reverse-engineering workflows. For large contract or architecture changes, explain the intended scope and link the relevant issue or design discussion.
+ACL-REA welcomes focused bug fixes, documentation improvements, tests, and reverse-engineering workflows. For large contract or architecture changes, explain the intended scope and link the relevant issue or design discussion.
 
 ## Choosing a contribution
 
@@ -48,7 +48,7 @@ For analysis workflows and agent interfaces, follow the
 [performance priorities](AGENTS.md#performance). Explain the selected output
 scope, reuse/cache decisions, and relevant before/after measurements when these
 costs change.
-Use the [analysis optimization skill](.agents/skills/rea-analysis-optimization/SKILL.md)
+Use the [analysis optimization skill](.agents/skills/acl-rea-analysis-optimization/SKILL.md)
 to locate provider and shared-workflow bottlenecks, preserve Evidence, and
 compare equivalent real tasks before claiming an improvement.
 
@@ -88,7 +88,7 @@ These requirements also apply to maintainer-authored PRs.
 Before requesting maintainer review, the human owner must:
 
 - Review the final diff and relevant existing code. Be able to explain the
-  problem, the chosen approach, how it fits REA, and meaningful edge cases.
+  problem, the chosen approach, how it fits ACL-REA, and meaningful edge cases.
 - Provide evidence that the change works. Summarize what was checked, the
   observed results, and meaningful gaps in the PR body. Use focused tests,
   representative CLI/MCP output, CI artifacts, screenshots, or other checks
@@ -130,8 +130,7 @@ it or require another human sign-off. AI agents must leave human declarations to
 the human owner and must not attest to a human review on their behalf.
 
 Maintainers review the **Author readiness** declaration in the PR body. PRs
-authored by @morluto, @kaoru0822-kitauji, @N0zoM1z0, @gensokyo-dev, or
-@vincentkoc are exempt from the declaration. Their human ownership, review,
+authored by @Ashz05 are exempt from the declaration. Their human ownership, review,
 and evidence responsibilities above still apply. Existing PRs can copy the
 **Author readiness** section from the current template.
 
@@ -153,11 +152,11 @@ Contributors are responsible for completing this work before requesting review.
 
 ## Contribution scope
 
-REA focuses on software structure, runtime behavior, and evidence through
+ACL-REA focuses on software structure, runtime behavior, and evidence through
 general-purpose reverse-engineering workflows. Evaluate a proposal by its actual
 capabilities, side effects, defaults, and complete workflow. A tool name or a
 reference to vulnerability research, malware analysis, or CTFs does not determine
-whether it belongs in REA.
+whether it belongs in ACL-REA.
 
 Supported contributions include format inspection, ordinary archive and standard
 compression extraction, disassembly, decompilation, cross-references, general
@@ -174,7 +173,7 @@ every workflow built on it. General-purpose interfaces are not classified as
 dedicated bypass workflows solely because caller-provided code could be misused;
 their execution and mutation authority must still be reviewed.
 
-REA does not integrate or officially distribute:
+ACL-REA does not integrate or officially distribute:
 
 - Purpose-built workflows to defeat commercial packing or code-virtualization
   protections and automatically recover protected code.
@@ -229,7 +228,7 @@ Maintainers and implementers work together to resolve the following before
 integration:
 
 - The concrete analyst question, requested inputs and outputs, and why existing
-  REA operations are insufficient.
+  ACL-REA operations are insufficient.
 - Why the workflow fits this scope, its non-goals, and any protection recovery,
   bypass, or attack automation it would expose.
 - The selected targets and every execution, injection, mutation, network, or
@@ -382,7 +381,7 @@ suite fresh, including the fast Python producer checks. Packaging/setup/distribu
 matching real-provider lane. State which host/provider workflows ran.
 
 For CI/test correctness, drift, or performance investigations, use the
-[`rea-ci-tests-audit` contributor skill](.agents/skills/rea-ci-tests-audit/SKILL.md).
+[`acl-rea-ci-tests-audit` contributor skill](.agents/skills/acl-rea-ci-tests-audit/SKILL.md).
 It guides reproduction and comparable measurements before changing checks.
 
 `docs:check` also runs the onboarding example consistency suite for README-only
@@ -396,7 +395,7 @@ Pre-commit formats and lints staged files; pre-push runs `check:fast`.
 `evidence:generate` prepares only the managed commitment and its runtime/skill
 dependencies. The ignored outputs are `docs/public/product-catalog.json`,
 `docs/verification/managed-conformance-*.json`, and `skills/`. Edit authored
-skill instructions in `.agents/skills/reverse-engineer-anything/`, where Skills
+skill instructions in `.agents/skills/acl-reverse-engineer-anything/`, where Skills
 can discover the public bundle directly from a clean checkout. `verify:package`
 installs that bundle with Skills 1.9.0 using default repository-root discovery
 and checks every installed file, alongside the packaged setup checks.
@@ -429,7 +428,7 @@ directory deletion, using the case's `finally` or `afterEach`; Vitest runs
 `afterEach` before `onTestFinished` and awaits finish hooks in reverse
 registration order.
 `npm run verify:test-temp-hygiene` runs the suite under a fresh `TMPDIR` and
-rejects remaining REA-owned paths. It cannot detect duplicate deletion owners or
+rejects remaining ACL-REA-owned paths. It cannot detect duplicate deletion owners or
 prove resource-close ordering. Never glob-clean shared `/tmp/rea-*` content.
 
 `REA_LOG_LEVEL` selects `trace`, `debug`, `info`, `warn`, `error`, `fatal`, or

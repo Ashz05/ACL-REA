@@ -1,4 +1,4 @@
-$ COMPLETE=bash rea -- rea mcp add -c ""
+$ COMPLETE=bash rea -- acl-rea mcp add -c ""
 exit: 0
 --- stdout
 <end>

@@ -1,4 +1,4 @@
-$ rea completions bash
+$ acl-rea completions bash
 exit: 0
 --- stdout
 _incur_complete_rea() {

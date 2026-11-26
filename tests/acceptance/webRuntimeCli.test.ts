@@ -12,7 +12,7 @@ import { webEventListenersSchema } from "../../src/domain/webEventListeners.js";
 import { startRuntimeBrowser } from "../fixtures/webRuntime.js";
 
 const entrypoint = fileURLToPath(
-  new URL("../../scripts/rea.mjs", import.meta.url),
+  new URL("../../scripts/acl-rea.mjs", import.meta.url),
 );
 const environment = () => ({
   ...process.env,

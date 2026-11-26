@@ -604,7 +604,7 @@ const toolEvent = (id: string, tool: string, result: unknown) => ({
   item: {
     id,
     type: "mcp_tool_call",
-    server: "rea",
+    server: "acl-rea",
     tool,
     arguments: {},
     result,

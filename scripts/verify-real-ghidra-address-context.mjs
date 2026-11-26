@@ -34,7 +34,7 @@ const workspace = workspaceFixture.path;
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const path = join(workspace, "pie.elf");
-const entrypoint = join(root, "scripts/rea.mjs");
+const entrypoint = join(root, "scripts/acl-rea.mjs");
 const env = {
   ...process.env,
   TMPDIR: runtime,
@@ -257,9 +257,9 @@ try {
   assert.equal(error.code, "invalid_request");
   assert.ok(JSON.stringify(error).includes(`Ghidra image base: ${base}`));
   for (const command of [
-    "rea search <path> . --kind procedures --mode regex",
-    "rea analyze <path>",
-    "rea inspect-native-load-image <path>",
+    "acl-rea search <path> . --kind procedures --mode regex",
+    "acl-rea analyze <path>",
+    "acl-rea inspect-native-load-image <path>",
   ])
     assert.ok(JSON.stringify(error).includes(command));
   const cliProcedures = parseEvidence(

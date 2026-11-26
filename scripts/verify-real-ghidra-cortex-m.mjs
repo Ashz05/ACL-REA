@@ -74,7 +74,7 @@ const llvm = {
 const oracle = new Map();
 const runtime = join(workspace, "runtime");
 await mkdir(runtime);
-const entrypoint = fileURLToPath(new URL("./rea.mjs", import.meta.url));
+const entrypoint = fileURLToPath(new URL("./acl-rea.mjs", import.meta.url));
 // Only named settings reach REA, so an exported REA_GHIDRA_LANGUAGE_ID or other
 // session setting cannot change what this lane verifies.
 const env = {

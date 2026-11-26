@@ -143,7 +143,7 @@ it("registers Cline CLI in the settings file selected by its environment", async
       await registerMcpClientOnHost(client, launcher, undefined, resources),
     ).toEqual(ok({ status: unchanged ? "unchanged" : "configured" }));
     expect(JSON.parse(await readFile(expected, "utf8"))).toMatchObject({
-      mcpServers: { rea: launcher },
+      mcpServers: { "acl-rea": launcher },
     });
   }
 });
@@ -426,7 +426,7 @@ describe("Selected argv and client metadata preservation", () => {
   it("preserves every peer and entry metadata while publishing exact argv with a private backup", async () => {
     const document = {
       "amp.mcpServers": {
-        rea: {
+        "acl-rea": {
           command: "old",
           args: ["old"],
           env: { KEEP: "value" },
@@ -443,17 +443,17 @@ describe("Selected argv and client metadata preservation", () => {
     const { path, directory } = await settingsFixture(original);
     const result = await register(path, launcher);
     expect(result).toEqual(
-      ok({ status: "configured", backupPath: `${path}.rea.backup` }),
+      ok({ status: "configured", backupPath: `${path}.acl-rea.backup` }),
     );
     expect(JSON.parse(await readFile(path, "utf8"))).toEqual({
       ...document,
       "amp.mcpServers": {
         ...document["amp.mcpServers"],
-        rea: { ...document["amp.mcpServers"].rea, ...launcher },
+        "acl-rea": { ...document["amp.mcpServers"]["acl-rea"], ...launcher },
       },
     });
-    expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
-    expect((await stat(`${path}.rea.backup`)).mode & 0o777).toBe(0o600);
+    expect(await readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
+    expect((await stat(`${path}.acl-rea.backup`)).mode & 0o777).toBe(0o600);
     expect(
       (await readdir(directory)).some((name) =>
         name.startsWith(".rea-config-"),
@@ -476,15 +476,15 @@ describe("Selected argv and client metadata preservation", () => {
       ok({ status: "configured" }),
     );
     expect(JSON.parse(await readFile(path, "utf8"))).toEqual({
-      "amp.mcpServers": { rea: launcher },
+      "amp.mcpServers": { "acl-rea": launcher },
     });
-    const scalar = '{"amp.mcpServers":{"rea":false,"other":7}}';
+    const scalar = '{"amp.mcpServers":{"acl-rea":false,"other":7}}';
     await writeFile(fixture.path, scalar);
     expect((await register(fixture.path, launcher)).ok).toBe(true);
     expect(
       JSON.parse(await readFile(fixture.path, "utf8"))["amp.mcpServers"],
-    ).toEqual({ rea: launcher, other: 7 });
-    expect(await readFile(`${fixture.path}.rea.backup`, "utf8")).toBe(scalar);
+    ).toEqual({ "acl-rea": launcher, other: 7  });
+    expect(await readFile(`${fixture.path}.acl-rea.backup`, "utf8")).toBe(scalar);
   });
 
   it.each([
@@ -522,7 +522,7 @@ describe("Selected argv and client metadata preservation", () => {
     expect(await readFile(result.value.backupPath, "utf8")).toBe(
       secondOriginal,
     );
-    expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${path}.acl-rea.backup`, "utf8")).toBe(
       '{"theme":"first"}',
     );
   });
@@ -534,7 +534,7 @@ describe("Selected argv and client metadata preservation", () => {
     expect((await readFile(path)).equals(invalid)).toBe(true);
     expect(await readdir(directory)).toEqual(["settings.json"]);
     await writeFile(path, "{}");
-    await symlink(path, `${path}.rea.backup`);
+    await symlink(path, `${path}.acl-rea.backup`);
     expect((await register(path, launcher)).ok).toBe(false);
     expect(await readFile(path, "utf8")).toBe("{}");
   });
@@ -572,7 +572,7 @@ describe("Registration cancellation and mixed outcomes", () => {
       ),
     ).toBe(false);
     expect(JSON.parse(await readFile(path, "utf8"))).toEqual({
-      "amp.mcpServers": { rea: launcher },
+      "amp.mcpServers": { "acl-rea": launcher },
     });
     expect(await readdir(directory)).toEqual(["settings.json"]);
   });
@@ -648,7 +648,7 @@ describe("Registration cancellation with independent failures", () => {
     ]);
     expect(outcomes[1]).toMatchObject({ status: "not_started" });
     expect(JSON.parse(await readFile(first.path, "utf8"))).toEqual({
-      "amp.mcpServers": { rea: launcher },
+      "amp.mcpServers": { "acl-rea": launcher },
     });
     expect(await readFile(second.path, "utf8")).toBe("{}");
     close.mockRestore();
@@ -747,7 +747,7 @@ describe("Registration cancellation and sibling outcomes", () => {
       { status: "not_started" },
     ]);
     expect(
-      JSON.parse(await readFile(good.path, "utf8")).mcpServers.rea.command,
+      JSON.parse(await readFile(good.path, "utf8")).mcpServers["acl-rea"].command,
     ).toBe("next");
   });
 });
@@ -762,7 +762,7 @@ describe("Client registration publication recovery", () => {
     const result = await register(path, launcher);
     expect(result.ok).toBe(false);
     expect(await readFile(path, "utf8")).toBe(original);
-    expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
     expect(
       (await readdir(directory)).some((name) =>
         name.startsWith(".rea-config-"),
@@ -864,7 +864,7 @@ describe("Client registration publication recovery", () => {
       expect(resources.hasPending).toBe(false);
       expect(await readdir(first.directory)).toEqual(["settings.json"]);
       expect(
-        JSON.parse(await readFile(second.path, "utf8")).mcp.rea.command,
+        JSON.parse(await readFile(second.path, "utf8")).mcp["acl-rea"].command,
       ).toEqual([launcher.command, ...launcher.args]);
     } finally {
       close.mockRestore();
@@ -879,14 +879,14 @@ describe("Client registration publication recovery", () => {
     const result = await register(alias, launcher);
     expect(result.ok).toBe(true);
     expect(
-      JSON.parse(await readFile(path, "utf8"))["amp.mcpServers"].rea,
+      JSON.parse(await readFile(path, "utf8"))["amp.mcpServers"]["acl-rea"],
     ).toEqual(launcher);
     expect(await readFile(alias, "utf8")).toBe(await readFile(path, "utf8"));
   });
 });
 
 it("refuses a semantic no-op when the admitted file was replaced with identical bytes", async () => {
-  const original = JSON.stringify({ "amp.mcpServers": { rea: launcher } });
+  const original = JSON.stringify({ "amp.mcpServers": { "acl-rea": launcher } });
   const { path } = await settingsFixture(original);
   const read = regularReads.readRegularFileTextSnapshot;
   let reads = 0;

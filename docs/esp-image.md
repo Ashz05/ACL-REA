@@ -7,8 +7,8 @@ static: no esptool, device or flash access is needed, and no code is run or
 disassembled.
 
 ```sh
-rea inspect-artifact ./firmware.bin --json
-rea inspect-artifact ./ota.bin --detail summary --evidence_output evidence.json --json
+acl-rea inspect-artifact ./firmware.bin --json
+acl-rea inspect-artifact ./ota.bin --detail summary --evidence_output evidence.json --json
 rea extract-artifact ./firmware.bin --json
 ```
 

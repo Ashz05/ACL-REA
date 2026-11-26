@@ -82,7 +82,7 @@ it("preserves earlier and sibling effects without inventing replaced cached-modu
   );
   const { stdout } = await execute(
     process.execPath,
-    ["scripts/rea.mjs", "analyze-javascript-application", root, "--json"],
+    ["scripts/acl-rea.mjs", "analyze-javascript-application", root, "--json"],
     { cwd: process.cwd(), maxBuffer: 16 * 1024 * 1024 },
   );
   const evidence = parseEvidence(JSON.parse(stdout));
@@ -144,7 +144,7 @@ it("excludes monkey-patched CommonJS effects from CLI and MCP evidence", async (
   );
   const { stdout } = await execute(
     process.execPath,
-    ["scripts/rea.mjs", "analyze-javascript-application", root, "--json"],
+    ["scripts/acl-rea.mjs", "analyze-javascript-application", root, "--json"],
     { cwd: process.cwd(), maxBuffer: 16 * 1024 * 1024 },
   );
   const evidence = parseEvidence(JSON.parse(stdout));
@@ -201,7 +201,7 @@ it("retains CommonJS builtin effects and handle links through CLI and MCP", asyn
   );
   const { stdout } = await execute(
     process.execPath,
-    ["scripts/rea.mjs", "analyze-javascript-application", root, "--json"],
+    ["scripts/acl-rea.mjs", "analyze-javascript-application", root, "--json"],
     { cwd: process.cwd(), maxBuffer: 16 * 1024 * 1024 },
   );
   const evidence = parseEvidence(JSON.parse(stdout));
@@ -267,7 +267,7 @@ it.each([
     );
     const { stdout } = await execute(
       process.execPath,
-      ["scripts/rea.mjs", "analyze-javascript-application", root, "--json"],
+      ["scripts/acl-rea.mjs", "analyze-javascript-application", root, "--json"],
       { cwd: process.cwd(), maxBuffer: 16 * 1024 * 1024 },
     );
     const result = javascriptApplicationAnalysisResultSchema.parse(
@@ -322,7 +322,7 @@ function shadowed(process) { return process.argv[3]; }`,
   );
   const { stdout } = await execute(
     process.execPath,
-    ["scripts/rea.mjs", "analyze-javascript-application", root, "--json"],
+    ["scripts/acl-rea.mjs", "analyze-javascript-application", root, "--json"],
     { cwd: process.cwd(), maxBuffer: 16 * 1024 * 1024 },
   );
   const result = javascriptApplicationAnalysisResultSchema.parse(

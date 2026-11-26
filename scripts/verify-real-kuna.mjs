@@ -56,7 +56,7 @@ const { values } = parseArgs({
 });
 const entrypoint =
   values.entrypoint === undefined
-    ? fileURLToPath(new URL("./rea.mjs", import.meta.url))
+    ? fileURLToPath(new URL("./acl-rea.mjs", import.meta.url))
     : resolve(values.entrypoint);
 const kuna = process.env.REA_KUNA_COMMAND;
 assert.ok(

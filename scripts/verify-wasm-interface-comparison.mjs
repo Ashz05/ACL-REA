@@ -21,7 +21,7 @@ const rootFixture = await VerifierFixture.open({
   private: false,
 });
 const root = rootFixture.path;
-const cli = resolve("scripts/rea.mjs");
+const cli = resolve("scripts/acl-rea.mjs");
 const environment = { ...process.env };
 const command = async (file, args) =>
   (

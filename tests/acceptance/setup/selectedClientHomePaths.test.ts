@@ -37,11 +37,11 @@ cliTest.skipIf(process.platform === "win32")(
     await writeFile(lexicalConfig, sentinel);
     const manifest = join(
       home,
-      ".agents/skills/reverse-engineer-anything/SKILL.md",
+      ".agents/skills/acl-reverse-engineer-anything/SKILL.md",
     );
     const lexicalManifest = join(
       root,
-      ".agents/skills/reverse-engineer-anything/SKILL.md",
+      ".agents/skills/acl-reverse-engineer-anything/SKILL.md",
     );
     await mkdir(dirname(manifest), { recursive: true });
     await mkdir(dirname(lexicalManifest), { recursive: true });
@@ -77,19 +77,19 @@ cliTest.skipIf(process.platform === "win32")(
     );
     expect(registered.document.model).toBe("selected-model");
     expect(registered.servers.other).toMatchObject({ command: "other-server" });
-    expect(registered.servers.rea).toBeDefined();
+    expect(registered.servers["acl-rea"]).toBeDefined();
     const installed = await readFile(manifest, "utf8");
-    expect(installed).toContain("name: reverse-engineer-anything");
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
-    expect(await readFile(`${manifest}.rea.backup`, "utf8")).toBe(
+    expect(installed).toContain("name: acl-reverse-engineer-anything");
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${manifest}.acl-rea.backup`, "utf8")).toBe(
       originalSkill,
     );
     expect(await readFile(lexicalConfig, "utf8")).toBe(sentinel);
     expect(await readFile(lexicalManifest, "utf8")).toBe(sentinelSkill);
-    await expect(access(`${lexicalConfig}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${lexicalConfig}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
-    await expect(access(`${lexicalManifest}.rea.backup`)).rejects.toMatchObject(
+    await expect(access(`${lexicalManifest}.acl-rea.backup`)).rejects.toMatchObject(
       { code: "ENOENT" },
     );
     const before = await readFile(config);
@@ -119,7 +119,7 @@ cliTest.skipIf(process.platform === "win32")(
     await mkdir(join(selected, "nested"), { recursive: true });
     await symlink(join(selected, "nested"), join(root, "alias"));
     const home = `${root}/alias/..`;
-    const relative = ".agents/skills/reverse-engineer-anything";
+    const relative = ".agents/skills/acl-reverse-engineer-anything";
     const skill = join(selected, relative);
     const lexicalSkill = join(root, relative);
     const original = "previous selected instructions\n";
@@ -155,13 +155,13 @@ cliTest.skipIf(process.platform === "win32")(
       appliedActions: ["installed_skill"],
     });
     const installed = await readFile(join(skill, "SKILL.md"), "utf8");
-    expect(installed).toContain("name: reverse-engineer-anything");
+    expect(installed).toContain("name: acl-reverse-engineer-anything");
     const installedReference = await readFile(join(skill, reference), "utf8");
     expect(installedReference).not.toBe(oldReference);
-    expect(await readFile(join(skill, "SKILL.md.rea.backup"), "utf8")).toBe(
+    expect(await readFile(join(skill, "SKILL.md.acl-rea.backup"), "utf8")).toBe(
       original,
     );
-    expect(await readFile(`${join(skill, reference)}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${join(skill, reference)}.acl-rea.backup`, "utf8")).toBe(
       oldReference,
     );
     expect(await readFile(join(lexicalSkill, "SKILL.md"), "utf8")).toBe(
@@ -171,8 +171,8 @@ cliTest.skipIf(process.platform === "win32")(
       sentinelReference,
     );
     for (const path of [
-      join(lexicalSkill, "SKILL.md.rea.backup"),
-      `${join(lexicalSkill, reference)}.rea.backup`,
+      join(lexicalSkill, "SKILL.md.acl-rea.backup"),
+      `${join(lexicalSkill, reference)}.acl-rea.backup`,
     ])
       await expect(access(path)).rejects.toMatchObject({ code: "ENOENT" });
     const repeated = await run(["setup", "--skill-client", "shared", "--yes"]);
@@ -207,13 +207,13 @@ cliTest.skipIf(process.platform === "win32")(
     ).toEqual([]);
     const cacheRelative =
       process.platform === "darwin"
-        ? "Library/Caches/rea/kuna"
+        ? "Library/Caches/acl-rea/kuna"
         : process.platform === "linux"
-          ? ".cache/rea/kuna"
+          ? ".cache/acl-rea/kuna"
           : undefined;
     const cacheDirectories = [
-      ".rea/cache",
-      ".rea/state",
+      ".acl-rea/cache",
+      ".acl-rea/state",
       ...(cacheRelative === undefined ? [] : [cacheRelative]),
     ];
     for (const relative of cacheDirectories) {
@@ -222,7 +222,7 @@ cliTest.skipIf(process.platform === "win32")(
       await writeFile(join(selected, relative, "marker"), "selected cache");
       await writeFile(join(root, relative, "marker"), "unselected cache");
     }
-    const legacyUserNote = join(selected, ".rea/analyst-note.txt");
+    const legacyUserNote = join(selected, ".acl-rea/analyst-note.txt");
     await writeFile(legacyUserNote, "legacy user note\n");
     const userNote = join(skill, "analyst-note.txt");
     await writeFile(userNote, "selected user note\n");
@@ -247,11 +247,11 @@ cliTest.skipIf(process.platform === "win32")(
           code: "ENOENT",
         });
       expect(await readFile(userNote, "utf8")).toBe("selected user note\n");
-      expect(await readFile(join(skill, "SKILL.md.rea.backup"), "utf8")).toBe(
+      expect(await readFile(join(skill, "SKILL.md.acl-rea.backup"), "utf8")).toBe(
         original,
       );
       expect(
-        await readFile(`${join(skill, reference)}.rea.backup`, "utf8"),
+        await readFile(`${join(skill, reference)}.acl-rea.backup`, "utf8"),
       ).toBe(oldReference);
       expect(await readFile(join(lexicalSkill, "SKILL.md"), "utf8")).toBe(
         sentinel,

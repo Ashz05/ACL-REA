@@ -68,10 +68,10 @@ it("keeps the last native occurrence while returning each project file once for 
   const outer = join(root, ".opencode", "opencode.json");
   const repeated = join(projectDirectory, "opencode.json");
   await writeConfiguration(outer, {
-    mcp: { servers: { rea: localServer("outer") } },
+    mcp: { servers: { "acl-rea": localServer("outer") } },
   });
   await writeConfiguration(repeated, {
-    mcp: { servers: { rea: localServer("repeated") } },
+    mcp: { servers: { "acl-rea": localServer("repeated") } },
   });
   const result = await read("ownership");
   if (!result.ok) throw Error(result.error.detail);
@@ -89,7 +89,7 @@ it("loads OpenCode V2 ancestors beyond Git and layers all direct files before .o
   await writeConfiguration(outer, {
     mcp: {
       servers: {
-        rea: {
+        "acl-rea": {
           ...localServer("outer"),
           environment: { OUTER: "retain only when selected" },
         },
@@ -97,10 +97,10 @@ it("loads OpenCode V2 ancestors beyond Git and layers all direct files before .o
     },
   });
   await writeConfiguration(direct, {
-    mcp: { servers: { rea: { ...localServer("direct"), disabled: true } } },
+    mcp: { servers: { "acl-rea": { ...localServer("direct"), disabled: true } } },
   });
   await writeConfiguration(nested, {
-    mcp: { servers: { rea: localServer("nested") } },
+    mcp: { servers: { "acl-rea": localServer("nested") } },
   });
   const result = await read();
   if (!result.ok) throw Error(result.error.detail);
@@ -137,7 +137,7 @@ it.each(["legacy", "native"] as const)(
     const upper = join(projectDirectory, "opencode.json");
     const setting = "REA_GHIDRA_STARTUP_TIMEOUT_MS";
     const mcp = (row: unknown) => ({
-      mcp: dialect === "native" ? { servers: { rea: row } } : { rea: row },
+      mcp: dialect === "native" ? { servers: { "acl-rea": row } } : { rea: row },
     });
     await writeConfiguration(
       client.configPath,
@@ -181,11 +181,11 @@ it("attributes a dotted environment key to its effective OpenCode source", async
   const upper = join(projectDirectory, "opencode.json");
   const key = "CALLER.VALUE";
   await writeConfiguration(client.configPath, {
-    mcp: { rea: { ...localServer("user"), environment: { [key]: 17 } } },
+    mcp: { "acl-rea": { ...localServer("user"), environment: { [key]: 17 } } },
   });
   await writeConfiguration(upper, {
     mcp: {
-      rea: { ...localServer("project"), environment: { VALUE: "unrelated" } },
+      "acl-rea": { ...localServer("project"), environment: { VALUE: "unrelated" } },
     },
   });
   const result = await read();
@@ -207,10 +207,10 @@ it("keeps OpenCode activation tied to the authored row dialect", async () => {
   const user = localServer("user");
   const projectServer = localServer("project");
   await writeConfiguration(client.configPath, {
-    mcp: { rea: { ...user, enabled: false } },
+    mcp: { "acl-rea": { ...user, enabled: false } },
   });
   await writeConfiguration(project, {
-    mcp: { servers: { rea: { ...projectServer, enabled: false } } },
+    mcp: { servers: { "acl-rea": { ...projectServer, enabled: false } } },
   });
   const native = await read();
   if (!native.ok) throw Error(native.error.detail);
@@ -235,7 +235,7 @@ it("uses the same native user row with or without an empty project file", async 
   await writeConfiguration(lower, {
     mcp: {
       servers: {
-        rea: {
+        "acl-rea": {
           ...localServer("lower"),
           disabled: true,
           environment: { REA_GHIDRA_STARTUP_TIMEOUT_MS: "invalid" },
@@ -243,7 +243,7 @@ it("uses the same native user row with or without an empty project file", async 
       },
     },
   });
-  await writeConfiguration(upper, { mcp: { servers: { rea: row } } });
+  await writeConfiguration(upper, { mcp: { servers: { "acl-rea": row } } });
   const user = await read();
   await writeConfiguration(join(projectDirectory, "opencode.json"), {});
   const project = await read();
@@ -272,7 +272,7 @@ it.each([
     const document = (command: string) => ({
       mcp:
         dialect === "native"
-          ? { servers: { rea: localServer(command) } }
+          ? { servers: { "acl-rea": localServer(command) } }
           : { rea: localServer(command) },
     });
     await writeConfiguration(client.configPath, document("user"));
@@ -281,7 +281,7 @@ it.each([
       project,
       dialect === "native"
         ? document("project")
-        : { mcp: { rea: projectServer } },
+        : { mcp: { "acl-rea": projectServer } },
     );
 
     const result = await read("ownership");
@@ -311,10 +311,10 @@ it("attributes an inherited OpenCode launcher to the file declaring the command"
   const project = join(projectDirectory, "opencode.json");
   const user = {
     type: "local",
-    command: ["npx", "-y", "rea-agents@1.0.0", "mcp"],
+    command: ["npx", "-y", "acl-rea-agents@1.0.0", "mcp"],
   };
-  await writeConfiguration(client.configPath, { mcp: { rea: user } });
-  await writeConfiguration(project, { mcp: { rea: { type: "local" } } });
+  await writeConfiguration(client.configPath, { mcp: { "acl-rea": user } });
+  await writeConfiguration(project, { mcp: { "acl-rea": { type: "local" } } });
 
   const result = await read();
   if (!result.ok) throw Error(result.error.detail);
@@ -339,13 +339,13 @@ it("attributes an inherited OpenCode launcher to the file declaring the command"
       scope: "project",
       launcher_scope: "user",
       config_path: project,
-      remediation: expect.stringContaining("rea setup --client opencode"),
+      remediation: expect.stringContaining("acl-rea setup --client opencode"),
     });
   } finally {
     cwd.mockRestore();
   }
 
-  await writeConfiguration(project, { mcp: { rea: localServer("project") } });
+  await writeConfiguration(project, { mcp: { "acl-rea": localServer("project") } });
   const replacement = await read();
   if (!replacement.ok) throw Error(replacement.error.detail);
   expect(replacement.value).toMatchObject({

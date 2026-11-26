@@ -24,7 +24,7 @@ const PLUGIN_MANIFEST_PATHS = [
 ];
 const inlinePluginManifestSchema = versionSchema.extend({
   mcpServers: z.object({
-    rea: z.object({
+    "acl-rea": z.object({
       command: z.literal("node"),
       args: z.tuple([
         z.literal("${CLAUDE_PLUGIN_ROOT}/scripts/plugin-mcp-launcher.mjs"),
@@ -38,7 +38,7 @@ const codexPluginManifestSchema = versionSchema.extend({
 });
 const codexServerConfigSchema = z.object({
   mcpServers: z.object({
-    rea: z.object({
+    "acl-rea": z.object({
       command: z.literal("node"),
       args: z.tuple([
         z.literal("./scripts/plugin-mcp-launcher.mjs"),
@@ -53,7 +53,7 @@ const cursorPluginManifest = ".cursor-plugin/plugin.json";
 const cursorPluginServer = "mcp.json";
 const cursorServerConfigSchema = z.object({
   mcpServers: z.object({
-    rea: z.object({
+    "acl-rea": z.object({
       command: z.literal("npx"),
       args: z.tuple([z.literal("-y"), z.string(), z.literal("mcp")]),
     }),
@@ -280,7 +280,7 @@ async function validateCandidate(
       packages: z.tuple([
         z.object({
           registryType: z.literal("npm"),
-          identifier: z.literal("rea-agents"),
+          identifier: z.literal("acl-rea-agents"),
           version: z.string(),
         }),
       ]),
@@ -289,7 +289,7 @@ async function validateCandidate(
   const [npmPackage] = server.packages;
   versions.push(
     ["server.json", server.version],
-    ["server.json rea-agents package", npmPackage.version],
+    ["server.json acl-rea-agents package", npmPackage.version],
   );
   // A stale manifest keeps the previous plugin cache key or launches the
   // previous server, so both are version authority like server.json.
@@ -309,7 +309,7 @@ async function validateCandidate(
             codexServerConfigSchema,
           )
         : manifest;
-    launches.push([path, server.mcpServers.rea.args[1]]);
+    launches.push([path, server.mcpServers["acl-rea"].args[1]]);
   }
   const cursorManifest = await readJson(
     git,
@@ -324,7 +324,7 @@ async function validateCandidate(
     cursorPluginServer,
     cursorServerConfigSchema,
   );
-  const cursorPin = cursorServer.mcpServers.rea.args[1];
+  const cursorPin = cursorServer.mcpServers["acl-rea"].args[1];
   // Catalogs are generated and checked from this candidate by the release job;
   // they are not version authority stored in the immutable source tree.
   const generated = await git([
@@ -349,9 +349,9 @@ async function validateCandidate(
   // The launcher checks the scalar pin against the runtime in its own package.
   // Compare manifest versions first so a wholly stale candidate reports the
   // shared version authority before this Marketplace package specifier.
-  if (cursorPin !== `rea-agents@${version}`) {
+  if (cursorPin !== `acl-rea-agents@${version}`) {
     throw new Error(
-      `${cursorPluginServer}@${sha} launches ${cursorPin}; release branch requires rea-agents@${version}.`,
+      `${cursorPluginServer}@${sha} launches ${cursorPin}; release branch requires acl-rea-agents@${version}.`,
     );
   }
   for (const [location, launched] of launches) {
@@ -448,7 +448,7 @@ export async function inspectReleaseCheckpoint(git, options) {
       `Expected release ${expectedVersion} must advance published baseline ${baselineVersion}.`,
     );
   }
-  const baselineTag = `refs/tags/rea-agents-${baselineVersion}`;
+  const baselineTag = `refs/tags/acl-rea-agents-${baselineVersion}`;
   const baselineSha = await resolveBaseline(git, baselineTag);
   await requireAncestor(
     git,

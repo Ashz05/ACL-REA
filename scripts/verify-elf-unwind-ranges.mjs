@@ -169,7 +169,7 @@ const inspectedRanges = async (path) => {
     const { stdout: output } = await run(
       process.execPath,
       [
-        resolve("scripts/rea.mjs"),
+        resolve("scripts/acl-rea.mjs"),
         "inspect-elf-unwind-ranges",
         path,
         "--json",

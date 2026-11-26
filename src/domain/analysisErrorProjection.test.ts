@@ -798,7 +798,7 @@ describe("analysis error projection: unclassified failures", () => {
       expect(projected.message).not.toContain("doctor");
       if (doctor)
         expect(projected.remediation.action).toContain(
-          `\`rea doctor --provider ${providerId}\``,
+          `\`acl-rea doctor --provider ${providerId}\``,
         );
       else expect(projected.remediation.action).not.toContain("doctor");
     },

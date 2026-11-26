@@ -39,7 +39,7 @@ export const source = (name) =>
   fileURLToPath(
     new URL(`../../../tests/conformance/esp/${name}`, import.meta.url),
   );
-const entrypoint = fileURLToPath(new URL("../../rea.mjs", import.meta.url));
+const entrypoint = fileURLToPath(new URL("../../acl-rea.mjs", import.meta.url));
 
 /** The esptool release whose sources the reader's layout facts cite. */
 const PINNED_ESPTOOL = "v5.6.0";

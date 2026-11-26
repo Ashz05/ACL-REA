@@ -47,9 +47,9 @@ const manifestSchema = z.strictObject({
 // Sticky directories let only an entry's owner rename or remove it.
 const STICKY = 0o1000;
 
-/** Per-user namespace REA owns for the compiled Darwin ownership helper. */
+/** Per-user namespace ACL-REA owns for the compiled Darwin ownership helper. */
 export const defaultDarwinHelperCacheDirectory = (home: string): string =>
-  appendCallerPath(home, "Library/Caches/rea/process-helper", "darwin");
+  appendCallerPath(home, "Library/Caches/acl-rea/process-helper", "darwin");
 
 /**
  * Only the default toolchain shares a helper: a caller-selected compiler or

@@ -45,8 +45,8 @@ describe("MCP tool deadline allowance for a Ghidra decompile limit", () => {
         parseClientConfiguration(
           JSON.stringify({
             mcpServers: {
-              rea: {
-                command: "rea",
+              "acl-rea": {
+                command: "acl-rea",
                 args: ["mcp"],
                 env: {
                   REA_ANALYSIS_PROVIDER: "ghidra",

@@ -132,7 +132,7 @@ it("keeps main pushes proposal-only and gates merged-release automation", async 
     "fetch-depth": 0,
     "persist-credentials": false,
   });
-  expect(proposal.steps[0]?.run).toContain("rea:release-notes-finalized");
+  expect(proposal.steps[0]?.run).toContain("acl-rea:release-notes-finalized");
   expect(proposal.steps[0]?.run).toContain("--paginate");
   const merged = workflow.jobs["merged-release"];
   expect(merged.if).toContain("github.event.pull_request.merged == true");
@@ -148,7 +148,7 @@ it("keeps main pushes proposal-only and gates merged-release automation", async 
 
 const finalizedRelease = {
   number: 1399,
-  headRefName: "release-please--branches--main--components--rea-agents",
+  headRefName: "release-please--branches--main--components--acl-rea-agents",
   headRepository: { nameWithOwner: "fixture/rea" },
 };
 
@@ -226,7 +226,7 @@ it.each([
   expect(request).toContain("owner=fixture");
   expect(request).toContain("name=rea");
   expect(request).toContain(
-    'states:OPEN,baseRefName:"main",labels:["rea:release-notes-finalized"]',
+    'states:OPEN,baseRefName:"main",labels:["acl-rea:release-notes-finalized"]',
   );
   expect(request).toContain("after:$endCursor");
   expect(await readFile(output, "utf8")).toBe(frozen ? "frozen=true\n" : "");

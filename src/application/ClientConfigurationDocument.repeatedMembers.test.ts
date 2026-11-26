@@ -12,7 +12,7 @@ import {
   type ClientConfigurationFormat,
 } from "./ClientConfigurationDocument.js";
 
-const owned = { command: "rea", args: ["mcp"] };
+const owned = { command: "acl-rea", args: ["mcp"] };
 const foreign = { command: "/usr/bin/false" };
 
 const removeRea = (
@@ -21,12 +21,12 @@ const removeRea = (
   options?: ClientConfigurationEditOptions,
 ) => {
   const parsed = expectResultValue(parseClientConfiguration(text, format));
-  const { rea: _removed, ...remaining } = parsed.servers;
+  const { "acl-rea": _removed, ...remaining } = parsed.servers;
   return serializeClientConfiguration(
     withClientServers(parsed, remaining, HOST_PLATFORM.platform),
     format,
     text,
-    [clientServerPath(parsed, "rea")],
+    [clientServerPath(parsed, "acl-rea")],
     options,
   );
 };
@@ -34,28 +34,28 @@ const removeRea = (
 describe("JSON client configuration repeated-member edits", () => {
   it("keeps the default refusal for repeated deletions", () => {
     const text =
-      `{"mcpServers":{"rea":${JSON.stringify(foreign)},` +
-      `"rea":${JSON.stringify(owned)}}}`;
+      `{"mcpServers":{"acl-rea":${JSON.stringify(foreign)},` +
+      `"acl-rea":${JSON.stringify(owned)}}}`;
     expect(removeRea(text, "claude_code")).toEqual({
       ok: false,
       error: {
         kind: "shadowed_member",
-        path: ["mcpServers", "rea"],
+        path: ["mcpServers", "acl-rea"],
       },
     });
   });
 
   it("removes all authorized repeats and preserves peer values in strict JSON", () => {
     const text =
-      `{"mcpServers":{"rea":${JSON.stringify(foreign)},` +
+      `{"mcpServers":{"acl-rea":${JSON.stringify(foreign)},` +
       `"peer":{"command":"peer"},` +
-      `"rea":${JSON.stringify(owned)},` +
+      `"acl-rea":${JSON.stringify(owned)},` +
       `"other":{"args":[1,2]},` +
-      `"rea":${JSON.stringify(owned)}}}`;
+      `"acl-rea":${JSON.stringify(owned)}}}`;
     const parsed = expectResultValue(
       parseClientConfiguration(text, "claude_code"),
     );
-    const path = clientServerPath(parsed, "rea");
+    const path = clientServerPath(parsed, "acl-rea");
     const result = removeRea(text, "claude_code", {
       removeShadowedMembersAt: [path],
     });
@@ -71,15 +71,15 @@ describe("JSON client configuration repeated-member edits", () => {
   });
 
   it("does not apply repeat-removal authority to a different path", () => {
-    const text = `{"mcpServers":{"rea":1,"rea":2,"peer":3,"peer":4}}`;
+    const text = `{"mcpServers":{"acl-rea":1,"acl-rea":2,"peer":3,"peer":4}}`;
     const parsed = expectResultValue(parseClientConfiguration(text, "json"));
     const document = withClientServers(parsed, {}, HOST_PLATFORM.platform);
     const result = serializeClientConfiguration(
       document,
       "json",
       text,
-      [clientServerPath(parsed, "rea"), clientServerPath(parsed, "peer")],
-      { removeShadowedMembersAt: [clientServerPath(parsed, "rea")] },
+      [clientServerPath(parsed, "acl-rea"), clientServerPath(parsed, "peer")],
+      { removeShadowedMembersAt: [clientServerPath(parsed, "acl-rea")] },
     );
 
     expect(result).toEqual({
@@ -92,7 +92,7 @@ describe("JSON client configuration repeated-member edits", () => {
   });
 
   it("removes a single registration without authority and leaves a repeat byte-identical", () => {
-    const text = `{"mcpServers":{/* keep peer formatting */"rea":1, "peer":2,}}`;
+    const text = `{"mcpServers":{/* keep peer formatting */"acl-rea":1, "peer":2,}}`;
     const result = removeRea(text, "json");
     if (!result.ok) throw new Error("single registration removal was refused");
     const afterRemoval = `${result.value}\n`;
@@ -111,13 +111,13 @@ describe("JSON client configuration repeated-member edits", () => {
   });
 
   it("matches escaped keys and retains a repeated inactive parent byte for byte", () => {
-    const inactive = `{"rea":${JSON.stringify(foreign)}}`;
+    const inactive = `{"acl-rea":${JSON.stringify(foreign)}}`;
     const text =
       `{"mcpServers":${inactive},` +
       `"mcpServers":{"r\\u0065a":${JSON.stringify(foreign)},` +
-      `"peer":2,"rea":${JSON.stringify(owned)}}}`;
+      `"peer":2,"acl-rea":${JSON.stringify(owned)}}}`;
     const result = removeRea(text, "claude_code", {
-      removeShadowedMembersAt: [["mcpServers", "rea"]],
+      removeShadowedMembersAt: [["mcpServers", "acl-rea"]],
     });
 
     if (!result.ok) throw new Error("authorized escaped repeat was refused");
@@ -132,10 +132,10 @@ describe("JSON client configuration repeated-member edits", () => {
       `\uFEFF{\r\n  // top comment\r\n  "mcp": {\r\n` +
       `    "r\\u0065a": ${JSON.stringify(foreign)}, // first\r\n` +
       `    "peer": { "command": "peer" },\r\n` +
-      `    /* second */ "rea": ${JSON.stringify(owned)},\r\n` +
+      `    /* second */ "acl-rea": ${JSON.stringify(owned)},\r\n` +
       `  },\r\n}\r\n`;
     const result = removeRea(text, "opencode", {
-      removeShadowedMembersAt: [["mcp", "rea"]],
+      removeShadowedMembersAt: [["mcp", "acl-rea"]],
     });
 
     if (!result.ok) throw new Error("authorized JSONC repeats were refused");

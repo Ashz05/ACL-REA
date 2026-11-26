@@ -18,7 +18,7 @@ it("uses the same canonical option flags as command help", () => {
     operations: [],
     source: { kind: "host" },
   };
-  const help = formatCommandHelp("rea sample", {
+  const help = formatCommandHelp("acl-rea sample", {
     options: command.definition.options,
   });
   const manifest = formatLlmsFull("rea", [command]);

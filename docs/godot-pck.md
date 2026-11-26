@@ -59,7 +59,7 @@ the script changed.
 Start with a compact summary and keep the complete Evidence bundle:
 
 ```sh
-rea inspect-artifact /artifacts/game.pck --detail summary \
+acl-rea inspect-artifact /artifacts/game.pck --detail summary \
   --evidence_output /evidence/game.json --json
 rea extract-artifact /artifacts/game.pck --json
 ```
@@ -129,7 +129,7 @@ they do not reopen the source. These are historical observations, including
 after the source changes or disappears. Close the target with `close_binary`
 when finished. To read an exported bundle through the CLI, select its complete
 inspection record as `source: {kind: "inline", evidence: ...}` in a JSON request
-file for `rea inspect-analysis-view request.json --json`.
+file for `acl-rea inspect-analysis-view request.json --json`.
 
 ## Coverage and limits
 
@@ -168,7 +168,7 @@ apply to inspection and extraction, before any member is yielded.
 For example:
 
 ```sh
-rea inspect-artifact ./game.pck --artifact-limits '{"godot":{"directory_bytes":134217728},"expanded_bytes":1073741824}' --json
+acl-rea inspect-artifact ./game.pck --artifact-limits '{"godot":{"directory_bytes":134217728},"expanded_bytes":1073741824}' --json
 ```
 
 MCP uses the same object under `artifact_limits` on `inspect_artifact` or

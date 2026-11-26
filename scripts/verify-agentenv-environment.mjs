@@ -36,7 +36,7 @@ const docker = process.env.REA_DOCKER_COMMAND;
 const IMAGE_STORE_HELPER = /^agentenv-registry(?:-\d+)?$/u;
 await Promise.all([access(agentEnv), access(docker)]);
 const entrypoint =
-  process.argv[2] ?? fileURLToPath(new URL("./rea.mjs", import.meta.url));
+  process.argv[2] ?? fileURLToPath(new URL("./acl-rea.mjs", import.meta.url));
 const checkout = resolve(dirname(entrypoint), "..");
 const run = createVerifierRun();
 const runtime = await VerifierFixture.open({
@@ -128,7 +128,7 @@ try {
     "envs/grafana-example/env.toml",
     "envs/grafana-example/evidence.json",
     "envs/grafana-example/manifest.json",
-    "envs/grafana-example/rea-agents.tgz",
+    "envs/grafana-example/acl-rea-agents.tgz",
     "tasks/smoke.json",
   ]);
   const shipped = JSON.parse(
@@ -143,8 +143,8 @@ try {
     join(bundle, "envs/grafana-example/Dockerfile"),
     "utf8",
   );
-  assert.ok(dockerfile.includes("COPY rea-agents.tgz /tmp/"));
-  assert.ok(dockerfile.includes("/tmp/rea-agents.tgz"));
+  assert.ok(dockerfile.includes("COPY acl-rea-agents.tgz /tmp/"));
+  assert.ok(dockerfile.includes("/tmp/acl-rea-agents.tgz"));
   cases++;
   // The agentenv runner builds the image, deploys it on the local sandbox and runs the verifier.
   // One deadline for both attempts, well under the 30-minute job, so a hung or retried run ends

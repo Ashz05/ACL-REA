@@ -9,7 +9,7 @@ import {
 it("binds Gemini's native activation to its instructions and resource root", () => {
   const directory = join("fixture", "selected profile", "skill");
   const instructions = 'Essential "instructions"\r\nKeep a \\ literal';
-  const payload = `<activated_skill name="reverse-engineer-anything">
+  const payload = `<activated_skill name="acl-reverse-engineer-anything">
   <instructions>
     ${instructions}
   </instructions>

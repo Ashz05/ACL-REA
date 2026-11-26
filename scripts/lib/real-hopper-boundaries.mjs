@@ -21,7 +21,7 @@ import {
   verifyHopperRegexIsolation,
 } from "./real-hopper-search.mjs";
 
-const dispatcher = fileURLToPath(new URL("../rea.mjs", import.meta.url));
+const dispatcher = fileURLToPath(new URL("../acl-rea.mjs", import.meta.url));
 
 /** Exercise real Hopper annotation and malformed-input boundaries over MCP. */
 export async function verifyHopperBoundaryContracts(

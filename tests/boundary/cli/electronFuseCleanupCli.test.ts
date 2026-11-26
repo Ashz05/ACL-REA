@@ -30,7 +30,7 @@ cliTest.for([
       [
         "--import",
         resolve("tests/fixtures/electron/fuseCleanupPreload.mjs"),
-        resolve("scripts/rea.mjs"),
+        resolve("scripts/acl-rea.mjs"),
         "inspect-electron-fuses",
         path,
         "--json",

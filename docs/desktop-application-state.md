@@ -1,6 +1,6 @@
 # Desktop application state
 
-`rea inspect-desktop-application-state <capture-folder>` reads a folder written
+`acl-rea inspect-desktop-application-state <capture-folder>` reads a folder written
 by [desktop application capture](desktop-application-capture.md) and describes
 the application's state: which observed files are the application's, what each
 retained version contains as typed JSON, and how each file changed between
@@ -8,14 +8,14 @@ checkpoints. It reads only the capture folder; the application is not run
 again.
 
 ```sh
-rea inspect-desktop-application-state ./mousepad-capture --format json
+acl-rea inspect-desktop-application-state ./mousepad-capture --format json
 ```
 
 Views use bounded defaults. When a view reports truncation or a byte-budget
 refusal, retry the same capture with `--view-policy` JSON overrides:
 
 ```bash
-rea inspect-desktop-application-state ./mousepad-capture \
+acl-rea inspect-desktop-application-state ./mousepad-capture \
   --state-path /home/ada/Documents/notes.txt \
   --view-policy '{"text_lines":10000,"file_bytes":134217728}' --format json
 ```

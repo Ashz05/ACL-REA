@@ -12,7 +12,7 @@ import { mcpTextValue } from "./mcp-verifier-results.mjs";
 /** Verify the real fixture's form destinations through CLI and stdio MCP. */
 export async function verifyBrowserDomDestinations(
   attachment,
-  entrypoint = fileURLToPath(new URL("../rea.mjs", import.meta.url)),
+  entrypoint = fileURLToPath(new URL("../acl-rea.mjs", import.meta.url)),
   documentUrl,
 ) {
   const env = { ...process.env, REA_LOG_LEVEL: "silent" };

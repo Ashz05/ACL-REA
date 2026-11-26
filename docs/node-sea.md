@@ -6,8 +6,8 @@ REA inventories injected Node.js SEA blobs through `inspect-artifact` /
 or code cache.
 
 ```sh
-rea inspect-artifact ./application --json
-rea inspect-artifact ./application --detail summary --evidence_output evidence.json --json
+acl-rea inspect-artifact ./application --json
+acl-rea inspect-artifact ./application --detail summary --evidence_output evidence.json --json
 rea extract-artifact ./application --json
 ```
 
@@ -128,7 +128,7 @@ For example, retain the same active carrier and retry an argument-count refusal:
 The CLI spelling is:
 
 ```sh
-rea inspect-artifact ./application --artifact-limits '{"node_sea":{"argument_count":8192}}' --json
+acl-rea inspect-artifact ./application --artifact-limits '{"node_sea":{"argument_count":8192}}' --json
 ```
 
 Failures report `reader_limit`, including the exact parameter, effective value,

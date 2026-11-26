@@ -1341,14 +1341,14 @@ public final class ReaGhidraBridge extends HeadlessScript {
         if (candidates.isEmpty())
             throw new RequestFailure("file_offset_unmapped", "File offset " + coordinate +
                 " has no loaded source mapping for the admitted target file; Ghidra image base: " + canonicalAddress(currentProgram.getImageBase()) +
-                ". Inspect mappings with rea inspect-native-load-image <path> --provider ghidra --json or MCP inspect_native_load_image.");
+                ". Inspect mappings with acl-rea inspect-native-load-image <path> --provider ghidra --json or MCP inspect_native_load_image.");
         Address mapped = candidates.get(0);
         Function function = functionAtOrContaining(mapped);
         if (function == null)
             throw new RequestFailure("procedure_not_found", "File offset " + coordinate +
                 " maps to analysis address " + canonicalAddress(mapped) +
                 ", but no procedure starts at or contains that address in the current Ghidra analysis. " +
-                "Choose an observed procedure with CLI rea search <path> . --kind procedures --mode regex --provider ghidra --json or MCP list_procedures.");
+                "Choose an observed procedure with CLI acl-rea search <path> . --kind procedures --mode regex --provider ghidra --json or MCP list_procedures.");
         selection.addProperty("file_offset", offset);
         selection.addProperty("mapped_address", canonicalAddress(mapped));
         selection.addProperty("procedure_address", canonicalAddress(function.getEntryPoint()));
@@ -3159,9 +3159,9 @@ public final class ReaGhidraBridge extends HeadlessScript {
             // Other procedure operations retain their analysis-address semantics.
             throw new RequestFailure("procedure_not_found", "No procedure exists at the requested address: " + value +
                 "; Ghidra image base: " + canonicalAddress(currentProgram.getImageBase()) +
-                ". Choose an observed analysis address. CLI: rea search <path> . --kind procedures --mode regex --provider ghidra --json; " +
-                "MCP: list_procedures. Inspect the loaded base and source mappings with CLI rea analyze <path> --provider ghidra --json " +
-                "and rea inspect-native-load-image <path> --provider ghidra --json, or MCP binary_overview and inspect_native_load_image. " +
+                ". Choose an observed analysis address. CLI: acl-rea search <path> . --kind procedures --mode regex --provider ghidra --json; " +
+                "MCP: list_procedures. Inspect the loaded base and source mappings with CLI acl-rea analyze <path> --provider ghidra --json " +
+                "and acl-rea inspect-native-load-image <path> --provider ghidra --json, or MCP binary_overview and inspect_native_load_image. " +
                 "Repeat the original target options. For decompile, select source coordinates explicitly with --file-offset=0x... or MCP procedure file-offset:0x....");
         return function;
     }

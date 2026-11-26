@@ -47,7 +47,7 @@ it.each(["codebuddy", "workbuddy"] as const)(
     // stdio-only profile. Its presence does not erase the parsed REA launcher.
     const source = `${JSON.stringify({
       mcpServers: {
-        rea: {
+        "acl-rea": {
           command: command[0],
           args: command.slice(1),
           caller_native_policy: { selected: true },

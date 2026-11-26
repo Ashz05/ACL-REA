@@ -25,9 +25,9 @@ itOnPosix.each([
   "finishes purging after $name removes the working directory (relative selection: $relative)",
   async ({ name, relative }) => {
     const home = await createTestTempDirectory("rea-managed-cache-cwd-");
-    const cwd = join(home, ".rea", name);
+    const cwd = join(home, ".acl-rea", name);
     const cacheRoot = join(home, "cache");
-    const cache = join(cacheRoot, "rea", "kuna");
+    const cache = join(cacheRoot, "acl-rea", "kuna");
     await mkdir(cwd, { recursive: true });
     await mkdir(cache, { recursive: true });
     await writeFile(join(cache, "cached"), "owned cache");
@@ -84,9 +84,9 @@ finally { await host.close?.(); }`,
 
 it("purges the Windows cache and state while retaining the separate Kuna cache", async () => {
   const home = await createTestTempDirectory("rea-managed-windows-purge-");
-  const cache = join(home, ".rea", "cache");
-  const state = join(home, ".rea", "state");
-  const custom = join(home, ".rea", "selected-kuna");
+  const cache = join(home, ".acl-rea", "cache");
+  const state = join(home, ".acl-rea", "state");
+  const custom = join(home, ".acl-rea", "selected-kuna");
   for (const path of [cache, state, custom])
     await mkdir(path, { recursive: true });
   await writeFile(join(custom, "evidence"), "caller evidence");
@@ -124,16 +124,18 @@ it.each(["darwin", "linux"] as const)(
       platform === "darwin" ? "Library/Caches" : "xdg-cache",
     );
     const directories = [
-      join(home, ".rea", "cache"),
-      join(home, ".rea", "state"),
-      join(cache, "rea", "kuna"),
-      ...(platform === "linux" ? [join(cache, "rea", "hopper-releases")] : []),
+      join(home, ".acl-rea", "cache"),
+      join(home, ".acl-rea", "state"),
+      join(cache, "acl-rea", "kuna"),
+      ...(platform === "linux"
+        ? [join(cache, "acl-rea", "hopper-releases")]
+        : []),
     ];
     for (const directory of directories) {
       await mkdir(directory, { recursive: true });
       await writeFile(join(directory, "cached"), "REA cache");
     }
-    const sibling = join(cache, "rea", "caller-evidence");
+    const sibling = join(cache, "acl-rea", "caller-evidence");
     await mkdir(sibling);
     await writeFile(join(sibling, "retained"), "caller evidence");
     const host = systemUninstallHost(
@@ -219,7 +221,7 @@ itOnPosix.each([
   async ({ spelling }) => {
     const home = await createTestTempDirectory("rea-managed-cache-spelling-");
     const root = join(home, "Library/Caches");
-    const cache = join(root, "rea", "kuna");
+    const cache = join(root, "acl-rea", "kuna");
     await mkdir(cache, { recursive: true });
     await writeFile(join(cache, "cached"), "REA cache");
     const host = systemUninstallHost(
@@ -249,7 +251,7 @@ itOnPosix.each([
 
 it("purges the Darwin ownership-helper cache with the default Kuna namespace", async () => {
   const home = await createTestTempDirectory("rea-managed-helper-cache-");
-  const helper = join(home, "Library/Caches/rea/process-helper");
+  const helper = join(home, "Library/Caches/acl-rea/process-helper");
   await mkdir(join(helper, "a".repeat(64)), { recursive: true });
   await writeFile(join(helper, "a".repeat(64), "reader"), "REA helper");
   const host = systemUninstallHost(home, undefined, {}, "darwin");
@@ -265,7 +267,7 @@ it("purges the Darwin ownership-helper cache with the default Kuna namespace", a
 
 it("reports the Hopper producer's invalid cache selection rather than silently falling back", async () => {
   const home = await createTestTempDirectory("rea-managed-cache-invalid-");
-  const fallback = join(home, ".cache", "rea", "hopper-releases");
+  const fallback = join(home, ".cache", "acl-rea", "hopper-releases");
   await mkdir(fallback, { recursive: true });
   await writeFile(join(fallback, "release"), "retained");
   const host = systemUninstallHost(
@@ -293,7 +295,7 @@ itOnPosix(
   async () => {
     const home = await createTestTempDirectory("rea-managed-cache-parent-");
     const root = join(home, "cache");
-    const cache = join(root, "rea", "kuna");
+    const cache = join(root, "acl-rea", "kuna");
     const external = join(home, "external");
     await mkdir(cache, { recursive: true });
     await mkdir(join(external, "subdir"), { recursive: true });
@@ -356,15 +358,15 @@ const nestedSelections: readonly NestedSelection[] = [
     namespace: "kuna",
     prepare: async (home) => {
       const cacheHome = join(home, "xdg-cache");
-      const custom = join(cacheHome, "rea", "kuna", "selected");
+      const custom = join(cacheHome, "acl-rea", "kuna", "selected");
       return { cacheHome, custom, evidence: await withEvidence(custom) };
     },
   },
   {
-    label: "inside ~/.rea/cache",
+    label: "inside ~/.acl-rea/cache",
     namespace: "cache",
     prepare: async (home) => {
-      const custom = join(home, ".rea", "cache", "selected");
+      const custom = join(home, ".acl-rea", "cache", "selected");
       return {
         cacheHome: join(home, "xdg-cache"),
         custom,
@@ -373,10 +375,10 @@ const nestedSelections: readonly NestedSelection[] = [
     },
   },
   {
-    label: "equal to ~/.rea/cache",
+    label: "equal to ~/.acl-rea/cache",
     namespace: "cache",
     prepare: async (home) => {
-      const custom = join(home, ".rea", "cache");
+      const custom = join(home, ".acl-rea", "cache");
       return {
         cacheHome: join(home, "xdg-cache"),
         custom,
@@ -389,7 +391,7 @@ const nestedSelections: readonly NestedSelection[] = [
     namespace: "kuna",
     prepare: async (home) => {
       const cacheHome = join(home, "xdg-cache");
-      const custom = join(cacheHome, "rea", "kuna", "selected");
+      const custom = join(cacheHome, "acl-rea", "kuna", "selected");
       return {
         cacheHome: `${cacheHome}/../xdg-cache`,
         custom,
@@ -401,12 +403,12 @@ const nestedSelections: readonly NestedSelection[] = [
     label: "reached through a symbolic link and parent traversal",
     namespace: "cache",
     prepare: async (home) => {
-      const inner = join(home, ".rea", "cache", "inner");
+      const inner = join(home, ".acl-rea", "cache", "inner");
       await mkdir(inner, { recursive: true });
       await mkdir(join(home, "outside"), { recursive: true });
       await symlink(inner, join(home, "outside", "alias"), "dir");
       const evidence = await withEvidence(
-        join(home, ".rea", "cache", "selected"),
+        join(home, ".acl-rea", "cache", "selected"),
       );
       return {
         cacheHome: join(home, "xdg-cache"),
@@ -450,12 +452,12 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
   async () => {
     const home = await createTestTempDirectory("rea-managed-cache-unknown-");
     const outside = join(home, "outside");
-    await mkdir(join(home, ".rea", "state"), { recursive: true });
+    await mkdir(join(home, ".acl-rea", "state"), { recursive: true });
     const evidence = await withEvidence(
-      join(home, ".rea", "cache", "selected"),
+      join(home, ".acl-rea", "cache", "selected"),
     );
     await mkdir(outside);
-    await symlink(join(home, ".rea", "cache"), join(outside, "alias"), "dir");
+    await symlink(join(home, ".acl-rea", "cache"), join(outside, "alias"), "dir");
     const unrelated = await withEvidence(join(home, "unrelated"));
     const host = systemUninstallHost(
       home,

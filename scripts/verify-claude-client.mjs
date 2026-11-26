@@ -47,7 +47,7 @@ const { path: lab } = await VerifierFixture.keepArtifacts({
 const profile = join(lab, "selected profile");
 const workspace = join(lab, "workspace");
 const configPath = join(profile, ".claude.json");
-const skillDirectory = join(profile, "skills", "reverse-engineer-anything");
+const skillDirectory = join(profile, "skills", "acl-reverse-engineer-anything");
 let clientVersion = null;
 let fixture;
 let passed = false;
@@ -139,10 +139,10 @@ await withVerifierCleanup(async () => {
           const wait = tools.find((t) => t.name === "WaitForMcpServers");
           assert(
             wait,
-            "Claude must expose REA tools or its native pending-server wait",
+            "Claude must expose ACL-REA tools or its native pending-server wait",
           );
           pendingServerWaits++;
-          return call(wait.name, { servers: ["rea"] });
+          return call(wait.name, { servers: ["acl-rea"] });
         }
         const prefix = analysis.name.slice(
           0,
@@ -254,11 +254,11 @@ await withVerifierCleanup(async () => {
           const skill = tools.find((t) => t.name === "Skill");
           assert(skill, "Claude must expose its native Skill tool");
           skillRequested = true;
-          return call(skill.name, { skill: "reverse-engineer-anything" });
+          return call(skill.name, { skill: "acl-reverse-engineer-anything" });
         }
         assert(
           skillLoaded,
-          "Claude must load the complete installed personal REA skill",
+          "Claude must load the complete installed personal ACL-REA skill",
         );
         return call(analysis.name, { input_path: target, format: "directory" });
       },
@@ -287,7 +287,7 @@ await withVerifierCleanup(async () => {
       join(skillDirectory, "SKILL.md"),
       "utf8",
     );
-    assert(installedSkill.includes("name: reverse-engineer-anything"));
+    assert(installedSkill.includes("name: acl-reverse-engineer-anything"));
     const lines = installedSkill.split("\n");
     const headerEnd = lines.indexOf("---", 1);
     assert(
@@ -322,8 +322,10 @@ await withVerifierCleanup(async () => {
                 allow: [
                   "Skill",
                   "WaitForMcpServers",
-                  "mcp__rea__analyze_javascript_application",
-                  ...(mode === "call" ? ["mcp__rea__binary_session"] : []),
+                  "mcp__acl-rea__analyze_javascript_application",
+                  ...(mode === "call"
+                    ? ["mcp__acl-rea__binary_session"]
+                    : []),
                 ],
               },
             }),

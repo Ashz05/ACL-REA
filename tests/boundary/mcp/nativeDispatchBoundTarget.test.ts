@@ -43,7 +43,7 @@ const inspectReplacements = async (replacements: readonly Replacement[]) => {
   );
   const transport = new StdioClientTransport({
     command: process.execPath,
-    args: [resolve("scripts/rea.mjs"), "mcp"],
+    args: [resolve("scripts/acl-rea.mjs"), "mcp"],
     cwd: process.cwd(),
     env: localToolsMcpEnvironment(env),
     stderr: "pipe",
@@ -102,7 +102,7 @@ const inspectReplacements = async (replacements: readonly Replacement[]) => {
           }[replacement];
           expect(error.details?.reason).toContain(code);
         }
-        expect(error.remediation.action).not.toContain("rea doctor");
+        expect(error.remediation.action).not.toContain("acl-rea doctor");
       } finally {
         if (replacement === "unreadable") await chmod(path, 0o600);
       }

@@ -27,7 +27,7 @@ workspaceCliTest.for([
     const home = workspace.path("home");
     const transport = new StdioClientTransport({
       command: process.execPath,
-      args: [resolve("scripts/rea.mjs"), "mcp"],
+      args: [resolve("scripts/acl-rea.mjs"), "mcp"],
       env: {
         PATH: process.env.PATH ?? "",
         HOME: home,

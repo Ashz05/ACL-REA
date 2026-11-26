@@ -119,7 +119,7 @@ it.each([
   "bridge/native/rea_lldb_tracer.py",
   "bridge/ghidra/ReaGhidraBridge.java",
   "install.sh",
-  "scripts/rea.mjs",
+  "scripts/acl-rea.mjs",
   "scripts/prepack.mjs",
   "scripts/hopper-demo-x11.py",
   "scripts/ci/release-recovery.mjs",

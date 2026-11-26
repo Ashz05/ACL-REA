@@ -1,4 +1,4 @@
-$ rea completions zsh
+$ acl-rea completions zsh
 exit: 0
 --- stdout
 #compdef rea

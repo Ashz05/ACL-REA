@@ -116,7 +116,7 @@ const runCaptureCli = async (
 ): Promise<CliCapture> => {
   const child = spawn(
     process.execPath,
-    ["scripts/rea.mjs", "capture-process", scenarioPath, "--json"],
+    ["scripts/acl-rea.mjs", "capture-process", scenarioPath, "--json"],
     {
       stdio: ["ignore", "pipe", "pipe"],
       ...(options.env === undefined

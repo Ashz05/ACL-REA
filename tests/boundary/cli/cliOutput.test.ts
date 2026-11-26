@@ -781,7 +781,7 @@ describe("version report requests", () => {
 
 describe("version report rendering", () => {
   const host = {
-    packageName: "rea-agents",
+    packageName: "acl-rea-agents",
     packageVersion: "6.7.0",
     versions: { node: "24.22.1" },
     platform: "linux",
@@ -817,7 +817,7 @@ describe("unknown MCP subcommand correction", () => {
         expect(timed.json).toMatchObject({
           cta: {
             commands: [
-              { command: `rea ${timing} mcp ${timing} add --format json` },
+              { command: `acl-rea ${timing} mcp ${timing} add --format json` },
               {},
             ],
           },
@@ -833,11 +833,11 @@ describe("unknown MCP subcommand output", () => {
     async ({ cli }) => {
       const expected = {
         code: "COMMAND_NOT_FOUND",
-        message: "'bogus' is not a command for 'rea mcp'.",
+        message: "'bogus' is not a command for 'acl-rea mcp'.",
         cta: {
           commands: [
             {
-              command: "rea mcp --help",
+              command: "acl-rea mcp --help",
               description: "see all available commands",
             },
           ],
@@ -855,7 +855,7 @@ describe("unknown MCP subcommand output", () => {
         arguments: ["mcp", "bogus", "--format", "yaml"],
       });
       expect(yaml.exitCode).toBe(1);
-      expect(yaml.stdout).toContain("    - command: rea mcp --help\n");
+      expect(yaml.stdout).toContain("    - command: acl-rea mcp --help\n");
       const markdown = await cli.run({
         arguments: ["mcp", "bogus", "--format", "md"],
       });
@@ -874,15 +874,17 @@ describe("unknown MCP subcommand output", () => {
         arguments: ["mcp", "ad", "--format", "json"],
       });
       expect(suggested.json).toMatchObject({
-        message: "'ad' is not a command for 'rea mcp'. Did you mean 'add'?",
-        cta: { commands: [{ command: "rea mcp add --format json" }, {}] },
+        message: "'ad' is not a command for 'acl-rea mcp'. Did you mean 'add'?",
+        cta: { commands: [{ command: "acl-rea mcp add --format json" }, {}] },
       });
       // Only the subcommand is corrected; an equal option value is caller input.
       const optionValue = await cli.run({
         arguments: ["mcp", "ad", "--command", "ad", "--json"],
       });
       expect(optionValue.json).toMatchObject({
-        cta: { commands: [{ command: "rea mcp add --command ad --json" }, {}] },
+        cta: {
+          commands: [{ command: "acl-rea mcp add --command ad --json" }, {}],
+        },
       });
       // Builtins Incur serves before its mcp branch keep their own output.
       const manifest = await cli.run({
@@ -925,32 +927,32 @@ describe("unknown MCP subcommand output", () => {
       });
       expect(delimited.exitCode).toBe(1);
       expect(delimited.stdout).toContain(
-        "rea mcp add --format csv --filter-output cta.commands --columns command",
+        "acl-rea mcp add --format csv --filter-output cta.commands --columns command",
       );
       // A suggestion that would not replay the caller's tokens is omitted.
       const spaced = await cli.run({
         arguments: ["mcp", "ad", "--command", "/path with spaces", "--json"],
       });
       expect(spaced.json).toMatchObject({
-        message: "'ad' is not a command for 'rea mcp'. Did you mean 'add'?",
+        message: "'ad' is not a command for 'acl-rea mcp'. Did you mean 'add'?",
         cta: {
           commands: [
             {
-              command: "rea mcp --help",
+              command: "acl-rea mcp --help",
               description: "see all available commands",
             },
           ],
         },
       });
-      expect(spaced.stdout).not.toContain("rea mcp add");
+      expect(spaced.stdout).not.toContain("acl-rea mcp add");
       for (const shellActive of ["@args", "%PATH%", "=node"]) {
         const result = await cli.run({
           arguments: ["mcp", "ad", "--command", shellActive, "--json"],
         });
         expect(result.exitCode).toBe(1);
-        expect(result.stdout).not.toContain("rea mcp add");
+        expect(result.stdout).not.toContain("acl-rea mcp add");
         expect(result.json).toMatchObject({
-          cta: { commands: [{ command: "rea mcp --help" }] },
+          cta: { commands: [{ command: "acl-rea mcp --help" }] },
         });
       }
       // Markdown output escapes caller text through REA's document renderer.
@@ -962,7 +964,7 @@ describe("unknown MCP subcommand output", () => {
       // An empty token keeps Incur's group help.
       const help = await cli.run({ arguments: ["mcp", "", "--json"] });
       expect(help.exitCode).toBe(0);
-      expect(help.stdout).toContain("rea mcp");
+      expect(help.stdout).toContain("acl-rea mcp");
       // Without a selected format, Incur's default TOON remains the output.
       const toon = await cli.run({ arguments: ["mcp", "bogus"] });
       expect(toon.exitCode).toBe(1);

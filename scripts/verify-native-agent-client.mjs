@@ -51,7 +51,7 @@ const artifactPath = join(workspace, "evidence.json");
 const skillPath = join(
   client === "pi" ? join(account, ".agents") : selectedProfile,
   "skills",
-  "reverse-engineer-anything",
+  "acl-reverse-engineer-anything",
   "SKILL.md",
 );
 const verifier = createVerifierRun();
@@ -114,7 +114,7 @@ await withVerifierCleanup(async () => {
     ]) {
       const result = await commands.exec(
         process.execPath,
-        [join(runtimeRoot, "scripts/rea.mjs"), ...args, "--json"],
+        [join(runtimeRoot, "scripts/acl-rea.mjs"), ...args, "--json"],
         {
           env: environment,
           cwd: workspace,
@@ -137,7 +137,7 @@ await withVerifierCleanup(async () => {
         result.stdout,
       );
     }
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.acl-rea.backup`, "utf8"), original);
     const installedConfiguration = await readFile(configPath, "utf8");
     assert(installedConfiguration.includes("unrelated-server"));
     if (client === "hermes")
@@ -145,7 +145,7 @@ await withVerifierCleanup(async () => {
     const repeated = await commands.exec(
       process.execPath,
       [
-        join(runtimeRoot, "scripts/rea.mjs"),
+        join(runtimeRoot, "scripts/acl-rea.mjs"),
         "setup",
         "--client",
         client,
@@ -161,10 +161,10 @@ await withVerifierCleanup(async () => {
     );
     assert.deepEqual(JSON.parse(repeated.stdout).appliedActions, []);
     assert.equal(await readFile(configPath, "utf8"), installedConfiguration);
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.acl-rea.backup`, "utf8"), original);
     assert(
       (await readFile(skillPath, "utf8")).includes(
-        "name: reverse-engineer-anything",
+        "name: acl-reverse-engineer-anything",
       ),
     );
     const decodeNativeAgentResult = (text) => {
@@ -241,10 +241,10 @@ await withVerifierCleanup(async () => {
         } else if (client === "hermes") {
           const search = tools.find((t) => t.name === "tool_search");
           const exposed = tools
-            .filter((t) => t.name.startsWith("mcp__rea__"))
-            .map((t) => t.name.slice(10));
+            .filter((t) => t.name.startsWith("mcp__acl-rea__"))
+            .map((t) => t.name.slice(14));
           const deferred = [
-            ...(search?.description ?? "").matchAll(/^- mcp__rea__(\w+):/gmu),
+            ...(search?.description ?? "").matchAll(/^- mcp__acl-rea__(\w+):/gmu),
           ].map((m) => m[1]);
           const native = [...new Set([...exposed, ...deferred])];
           // Hermes advertises MCP prompt utilities beside server tools.
@@ -254,7 +254,7 @@ await withVerifierCleanup(async () => {
             );
           skillLoaded ||=
             serializedTools.includes(skillPath) &&
-            serializedTools.includes("reverse-engineer-anything");
+            serializedTools.includes("acl-reverse-engineer-anything");
           for (const message of toolMessages) {
             const evidence = findClientResult(
               message.content,
@@ -276,18 +276,18 @@ await withVerifierCleanup(async () => {
           );
           assert(
             JSON.stringify(messages).includes(skillPath),
-            "Pi must advertise the installed REA skill.",
+            "Pi must advertise the installed ACL-REA skill.",
           );
           callRequested = true;
           return call(tool.name, {
-            code: `await describeNamespace("rea"); const skill = await tools.read({path:${JSON.stringify(skillPath)}}); const result = await tools.mcp__rea__analyze_javascript_application({input_path:${JSON.stringify(target)},format:"directory"}); if(result.isError) throw new Error(JSON.stringify(result)); const evidence = result.structuredContent ?? JSON.parse(result.content.find(c=>c.type==="text").text); await tools.write({path:${JSON.stringify(artifactPath)},content:JSON.stringify(evidence)}); text({REA_CLIENT_FIXTURE:true,skill_loaded:typeof skill==="string"&&skill.includes("name: reverse-engineer-anything"),catalog:ALL_TOOLS.filter(t=>t.name.startsWith("mcp__rea__")).map(t=>t.name.slice(10))});`,
+            code: `await describeNamespace("acl-rea"); const skill = await tools.read({path:${JSON.stringify(skillPath)}}); const result = await tools["mcp__acl-rea__analyze_javascript_application"]({input_path:${JSON.stringify(target)},format:"directory"}); if(result.isError) throw new Error(JSON.stringify(result)); const evidence = result.structuredContent ?? JSON.parse(result.content.find(c=>c.type==="text").text); await tools.write({path:${JSON.stringify(artifactPath)},content:JSON.stringify(evidence)}); text({REA_CLIENT_FIXTURE:true,skill_loaded:typeof skill==="string"&&skill.includes("name: acl-reverse-engineer-anything"),catalog:ALL_TOOLS.filter(t=>t.name.startsWith("mcp__acl-rea__")).map(t=>t.name.slice(14))});`,
           });
         }
         if (!skillRequested) {
           const tool = tools.find((t) => t.name === "skill_view");
           assert(tool, "Hermes skill_view must be available.");
           skillRequested = true;
-          return call(tool.name, { name: "reverse-engineer-anything" });
+          return call(tool.name, { name: "acl-reverse-engineer-anything" });
         }
         if (!searchRequested) {
           const tool = tools.find((t) => t.name === "tool_search");
@@ -298,7 +298,7 @@ await withVerifierCleanup(async () => {
           });
         }
         assert(
-          serializedTools.includes("mcp__rea__analyze_javascript_application"),
+          serializedTools.includes("mcp__acl-rea__analyze_javascript_application"),
           "Hermes must discover the analysis tool.",
         );
         if (!describeRequested) {
@@ -306,7 +306,7 @@ await withVerifierCleanup(async () => {
           assert(tool, "Hermes must load the actual parameter schema.");
           describeRequested = true;
           return call(tool.name, {
-            names: ["mcp__rea__analyze_javascript_application"],
+            names: ["mcp__acl-rea__analyze_javascript_application"],
           });
         }
         const tool = tools.find((t) => t.name === "tool_call");
@@ -315,7 +315,7 @@ await withVerifierCleanup(async () => {
         return call(tool.name, {
           calls: [
             {
-              name: "mcp__rea__analyze_javascript_application",
+              name: "mcp__acl-rea__analyze_javascript_application",
               arguments: { input_path: target, format: "directory" },
             },
           ],

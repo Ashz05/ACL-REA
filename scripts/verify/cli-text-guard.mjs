@@ -5,7 +5,7 @@
 // that mapping into output MCP clients also receive, including text built
 // from a template such as `--${name}` or `rea inspect-... <path>`.
 const cliText =
-  /\(CLI\b[^)\n]*|\bon the CLI\b|\bor (?:use|pass) (?:--[a-z]|rea [a-z][a-z-]*)|\bcli(?:Flag|Total|PerFile)?:\s*"--[a-z]|(?:message|userMessage):\s*["`]--[a-z]|`rea [a-z][a-z-]*/gu;
+  /\(CLI\b[^)\n]*|\bon the CLI\b|\bor (?:use|pass) (?:--[a-z]|acl-rea [a-z][a-z-]*)|\bcli(?:Flag|Total|PerFile)?:\s*"--[a-z]|(?:message|userMessage):\s*["`]--[a-z]|`acl-rea [a-z][a-z-]*/gu;
 
 /**
  * Host commands with no MCP operation. Telling an operator to run one is an
@@ -49,8 +49,8 @@ export const cliTextGuardSelects = (path) =>
 // One `rea <command>` with the arguments written after it. They end at a
 // closing backtick or parenthesis, a comma or semicolon, or the next
 // `rea <command>`, so one exemption never removes another command.
-const reaCommand = /\brea ([a-z][a-z-]*)(?:(?!\brea [a-z])[^`)\n,;])*/gu;
-const remainingCliText = /--[a-z]|\brea [a-z]|\bon the CLI\b/u;
+const reaCommand = /\bacl-rea ([a-z][a-z-]*)(?:(?!\bacl-rea [a-z])[^`)\n,;])*/gu;
+const remainingCliText = /--[a-z]|\bacl-rea [a-z]|\bon the CLI\b/u;
 
 /**
  * Whether a matched phrase still names CLI text once each host-only command

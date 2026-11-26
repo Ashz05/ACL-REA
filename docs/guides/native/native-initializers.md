@@ -6,8 +6,8 @@ at exit. It reads the file without executing it and does not need a
 disassembler provider.
 
 ```bash
-rea inspect-native-initializers /absolute/path/to/program --json
-rea inspect-native-initializers ./Universal.app/Contents/MacOS/App --architecture arm64 --json
+acl-rea inspect-native-initializers /absolute/path/to/program --json
+acl-rea inspect-native-initializers ./Universal.app/Contents/MacOS/App --architecture arm64 --json
 ```
 
 The CLI resolves relative paths against the caller's working directory. MCP

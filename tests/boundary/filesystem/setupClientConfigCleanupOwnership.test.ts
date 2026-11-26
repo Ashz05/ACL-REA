@@ -188,11 +188,11 @@ it("stops uninstall and retains the backup read owner when its close fails", asy
   } as const;
   await writeFile(path, '{"keep":"before setup"}\n');
   expect(
-    await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+    await configureClientConfiguration(client, {}, ["acl-rea", "mcp"]),
   ).toMatchObject({ status: "configured" });
   const configured = await readFile(path, "utf8");
   const { closeAttempts, release } = holdReadHandle(
-    `${path}.rea.backup`,
+    `${path}.acl-rea.backup`,
     "held backup handle",
   );
   const host = systemUninstallHost(home, undefined, { HOME: home }, "linux");
@@ -217,9 +217,9 @@ it("reports a completed uninstall edit while publication cleanup remains owned",
     "rea-uninstall-publication-close-",
   );
   const path = join(home, ".cursor", "mcp.json");
-  const cache = join(home, ".rea", "cache", "marker");
+  const cache = join(home, ".acl-rea", "cache", "marker");
   const original =
-    '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]},"peer":{}}}\n';
+    '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]},"peer":{}}}\n';
   await mkdir(dirname(path), { recursive: true });
   await mkdir(dirname(cache), { recursive: true });
   await writeFile(path, original);
@@ -247,7 +247,7 @@ it("reports a completed uninstall edit while publication cleanup remains owned",
     expect(JSON.parse(await readFile(path, "utf8"))).toEqual({
       mcpServers: { peer: {} },
     });
-    expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
     expect(await readFile(cache, "utf8")).toBe("keep");
     const client = result.items.find(({ name }) => name === "cursor");
     expect(client).toMatchObject({
@@ -255,7 +255,7 @@ it("reports a completed uninstall edit while publication cleanup remains owned",
       configuration_path: path,
     });
     expect(client?.detail).toContain(`Removed registration from ${path}`);
-    expect(client?.detail).toContain(`${path}.rea.backup`);
+    expect(client?.detail).toContain(`${path}.acl-rea.backup`);
 
     release();
     expect(await host.close?.()).toBeUndefined();
@@ -287,16 +287,16 @@ it.each(["owned registration", "shadowed duplicate"] as const)(
     if (scenario === "shadowed duplicate") {
       await writeFile(
         path,
-        '{"mcpServers":{"rea":{"command":"foreign-server","args":[]},"rea":{"command":"rea","args":["mcp"]}}}',
+        '{"mcpServers":{"acl-rea":{"command":"foreign-server","args":[]},"acl-rea":{"command":"acl-rea","args":["mcp"]}}}',
       );
     } else {
       await writeFile(path, '{"mcpServers":{"other":{"command":"other"}}}');
       expect(
-        await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+        await configureClientConfiguration(client, {}, ["acl-rea", "mcp"]),
       ).toMatchObject({ status: "configured" });
     }
     const registration = await readFile(path, "utf8");
-    const marker = join(home, ".rea", "cache", "marker");
+    const marker = join(home, ".acl-rea", "cache", "marker");
     await mkdir(dirname(marker), { recursive: true });
     await writeFile(marker, "managed data");
     const { release } = holdReadHandle(path, "held ownership read handle");
@@ -342,9 +342,9 @@ it("stops removal when a completed reread leaves its handle unreleased", async (
   await mkdir(dirname(client.configPath), { recursive: true });
   await writeFile(
     client.configPath,
-    '{"mcpServers":{"rea":{"command":"foreign-server","args":[]}}}',
+    '{"mcpServers":{"acl-rea":{"command":"foreign-server","args":[]}}}',
   );
-  const marker = join(home, ".rea", "cache", "marker");
+  const marker = join(home, ".acl-rea", "cache", "marker");
   await mkdir(dirname(marker), { recursive: true });
   await writeFile(marker, "managed data");
   const { hold, release } = holdReadHandle(
@@ -392,7 +392,7 @@ it("keeps the shared registration fail-closed when ZCode's probe is unresolved",
   const fallback = join(home, ".agents", "mcp.json");
   const profile = join(home, ".zcode", "cli");
   const cursor = join(home, ".cursor", "mcp.json");
-  const original = '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}';
+  const original = '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}}}';
   await mkdir(dirname(fallback), { recursive: true });
   await mkdir(dirname(cursor), { recursive: true });
   await writeFile(fallback, "{ malformed");
@@ -473,7 +473,7 @@ it("removes a shared registration once and reports that outcome to both clients"
         configPath: shared,
       },
       {},
-      ["rea", "mcp"],
+      ["acl-rea", "mcp"],
     ),
   ).toMatchObject({ status: "configured" });
   const host = systemUninstallHost(home, undefined, { HOME: home }, "linux");
@@ -523,14 +523,14 @@ it.each([true, false])(
       shared,
       JSON.stringify({
         mcp: {
-          rea: {
+          "acl-rea": {
             type: "local",
             command: [sharedOwned ? "foreign-server" : "rea", "mcp"],
           },
         },
         mcpServers: {
-          rea: {
-            command: sharedOwned ? "rea" : "foreign-server",
+          "acl-rea": {
+            command: sharedOwned ? "acl-rea": "foreign-server",
             args: ["mcp"],
           },
         },
@@ -610,7 +610,7 @@ it("does not treat a dangling FreeBuff profile link as installed", async () => {
         configPath: cursor,
       },
       {},
-      ["rea", "mcp"],
+      ["acl-rea", "mcp"],
     ),
   ).toMatchObject({ status: "configured" });
   lstatMock.mockImplementation((path) =>
@@ -641,7 +641,7 @@ it("does not treat a dangling FreeBuff profile link as installed", async () => {
       expect.objectContaining({ name: "cursor", status: "removed" }),
     );
     expect(JSON.parse(await readFile(cursor, "utf8"))).not.toHaveProperty(
-      "mcpServers.rea",
+      "mcpServers.acl-rea",
     );
     expect(result.items).toContainEqual(
       expect.objectContaining({ name: "freebuff", status: "retained" }),
@@ -669,9 +669,9 @@ it("serves a completed removal reread when its close retry releases the handle",
   await mkdir(dirname(client.configPath), { recursive: true });
   await writeFile(
     client.configPath,
-    '{"mcpServers":{"rea":{"command":"foreign-server","args":[]}}}',
+    '{"mcpServers":{"acl-rea":{"command":"foreign-server","args":[]}}}',
   );
-  const cacheOwned = join(home, ".rea", "cache", "owned");
+  const cacheOwned = join(home, ".acl-rea", "cache", "owned");
   await mkdir(dirname(cacheOwned), { recursive: true });
   await writeFile(cacheOwned, "owned\n");
   const { hold, release } = holdReadHandle(
@@ -687,7 +687,7 @@ it("serves a completed removal reread when its close retry releases the handle",
       // Another writer registers REA between preflight and removal.
       await writeFile(
         client.configPath,
-        '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}',
+        '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}}}',
       );
       hold();
       return base.inspectSkill?.();
@@ -733,8 +733,8 @@ describe("ZCode fallback cleanup ownership", () => {
       try {
         const action =
           operation === "preflight"
-            ? host.inspectClientConfiguration?.(client, {}, ["rea", "mcp"])
-            : host.configureClient(client, {}, ["rea", "mcp"]);
+            ? host.inspectClientConfiguration?.(client, {}, ["acl-rea", "mcp"])
+            : host.configureClient(client, {}, ["acl-rea", "mcp"]);
         if (action === undefined) throw new Error("setup preflight missing");
         await expect(action).rejects.toMatchObject({
           _tag: "ConfigurationError",
@@ -778,14 +778,14 @@ describe("setup client configuration cleanup ownership", () => {
           host,
           [client],
           { providerEnvironment: {} },
-          ["rea", "mcp"],
+          ["acl-rea", "mcp"],
         )
           .then((detectedClients) =>
             configureDetectedClients({
               host,
               detectedClients,
               providerEnvironment: {},
-              command: ["rea", "mcp"],
+              command: ["acl-rea", "mcp"],
               clients: {},
               appliedActions: [],
             }),
@@ -852,7 +852,7 @@ describe("setup client configuration cleanup ownership", () => {
     });
 
     let hostCloseFinished = false;
-    const alignment = host.clientNeedsConfigure(client, {}, ["rea", "mcp"]);
+    const alignment = host.clientNeedsConfigure(client, {}, ["acl-rea", "mcp"]);
     let closeResult: ReturnType<NonNullable<typeof host.close>> | undefined;
     await withVerifierCleanup(async () => {
       await configurationRead.reached(alignment, "configuration read");
@@ -865,7 +865,7 @@ describe("setup client configuration cleanup ownership", () => {
       });
 
       const lateAdmission = await host
-        .clientNeedsConfigure(client, {}, ["rea", "mcp"])
+        .clientNeedsConfigure(client, {}, ["acl-rea", "mcp"])
         .then(
           () => undefined,
           (cause: unknown) => cause,
@@ -945,7 +945,7 @@ it.each(unscopedRegistrationReaders)(
     );
     await mkdir(dirname(config), { recursive: true });
     const registration =
-      '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}\n';
+      '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}}}\n';
     await writeFile(config, registration);
     const heldPath = source === "policy" ? join(home, "system.json") : config;
     const heldText = source === "policy" ? "{}\n" : registration;
@@ -1011,7 +1011,7 @@ it("keeps a supplied registration scope responsible for diagnostics and cleanup 
   await mkdir(dirname(config), { recursive: true });
   await writeFile(
     config,
-    '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}',
+    '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}}}',
   );
   const held = holdReadHandle(config, "held scoped registration descriptor");
   const resources = new ArtifactResourceScope();
@@ -1049,7 +1049,7 @@ it("keeps a supplied maintenance scope responsible for a refresh-check read whos
   });
   await writeFile(
     config,
-    JSON.stringify({ mcpServers: { rea: { command, args } } }),
+    JSON.stringify({ mcpServers: { "acl-rea": { command, args } } }),
   );
   // The registration inspection reads the file first; fail only the close of
   // the refresh check's later read of the same file.

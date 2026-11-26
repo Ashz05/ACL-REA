@@ -47,7 +47,7 @@ it("threads the selected host and environment into system diagnostics", async ()
         };
       if (command === "which")
         return {
-          stdout: "/selected/bin/rea\n",
+          stdout: "/selected/bin/acl-rea\n",
           stderr: "",
           stdoutBytes: 18,
           stderrBytes: 0,
@@ -375,13 +375,16 @@ it.skipIf(process.platform === "win32")(
   "resolves POSIX launchers that reach one package through symlinks",
   async () => {
     const root = await createTestTempDirectory("rea-doctor-launchers-");
-    const scripts = join(root, "lib/node_modules/rea-agents/scripts");
+    const scripts = join(root, "lib/node_modules/acl-rea-agents/scripts");
     await mkdir(scripts, { recursive: true });
-    await writeFile(join(scripts, "rea.mjs"), "", { mode: 0o755 });
-    const launchers = [join(root, "bin/rea"), join(root, "home/bin/rea")];
+    await writeFile(join(scripts, "acl-rea.mjs"), "", { mode: 0o755 });
+    const launchers = [
+      join(root, "bin/acl-rea"),
+      join(root, "home/bin/acl-rea"),
+    ];
     for (const launcher of launchers) {
       await mkdir(dirname(launcher), { recursive: true });
-      await symlink(join(scripts, "rea.mjs"), launcher);
+      await symlink(join(scripts, "acl-rea.mjs"), launcher);
     }
     const host = systemDoctorHost({
       platform: "linux",

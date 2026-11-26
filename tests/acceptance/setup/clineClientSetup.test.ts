@@ -50,14 +50,14 @@ cliTest(
     expect(JSON.parse(configured)).toMatchObject({
       mcpServers: {
         peer: { command: "peer" },
-        rea: { args: expect.arrayContaining(["mcp"]) },
+        "acl-rea": { args: expect.arrayContaining(["mcp"]) },
       },
     });
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
     const second = await run();
     expect(second.exitCode, second.stdout).toBe(0);
     expect(await readFile(config, "utf8")).toBe(configured);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
   },
 );
 
@@ -94,7 +94,7 @@ cliTest(
     });
     expect(result.exitCode, result.stdout).toBe(0);
     expect(JSON.parse(await readFile(override, "utf8"))).toMatchObject({
-      mcpServers: { rea: { args: expect.arrayContaining(["mcp"]) } },
+      mcpServers: { "acl-rea": { args: expect.arrayContaining(["mcp"]) } },
     });
     await expect(access(defaultPath)).rejects.toMatchObject({
       code: "ENOENT",
@@ -134,7 +134,7 @@ cliTest(
     );
     expect(skill).toHaveLength(1);
     expect(skill[0]!.target).toBe(
-      join(home, ".agents", "skills", "reverse-engineer-anything"),
+      join(home, ".agents", "skills", "acl-reverse-engineer-anything"),
     );
   },
 );
@@ -195,7 +195,7 @@ cliTest(
     const directory = join(home, ".cline", "data", "settings");
     const config = join(directory, "cline_mcp_settings.json");
     const foreign = JSON.stringify({
-      mcpServers: { rea: { command: "custom", args: ["keep"] } },
+      mcpServers: { "acl-rea": { command: "custom", args: ["keep"] } },
     });
     await mkdir(directory, { recursive: true });
     await writeFile(config, foreign);
@@ -265,7 +265,7 @@ cliTest(
     );
     expect((await setupCline(cli, home)).exitCode).toBe(0);
     const configured = JSON.parse(await readFile(config, "utf8"));
-    const original = configured.mcpServers.rea;
+    const original = configured.mcpServers["acl-rea"];
     const transport = {
       type: "stdio",
       command: original.command,
@@ -279,7 +279,7 @@ cliTest(
       mcpServers: {
         ...configured.mcpServers,
         peer: { command: "recorded-peer" },
-        rea: {
+        "acl-rea": {
           transport,
           env: { SHADOWED_OUTER_VALUE: "retained but not selected" },
           metadata: { selected: "outer registration" },

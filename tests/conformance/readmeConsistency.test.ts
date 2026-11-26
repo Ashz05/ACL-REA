@@ -36,9 +36,9 @@ describe("onboarding documentation product facts", () => {
     ).toContainEqual(
       expect.objectContaining({
         mcpServers: expect.objectContaining({
-          rea: expect.objectContaining({
+          "acl-rea": expect.objectContaining({
             command: "/absolute/path/to/node",
-            args: ["/absolute/path/to/rea/scripts/rea.mjs", "mcp"],
+            args: ["/absolute/path/to/acl-rea/scripts/acl-rea.mjs", "mcp"],
           }),
         }),
       }),

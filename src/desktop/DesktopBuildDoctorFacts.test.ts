@@ -466,9 +466,9 @@ it.skipIf(process.platform === "win32")(
       join(home, ".claude.json"),
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: process.execPath,
-            args: ["/opt/rea/scripts/rea.mjs", "mcp"],
+            args: ["/opt/acl-rea/scripts/acl-rea.mjs", "mcp"],
             env: { REA_AGENT_ENV_COMMAND: "" },
           },
         },
@@ -547,9 +547,9 @@ it.skipIf(process.platform === "win32")(
       join(home, ".claude.json"),
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: process.execPath,
-            args: ["/opt/rea/scripts/rea.mjs", "mcp"],
+            args: ["/opt/acl-rea/scripts/acl-rea.mjs", "mcp"],
             env: {
               REA_DOCKER_COMMAND: join(bin, "docker"),
               REA_AGENT_ENV_COMMAND: join(bin, "agent-env"),
@@ -590,13 +590,13 @@ it.skipIf(process.platform === "win32")(
     const file = join(project, "opencode.json");
     const row = {
       type: "local",
-      command: [process.execPath, "/opt/rea/scripts/rea.mjs", "mcp"],
+      command: [process.execPath, "/opt/acl-rea/scripts/acl-rea.mjs", "mcp"],
       environment: {
         REA_AGENT_ENV_COMMAND: runner,
         REA_DOCKER_COMMAND: docker,
       },
     };
-    await writeFile(file, JSON.stringify({ mcp: { servers: { rea: row } } }));
+    await writeFile(file, JSON.stringify({ mcp: { servers: { "acl-rea": row } } }));
     const cwd = vi.spyOn(process, "cwd").mockReturnValue(project);
     const probe = vi.fn(async (path: string) => {
       const stdout = path === runner ? "agent-env 0.9.1485" : root;
@@ -622,7 +622,7 @@ it.skipIf(process.platform === "win32")(
       await rm(file);
       await writeFile(
         join(user, "opencode.json"),
-        JSON.stringify({ mcp: { servers: { rea: row } } }),
+        JSON.stringify({ mcp: { servers: { "acl-rea": row } } }),
       );
       probe.mockClear();
       await host.desktopBuildFacts?.(["opencode"]);
@@ -646,9 +646,9 @@ it.skipIf(process.platform === "win32")(
       join(home, ".claude.json"),
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: process.execPath,
-            args: ["/opt/rea/scripts/rea.mjs", "mcp"],
+            args: ["/opt/acl-rea/scripts/acl-rea.mjs", "mcp"],
             env: {
               REA_AGENT_ENV_COMMAND: "/private/old-agent-env",
               REA_DOCKER_COMMAND: "/private/docker",
@@ -708,7 +708,7 @@ it.skipIf(process.platform === "win32")(
     );
     const packed = join(root, "packed");
     await mkdir(join(packed, "runtime", "scripts"), { recursive: true });
-    await writeFile(join(packed, "runtime", "scripts", "rea.mjs"), "");
+    await writeFile(join(packed, "runtime", "scripts", "acl-rea.mjs"), "");
     await writeFile(
       join(packed, "runtime", "package.json"),
       JSON.stringify({ version: PRODUCT_IDENTITY.packageVersion }),
@@ -719,9 +719,9 @@ it.skipIf(process.platform === "win32")(
       join(home, ".claude.json"),
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: process.execPath,
-            args: ["/opt/rea/scripts/rea.mjs", "mcp"],
+            args: ["/opt/acl-rea/scripts/acl-rea.mjs", "mcp"],
             env: {
               REA_DOCKER_COMMAND: docker,
               REA_BUILD_COMPUTER_REA_ARCHIVE: archive,
@@ -752,9 +752,9 @@ it.skipIf(process.platform === "win32")(
     const registration = (runner: string) =>
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: process.execPath,
-            args: ["/opt/rea/scripts/rea.mjs", "mcp"],
+            args: ["/opt/acl-rea/scripts/acl-rea.mjs", "mcp"],
             env: {
               REA_DOCKER_COMMAND: docker,
               REA_BUILD_COMPUTER_REA_ARCHIVE: archive,
@@ -820,9 +820,9 @@ it.skipIf(process.platform === "win32")(
       join(home, ".claude.json"),
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: process.execPath,
-            args: ["/opt/rea/scripts/rea.mjs", "mcp"],
+            args: ["/opt/acl-rea/scripts/acl-rea.mjs", "mcp"],
             env: { REA_AGENT_ENV_COMMAND: "/private/value/agent-env" },
           },
         },
@@ -873,10 +873,10 @@ it.skipIf(process.platform === "win32")(
     const packed = join(root, "packed");
     await mkdir(join(packed, "rea-prod"), { recursive: true });
     await mkdir(join(packed, "rea-prod", "scripts"));
-    await writeFile(join(packed, "rea-prod", "scripts", "rea.mjs"), "");
+    await writeFile(join(packed, "rea-prod", "scripts", "acl-rea.mjs"), "");
     await writeFile(
       join(packed, "rea-prod/package.json"),
-      JSON.stringify({ name: "rea-agents", version: "6.7.0" }),
+      JSON.stringify({ name: "acl-rea-agents", version: "6.7.0" }),
     );
     const archive = join(root, "rea-prod.tar.xz");
     await execute("tar", ["-cJf", archive, "-C", packed, "rea-prod"]);
@@ -912,7 +912,7 @@ it("recognizes a gzip runtime archive with a different top folder", async () => 
   );
   const packed = join(root, "packed");
   await mkdir(join(packed, "package", "scripts"), { recursive: true });
-  await writeFile(join(packed, "package", "scripts", "rea.mjs"), "");
+  await writeFile(join(packed, "package", "scripts", "acl-rea.mjs"), "");
   await writeFile(
     join(packed, "package", "package.json"),
     JSON.stringify({ version: PRODUCT_IDENTITY.packageVersion }),
@@ -990,7 +990,7 @@ it.skipIf(process.platform === "win32")(
     const status = (client: string, differing: readonly string[]) =>
       ({
         client,
-        command: [process.execPath, "rea.mjs", "mcp"],
+        command: [process.execPath, "acl-rea.mjs", "mcp"],
         provider_settings: { differing, unrecorded: [], unresolved: [] },
       }) as unknown as ClientRegistrationStatus;
     let outcome: Promise<unknown> = Promise.resolve();

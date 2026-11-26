@@ -749,7 +749,7 @@ const environment = {
 };
 const transport = new StdioClientTransport({
   command: process.execPath,
-  args: [join(repo, "scripts/rea.mjs"), "mcp"],
+  args: [join(repo, "scripts/acl-rea.mjs"), "mcp"],
   cwd: repo,
   env: environment,
   stderr: "pipe",
@@ -1028,7 +1028,7 @@ if (values.cli) {
   const { path: _path, ...query } = queries[0];
   const proof = join(output, "cli-evidence.json");
   const args = [
-    join(repo, "scripts/rea.mjs"),
+    join(repo, "scripts/acl-rea.mjs"),
     "inspect-android-jni-bindings",
     target,
     "--query",

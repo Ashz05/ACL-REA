@@ -26,7 +26,7 @@ const cases = [
 /** Verify compiler-produced nested maps through an actual owned Chrome and public CLI. */
 export async function verifyBrowserNestedSourceMaps(
   executable,
-  entrypoint = fileURLToPath(new URL("../rea.mjs", import.meta.url)),
+  entrypoint = fileURLToPath(new URL("../acl-rea.mjs", import.meta.url)),
 ) {
   const results = [];
   for (const scenario of cases) {

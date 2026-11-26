@@ -91,7 +91,7 @@ cleanup or the inherited ambient environment.
 Compare saved capture Evidence with:
 
 ```sh
-rea compare-process-captures authority.json reconstruction.json
+acl-rea compare-process-captures authority.json reconstruction.json
 ```
 
 The comparison checks terminal, interaction, exit, filesystem, and
@@ -773,7 +773,7 @@ running as the same user, which could already modify REA itself. Setting
 `REA_DARWIN_SWIFTC_PATH` or `REA_DARWIN_MODULE_CACHE_PATH` keeps the per-process
 compile and writes nothing to this cache. REA does not prune old entries; each
 is about 240 KiB. Delete the directory while no REA process is running, or run
-`rea uninstall --purge-data`, to remove them.
+`acl-rea uninstall --purge-data`, to remove them.
 
 `xcrun` also maintains a separate tool-lookup cache. Its `--no-cache` option
 refreshes entries and does not guarantee a write-free lookup. To avoid that
@@ -803,7 +803,7 @@ export SDKROOT="$(xcrun --show-sdk-path)"
 export REA_DARWIN_MODULE_CACHE_PATH="$PWD/rea-cache/modules"
 export TMPDIR="$PWD/rea-cache/tmp"
 mkdir -p "$TMPDIR"
-rea analyze-javascript-application ./fixture --artifact-format directory
+acl-rea analyze-javascript-application ./fixture --artifact-format directory
 ```
 
 Keep the selected compiler and SDK paired. Permit REA's evidence/output paths

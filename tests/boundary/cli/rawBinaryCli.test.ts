@@ -276,7 +276,7 @@ cliTest(
         constraint: "wasm_requires_static_inspection",
         related_operations: ["inspect_wasm_artifact"],
         related_cli_commands: {
-          inspect_wasm_artifact: "rea inspect-wasm-artifact",
+          inspect_wasm_artifact: "acl-rea inspect-wasm-artifact",
         },
       },
     });
@@ -298,7 +298,7 @@ cliTest(
           "analyze_javascript_application",
         ],
         related_cli_commands: {
-          inspect_desktop_application: "rea inspect-desktop-application",
+          inspect_desktop_application: "acl-rea inspect-desktop-application",
           audit_release_exposure: "rea audit-release-exposure",
           analyze_javascript_application: "rea analyze-javascript-application",
         },
@@ -322,7 +322,7 @@ cliTest(
         constraint: "bundle_executable_undeclared",
         related_operations: ["inspect_plist"],
         related_cli_commands: {
-          inspect_plist: "rea inspect-plist",
+          inspect_plist: "acl-rea inspect-plist",
         },
       },
     });

@@ -105,7 +105,7 @@ describe("Hermes registration source retention", () => {
     const written = await readFile(path, "utf8");
     expect(parseYaml(written, { version: "1.1" })).toMatchObject({
       mcp_servers: {
-        rea: { env: { CUSTOM: "value" } },
+        "acl-rea": { env: { CUSTOM: "value" } },
         other: { command: "other-server" },
       },
     });
@@ -114,7 +114,7 @@ describe("Hermes registration source retention", () => {
         version: "1.1",
       }),
     ).toMatchObject({ mcp_servers: { other: { command: "new-server" } } });
-    expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
   });
 });
 
@@ -147,7 +147,7 @@ describe("Hermes inherited registration removal", () => {
   });
 
   it.each([
-    "shared: &shared\n  rea: {command: rea, args: [mcp]}\nmcp_servers:\n  <<: *shared\n",
+    "shared: &shared\n  acl-rea: {command: rea, args: [mcp]}\nmcp_servers:\n  <<: *shared\n",
     "shared: &shared\n  mcp_servers:\n    rea: {command: rea, args: [mcp]}\n<<: *shared\n",
   ])(
     "reports an inherited registration without writing its shared source",
@@ -170,7 +170,7 @@ describe("Hermes inherited registration removal", () => {
         detail: expect.stringContaining("inherited from a YAML merge"),
       });
       expect(await readFile(path, "utf8")).toBe(original);
-      await expect(readFile(`${path}.rea.backup`, "utf8")).rejects.toThrow();
+      await expect(readFile(`${path}.acl-rea.backup`, "utf8")).rejects.toThrow();
     },
   );
 
@@ -197,7 +197,7 @@ describe("Hermes inherited registration removal", () => {
     );
     expect(isMap(servers) && servers.items).toHaveLength(1);
     expect(parseYaml(written, { version: "1.1" })).toMatchObject({
-      mcp_servers: { rea: { marker: "retained", env: { CUSTOM: "value" } } },
+      mcp_servers: { "acl-rea": { marker: "retained", env: { CUSTOM: "value" } } },
     });
   });
 
@@ -207,7 +207,7 @@ describe("Hermes inherited registration removal", () => {
     await mkdir(directory);
     const path = join(directory, "config.yaml");
     const original =
-      "defaults: &defaults\n  metadata: {marker: old}\nmcp_servers:\n  rea:\n    <<: *defaults\n    command: rea\n    args: [mcp]\n";
+      "defaults: &defaults\n  metadata: {marker: old}\nmcp_servers:\n  acl-rea:\n    <<: *defaults\n    command: rea\n    args: [mcp]\n";
     await writeFile(path, original);
     const client = supportedClients(home, process.platform, {
       HERMES_HOME: directory,
@@ -220,9 +220,9 @@ describe("Hermes inherited registration removal", () => {
     expect(written).toContain("<<: *defaults");
     const changed = written.replace("marker: old", "marker: new");
     expect(parseYaml(changed, { version: "1.1" })).toMatchObject({
-      mcp_servers: { rea: { metadata: { marker: "new" } } },
+      mcp_servers: { "acl-rea": { metadata: { marker: "new" } } },
     });
-    expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
   });
 
   it("preserves distinct keys beside a changed launcher field", async () => {
@@ -231,7 +231,7 @@ describe("Hermes inherited registration removal", () => {
     await mkdir(directory);
     const path = join(directory, "config.yaml");
     const original =
-      'mcp_servers:\n  rea:\n    command: rea\n    args: [mcp]\n    1: numeric\n    "1": string\n';
+      'mcp_servers:\n  acl-rea:\n    command: rea\n    args: [mcp]\n    1: numeric\n    "1": string\n';
     await writeFile(path, original);
     const client = supportedClients(home, process.platform, {
       HERMES_HOME: directory,
@@ -254,7 +254,7 @@ describe("Hermes inherited registration removal", () => {
       const directory = join(home, ".hermes");
       await mkdir(directory);
       const path = join(directory, "config.yaml");
-      const original = `mcp_servers:\n  rea:\n    command: rea\n    args: [mcp]\n    metadata:\n${keys}\n`;
+      const original = `mcp_servers:\n  acl-rea:\n    command: rea\n    args: [mcp]\n    metadata:\n${keys}\n`;
       await writeFile(path, original);
       const client = supportedClients(home, process.platform, {
         HERMES_HOME: directory,
@@ -268,7 +268,7 @@ describe("Hermes inherited registration removal", () => {
       expect(result.status, JSON.stringify(result)).toBe("configured");
       const written = await readFile(path, "utf8");
       expect(written).toContain(keys);
-      expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
     },
   );
 });
@@ -293,7 +293,7 @@ describe("Hermes configuration paths", () => {
     });
     const written = await readFile(path, "utf8");
     expect(written).toContain(original.trimEnd());
-    expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
   });
 
   it.skipIf(process.platform === "win32")(
@@ -332,7 +332,7 @@ describe("Hermes configuration paths", () => {
       ).toContain("mcp_servers:");
       expect(
         await readFile(
-          join(home, "physical", "config.yaml.rea.backup"),
+          join(home, "physical", "config.yaml.acl-rea.backup"),
           "utf8",
         ),
       ).toBe(original);
@@ -563,7 +563,7 @@ describe("Hermes YAML shape diagnostics", () => {
       const { home, client } = await hermesClient();
       const cursor = join(home, ".cursor", "mcp.json");
       const cursorOriginal =
-        '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}';
+        '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}}}';
       await mkdir(join(home, ".cursor"));
       await writeFile(cursor, cursorOriginal);
       await writeFile(client.configPath, original);
@@ -591,9 +591,9 @@ describe("Hermes YAML shape diagnostics", () => {
       expect(await readFile(client.configPath, "utf8")).toBe(original);
       expect(await readFile(cursor, "utf8")).toBe(cursorOriginal);
       await expect(
-        readFile(`${client.configPath}.rea.backup`, "utf8"),
+        readFile(`${client.configPath}.acl-rea.backup`, "utf8"),
       ).rejects.toThrow();
-      await expect(readFile(`${cursor}.rea.backup`, "utf8")).rejects.toThrow();
+      await expect(readFile(`${cursor}.acl-rea.backup`, "utf8")).rejects.toThrow();
     },
   );
 });
@@ -623,7 +623,7 @@ mcp_servers:
       display: { language: "en" },
       mcp_servers: {
         other: { command: "other-server" },
-        rea: { command: command[0], args: command.slice(1), enabled: true },
+        "acl-rea": { command: command[0], args: command.slice(1), enabled: true },
       },
     });
 
@@ -694,7 +694,7 @@ mcp_servers:
     expect(text.startsWith(original)).toBe(true);
     expect(parseYaml(text, { intAsBigInt: true })).toMatchObject({
       mcp_servers: {
-        rea: { command: command[0], args: command.slice(1), enabled: true },
+        "acl-rea": { command: command[0], args: command.slice(1), enabled: true },
       },
     });
     expect((await systemUninstallHost(home).removeClient(client)).status).toBe(
@@ -713,7 +713,7 @@ mcp_servers:
       parseYaml(await readFile(client.configPath, "utf8"), { version: "1.1" }),
     ).toEqual({
       mcp_servers: {
-        rea: {
+        "acl-rea": {
           command: command[0],
           args: command.slice(1),
           env: environment,
@@ -727,7 +727,7 @@ mcp_servers:
     "refuses an environment value %s that Hermes parses as a non-string",
     async (value) => {
       const { home, client } = await hermesClient();
-      const original = `mcp_servers:\n  rea:\n    command: rea\n    args: [mcp]\n    env:\n      CUSTOM_SETTING: ${value}\n`;
+      const original = `mcp_servers:\n  acl-rea:\n    command: rea\n    args: [mcp]\n    env:\n      CUSTOM_SETTING: ${value}\n`;
       await writeFile(client.configPath, original);
       expect(
         await inspectClientConfiguration(client, {}, command),
@@ -748,7 +748,7 @@ mcp_servers:
       ).toMatchObject({ state: "invalid" });
       expect(await readFile(client.configPath, "utf8")).toBe(original);
       await expect(
-        readFile(`${client.configPath}.rea.backup`, "utf8"),
+        readFile(`${client.configPath}.acl-rea.backup`, "utf8"),
       ).rejects.toThrow();
     },
   );
@@ -761,7 +761,7 @@ describe("Hermes YAML empty configurations", () => {
   it("rejects multiple YAML documents before treating an empty first root as absent", async () => {
     const { client } = await hermesClient();
     const original =
-      "---\n---\nmcp_servers:\n  rea:\n    command: rea\n    args: [mcp]\n";
+      "---\n---\nmcp_servers:\n  acl-rea:\n    command: rea\n    args: [mcp]\n";
     await writeFile(client.configPath, original);
     expect(await inspectClientConfiguration(client, {}, command)).toMatchObject(
       { status: "invalid" },
@@ -772,7 +772,7 @@ describe("Hermes YAML empty configurations", () => {
     });
     expect(await readFile(client.configPath, "utf8")).toBe(original);
     await expect(
-      readFile(`${client.configPath}.rea.backup`, "utf8"),
+      readFile(`${client.configPath}.acl-rea.backup`, "utf8"),
     ).rejects.toThrow();
   });
 
@@ -795,7 +795,7 @@ describe("Hermes YAML empty configurations", () => {
       expect(text.slice(0, kept.length)).toBe(kept);
       expect(parseYaml(text)).toEqual({
         mcp_servers: {
-          rea: { command: command[0], args: command.slice(1), enabled: true },
+          "acl-rea": { command: command[0], args: command.slice(1), enabled: true },
         },
       });
       expect(

@@ -71,7 +71,7 @@ const fixture = buildDosMzFixture();
 const targetPath = join(workspace, "fixture.exe");
 await writeFile(targetPath, fixture.bytes, { mode: 0o600 });
 const sha256 = digest(fixture.bytes);
-const entrypoint = fileURLToPath(new URL("./rea.mjs", import.meta.url));
+const entrypoint = fileURLToPath(new URL("./acl-rea.mjs", import.meta.url));
 const env = {
   // Windows children need the system environment (SystemRoot, profile paths).
   ...(windows ? { ...process.env, TMP: runtime, TEMP: runtime } : {}),

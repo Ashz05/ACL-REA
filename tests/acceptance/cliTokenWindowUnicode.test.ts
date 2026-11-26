@@ -30,7 +30,7 @@ workspaceCliTest(
       processes.run(
         process.execPath,
         [
-          resolve("scripts/rea.mjs"),
+          resolve("scripts/acl-rea.mjs"),
           "inspect-artifact",
           plist,
           ...format,

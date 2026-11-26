@@ -3,7 +3,7 @@ exit: 0
 --- stdout
 rea capture-process — Capture one caller-selected process scenario
 
-Usage: rea capture-process <scenario>
+Usage: acl-rea capture-process <scenario>
 
 Arguments:
   scenario  Scenario JSON path

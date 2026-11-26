@@ -7,8 +7,8 @@ Gradle `.module` file. It reads the file without running Maven or Gradle,
 resolving a dependency tree, or contacting a repository.
 
 ```bash
-rea inspect-maven-gradle-metadata /absolute/path/to/pom.xml --json
-rea inspect-maven-gradle-metadata /absolute/path/to/demo-1.2.3.module --json
+acl-rea inspect-maven-gradle-metadata /absolute/path/to/pom.xml --json
+acl-rea inspect-maven-gradle-metadata /absolute/path/to/demo-1.2.3.module --json
 ```
 
 The CLI resolves relative paths against the caller's working directory. MCP

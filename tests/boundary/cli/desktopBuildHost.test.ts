@@ -12,7 +12,7 @@ import { DESKTOP_EXPORT_FRAMEWORK_VERSION } from "../../../src/domain/desktop/ap
 const checkSchema = z.object({ name: z.string(), ok: z.boolean() }).loose();
 
 /** A host whose Docker refuses this user and whose Claude Code registration records one build setting. */
-const buildHost = async (launcher = "/opt/rea/scripts/rea.mjs") => {
+const buildHost = async (launcher = "/opt/acl-rea/scripts/acl-rea.mjs") => {
   const root = await createTestTempDirectory("rea-desktop-build-cli-");
   const bin = join(root, "bin");
   const home = join(root, "home");
@@ -27,7 +27,7 @@ const buildHost = async (launcher = "/opt/rea/scripts/rea.mjs") => {
     join(home, ".claude.json"),
     JSON.stringify({
       mcpServers: {
-        rea: {
+        "acl-rea": {
           command: process.execPath,
           args: [launcher, "mcp"],
           env: { REA_DOCKER_COMMAND: "/private/value/docker" },
@@ -66,9 +66,9 @@ cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
       join(home, ".claude.json"),
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: process.execPath,
-            args: ["/opt/rea/scripts/rea.mjs", "mcp"],
+            args: ["/opt/acl-rea/scripts/acl-rea.mjs", "mcp"],
             env: {
               REA_DOCKER_COMMAND: join(bin, "docker"),
               REA_AGENT_ENV_COMMAND: runner,
@@ -126,9 +126,9 @@ cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
       join(home, ".claude.json"),
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: process.execPath,
-            args: ["/opt/rea/scripts/rea.mjs", "mcp"],
+            args: ["/opt/acl-rea/scripts/acl-rea.mjs", "mcp"],
             env: {
               REA_DOCKER_COMMAND: join(bin, "docker"),
               REA_AGENT_ENV_COMMAND: join(bin, "agent-env"),
@@ -226,7 +226,7 @@ cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
 cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
   "setup plans the runtime archive and the build settings for a client",
   async ({ cli }) => {
-    const { environment } = await buildHost(resolve("scripts/rea.mjs"));
+    const { environment } = await buildHost(resolve("scripts/acl-rea.mjs"));
 
     const result = await cli.run({
       arguments: [

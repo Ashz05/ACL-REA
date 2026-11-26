@@ -7,5 +7,5 @@ normalized_result:
     length: 20
 <end>
 --- stderr
-{"rea_timings":{"version":1,"command_ms":<ms>}}
+{"acl_rea_timings":{"version":1,"command_ms":<ms>}}
 <end>

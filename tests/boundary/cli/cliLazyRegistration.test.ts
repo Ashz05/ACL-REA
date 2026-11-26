@@ -102,7 +102,7 @@ describe("lazy CLI registration", () => {
       for (const path of topLevelNames(alone)) {
         const page = await help(alone, path);
         expect(page.exitCode, path).toBe(0);
-        expect(page.stdout, path).toContain(`Usage: rea ${path}`);
+        expect(page.stdout, path).toContain(`Usage: acl-rea ${path}`);
         expect(page, path).toEqual(await help(complete, path));
       }
     }
@@ -135,7 +135,7 @@ describe("lazy CLI execution", () => {
           process.execPath,
           [
             `--import=${monitorCompleteCli()}`,
-            join("scripts", "rea.mjs"),
+            join("scripts", "acl-rea.mjs"),
             ...arguments_,
           ],
           {
@@ -165,7 +165,7 @@ describe("lazy CLI execution", () => {
         error: { code: "MCP_MODE_REMOVED" },
         meta: {
           command: "doctor",
-          cta: { commands: [{ command: "rea mcp" }] },
+          cta: { commands: [{ command: "acl-rea mcp" }] },
         },
       });
       expect(retired.stderr).not.toContain(COMPLETE_CLI_IMPORT);
@@ -180,7 +180,7 @@ describe("lazy CLI execution", () => {
       const home = await createTestTempDirectory("rea-cli-stale-recording-");
       const result = await processes.run(
         process.execPath,
-        [`--import=${hook}`, join("scripts", "rea.mjs"), name, "--json"],
+        [`--import=${hook}`, join("scripts", "acl-rea.mjs"), name, "--json"],
         {
           env: { ...ENVIRONMENT, HOME: home, NODE_COMPILE_CACHE: compileCache },
         },
@@ -222,7 +222,7 @@ describe("lazy CLI execution", () => {
               process.execPath,
               [
                 `--import=${monitorCompleteCli()}`,
-                join("scripts", "rea.mjs"),
+                join("scripts", "acl-rea.mjs"),
                 ...invocation(name),
               ],
               {
@@ -262,7 +262,7 @@ interface LazyDiscoveryCase {
 }
 
 const assertScopedHelp = (stdout: string): void => {
-  expect(stdout).toContain("Usage: rea list-cutter-sessions");
+  expect(stdout).toContain("Usage: acl-rea list-cutter-sessions");
   expect(stdout).not.toContain("\nCommands:\n");
 };
 
@@ -302,7 +302,7 @@ const KNOWN_COMMAND_DISCOVERY_CASES: readonly LazyDiscoveryCase[] = [
     assertOutput: (stdout) => {
       const rows = llmsCommandRows(stdout);
       expect(rows).toHaveLength(1);
-      expect(rows[0]).toContain("`rea list-cutter-sessions`");
+      expect(rows[0]).toContain("`acl-rea list-cutter-sessions`");
     },
   },
   {
@@ -339,7 +339,7 @@ const COMPLETE_CLI_DISCOVERY_CASES: readonly LazyDiscoveryCase[] = [
     label: "builtin completions --help",
     arguments: ["completions", "--help"],
     assertOutput: (stdout) => {
-      expect(stdout).toContain("Usage: rea completions");
+      expect(stdout).toContain("Usage: acl-rea completions");
     },
   },
 ];
@@ -353,7 +353,7 @@ const runMonitoredDiscoveryCli = (
     process.execPath,
     [
       `--import=${monitorCompleteCli()}`,
-      join("scripts", "rea.mjs"),
+      join("scripts", "acl-rea.mjs"),
       ...cliArguments,
     ],
     {

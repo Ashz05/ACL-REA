@@ -37,23 +37,23 @@ describe("userConfigFilePath", () => {
       { XDG_CONFIG_HOME: "/custom/xdg" },
       "darwin",
     );
-    expect(path).toBe("/custom/xdg/rea/rea.json");
+    expect(path).toBe("/custom/xdg/rea/acl-rea.json");
   });
 
   it("falls back to ~/.config when XDG_CONFIG_HOME is relative or empty", () => {
     const home = "/home/custom";
     expect(
       userConfigFilePath({ HOME: home, XDG_CONFIG_HOME: "relative" }, "linux"),
-    ).toBe(posix.join(home, ".config", "rea", "rea.json"));
+    ).toBe(posix.join(home, ".config", "acl-rea", "acl-rea.json"));
     expect(
       userConfigFilePath({ HOME: home, XDG_CONFIG_HOME: "" }, "linux"),
-    ).toBe(posix.join(home, ".config", "rea", "rea.json"));
+    ).toBe(posix.join(home, ".config", "acl-rea", "acl-rea.json"));
   });
 
   it("resolves under USERPROFILE on Windows", () => {
     const home = "C:\\Users\\custom";
     expect(userConfigFilePath({ USERPROFILE: home }, "win32")).toBe(
-      win32.join(home, ".config", "rea", "rea.json"),
+      win32.join(home, ".config", "acl-rea", "acl-rea.json"),
     );
   });
 });
@@ -154,7 +154,7 @@ describe("loadUserConfigurationDefaults", () => {
         updateUserConfig({ HOME: root }, { JAVA_HOME: "/other" }, [], "darwin"),
       ).rejects.toThrow("regular JSON file");
       expect(await readFile(target, "utf8")).toBe(text);
-      expect(await readdir(join(root, ".config", "rea"))).toEqual(["rea.json"]);
+      expect(await readdir(join(root, ".config", "rea"))).toEqual(["acl-rea.json"]);
     },
   );
 });
@@ -170,8 +170,8 @@ it.skipIf(process.platform === "win32")(
     await mkdir(join(physical, "rea"), { recursive: true });
     await symlink(join(physical, "child"), join(lexical, "alias"));
     const selectedConfigHome = `${lexical}/alias/..`;
-    const selected = join(physical, "rea", "rea.json");
-    const decoy = join(lexical, "rea", "rea.json");
+    const selected = join(physical, "acl-rea", "acl-rea.json");
+    const decoy = join(lexical, "acl-rea", "acl-rea.json");
     const selectedBytes = '{ "JAVA_HOME": "/selected-java" }\n';
     const decoyBytes = '{ "JAVA_HOME": "/decoy-java" }\n';
     await writeFile(selected, selectedBytes);
@@ -186,14 +186,14 @@ it.skipIf(process.platform === "win32")(
     expect(JSON.parse(await readFile(selected, "utf8"))).toEqual({
       JAVA_HOME: "/updated-java",
     });
-    expect(await readFile(`${selected}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${selected}.acl-rea.backup`, "utf8")).toBe(
       selectedBytes,
     );
     expect(await readFile(decoy, "utf8")).toBe(decoyBytes);
-    expect(await readdir(join(lexical, "rea"))).toEqual(["rea.json"]);
+    expect(await readdir(join(lexical, "rea"))).toEqual(["acl-rea.json"]);
     expect((await readdir(join(physical, "rea"))).sort()).toEqual([
-      "rea.json",
-      "rea.json.rea.backup",
+      "acl-rea.json",
+      "acl-rea.json.acl-rea.backup",
     ]);
   },
 );
@@ -219,7 +219,7 @@ it
     const selectedDirectory = join(physical, "rea");
 
     await expect(
-      readFile(join(selectedDirectory, "rea.json")),
+      readFile(join(selectedDirectory, "acl-rea.json")),
     ).rejects.toMatchObject({
       code: "ENOENT",
     });
@@ -228,9 +228,9 @@ it
       removed: [],
     });
     expect(
-      JSON.parse(await readFile(join(selectedDirectory, "rea.json"), "utf8")),
+      JSON.parse(await readFile(join(selectedDirectory, "acl-rea.json"), "utf8")),
     ).toEqual(settings);
-    expect(await readdir(selectedDirectory)).toEqual(["rea.json"]);
+    expect(await readdir(selectedDirectory)).toEqual(["acl-rea.json"]);
     expect(await readdir(lexical)).toEqual(nested ? ["alias"] : []);
   },
 );
@@ -249,7 +249,7 @@ describe("updateUserConfig", () => {
       JAVA_HOME: "/usr/lib/jvm",
     });
     const onDisk = await readFile(
-      join(root, ".config", "rea", "rea.json"),
+      join(root, ".config", "acl-rea", "acl-rea.json"),
       "utf8",
     );
     expect(onDisk).toBe(
@@ -293,7 +293,7 @@ describe("updateUserConfig", () => {
     );
     expect(removed).toEqual(["GHIDRA_INSTALL_DIR"]);
     const onDisk = JSON.parse(
-      await readFile(join(root, ".config", "rea", "rea.json"), "utf8"),
+      await readFile(join(root, ".config", "acl-rea", "acl-rea.json"), "utf8"),
     );
     expect(onDisk).toEqual({ JAVA_HOME: "/usr/lib/jvm" });
   });
@@ -330,10 +330,10 @@ describe("updateUserConfig", () => {
       "darwin",
     );
     expect((await readdir(configDir)).sort()).toEqual([
-      "rea.json",
-      "rea.json.rea.backup",
+      "acl-rea.json",
+      "acl-rea.json.acl-rea.backup",
     ]);
-    expect((await readFile(`${path}.rea.backup`)).equals(original)).toBe(true);
+    expect((await readFile(`${path}.acl-rea.backup`)).equals(original)).toBe(true);
     expect(JSON.parse(await readFile(path, "utf8"))).toEqual({
       JAVA_HOME: "/other",
     });
@@ -357,7 +357,7 @@ describe("updateUserConfig", () => {
       updateUserConfig(environment, { JAVA_HOME: "/other" }, [], "darwin"),
     ).rejects.toMatchObject({ _tag: "ConfigurationError" });
     expect(await readFile(path, "utf8")).toBe(original);
-    await expect(readFile(`${path}.rea.backup`, "utf8")).rejects.toMatchObject({
+    await expect(readFile(`${path}.acl-rea.backup`, "utf8")).rejects.toMatchObject({
       code: "ENOENT",
     });
   });
@@ -366,11 +366,11 @@ describe("updateUserConfig", () => {
 describe("loadUserConfiguration", () => {
   it("reports an unreadable config file as a configuration error, not a crash", async () => {
     const root = tempHome();
-    await mkdir(join(root, ".config", "rea", "rea.json"), { recursive: true });
+    await mkdir(join(root, ".config", "acl-rea", "acl-rea.json"), { recursive: true });
     const result = await loadUserConfiguration({ HOME: root });
     expect(result.ok).toBe(false);
     if (!result.ok) {
-      expect(result.error.message).toContain("rea.json");
+      expect(result.error.message).toContain("acl-rea.json");
       expect(result.error.message).toContain("could not be read");
     }
   });

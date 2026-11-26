@@ -1,4 +1,4 @@
-name: REA production code
+name: ACL-REA production code
 
 # Match the existing default-setup scan's local-input threat model.
 threat-models: [local]

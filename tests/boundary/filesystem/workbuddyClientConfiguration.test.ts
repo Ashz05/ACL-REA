@@ -43,7 +43,7 @@ describe("WorkBuddy configuration paths", () => {
         ({ path }) => path,
       ),
     ).toEqual([
-      join("/home/a", ".workbuddy", "skills", "reverse-engineer-anything"),
+      join("/home/a", ".workbuddy", "skills", "acl-reverse-engineer-anything"),
     ]);
     expect(
       skillDestinations("C:\\Users\\a", ["workbuddy"], {}, "win32").map(
@@ -54,7 +54,7 @@ describe("WorkBuddy configuration paths", () => {
         "C:\\Users\\a",
         ".workbuddy",
         "skills",
-        "reverse-engineer-anything",
+        "acl-reverse-engineer-anything",
       ),
     ]);
   });

@@ -12,7 +12,7 @@ assert.equal(process.env.PLAYWRIGHT_BROWSERS_PATH, undefined);
 // Android cache fallback before Playwright initializes in each subprocess.
 const { stdout: doctorOutput } = await execute(
   process.execPath,
-  ["scripts/rea.mjs", "mcp", "doctor", "--format", "json"],
+  ["scripts/acl-rea.mjs", "mcp", "doctor", "--format", "json"],
   { timeout: 120_000, maxBuffer: 8 * 1024 * 1024 },
 );
 assert.equal(JSON.parse(doctorOutput).healthy, true, doctorOutput);
@@ -47,7 +47,7 @@ try {
   const { stdout } = await execute(
     process.execPath,
     [
-      "scripts/rea.mjs",
+      "scripts/acl-rea.mjs",
       "capture-browser-scenario",
       JSON.stringify(scenario),
       "--json",

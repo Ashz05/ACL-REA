@@ -10,7 +10,7 @@ it("applies the selected input allowance through the public deferred stdio entry
   const root = await createTestTempDirectory("rea-input-capacity-stdio-");
   const transport = new StdioClientTransport({
     command: process.execPath,
-    args: [resolve("scripts/rea.mjs"), "mcp"],
+    args: [resolve("scripts/acl-rea.mjs"), "mcp"],
     env: {
       PATH: process.env.PATH ?? "",
       HOME: root,

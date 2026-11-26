@@ -12,7 +12,7 @@ import { join, resolve } from "node:path";
 
 import { VerifierFixture } from "./lib/verifier-fixture.mjs";
 
-const cli = resolve("scripts/rea.mjs");
+const cli = resolve("scripts/acl-rea.mjs");
 const runCli = async (...arguments_) => {
   const { stdout } = await commands.exec(
     process.execPath,

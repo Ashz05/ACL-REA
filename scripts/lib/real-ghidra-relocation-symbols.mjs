@@ -52,7 +52,7 @@ export async function verifyGhidraRelocationSymbols({ clang, lld, env }) {
         .digest("hex");
     const before = await hash();
     const { stdout } = await run(process.execPath, [
-      "scripts/rea.mjs",
+      "scripts/acl-rea.mjs",
       "inspect-native-load-image",
       target,
       "--provider",

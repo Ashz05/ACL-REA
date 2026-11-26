@@ -3,7 +3,7 @@
 `inspect-artifact` inventories a `deno compile` executable. `extract-artifact` writes the embedded virtual files through the existing safe output tree. Neither operation runs the executable or the Deno runtime.
 
 ```sh
-rea inspect-artifact ./app --json
+acl-rea inspect-artifact ./app --json
 rea extract-artifact ./app --json
 ```
 

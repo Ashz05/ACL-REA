@@ -670,17 +670,17 @@ describe("Ghidra native decompiler remediation", () => {
     [
       "darwin",
       "x64",
-      "https://github.com/morluto/rea/blob/main/docs/getting-started/installation.md#missing-macos-native-decompiler",
+      "https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-started/installation.md#missing-macos-native-decompiler",
     ],
     [
       "darwin",
       "arm64",
-      "https://github.com/morluto/rea/blob/main/docs/getting-started/installation.md#macos-arm64-native-decompiler",
+      "https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-started/installation.md#macos-arm64-native-decompiler",
     ],
     [
       "linux",
       "arm64",
-      "https://github.com/morluto/rea/blob/main/docs/getting-started/installation.md#ghidra",
+      "https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-started/installation.md#ghidra",
     ],
     ["linux", "x64", undefined],
   ] as const)(

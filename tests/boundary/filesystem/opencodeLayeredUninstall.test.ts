@@ -28,9 +28,9 @@ it.each([
         ? {
             mcp: {
               servers: {
-                rea: {
+                "acl-rea": {
                   type: "local",
-                  command: ["rea", "mcp"],
+                  command: ["acl-rea", "mcp"],
                   disabled: false,
                 },
               },
@@ -38,15 +38,15 @@ it.each([
           }
         : {
             mcp: {
-              rea: { type: "local", command: ["rea", "mcp"], enabled: true },
+              "acl-rea": { type: "local", command: ["acl-rea", "mcp"], enabled: true },
             },
           },
     );
     const upperRow = { command: ["/usr/bin/false"] };
     const partial = JSON.stringify(
       dialect === "native"
-        ? { mcp: { servers: { rea: upperRow } } }
-        : { mcp: { rea: upperRow } },
+        ? { mcp: { servers: { "acl-rea": upperRow } } }
+        : { mcp: { "acl-rea": upperRow } },
     );
     await writeFile(lower, owned);
     await writeFile(upper, partial);
@@ -65,7 +65,7 @@ it.each([
         ),
         undefined,
         HOST_PLATFORM.platform,
-      )?.servers.rea;
+      )?.servers["acl-rea"];
     const before = await effective();
     expect(before).toEqual(
       dialect === "native"
@@ -92,14 +92,14 @@ it.each([
     );
     if (status === "failed") {
       expect(await readFile(lower, "utf8")).toBe(owned);
-      await expect(access(`${lower}.rea.backup`)).rejects.toMatchObject({
+      await expect(access(`${lower}.acl-rea.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
     } else {
       expect(JSON.parse(await readFile(lower, "utf8"))).toEqual({
         mcp: { servers: {} },
       });
-      expect(await readFile(`${lower}.rea.backup`, "utf8")).toBe(owned);
+      expect(await readFile(`${lower}.acl-rea.backup`, "utf8")).toBe(owned);
     }
     expect(await readFile(upper, "utf8")).toBe(partial);
     expect(await effective()).toEqual(before);
@@ -113,12 +113,12 @@ it("preflights a foreign legacy registration across OpenCode layers before remov
   const lower = join(directory, "opencode.json");
   const upper = join(directory, "opencode.jsonc");
   const legacy = JSON.stringify({
-    mcp: { rea: { type: "local", command: ["/usr/bin/false"], enabled: true } },
+    mcp: { "acl-rea": { type: "local", command: ["/usr/bin/false"], enabled: true } },
   });
   const native = JSON.stringify({
     mcp: {
       servers: {
-        rea: { type: "local", command: ["rea", "mcp"], disabled: false },
+        "acl-rea": { type: "local", command: ["acl-rea", "mcp"], disabled: false },
       },
     },
   });
@@ -139,10 +139,10 @@ it("preflights a foreign legacy registration across OpenCode layers before remov
   );
   expect(await readFile(lower, "utf8")).toBe(legacy);
   expect(await readFile(upper, "utf8")).toBe(native);
-  await expect(access(`${lower}.rea.backup`)).rejects.toMatchObject({
+  await expect(access(`${lower}.acl-rea.backup`)).rejects.toMatchObject({
     code: "ENOENT",
   });
-  await expect(access(`${upper}.rea.backup`)).rejects.toMatchObject({
+  await expect(access(`${upper}.acl-rea.backup`)).rejects.toMatchObject({
     code: "ENOENT",
   });
 
@@ -163,7 +163,7 @@ it("preflights a foreign legacy registration across OpenCode layers before remov
   const foreignNative = JSON.stringify({
     mcp: {
       servers: {
-        rea: { type: "local", command: ["/usr/bin/false"], disabled: false },
+        "acl-rea": { type: "local", command: ["/usr/bin/false"], disabled: false },
       },
     },
   });
@@ -182,7 +182,7 @@ it("preflights a foreign legacy registration across OpenCode layers before remov
     JSON.stringify({
       mcp: {
         servers: {},
-        rea: { type: "local", command: ["rea", "mcp"], enabled: true },
+        "acl-rea": { type: "local", command: ["acl-rea", "mcp"], enabled: true },
       },
     }),
   );

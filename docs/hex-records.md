@@ -6,8 +6,8 @@ materializes their decoded bytes through `extract-artifact` /
 `extract_artifact`. Decoding is static and needs no external tool.
 
 ```sh
-rea inspect-artifact ./firmware.hex --json
-rea inspect-artifact ./firmware.s37 --detail summary --evidence_output evidence.json --json
+acl-rea inspect-artifact ./firmware.hex --json
+acl-rea inspect-artifact ./firmware.s37 --detail summary --evidence_output evidence.json --json
 rea extract-artifact ./firmware.hex --json
 ```
 

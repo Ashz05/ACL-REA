@@ -23,24 +23,24 @@ REA's skill walks an agent from a request such as "build me an Inkscape
 environment where the agent changes a poster's headline" to a witnessed
 bundle with these tools: the questions it asks first, when it stops for the
 person, the install, the seed, the task, the witness and its final report.
-See [desktop builds](https://github.com/morluto/rea/blob/main/.agents/skills/reverse-engineer-anything/references/desktop-build.md).
+See [desktop builds](https://github.com/Ashz05/ACL-REA/blob/main/.agents/skills/acl-reverse-engineer-anything/references/desktop-build.md).
 
 ## Build
 
-1. `start_build_computer` from a request. REA is installed in the computer.
-2. `start_build_capture`. REA first checks the installed runtime's export
+1. `start_build_computer` from a request. ACL-REA is installed in the computer.
+2. `start_build_capture`. ACL-REA first checks the installed runtime's export
    schema for synthetic-seed support. If the archive is too old, repack a
-   current REA, update `REA_BUILD_COMPUTER_REA_ARCHIVE`, restart the REA MCP
-   server and start a new build computer. REA then writes an apt configuration under
+   current ACL-REA, update `REA_BUILD_COMPUTER_REA_ARCHIVE`, restart the ACL-REA MCP
+   server and start a new build computer. ACL-REA then writes an apt configuration under
    `~/.rea-build/apt` and runs `apt-get update` as the computer's user, so the
    capture finds the package's sources (`package_lists` counts the lists,
    and `package_lists_error` gives apt's exit status and last lines when the
-   download failed; a later start runs the update again until one succeeds). It then starts `rea capture-desktop-application
+   download failed; a later start runs the update again until one succeeds). It then starts `acl-rea capture-desktop-application
    --desktop-entry <entry>`
    in the computer, leaving `~/.rea-build` out of every checkpoint, and returns
    once the app's window is open, with a screenshot. For an app installed
    from a `.deb` file, the build layer keeps that file at
-   `/opt/rea/package.deb` and the capture records it with `--package-file`. Do not open the app from
+   `/opt/acl-rea/package.deb` and the capture records it with `--package-file`. Do not open the app from
    the menu first: the capture refuses an app whose window is already open.
    When the capture ends before the window opens, REA reads its output. An app
    that exits at launch, such as one missing a runtime, is reported with its

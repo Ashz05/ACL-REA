@@ -1,9 +1,9 @@
-$ rea update --help
+$ acl-rea update --help
 exit: 0
 --- stdout
-rea update — Update this REA installation and verify the installed release
+acl-rea update — Update this REA installation and verify the installed release
 
-Usage: rea update
+Usage: acl-rea update
 
 Custom Global Options:
   --timings  Write measured command timing to stderr.

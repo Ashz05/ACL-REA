@@ -8,7 +8,7 @@ import {
   withClientServers,
 } from "./ClientConfigurationDocument.js";
 
-const registration = { command: "rea", args: ["mcp"] };
+const registration = { command: "acl-rea", args: ["mcp"] };
 
 const serializedText = (
   ...input: Parameters<typeof serializeClientConfiguration>
@@ -25,12 +25,12 @@ describe("TOML configuration source capacity", () => {
       const prefix = Array.from(
         { length: 128 },
         (_, index) =>
-          `[foreign.entry_${index}]\nvalue = ${index}\nnote = """first\n# [mcp_servers.rea]\nlast"""\nitems = [\n${index},\n]\n`,
+          `[foreign.entry_${index}]\nvalue = ${index}\nnote = """first\n# [mcp_servers.acl-rea]\nlast"""\nitems = [\n${index},\n]\n`,
       ).join("");
       // Include a BOM, an empty value, and a final statement without a newline.
       const original =
         "\uFEFF" +
-        `${prefix}[mcp_servers.rea]\ncommand = "previous"\n[tail]\nempty = ""\nlast = 7`.replaceAll(
+        `${prefix}[mcp_servers.acl-rea]\ncommand = "previous"\n[tail]\nempty = ""\nlast = 7`.replaceAll(
           "\n",
           newline,
         );
@@ -41,7 +41,7 @@ describe("TOML configuration source capacity", () => {
         parsed,
         {
           ...parsed.servers,
-          rea: registration,
+          "acl-rea": registration,
         },
         HOST_PLATFORM.platform,
       );
@@ -76,7 +76,7 @@ describe("TOML configuration source capacity", () => {
       parsed,
       {
         ...parsed.servers,
-        rea: registration,
+        "acl-rea": registration,
       },
       HOST_PLATFORM.platform,
     );
@@ -104,7 +104,7 @@ describe("TOML configuration source capacity", () => {
       parsed,
       {
         ...parsed.servers,
-        rea: registration,
+        "acl-rea": registration,
       },
       HOST_PLATFORM.platform,
     );
@@ -117,7 +117,7 @@ describe("TOML configuration source capacity", () => {
     );
     expect(result.servers).toEqual({
       other: { command: "other" },
-      rea: registration,
+      "acl-rea": registration,
     });
   });
 });

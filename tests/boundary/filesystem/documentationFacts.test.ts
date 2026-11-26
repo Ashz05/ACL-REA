@@ -75,7 +75,7 @@ describe("literal tool counts", () => {
     );
     expect(samples.every(isLivingProsePath)).toBe(true);
     const directlyInspected = [
-      ".cursor-plugin/skills/reverse-engineer-anything/SKILL.md",
+      ".cursor-plugin/skills/acl-reverse-engineer-anything/SKILL.md",
       ".github/pull_request_template.md",
       "website/locales/languages.json",
     ];

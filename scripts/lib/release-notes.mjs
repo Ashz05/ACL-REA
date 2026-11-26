@@ -112,8 +112,8 @@ export async function readReleaseHistory(run, base, target) {
 // GitHub maps these coding-agent trailers to ordinary User actors.
 // Keep those source identities in the inventory while excluding automation credit.
 const AGENT_ACCOUNTS = new Set(["claude", "cursoragent", "codex", "copilot"]);
-// REA's maintainer requested external-contributor thanks without self-credit.
-const MAINTAINER_ACCOUNTS = new Set(["morluto"]);
+// ACL-REA's maintainer requested external-contributor thanks without self-credit.
+const MAINTAINER_ACCOUNTS = new Set(["Ashz05"]);
 const human = (value) =>
   value?.__typename === "User" &&
   !value.login.endsWith("[bot]") &&
@@ -180,7 +180,7 @@ export function contributionRecord(raw) {
 /** Keep the full authorship snapshot available without duplicating public thanks. */
 export function contributionSummary(raw) {
   const inventory = releaseInventorySchema.parse(raw);
-  return `Full contribution record: [${inventory.commits.length} commits and ${inventory.pullRequests.length} merged PR${inventory.pullRequests.length === 1 ? "" : "s"}](https://github.com/${inventory.repository}/blob/rea-agents-${inventory.version}/docs/releases/${inventory.version}.contributions.json).\n`;
+  return `Full contribution record: [${inventory.commits.length} commits and ${inventory.pullRequests.length} merged PR${inventory.pullRequests.length === 1 ? "" : "s"}](https://github.com/${inventory.repository}/blob/acl-rea-agents-${inventory.version}/docs/releases/${inventory.version}.contributions.json).\n`;
 }
 
 function readReleaseSection(text, version) {
@@ -399,18 +399,18 @@ function pluginMetadataWithoutVersions(path, text) {
     if (Array.isArray(manifest.plugins))
       for (const plugin of manifest.plugins)
         if (
-          plugin?.name === "rea" &&
+          plugin?.name === "acl-rea" &&
           plugin?.source?.source === "npm" &&
-          plugin.source.package === "rea-agents" &&
+          plugin.source.package === "acl-rea-agents" &&
           typeof plugin.source.version === "string"
         )
           plugin.source.version = "";
     return JSON.stringify(manifest);
   }
   if ("version" in manifest) manifest.version = "";
-  const launch = manifest.mcpServers?.rea?.args;
+  const launch = manifest.mcpServers?.["acl-rea"]?.args;
   // Only the scalar pinned version is release-owned. Blank that version and
-  // keep a package name such as rea-agents@ so a renamed package still counts
+  // keep a package name such as acl-rea-agents@ so a renamed package still counts
   // as a product change. The executable and path remain product behavior.
   if (Array.isArray(launch) && typeof launch[1] === "string")
     launch[1] = launch[1].replace(

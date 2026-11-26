@@ -1,9 +1,9 @@
-$ rea mcp doctor --help
+$ acl-rea mcp doctor --help
 exit: 0
 --- stdout
-rea mcp doctor — Validate MCP adapter startup and tool listing
+acl-rea mcp doctor — Validate MCP adapter startup and tool listing
 
-Usage: rea mcp doctor [options]
+Usage: acl-rea mcp doctor [options]
 
 Options:
   --format <toon|json|yaml|md|jsonl>  Output format

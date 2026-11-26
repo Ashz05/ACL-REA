@@ -111,7 +111,7 @@ describe("skill publication ownership", () => {
         throw new Error("Expected published skill bytes");
       expect(Buffer.compare(await readFile(manifest), expected)).toBe(0);
       if (existing)
-        expect(await readFile(`${manifest}.rea.backup`, "utf8")).toBe(
+        expect(await readFile(`${manifest}.acl-rea.backup`, "utf8")).toBe(
           "original instructions\n",
         );
       else expect(result.error.recoveryBackupPaths).toEqual([]);
@@ -280,7 +280,7 @@ it.each([
         Buffer.concat([bytes, Buffer.from(edit)]),
       ),
     ).toBe(true);
-    expect((await readFile(`${manifest}.rea.backup`)).equals(bytes)).toBe(true);
+    expect((await readFile(`${manifest}.acl-rea.backup`)).equals(bytes)).toBe(true);
     if (process.platform !== "win32")
       expect((await stat(manifest)).mode & 0o777).toBe(0o640);
     const { rollbackFailures } = result.error;

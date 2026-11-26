@@ -1,6 +1,6 @@
 # Offline API contract inventory
 
-`inspect_api_contract` / `rea inspect-api-contract` supports local OpenAPI JSON
+`inspect_api_contract` / `acl-rea inspect-api-contract` supports local OpenAPI JSON
 and GraphQL SDL (`format: "graphql-sdl"`). Neither profile contacts endpoints.
 
 ## OpenAPI JSON
@@ -50,12 +50,12 @@ CLI defaults to complete Evidence. For a selected answer, save that complete
 Evidence in an absent bundle path:
 
 ```sh
-rea inspect-api-contract ./openapi.json --detail summary \
+acl-rea inspect-api-contract ./openapi.json --detail summary \
   --view '{"kind":"api-contract","collection":"operations","methods":["GET"],"limit":20}' \
   --evidence_output ./contract.evidence.json --json
 ```
 
-Later `rea inspect-analysis-view` can read that bundle through an exact
+Later `acl-rea inspect-analysis-view` can read that bundle through an exact
 `evidence-file` source selection, even after the original specification is
 unavailable. Publication never overwrites an existing file. CLI preserves its
 original path spelling in `caller_input_path`; analysis locations and MCP inputs
@@ -138,7 +138,7 @@ one local document containing operations and fragments. Both MCP paths are
 absolute; CLI accepts relative spellings:
 
 ```sh
-rea inspect-api-contract ./schema.graphql --contract-format graphql-sdl \
+acl-rea inspect-api-contract ./schema.graphql --contract-format graphql-sdl \
   --operations-path ./queries.graphql --detail summary \
   --view '{"kind":"graphql-contract","collection":"references","limit":20}' \
   --evidence_output ./graphql.evidence.json --json

@@ -6,7 +6,7 @@ inventory from the `.nuspec` and related package files. It does not restore the
 package, execute anything in it, or contact a NuGet feed.
 
 ```bash
-rea inspect-nuget-nupkg /absolute/path/to/Demo.Package.1.2.3.nupkg --json
+acl-rea inspect-nuget-nupkg /absolute/path/to/Demo.Package.1.2.3.nupkg --json
 ```
 
 With `--detail summary --evidence_output /absolute/path/nupkg.json`, the CLI

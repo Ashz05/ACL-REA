@@ -103,7 +103,7 @@ const CHILD_PROGRAM = `
     const mixedEnvironment = await environmentFor('mixed');
     const cursorPath = join(mixedEnvironment.HOME,'.cursor','mcp.json');
     const ampPath = join(mixedEnvironment.HOME,'.config','amp','settings.json');
-    const cursorOriginal = JSON.stringify({mcpServers:{rea:{command:'old',args:['old'],env:{KEEP:'fixture'},disabled:true,custom:{policy:'retained'}},peer:{command:'peer'}},theme:'dark'}) + '\\n';
+    const cursorOriginal = JSON.stringify({mcpServers:{"acl-rea":{command:'old',args:['old'],env:{KEEP:'fixture'},disabled:true,custom:{policy:'retained'}},peer:{command:'peer'}},theme:'dark'}) + '\\n';
     const ampOriginal = JSON.stringify({'amp.mcpServers':{rea:{command:'old',args:['old'],env:{KEEP:'amp-fixture'},disabled:false},peer:{command:'peer'}},theme:'dark'}) + '\\n';
     await mkdir(join(mixedEnvironment.HOME,'.cursor'),{recursive:true}); await writeFile(cursorPath,cursorOriginal);
     await mkdir(join(mixedEnvironment.HOME,'.config','amp'),{recursive:true}); await writeFile(ampPath,ampOriginal);
@@ -112,7 +112,7 @@ const CHILD_PROGRAM = `
     const inodeBefore = [(await stat(cursorPath)).ino,(await stat(ampPath)).ino];
     const mixedRepeat = await invoke(mixedEnvironment,['cursor','amp'],command);
     const inodeAfter = [(await stat(cursorPath)).ino,(await stat(ampPath)).ino];
-    const mixedChecks = { cursor:JSON.parse(mixedBytes[0]),amp:JSON.parse(mixedBytes[1]),backupsMatch:(await readFile(cursorPath+'.rea.backup','utf8'))===cursorOriginal && (await readFile(ampPath+'.rea.backup','utf8'))===ampOriginal, inodePreserved:JSON.stringify(inodeBefore)===JSON.stringify(inodeAfter), backupFiles:(await tree(mixedEnvironment.HOME)).filter(path=>path.includes('.rea.backup')) };
+    const mixedChecks = { cursor:JSON.parse(mixedBytes[0]),amp:JSON.parse(mixedBytes[1]),backupsMatch:(await readFile(cursorPath+'.acl-rea.backup','utf8'))===cursorOriginal && (await readFile(ampPath+'.acl-rea.backup','utf8'))===ampOriginal, inodePreserved:JSON.stringify(inodeBefore)===JSON.stringify(inodeAfter), backupFiles:(await tree(mixedEnvironment.HOME)).filter(path=>path.includes('.acl-rea.backup')) };
     const failureEnvironment = await environmentFor('partial');
     const broken = join(failureEnvironment.HOME,'.cursor','mcp.json');
     await mkdir(join(failureEnvironment.HOME,'.cursor')); await writeFile(broken,'{"mcpServers":[]}');
@@ -123,7 +123,7 @@ const CHILD_PROGRAM = `
     const runners = [];
     for (const runner of ['npx','pnpx','bunx']) {
       const invocation = await invoke(runnerEnvironment,['cursor'],runner + ' "" package --mcp');
-      const entry = JSON.parse(await readFile(join(runnerEnvironment.HOME,'.cursor','mcp.json'),'utf8')).mcpServers.rea;
+      const entry = JSON.parse(await readFile(join(runnerEnvironment.HOME,'.cursor','mcp.json'),'utf8')).mcpServers["acl-rea"];
       runners.push({runner,invocation,entry});
     }
     const refusedEnvironment = await environmentFor('refused');
@@ -307,7 +307,7 @@ it("preserves default and mixed launcher facts, metadata, backups and no-op iden
   ]);
   expect(observed.mixedChecks.cursor).toMatchObject({
     mcpServers: {
-      rea: {
+      "acl-rea": {
         command: "/fixture/server path",
         args: ["", "--mcp"],
         env: { KEEP: "fixture" },
@@ -320,7 +320,7 @@ it("preserves default and mixed launcher facts, metadata, backups and no-op iden
   });
   expect(observed.mixedChecks.amp).toMatchObject({
     "amp.mcpServers": {
-      rea: {
+      "acl-rea": {
         command: "/fixture/server path",
         args: ["", "--mcp"],
         env: { KEEP: "amp-fixture" },

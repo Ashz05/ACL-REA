@@ -19,7 +19,7 @@ The seven shipped tools are:
 | Add managed findings to an application graph                                | `project_managed_application_graph` |
 
 Each has a matching CLI command: replace underscores with hyphens and prefix
-the name with `rea`, for example `rea inspect-managed-artifact`.
+the name with `acl-rea`, for example `acl-rea inspect-managed-artifact`.
 Native-body bridge mapping and managed runtime execution are outside the
 current tool set.
 
@@ -29,8 +29,8 @@ The canonical tool inventory is the
 ## Inspect an assembly
 
 ```bash
-rea inspect-managed-artifact /absolute/path/Assembly.dll --json
-rea inspect-managed-members /absolute/path/Assembly.dll --json
+acl-rea inspect-managed-artifact /absolute/path/Assembly.dll --json
+acl-rea inspect-managed-members /absolute/path/Assembly.dll --json
 ```
 
 Use the artifact result to identify the assembly and its metadata coverage.
@@ -248,7 +248,7 @@ new Evidence bundle destination so its original complete parent remains
 available after the command exits:
 
 ```bash
-rea inspect-managed-members /absolute/path/Assembly.dll --type Namespace.Type \
+acl-rea inspect-managed-members /absolute/path/Assembly.dll --type Namespace.Type \
   --detail summary --evidence_output /absolute/path/evidence/members.json --json
 ```
 
@@ -266,7 +266,7 @@ Copy `normalized_result.parent_evidence_id` from the summary into the
 small request as `members-page.json` and run:
 
 ```bash
-rea inspect-analysis-view /absolute/path/evidence/members-page.json \
+acl-rea inspect-analysis-view /absolute/path/evidence/members-page.json \
   --evidence-bundle /absolute/path/evidence/members.json --json
 ```
 
@@ -324,7 +324,7 @@ issue; raise that budget on the next inspection, or select fewer `type_names`
 for members. For example:
 
 ```bash
-rea inspect-managed-members /absolute/path/Assembly.dll --max-snapshot-bytes 268435456 --max-metadata-representation-bytes 134217728
+acl-rea inspect-managed-members /absolute/path/Assembly.dll --max-snapshot-bytes 268435456 --max-metadata-representation-bytes 134217728
 ```
 
 Reads remain bounded if a file grows after admission. A cached snapshot is
@@ -398,7 +398,7 @@ Use the returned `types[].full_name` values to select declaring types before
 their signatures and CIL bodies are decoded:
 
 ```bash
-rea inspect-managed-members /absolute/path/Assembly.dll --type Example.Parser
+acl-rea inspect-managed-members /absolute/path/Assembly.dll --type Example.Parser
 ```
 
 MCP uses `inspect_managed_members` with

@@ -1,4 +1,4 @@
-$ COMPLETE=bash rea -- rea setup --tool-catalog-profile ""
+$ COMPLETE=bash rea -- acl-rea setup --tool-catalog-profile ""
 exit: 0
 --- stdout
 full<0x0b>hot-cold<end>

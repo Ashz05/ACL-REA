@@ -82,7 +82,7 @@ for (const [syntax, original] of [
         ]),
       });
       expect(await readFile(config, "utf8")).toBe(original);
-      await expect(readFile(`${config}.rea.backup`)).rejects.toMatchObject({
+      await expect(readFile(`${config}.acl-rea.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
     },
@@ -104,13 +104,13 @@ for (const prefix of ["", "﻿"])
         status: "ready",
         clients: { claude_code: { status: "configured" } },
       });
-      expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
       const configured = await readFile(config, "utf8");
       expect(configured.startsWith(`${prefix}{`)).toBe(true);
       expect(JSON.parse(configured.slice(prefix.length))).toMatchObject({
         mcpServers: {
           peer: { command: "/usr/bin/true", args: [] },
-          rea: { command: expect.any(String) },
+          "acl-rea": { command: expect.any(String) },
         },
       });
       const doctor = await run(doctorArguments);

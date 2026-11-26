@@ -17,7 +17,7 @@ it("renders type placeholders, shown defaults and aliases", () => {
     raw: z.unknown().optional().describe("Raw"),
   });
   expect(
-    formatCommandHelp("rea sample", {
+    formatCommandHelp("acl-rea sample", {
       description: "Sample",
       options,
       alias: { yes: "y" },
@@ -26,9 +26,9 @@ it("renders type placeholders, shown defaults and aliases", () => {
     }),
   ).toBe(
     [
-      "rea sample — Sample",
+      "acl-rea sample — Sample",
       "",
-      "Usage: rea sample [options]",
+      "Usage: acl-rea sample [options]",
       "",
       "Options:",
       "  --limit <number>    Rows (default: 10)",

@@ -6,8 +6,8 @@ each image through `extract-artifact` / `extract_artifact`. Decoding is static
 and needs no external tool.
 
 ```sh
-rea inspect-artifact ./boot.itb --json
-rea inspect-artifact ./boot.itb --detail summary --evidence_output evidence.json --json
+acl-rea inspect-artifact ./boot.itb --json
+acl-rea inspect-artifact ./boot.itb --detail summary --evidence_output evidence.json --json
 rea extract-artifact ./boot.itb --json
 ```
 
@@ -164,16 +164,16 @@ components, or establish runtime equivalence.
 Retain each complete inspection while returning a summary:
 
 ```sh
-rea inspect-artifact /absolute/baseline.itb --detail summary \
+acl-rea inspect-artifact /absolute/baseline.itb --detail summary \
   --evidence_output /absolute/baseline-evidence.json --json
-rea inspect-artifact /absolute/candidate.itb --detail summary \
+acl-rea inspect-artifact /absolute/candidate.itb --detail summary \
   --evidence_output /absolute/candidate-evidence.json --json
 ```
 
 The CLI returns a `{summary, evidence_bundle}` receipt. Use each response's
 `summary.normalized_result.parent_evidence_id` as the corresponding
 `evidence_id` below. Save this request as `comparison.json`, replacing the paths
-and IDs with the returned values, then run `rea compare-artifacts comparison.json
+and IDs with the returned values, then run `acl-rea compare-artifacts comparison.json
 --json`. Evidence-file paths must be absolute. Naming the exact complete parent
 avoids ambiguity when a bundle contains several inspection or inventory records.
 

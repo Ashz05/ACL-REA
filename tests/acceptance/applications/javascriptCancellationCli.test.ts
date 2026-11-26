@@ -10,7 +10,7 @@ processTest(
   async ({ processes }) => {
     const root = await createTestTempDirectory("rea-cli-js-missing-");
     const result = await processes.run(process.execPath, [
-      "scripts/rea.mjs",
+      "scripts/acl-rea.mjs",
       "analyze-javascript-application",
       join(root, "missing"),
       "--json",
@@ -79,7 +79,7 @@ processTest.skipIf(process.platform === "win32").for([
     }
     const child = processes.spawn(process.execPath, [
       ...nodeArguments,
-      "scripts/rea.mjs",
+      "scripts/acl-rea.mjs",
       command,
       root,
       "--json",

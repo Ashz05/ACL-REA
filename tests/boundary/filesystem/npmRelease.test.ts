@@ -15,8 +15,8 @@ const metadata = (
   integrity: string,
   tags: Record<string, string>,
 ) => ({
-  name: "rea-agents",
-  versions: { [version]: { name: "rea-agents", version, dist: { integrity } } },
+  name: "acl-rea-agents",
+  versions: { [version]: { name: "acl-rea-agents", version, dist: { integrity } } },
   "dist-tags": tags,
 });
 
@@ -79,7 +79,7 @@ it("distinguishes absence from failed or malformed registry responses", async ()
   ).resolves.toEqual({ status: "absent" });
   await expect(
     readNpmRelease("6.5.0", async () =>
-      Response.json({ name: "rea-agents", versions: {}, "dist-tags": {} }),
+      Response.json({ name: "acl-rea-agents", versions: {}, "dist-tags": {} }),
     ),
   ).resolves.toEqual({ status: "absent" });
   await expect(
@@ -158,11 +158,11 @@ it("covers the observed 55-minute publication delay with a finite retry budget",
 it.each([
   {
     name: "array versions",
-    value: { name: "rea-agents", versions: [], "dist-tags": {} },
+    value: { name: "acl-rea-agents", versions: [], "dist-tags": {} },
   },
   {
     name: "invalid tag facts",
-    value: { name: "rea-agents", versions: {}, "dist-tags": { latest: 42 } },
+    value: { name: "acl-rea-agents", versions: {}, "dist-tags": { latest: 42 } },
   },
   {
     name: "different package",

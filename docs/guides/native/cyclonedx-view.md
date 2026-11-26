@@ -81,11 +81,11 @@ One parent produces one document. Several parents are not merged, and SPDX is
 not produced.
 
 ```bash
-rea inspect-go-binary /absolute/path/to/program --json > go-evidence.json
+acl-rea inspect-go-binary /absolute/path/to/program --json > go-evidence.json
 cat > cyclonedx-view.json <<'JSON'
 {"source":{"kind":"evidence-file","path":"go-evidence.json"},"view":{"kind":"cyclonedx"}}
 JSON
-rea inspect-analysis-view cyclonedx-view.json --json | jq '.normalized_result.document' > sbom.cdx.json
+acl-rea inspect-analysis-view cyclonedx-view.json --json | jq '.normalized_result.document' > sbom.cdx.json
 ```
 
 The same request works for Rust Evidence from `inspect-rust-binary`. MCP uses

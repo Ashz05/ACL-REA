@@ -65,7 +65,7 @@ export const purgeSelectedData = async (
   // Resolve selections before a managed namespace removal can delete cwd.
   // A namespace that contains the caller-selected cache is kept whole, so
   // the retained report is true.
-  const reaRoot = appendCallerPath(home, ".rea");
+  const reaRoot = appendCallerPath(home, ".acl-rea");
   // A spelling with `..` is judged only where the filesystem resolves it,
   // because collapsing it lexically is wrong after a symbolic link.
   // `undefined` means the location could not be established.
@@ -155,7 +155,7 @@ const purgeManagedData = async (
         item(
           name,
           "retained",
-          `REA did not remove this item because its managed data root ${root} is ${linked ? "a symbolic link" : "not a directory"}. Verify the root before removing its data manually.`,
+          `ACL-REA did not remove this item because its managed data root ${root} is ${linked ? "a symbolic link" : "not a directory"}. Verify the root before removing its data manually.`,
         ),
       );
   } catch (cause: unknown) {
@@ -192,7 +192,7 @@ const removeManagedPath = async (
       return item(
         name,
         "retained",
-        "REA did not remove this item because its managed path is a symbolic link. Verify the link target before removing it manually.",
+        "ACL-REA did not remove this item because its managed path is a symbolic link. Verify the link target before removing it manually.",
       );
     await fileSystem.remove(path);
     return item(name, "removed", `Removed ${path}.`);

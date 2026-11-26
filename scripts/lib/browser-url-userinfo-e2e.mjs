@@ -92,7 +92,7 @@ export async function verifyBrowserUrlUserInfo(endpoint, origin) {
     );
     transport = new StdioClientTransport({
       command: process.execPath,
-      args: [fileURLToPath(new URL("../rea.mjs", import.meta.url)), "mcp"],
+      args: [fileURLToPath(new URL("../acl-rea.mjs", import.meta.url)), "mcp"],
       env: { ...process.env, REA_LOG_LEVEL: "silent" },
       stderr: "pipe",
     });

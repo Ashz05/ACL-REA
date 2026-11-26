@@ -18,7 +18,7 @@ import { createTestTempDirectory } from "../fixtures/temporaryDirectory.js";
 import { cliTest } from "../support/cli/cliFixture.js";
 
 const UPDATE_COMMAND_OUTPUT_BYTES = 4 * 1024 * 1024;
-const entryPoint = resolve("scripts/rea.mjs");
+const entryPoint = resolve("scripts/acl-rea.mjs");
 let home: string;
 
 beforeEach(async () => {
@@ -90,7 +90,7 @@ const writeSkill = async (content: string): Promise<string> => {
 };
 
 const staleCodex =
-  '[mcp_servers.rea]\ncommand = "npx"\nargs = ["-y", "rea-agents@0.1.0", "mcp"]\n';
+  '[mcp_servers.acl-rea]\ncommand = "npx"\nargs = ["-y", "acl-rea-agents@0.1.0", "mcp"]\n';
 const action = {
   id: "configure_client:codex",
   kind: "configure_client",
@@ -99,8 +99,8 @@ const action = {
   detail: "Refresh the pinned REA version",
   external: false,
   operation: "update",
-  backupPath: "/test/.codex/config.toml.rea.backup",
-  commands: ["rea mcp"],
+  backupPath: "/test/.codex/config.toml.acl-rea.backup",
+  commands: ["acl-rea mcp"],
 };
 
 describe("caller-selected maintenance platform", () => {
@@ -121,7 +121,7 @@ describe("caller-selected maintenance platform", () => {
       path,
       JSON.stringify({
         mcpServers: {
-          rea: { command: process.execPath, args: [entryPoint, "mcp"] },
+          "acl-rea": { command: process.execPath, args: [entryPoint, "mcp"] },
         },
       }),
     );
@@ -144,7 +144,7 @@ describe("OMP integration maintenance", () => {
     const entry = { type: "stdio", command: entryPoint, args: ["mcp"] };
     await writeClient(
       "omp",
-      JSON.stringify({ mcpServers: { rea: { ...entry, enabled: false } } }),
+      JSON.stringify({ mcpServers: { "acl-rea": { ...entry, enabled: false } } }),
     );
     await expect(
       existingMaintenanceScope(home, entryPoint, process.env, isolated()),
@@ -152,7 +152,7 @@ describe("OMP integration maintenance", () => {
     await writeClient(
       "omp",
       JSON.stringify({
-        mcpServers: { rea: { ...entry, enabled: false } },
+        mcpServers: { "acl-rea": { ...entry, enabled: false } },
         enabledServers: ["rea"],
       }),
     );
@@ -164,16 +164,16 @@ describe("OMP integration maintenance", () => {
   it("preserves Grok Build disabled_mcp_servers during maintenance planning", async () => {
     // Strict identity: a user-disabled integration must never be selected
     // for maintenance, even with a healthy owned entry underneath.
-    const registration = `[mcp_servers.rea]\ncommand = ${JSON.stringify(process.execPath)}\nargs = [${JSON.stringify(entryPoint)}, "mcp"]\nstartup_timeout_sec = 30\n`;
+    const registration = `[mcp_servers.acl-rea]\ncommand = ${JSON.stringify(process.execPath)}\nargs = [${JSON.stringify(entryPoint)}, "mcp"]\nstartup_timeout_sec = 30\n`;
     const configPath = await writeClient(
       "grok_build",
-      `disabled_mcp_servers = ["rea", "other"]\n${registration}`,
+      `disabled_mcp_servers = ["acl-rea", "other"]\n${registration}`,
     );
     await expect(
       existingMaintenanceScope(home, entryPoint, process.env, isolated()),
     ).resolves.toMatchObject({ clients: [] });
     expect(await readFile(configPath, "utf8")).toContain(
-      'disabled_mcp_servers = ["rea", "other"]',
+      'disabled_mcp_servers = ["acl-rea", "other"]',
     );
     await writeFile(
       configPath,
@@ -192,7 +192,7 @@ describe("maintenance activation and layered configuration", () => {
       "cursor",
       JSON.stringify({
         mcpServers: {
-          rea: { command: join(home, "removed-release", "rea"), args: ["mcp"] },
+          "acl-rea": { command: join(home, "removed-release", "rea"), args: ["mcp"] },
         },
       }),
     );
@@ -238,7 +238,7 @@ describe("maintenance activation and layered configuration", () => {
     const originalLower = JSON.stringify({
       mcp: {
         servers: {
-          rea: { type: "local", command: [entryPoint, "mcp"], disabled: true },
+          "acl-rea": { type: "local", command: [entryPoint, "mcp"], disabled: true },
         },
       },
     });
@@ -257,7 +257,7 @@ describe("maintenance activation and layered configuration", () => {
       JSON.stringify({
         mcp: {
           servers: {
-            rea: { command: entryPoint, args: ["mcp"], enable: false },
+            "acl-rea": { command: entryPoint, args: ["mcp"], enable: false },
           },
         },
       }),
@@ -276,7 +276,7 @@ describe("maintenance activation and layered configuration", () => {
     await writeFile(
       fallbackPath,
       JSON.stringify({
-        mcpServers: { rea: { command: entryPoint, args: ["mcp"] } },
+        mcpServers: { "acl-rea": { command: entryPoint, args: ["mcp"] } },
       }),
     );
 
@@ -293,7 +293,7 @@ describe("maintenance activation and layered configuration", () => {
     await writeFile(
       join(directory, "opencode.json"),
       JSON.stringify({
-        mcp: { rea: { type: "local", command: [entryPoint, "mcp"] } },
+        mcp: { "acl-rea": { type: "local", command: [entryPoint, "mcp"] } },
       }),
     );
     await writeClient("opencode", JSON.stringify({ theme: "user-selected" }));
@@ -311,7 +311,7 @@ it("selects user registrations for maintenance even when project files override 
     "pi",
     JSON.stringify({
       mcpServers: {
-        rea: { command: "npx", args: ["-y", "rea-agents@0.1.0", "mcp"] },
+        "acl-rea": { command: "npx", args: ["-y", "acl-rea-agents@0.1.0", "mcp"] },
       },
     }),
   );
@@ -320,9 +320,9 @@ it("selects user registrations for maintenance even when project files override 
     JSON.stringify({
       mcp: {
         servers: {
-          rea: {
+          "acl-rea": {
             type: "local",
-            command: ["npx", "-y", "rea-agents@0.1.0", "mcp"],
+            command: ["npx", "-y", "acl-rea-agents@0.1.0", "mcp"],
             enabled: true,
           },
         },
@@ -334,11 +334,11 @@ it("selects user registrations for maintenance even when project files override 
   await mkdir(projectPiDir, { recursive: true });
   await writeFile(
     join(projectPiDir, "mcp.json"),
-    JSON.stringify({ mcpServers: { rea: { enabled: true } } }),
+    JSON.stringify({ mcpServers: { "acl-rea": { enabled: true } } }),
   );
   await writeFile(
     join(projectDir, "opencode.json"),
-    JSON.stringify({ mcp: { servers: { rea: { disabled: true } } } }),
+    JSON.stringify({ mcp: { servers: { "acl-rea": { disabled: true } } } }),
   );
 
   const scope = await existingMaintenanceScope(
@@ -402,16 +402,16 @@ describe("registration ownership in maintenance", () => {
     await writeClient("claude_code", '{"mcpServers":{}}');
     await writeClient(
       "cursor",
-      '{"mcpServers":{"rea":{"command":"foreign-server","args":[]}}}',
+      '{"mcpServers":{"acl-rea":{"command":"foreign-server","args":[]}}}',
     );
     await writeClient(
       "opencode",
-      '{"mcp":{"rea":{"type":"local","command":["npx","-y","rea-agents@0.1.0","mcp"],"enabled":false}}}',
+      '{"mcp":{"acl-rea":{"type":"local","command":["npx","-y","acl-rea-agents@0.1.0","mcp"],"enabled":false}}}',
     );
     await writeClient(
       "vscode",
       JSON.stringify({
-        servers: { rea: { type: "stdio", command: entryPoint, args: ["mcp"] } },
+        servers: { "acl-rea": { type: "stdio", command: entryPoint, args: ["mcp"] } },
       }),
     );
     expect(
@@ -583,7 +583,7 @@ describe("shared registration maintenance", () => {
       JSON.stringify({
         mcpServers: {
           other: { command: "other-server" },
-          rea: { command: entryPoint, args: ["mcp"] },
+          "acl-rea": { command: entryPoint, args: ["mcp"] },
         },
       }),
     );
@@ -610,7 +610,7 @@ describe("shared registration maintenance", () => {
       "freebuff",
       JSON.stringify({
         mcpServers: {
-          rea: { command: "npx", args: ["-y", "rea-agents@0.1.0", "mcp"] },
+          "acl-rea": { command: "npx", args: ["-y", "acl-rea-agents@0.1.0", "mcp"] },
         },
       }),
     );
@@ -624,7 +624,7 @@ describe("shared registration maintenance", () => {
     await writeClient(
       "freebuff",
       JSON.stringify({
-        mcpServers: { rea: { command: "foreign-server", args: [] } },
+        mcpServers: { "acl-rea": { command: "foreign-server", args: [] } },
       }),
     );
     await expect(
@@ -644,7 +644,7 @@ describe("shared registration maintenance", () => {
       "freebuff",
       JSON.stringify({
         mcpServers: {
-          rea: { command: entryPoint, args: ["mcp"], enable: false },
+          "acl-rea": { command: entryPoint, args: ["mcp"], enable: false },
         },
       }),
     );
@@ -694,10 +694,10 @@ describe("updated executable maintenance planning", () => {
     expect(await readFile(configPath, "utf8")).toBe(staleCodex);
     expect(await readFile(untouched, "utf8")).toBe('{"mcpServers":{}}');
     expect(await readFile(skillPath, "utf8")).toBe(skillContent);
-    await expect(access(`${configPath}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${configPath}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
-    await expect(access(`${skillPath}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${skillPath}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
     await expect(
@@ -757,7 +757,7 @@ describe("update subprocess boundaries", () => {
 
   it("verifies the requested package entry rather than PATH's rea", async () => {
     const packageRoot = join(home, "package");
-    const script = join(packageRoot, "scripts", "rea.mjs");
+    const script = join(packageRoot, "scripts", "acl-rea.mjs");
     await mkdir(dirname(script), { recursive: true });
     await writeFile(script, 'process.stdout.write("3.3.0\\n")');
     await expect(
@@ -787,11 +787,11 @@ const createBunUpdateFixture = async (
   await mkdir(join(packageRoot, "scripts"), { recursive: true });
   await writeFile(
     join(globalDirectory, "package.json"),
-    '{"dependencies":{"rea-agents":"3.2.1"}}\n',
+    '{"dependencies":{"acl-rea-agents":"3.2.1"}}\n',
   );
   await writeFile(versionPath, "3.2.1");
   await writeFile(
-    join(packageRoot, "scripts", "rea.mjs"),
+    join(packageRoot, "scripts", "acl-rea.mjs"),
     `import { readFileSync } from "node:fs";\nprocess.stdout.write(readFileSync(${JSON.stringify(versionPath)}, "utf8") + "\\n");\n`,
   );
   const binDirectory = join(root, "bin");
@@ -1016,7 +1016,7 @@ describe("Bun global installation update", () => {
           currentVersion: "3.2.1",
           latestVersion: null,
           reason: "version-check",
-          remediation: `REA updates for Bun global installations require Bun 1.2.17 or later; bun --version returned ${JSON.stringify(bunVersion)}. Upgrade Bun manually, then rerun rea update.`,
+          remediation: `REA updates for Bun global installations require Bun 1.2.17 or later; bun --version returned ${JSON.stringify(bunVersion)}. Upgrade Bun manually, then rerun acl-rea update.`,
         });
         expect(invocations).toEqual([versionInvocation]);
         expect(await readFile(versionPath, "utf8")).toBe("3.2.1");

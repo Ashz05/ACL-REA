@@ -12,7 +12,7 @@ a readable major version other than 2 is refused. Version 1 Chrome OS-style
 headers are that refusal, not a different container.
 
 ```sh
-rea inspect-artifact ./payload.bin --detail summary \
+acl-rea inspect-artifact ./payload.bin --detail summary \
   --evidence_output payload.evidence.json --json
 rea extract-artifact ./payload.bin --json
 ```

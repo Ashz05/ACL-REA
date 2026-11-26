@@ -3,7 +3,7 @@ exit: 0
 --- stdout
 rea guidance — Search or read the installed REA workflow guidance
 
-Usage: rea guidance [options]
+Usage: acl-rea guidance [options]
 
 Options:
   --action <search|read>  Guidance action to perform: search or read (default: search)

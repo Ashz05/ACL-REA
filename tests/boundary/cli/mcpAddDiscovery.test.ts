@@ -101,7 +101,7 @@ cliTest(
       clients: [{ client: "amp", status: "configured" }],
     });
     expect(
-      JSON.parse(await readFile(path, "utf8"))["amp.mcpServers"].rea,
+      JSON.parse(await readFile(path, "utf8"))["amp.mcpServers"]["acl-rea"],
     ).toBeDefined();
   },
 );

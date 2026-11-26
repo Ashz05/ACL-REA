@@ -48,7 +48,7 @@ it.each([
   {
     format: "json",
     id: "cursor",
-    text: '{"mcpServers":{"rea":{"url":"https://fixture.invalid","type":"http","env":{"KEEP":"1"},"enabled":false}}}',
+    text: '{"mcpServers":{"acl-rea":{"url":"https://fixture.invalid","type":"http","env":{"KEEP":"1"},"enabled":false}}}',
     expected: {
       type: undefined,
       command: launcher.command,
@@ -60,7 +60,7 @@ it.each([
   {
     format: "fx",
     id: "fx",
-    text: '{"mcp":{"rea":{"url":"https://fixture.invalid","type":"http","environment":{"KEEP":"1"},"enabled":false}}}',
+    text: '{"mcp":{"acl-rea":{"url":"https://fixture.invalid","type":"http","environment":{"KEEP":"1"},"enabled":false}}}',
     expected: {
       type: "local",
       command: [launcher.command, ...launcher.args],
@@ -71,7 +71,7 @@ it.each([
   {
     format: "kilo",
     id: "kilo-code",
-    text: '{"mcp":{"rea":{"url":"https://fixture.invalid","type":"remote","environment":{"KEEP":"1"},"enabled":false}}}',
+    text: '{"mcp":{"acl-rea":{"url":"https://fixture.invalid","type":"remote","environment":{"KEEP":"1"},"enabled":false}}}',
     expected: {
       type: "local",
       command: [launcher.command, ...launcher.args],
@@ -82,7 +82,7 @@ it.each([
   {
     format: "zed",
     id: "zed",
-    text: '{"context_servers":{"rea":{"url":"https://fixture.invalid","type":"http","env":{"KEEP":"1"},"enabled":false}}}',
+    text: '{"context_servers":{"acl-rea":{"url":"https://fixture.invalid","type":"http","env":{"KEEP":"1"},"enabled":false}}}',
     expected: {
       source: undefined,
       type: "http",
@@ -112,7 +112,7 @@ it.each([
         : format === "zed"
           ? "context_servers"
           : "mcp";
-    const entry = document[key].rea;
+    const entry = document[key]["acl-rea"];
     expect(entry).not.toHaveProperty("url");
     for (const [key, value] of Object.entries(expected)) {
       if (value === undefined) expect(entry).not.toHaveProperty(key);
@@ -126,7 +126,7 @@ it.skipIf(process.platform === "win32")(
   "secures fx permissions on owned directory and staged file, including a semantic no-op",
   async () => {
     const { path, directory } = await settingsFixture(
-      '{"mcp":{"rea":{"type":"local","command":["/fixture/server path","","a\'b","--mcp"],"enabled":true}}}',
+      '{"mcp":{"acl-rea":{"type":"local","command":["/fixture/server path","","a\'b","--mcp"],"enabled":true}}}',
     );
     await chmod(directory, 0o755);
     await chmod(path, 0o644);
@@ -167,28 +167,28 @@ it.skipIf(process.platform === "win32")(
 it.each([
   {
     name: "V1 explicit disable",
-    text: '{"mcp":{"rea":{"type":"local","command":["old"],"enabled":false,"environment":{"KEEP":"1"}}}}',
+    text: '{"mcp":{"acl-rea":{"type":"local","command":["old"],"enabled":false,"environment":{"KEEP":"1"}}}}',
     native: false,
   },
   {
     name: "V1 disabled flag without enabled override",
-    text: '{"mcp":{"rea":{"type":"local","command":["old"],"disabled":true,"environment":{"KEEP":"1"}}}}',
+    text: '{"mcp":{"acl-rea":{"type":"local","command":["old"],"disabled":true,"environment":{"KEEP":"1"}}}}',
     native: false,
     disabledOnly: true,
   },
   {
     name: "native V2 explicit disable",
-    text: '{"mcp":{"servers":{"rea":{"type":"local","command":["old"],"disabled":true,"environment":{"KEEP":"1"}}}}}',
+    text: '{"mcp":{"servers":{"acl-rea":{"type":"local","command":["old"],"disabled":true,"environment":{"KEEP":"1"}}}}}',
     native: true,
   },
   {
     name: "V1 disable migrated into native V2",
-    text: '{"mcp":{"rea":{"type":"local","command":["old"],"enabled":false,"environment":{"KEEP":"1"}},"servers":{"peer":{"type":"local","command":["peer"]}}}}',
+    text: '{"mcp":{"acl-rea":{"type":"local","command":["old"],"enabled":false,"environment":{"KEEP":"1"}},"servers":{"peer":{"type":"local","command":["peer"]}}}}',
     native: true,
   },
   {
     name: "V1 disabled fallback migrated into native V2",
-    text: '{"mcp":{"rea":{"type":"local","command":["old"],"disabled":true,"environment":{"KEEP":"1"}},"servers":{"peer":{"type":"local","command":["peer"]}}}}',
+    text: '{"mcp":{"acl-rea":{"type":"local","command":["old"],"disabled":true,"environment":{"KEEP":"1"}},"servers":{"peer":{"type":"local","command":["peer"]}}}}',
     native: true,
   },
 ])(
@@ -205,7 +205,7 @@ it.each([
       status: "configured",
     });
     const document = JSON.parse(await readFile(path, "utf8"));
-    const entry = native ? document.mcp.servers.rea : document.mcp.rea;
+    const entry = native ? document.mcp.servers["acl-rea"] : document.mcp["acl-rea"];
     expect(entry.command).toEqual([launcher.command, ...launcher.args]);
     expect(entry.environment).toEqual({ KEEP: "1" });
     if (native) {
@@ -236,7 +236,7 @@ it.each([
   "retains native Goose defaults and explicit policy for $name",
   async ({ entry, enabled, envs }) => {
     const { path } = await settingsFixture(
-      `extensions:\n  rea: ${entry}\nfeature: on\n`,
+      `extensions:\n  acl-rea: ${entry}\nfeature: on\n`,
     );
     expect(
       await registerMcpClientOnHost(
@@ -251,7 +251,7 @@ it.each([
     );
     expect(document.feature).toBe("on");
     expect(document.extensions).toMatchObject({
-      rea: {
+      "acl-rea": {
         name: "rea",
         type: "stdio",
         cmd: launcher.command,
@@ -291,7 +291,7 @@ it.runIf(process.platform === "win32")(
     });
     const published = await readFile(path, "utf8");
     // Fx writes a new profile's servers under mcpServers.
-    expect(JSON.parse(published).mcpServers.rea.command).toEqual([
+    expect(JSON.parse(published).mcpServers["acl-rea"].command).toEqual([
       launcher.command,
       ...launcher.args,
     ]);
@@ -317,7 +317,7 @@ it.each([
       env: { KEEP: "1" },
       tools: ["fixture"],
     };
-    const original = `{\n// retained settings need native strict JSON\n"mcpServers":{"rea":${JSON.stringify(entry)},},\n}\n`;
+    const original = `{\n// retained settings need native strict JSON\n"mcpServers":{"acl-rea":${JSON.stringify(entry)},},\n}\n`;
     const { path } = await settingsFixture(original);
     const client = {
       ...clientFor(path, format, "github-copilot-cli"),
@@ -331,9 +331,9 @@ it.each([
     );
     expect(first).toMatchObject({ ok: true, value: { status: "configured" } });
     expect(JSON.parse(await readFile(path, "utf8"))).toEqual({
-      mcpServers: { rea: entry },
+      mcpServers: { "acl-rea": entry },
     });
-    expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
     const beforeRepeat = await stat(path);
     expect(
       await registerMcpClientOnHost(client, launcher, undefined, resources),
@@ -420,7 +420,7 @@ it.each(["mcp", "mcpServers"])(
       custom: { retained: true },
     };
     const original = {
-      [key]: { rea: previous, peer: { command: "peer" } },
+      [key]: { "acl-rea": previous, peer: { command: "peer" } },
       theme: "dark",
     };
     const { path } = await settingsFixture(JSON.stringify(original));
@@ -436,15 +436,15 @@ it.each(["mcp", "mcpServers"])(
       ...original,
       [key]: {
         peer: { command: "peer" },
-        rea: { ...previous, command: [launcher.command, ...launcher.args] },
+        "acl-rea": { ...previous, command: [launcher.command, ...launcher.args] },
       },
     });
     // Match the independent native reader's selected table, including its peers.
     const nativeServers = document.mcp ?? document.mcpServers;
     expect(nativeServers.peer).toEqual({ command: "peer" });
-    expect(nativeServers.rea.environment).toEqual({ KEEP: "1" });
-    expect(nativeServers.rea.enabled).toBe(false);
-    expect(nativeServers.rea.command).toEqual([
+    expect(nativeServers["acl-rea"].environment).toEqual({ KEEP: "1" });
+    expect(nativeServers["acl-rea"].enabled).toBe(false);
+    expect(nativeServers["acl-rea"].command).toEqual([
       launcher.command,
       ...launcher.args,
     ]);
@@ -473,7 +473,7 @@ it("creates Fx registrations in the native writer's mcpServers profile table", a
   ).toMatchObject({ ok: true });
   expect(JSON.parse(await readFile(path, "utf8"))).toEqual({
     mcpServers: {
-      rea: {
+      "acl-rea": {
         type: "local",
         command: [launcher.command, ...launcher.args],
         enabled: true,
@@ -505,7 +505,7 @@ it.each([
     expect(result.error.message).toContain("mcp");
     expect(result.error.message).toContain("mcpServers");
     expect(await readFile(path, "utf8")).toBe(original);
-    await expect(readFile(`${path}.rea.backup`, "utf8")).rejects.toMatchObject({
+    await expect(readFile(`${path}.acl-rea.backup`, "utf8")).rejects.toMatchObject({
       code: "ENOENT",
     });
   },
@@ -530,7 +530,7 @@ it.each(["mcp", "mcpServers"])(
       [key]: { rea: entry, peer: { command: "peer" } },
       theme: "dark",
     });
-    expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
     const beforeRepeat = await stat(path);
     expect(
       await registerMcpClientOnHost(client, launcher, undefined, resources),

@@ -17,8 +17,8 @@ note while the inventory command still succeeds.
 
 ```sh
 rea capabilities --json
-rea inspect-sqlite-database ./application.sqlite --json
-rea inspect-sqlite-database ./application.sqlite --table settings --column key --column value --row-limit 20 --json
+acl-rea inspect-sqlite-database ./application.sqlite --json
+acl-rea inspect-sqlite-database ./application.sqlite --table settings --column key --column value --row-limit 20 --json
 ```
 
 ```json
@@ -165,7 +165,7 @@ Timeout errors name the selected milliseconds, exact CLI/MCP controls, and
 cleanup-before-retry requirements. Incomplete cleanup remains a blocker even
 when a larger budget is available.
 
-For example, `rea inspect-sqlite-database ./application.sqlite
+For example, `acl-rea inspect-sqlite-database ./application.sqlite
 --worker-timeout-ms 60000 --json` selects 60 seconds; equivalent MCP input is
 `{"path":"/artifacts/application.sqlite","worker_timeout_ms":60000}`.
 

@@ -43,7 +43,7 @@ cliTest.for(["setup", "uninstall"] as const)(
 - insert:
     - id: rea-mcp
       name: '@deepseek-ai/dsh-mcp-client'
-      config: {serverName: rea, transport: stdio, command: stale, args: [mcp]}
+      config: {serverName: acl-rea, transport: stdio, command: stale, args: [mcp]}
 ---
 # preserve the second document and its comment
 - insert:
@@ -71,7 +71,7 @@ cliTest.for(["setup", "uninstall"] as const)(
             ]),
           },
     );
-    await expect(readFile(`${config}.rea.backup`)).rejects.toMatchObject({
+    await expect(readFile(`${config}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
   },
@@ -110,7 +110,7 @@ cliTest.for([
       root,
       agentsRoot,
       "skills",
-      "reverse-engineer-anything",
+      "acl-reverse-engineer-anything",
     );
     const skill = join(skillRoot, "SKILL.md");
     await mkdir(home);
@@ -143,9 +143,9 @@ cliTest.for([
     const text = await readFile(config, "utf8");
     expect(text).toContain("# caller patch");
     expect(text).toContain("rea-mcp");
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
     expect(await readFile(skill, "utf8")).toContain(
-      "name: reverse-engineer-anything",
+      "name: acl-reverse-engineer-anything",
     );
     const doctor = await run(["doctor", "--client", "dsh", "--skill"]);
     expect(doctor.exitCode).toBe(0);
@@ -161,7 +161,7 @@ cliTest.for([
     expect(parse(await readFile(config, "utf8"))).toEqual([
       { insert: [{ id: "caller", name: "caller-plugin" }] },
     ]);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
     await expect(readFile(skill)).rejects.toMatchObject({ code: "ENOENT" });
   },
 );
@@ -174,14 +174,14 @@ cliTest(
     const config = join(profile, "cordis.patch.yml");
     const skill = join(
       home,
-      ".agents/skills/reverse-engineer-anything/SKILL.md",
+      ".agents/skills/acl-reverse-engineer-anything/SKILL.md",
     );
     await mkdir(profile);
     const original = `# caller home patch
 - insert:
     - id: rea-mcp
       name: '@deepseek-ai/dsh-mcp-client'
-      config: {serverName: rea, transport: stdio, command: stale, args: [mcp]}
+      config: {serverName: acl-rea, transport: stdio, command: stale, args: [mcp]}
 - holder: &op
     insert:
       - id: unrelated
@@ -191,7 +191,7 @@ cliTest(
       - id: rea-mcp
         name: '@deepseek-ai/dsh-mcp-client'
         config:
-          serverName: rea
+          serverName: acl-rea
           transport: stdio
           command: stale
           args: [mcp]
@@ -222,7 +222,7 @@ cliTest(
       ]),
     });
     expect(await readFile(config, "utf8")).toBe(original);
-    await expect(readFile(`${config}.rea.backup`)).rejects.toMatchObject({
+    await expect(readFile(`${config}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
     await expect(readFile(skill)).rejects.toMatchObject({ code: "ENOENT" });
@@ -232,7 +232,7 @@ cliTest(
       appliedActions: [],
     });
     expect(await readFile(config, "utf8")).toBe(original);
-    await expect(readFile(`${config}.rea.backup`)).rejects.toMatchObject({
+    await expect(readFile(`${config}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
     await expect(readFile(skill)).rejects.toMatchObject({ code: "ENOENT" });
@@ -292,7 +292,7 @@ cliTest(
       plannedActions: [],
     });
     expect(await readFile(config, "utf8")).toBe(text);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
     const removed = await run(["uninstall"]);
     expect(removed.exitCode).toBe(0);
     expect(removed.json).toMatchObject({
@@ -307,7 +307,7 @@ cliTest(
     expect(
       remaining.flatMap((patch) => patch.insert ?? []).map(({ id }) => id),
     ).toEqual(["unrelated"]);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
     await expect(readFile(skill)).rejects.toMatchObject({ code: "ENOENT" });
   },
 );
@@ -382,7 +382,7 @@ cliTest.for(["null", "caller-value", "[caller-value]"])(
       remediation: expect.stringContaining("config: Use a literal mapping"),
     });
     expect(await readFile(config, "utf8")).toBe(initial);
-    await expect(readFile(`${config}.rea.backup`)).rejects.toMatchObject({
+    await expect(readFile(`${config}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
     const removed = await run(["uninstall"]);
@@ -398,7 +398,7 @@ cliTest.for(["null", "caller-value", "[caller-value]"])(
     expect(parse(remaining)).toEqual([
       { insert: [{ id: "other", name: "caller-plugin" }] },
     ]);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(initial);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(initial);
   },
 );
 
@@ -411,7 +411,7 @@ cliTest.for([
       name: caller-plugin
     - id: rea-mcp
       name: '@deepseek-ai/dsh-mcp-client'
-      config: {serverName: rea, transport: stdio, command: stale, args: [mcp]}
+      config: {serverName: acl-rea, transport: stdio, command: stale, args: [mcp]}
 `,
     remediation: "group with unknown activity",
     removal: "removed",
@@ -444,7 +444,7 @@ cliTest.for([
       remediation: expect.stringContaining(remediation),
     });
     expect(await readFile(config, "utf8")).toBe(patch);
-    await expect(readFile(`${config}.rea.backup`)).rejects.toMatchObject({
+    await expect(readFile(`${config}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
     const uninstall = await run(["uninstall"]);
@@ -459,10 +459,10 @@ cliTest.for([
       expect(parse(await readFile(config, "utf8"))).toEqual([
         { id: "tools", insert: [{ id: "other", name: "caller-plugin" }] },
       ]);
-      expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(patch);
+      expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(patch);
     } else {
       expect(await readFile(config, "utf8")).toBe(patch);
-      await expect(readFile(`${config}.rea.backup`)).rejects.toMatchObject({
+      await expect(readFile(`${config}.acl-rea.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
     }

@@ -22,7 +22,7 @@ for bits in 32 64; do
     "$out/rv${bits}.o" -o "$out/rv${bits}-relr.so"
   for file in "$out/rv${bits}.o" "$out/rv${bits}-rela.so" "$out/rv${bits}-relr.so"; do
     readelf -rW -sW "$file"
-    node scripts/rea.mjs inspect-native-initializers "$file" --json
+    node scripts/acl-rea.mjs inspect-native-initializers "$file" --json
   done
 done
 ```

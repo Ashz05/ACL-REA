@@ -28,14 +28,14 @@ describe("build bundle renderer", () => {
     );
     expect(bundle.name).toBe("mousepad");
     expect(bundle.files.map((file) => file.path).sort()).toEqual([
+      "envs/mousepad/acl-rea-payload.tar",
       "envs/mousepad/env.toml",
-      "envs/mousepad/install-rea.sh",
+      "envs/mousepad/install-acl-rea.sh",
       "envs/mousepad/mousepad_app.py",
-      "envs/mousepad/rea-payload.tar",
       "tasks/smoke.json",
     ]);
     expect(
-      bundle.files.find((file) => file.path.endsWith("rea-payload.tar"))
+      bundle.files.find((file) => file.path.endsWith("acl-rea-payload.tar"))
         ?.content,
     ).toEqual({ copyFrom: "/builds/rea-prod.tar.xz" });
     const module = text(bundle.files, "envs/mousepad/mousepad_app.py");
@@ -52,7 +52,7 @@ describe("build bundle renderer", () => {
     expect(module).toContain(
       'sha256="dbabf7a1cbf947e6059ffad2c27b80041db97dea1e553b62afdee7f13fca336e", to="node-arm64.tar.xz", arch="arm64"',
     );
-    expect(module).toContain('run=[RunScript(script="install-rea.sh")]');
+    expect(module).toContain('run=[RunScript(script="install-acl-rea.sh")]');
     // Building needs no seed and no data hooks.
     expect(module).not.toMatch(/paths=|@add_data|@get_data|@reset_data/u);
     expect(text(bundle.files, "envs/mousepad/env.toml")).toContain(
@@ -61,12 +61,14 @@ describe("build bundle renderer", () => {
     expect(JSON.parse(text(bundle.files, "tasks/smoke.json"))).toEqual([
       { id: "env", type: "deploy_env", env_id: "mousepad" },
     ]);
-    const script = text(bundle.files, "envs/mousepad/install-rea.sh");
-    expect(script).toContain('ln -sfn "$launcher" /opt/rea/rea.mjs');
+    const script = text(bundle.files, "envs/mousepad/install-acl-rea.sh");
+    expect(script).toContain('ln -sfn "$launcher" /opt/acl-rea/acl-rea.mjs');
     expect(script).toContain(
-      `/opt/rea/node-v${BUILD_NODE_VERSION}-linux-*/bin/node`,
+      `/opt/acl-rea/node-v${BUILD_NODE_VERSION}-linux-*/bin/node`,
     );
-    expect(script).toContain("exec /usr/local/bin/node /opt/rea/rea.mjs");
+    expect(script).toContain(
+      "exec /usr/local/bin/node /opt/acl-rea/acl-rea.mjs",
+    );
   });
 
   it("pins the Node.js release REA itself pins", () => {
@@ -146,23 +148,23 @@ describe("build bundle install sources", () => {
       `Download(url="https://downloads.example.com/varicad.deb", sha256="${sha256}", to="vendor/package.deb", arch="amd64")`,
     );
     expect(module).toContain(
-      `Download(url="https://releases.example.com/rea.tar.xz", sha256="${"b".repeat(64)}", to="rea-payload.tar")`,
+      `Download(url="https://releases.example.com/rea.tar.xz", sha256="${"b".repeat(64)}", to="acl-rea-payload.tar")`,
     );
     expect(module).toContain('"arch": ["amd64"]');
     expect(module).not.toContain('to="node-arm64.tar.xz"');
     // REA's layer keeps the .deb for the capture before the install removes it.
     expect(module).toContain(
-      'run=[RunScript(script="install-rea.sh"), RunScript(script="install-package.sh")]',
+      'run=[RunScript(script="install-acl-rea.sh"), RunScript(script="install-package.sh")]',
     );
-    expect(text(bundle.files, "envs/mousepad/install-rea.sh")).toContain(
+    expect(text(bundle.files, "envs/mousepad/install-acl-rea.sh")).toContain(
       `cp vendor/package.deb ${BUILD_PACKAGE_FILE}`,
     );
-    expect(BUILD_PACKAGE_FILE).toBe("/opt/rea/package.deb");
+    expect(BUILD_PACKAGE_FILE).toBe("/opt/acl-rea/package.deb");
     expect(text(bundle.files, "envs/mousepad/install-package.sh")).toContain(
       "dpkg -i 'vendor/package.deb'",
     );
     expect(
-      bundle.files.some((file) => file.path.endsWith("rea-payload.tar")),
+      bundle.files.some((file) => file.path.endsWith("acl-rea-payload.tar")),
     ).toBe(false);
   });
 
@@ -222,7 +224,7 @@ describe("build bundle download installs", () => {
     expect(module).not.toContain('to="node-amd64.tar.xz"');
     // The Electron rewrite edits the desktop entry the extract step installs.
     expect(module).toContain(
-      'run=[RunScript(script="install-rea.sh"), RunScript(script="install-download.sh"), RunScript(script="prepare-electron-launch.sh")]',
+      'run=[RunScript(script="install-acl-rea.sh"), RunScript(script="install-download.sh"), RunScript(script="prepare-electron-launch.sh")]',
     );
     expect(module).toContain("exec gtk-launch 'drawio'");
     expect(text(bundle.files, "envs/drawio/install-download.sh")).toContain(
@@ -305,7 +307,7 @@ describe("Electron launch rendering", () => {
       `launch=Launch(at="demand", command=["sh", "-c", "cd \\"$HOME\\" 2>/dev/null; exec gtk-launch 'typora'"]),`,
     );
     expect(module).toContain(
-      'run=[RunScript(script="install-rea.sh"), RunScript(script="prepare-electron-launch.sh")]',
+      'run=[RunScript(script="install-acl-rea.sh"), RunScript(script="prepare-electron-launch.sh")]',
     );
     const plain = renderBuildBundle(
       {

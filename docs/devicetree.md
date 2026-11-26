@@ -1,6 +1,6 @@
 # Flattened devicetree inspection
 
-`inspect_devicetree` / `rea inspect-devicetree` reads a local DTB without an
+`inspect_devicetree` / `acl-rea inspect-devicetree` reads a local DTB without an
 engine, target execution or external tools. It supports FDT versions 16 and 17;
 other versions return `unsupported_target`. Corrupt recognized blobs return
 `invalid_request`, and exhausted budgets return `resource_constraint` without
@@ -14,8 +14,8 @@ count and first file offset of nonzero padding while retaining the tree's
 observations when all fields fit.
 
 ```bash
-rea inspect-devicetree /artifacts/board.dtb --json
-rea inspect-devicetree /artifacts/board.dtb --detail summary --evidence_output /artifacts/board-evidence.json --json
+acl-rea inspect-devicetree /artifacts/board.dtb --json
+acl-rea inspect-devicetree /artifacts/board.dtb --detail summary --evidence_output /artifacts/board-evidence.json --json
 ```
 
 The complete Evidence includes the artifact SHA-256, validated header fields,

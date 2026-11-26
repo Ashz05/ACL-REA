@@ -28,7 +28,7 @@ const pluginManifestPaths = [
 const pluginManifest = (version: string, launch = version) => ({
   version,
   mcpServers: {
-    rea: {
+    "acl-rea": {
       command: "node",
       args: ["${CLAUDE_PLUGIN_ROOT}/scripts/plugin-mcp-launcher.mjs", launch],
     },
@@ -37,7 +37,7 @@ const pluginManifest = (version: string, launch = version) => ({
 
 const codexServerConfig = (version: string, launch = version) => ({
   mcpServers: {
-    rea: {
+    "acl-rea": {
       command: "node",
       args: ["./scripts/plugin-mcp-launcher.mjs", launch],
       cwd: ".",
@@ -65,14 +65,14 @@ async function metadata(
     ".cursor-plugin/plugin.json": { version },
     "mcp.json": {
       mcpServers: {
-        rea: {
+        "acl-rea": {
           command: "npx",
-          args: ["-y", `rea-agents@${version}`, "mcp"],
+          args: ["-y", `acl-rea-agents@${version}`, "mcp"],
         },
       },
     },
     "package.json": {
-      name: "rea-agents",
+      name: "acl-rea-agents",
       version,
       repository: {
         type: "git",
@@ -83,7 +83,7 @@ async function metadata(
     ".release-please-manifest.json": { ".": version },
     "server.json": {
       version,
-      packages: [{ registryType: "npm", identifier: "rea-agents", version }],
+      packages: [{ registryType: "npm", identifier: "acl-rea-agents", version }],
     },
     "release-please-config.json": {
       ...(versioning === undefined ? {} : { versioning }),
@@ -142,7 +142,7 @@ const releaseSeed = (versioning?: string): Promise<ReleaseSeed> => {
       "2026-01-03T00:00:00Z",
     );
     const releasedSha = await git(directory, ["rev-parse", "HEAD"]);
-    await git(directory, ["tag", "rea-agents-5.0.0"]);
+    await git(directory, ["tag", "acl-rea-agents-5.0.0"]);
     await git(directory, ["switch", "main"]);
     return { directory, releasedSha };
   })();
@@ -564,7 +564,7 @@ it.each([
     if (legacySource === true) {
       await writeFile(
         join(f.directory, "package.json"),
-        '{"name":"rea-agents","version":"5.0.0"}',
+        '{"name":"acl-rea-agents","version":"5.0.0"}',
       );
       await git(f.directory, ["add", "package.json"]);
       await git(f.directory, [
@@ -585,7 +585,7 @@ it.each([
         ? {}
         : {
             "package.json": JSON.stringify({
-              name: "rea-agents",
+              name: "acl-rea-agents",
               version: "6.0.0",
               repository: { url: candidateRepository },
             }),
@@ -984,7 +984,7 @@ it.each(["6.01.0", "6.0", "not-a-version", "6.0.0+build"])(
 it.each([
   {
     path: "package.json",
-    content: JSON.stringify({ name: "rea-agents", version: "5.1.0" }),
+    content: JSON.stringify({ name: "acl-rea-agents", version: "5.1.0" }),
     location: "package.json",
   },
   {
@@ -1000,10 +1000,10 @@ it.each([
     content: JSON.stringify({
       version: "6.0.0",
       packages: [
-        { registryType: "npm", identifier: "rea-agents", version: "5.1.0" },
+        { registryType: "npm", identifier: "acl-rea-agents", version: "5.1.0" },
       ],
     }),
-    location: "server.json rea-agents package",
+    location: "server.json acl-rea-agents package",
   },
   {
     path: "src/generatedPackageMetadata.ts",
@@ -1028,14 +1028,14 @@ it.each([
   {
     label: "non-npm",
     packages: [
-      { registryType: "oci", identifier: "rea-agents", version: "6.0.0" },
+      { registryType: "oci", identifier: "acl-rea-agents", version: "6.0.0" },
     ],
   },
   {
     label: "ambiguous",
     packages: [
-      { registryType: "npm", identifier: "rea-agents", version: "6.0.0" },
-      { registryType: "npm", identifier: "rea-agents", version: "5.1.0" },
+      { registryType: "npm", identifier: "acl-rea-agents", version: "6.0.0" },
+      { registryType: "npm", identifier: "acl-rea-agents", version: "5.1.0" },
     ],
   },
 ])("refuses invalid MCP package entries: $label", async ({ packages }) => {
@@ -1087,11 +1087,11 @@ it.each([
     path: "mcp.json",
     manifest: {
       mcpServers: {
-        rea: { command: "npx", args: ["-y", "rea-agents@5.1.0", "mcp"] },
+        "acl-rea": { command: "npx", args: ["-y", "acl-rea-agents@5.1.0", "mcp"] },
       },
     },
     failure:
-      "launches rea-agents@5.1.0; release branch requires rea-agents@6.0.0",
+      "launches acl-rea-agents@5.1.0; release branch requires acl-rea-agents@6.0.0",
   },
 ])(
   "rejects a stale release pin in $path",
@@ -1173,7 +1173,7 @@ it("reports other omitted entries for review without inventing a breaking change
 
 it("reports a missing published tag with recovery advice", async () => {
   const f = await fixture();
-  await git(f.directory, ["tag", "-d", "rea-agents-5.0.0"]);
+  await git(f.directory, ["tag", "-d", "acl-rea-agents-5.0.0"]);
   await expect(verify(f, "6.0.0", "prepare", "source")).rejects.toMatchObject({
     code: 1,
     stderr: expect.stringContaining("Fetch release tags"),
@@ -1183,7 +1183,7 @@ it("reports a missing published tag with recovery advice", async () => {
 it("rejects a published baseline outside the selected ancestry", async () => {
   const f = await fixture();
   const next = await candidate(f, "6.0.0");
-  await git(f.directory, ["tag", "-f", "rea-agents-5.0.0", next]);
+  await git(f.directory, ["tag", "-f", "acl-rea-agents-5.0.0", next]);
   await expect(verify(f, "6.0.0", "prepare", "source")).rejects.toMatchObject({
     code: 1,
     stderr: expect.stringContaining(

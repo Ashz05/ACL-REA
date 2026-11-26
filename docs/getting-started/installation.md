@@ -1,6 +1,6 @@
 # Installation and setup
 
-Run REA, connect your selected agents, and check the tools needed for your task.
+Run ACL-REA, connect your selected agents, and check the tools needed for your task.
 Setup previews configuration changes and asks for approval before applying them.
 
 | Task                                  | Section                                                                                                             |
@@ -8,20 +8,20 @@ Setup previews configuration changes and asks for approval before applying them.
 | Connect an agent                      | [Start setup](#start-setup), then [review changes](#review-setup-changes)                                           |
 | Install a Claude Code/Codex plugin    | [Agent plugins and marketplaces](#agent-plugins-and-marketplaces)                                                   |
 | Install the Cursor Marketplace plugin | [Cursor Marketplace](#cursor-marketplace)                                                                           |
-| Run unreleased code                   | [Run REA from a checkout](#run-rea-from-a-checkout)                                                                 |
+| Run unreleased code                   | [Run ACL-REA from a checkout](#run-acl-rea-from-a-checkout)                                                         |
 | Diagnose one task                     | [Scoped readiness checks](#check-readiness-for-your-task)                                                           |
 | Configure an analysis engine          | [Hopper](#hopper), [Ghidra](#ghidra), the [IDA guide](../providers/ida-provider.md), or [Kuna](../kuna-provider.md) |
-| Update or remove REA                  | [Maintenance](#diagnose-update-and-remove)                                                                          |
+| Update or remove ACL-REA              | [Maintenance](#diagnose-update-and-remove)                                                                          |
 | Resolve a client-specific problem     | [Client configuration](client-configuration.md)                                                                     |
 
 ## Start setup
 
 ```bash
-npx rea-agents setup
+npx acl-rea-agents setup
 ```
 
 Choose the agents to configure, review the proposed paths and changes, and
-approve the plan. npm's package-download approval and REA's setup approval are
+approve the plan. npm's package-download approval and ACL-REA's setup approval are
 separate. Setup asks before changing agent configuration or installing Hopper.
 Restart the agents named in the completion message. Quit Claude Desktop fully
 before approving, because a running app can overwrite the registration; on
@@ -29,21 +29,21 @@ Windows, see [where Claude Desktop reads its configuration](client-configuration
 
 During package resolution, npm may print a deprecation warning for `prebuild-install`
 from transitive native dependencies (such as Frida). This warning originates from
-the upstream dependency tree and does not affect REA or indicate setup failure.
+the upstream dependency tree and does not affect ACL-REA or indicate setup failure.
 
-For the latest published release, use `npx rea-agents@latest setup`.
+For the latest published release, use `npx acl-rea-agents@latest setup`.
 [Package-runner and global-installation options](#package-runners-and-global-installation)
 cover explicit versions, Bun, runtime requirements, and the curl wrapper.
 
 ## Review setup changes
 
-`rea setup` first offers the supported agents in a multi-select. Existing REA
+`acl-rea setup` first offers the supported agents in a multi-select. Existing ACL-REA
 registrations are selected by default. Newly detected clients remain available
 but unselected: detection gives setup context, not permission to add a new
 registration. Clients without a detected configuration can still be selected.
 Explicit `--client` flags skip this question.
 
-Setup adds MCP access for selected clients. It installs REA's bundled workflow
+Setup adds MCP access for selected clients. It installs ACL-REA's bundled workflow
 with those integrations by default; use `--skill=false` to omit it. If no agent
 is selected, setup offers the workflow separately for CLI use, with No as the
 default. Hopper is a separate optional choice: setup shows its proposed
@@ -51,16 +51,16 @@ installation or connection and requires its own explicit approval. It can also
 save verified paths for an existing Ghidra installation.
 
 After selection, review the plan's exact paths and changes and approve before
-REA writes files or installs Hopper. The approval view also shows known manual
+ACL-REA writes files or installs Hopper. The approval view also shows known manual
 completion steps for selected clients, such as Grok Bot's hosted connector.
 Approving the local changes does not complete those manual steps. You can cancel
 at any prompt.
 
-Before applying changes, REA checks your current configuration. The plan lists:
+Before applying changes, ACL-REA checks your current configuration. The plan lists:
 
 - an existing Hopper installation, a verified existing Ghidra installation, or the official Hopper package it proposes to install;
 - each detected agent configuration path;
-- each selected REA skill destination;
+- each selected ACL-REA skill destination;
 - external software, network origins, integrity evidence, and package-manager
   commands.
 
@@ -76,10 +76,10 @@ Replacement uses an explicit destination under the selected canonical parent;
 it does not follow a newly inserted destination symlink. First-run setup uses
 an exclusive hard link and fails without overwriting a newly created destination;
 filesystems without hard-link support cannot publish a first-run configuration.
-Setup and uninstall retain an existing `.rea.backup` rather than replacing the
+Setup and uninstall retain an existing `.acl-rea.backup` rather than replacing the
 first snapshot.
 If that snapshot differs from the current configuration, setup and uninstall
-preserve a verified `.rea.backup.<sha256>.recovery` copy of the current bytes
+preserve a verified `.acl-rea.backup.<sha256>.recovery` copy of the current bytes
 before editing; setup also previews it. Both snapshots remain available.
 When an edit made a backup, a failed uninstall update or restore, and a failed
 setup readback or rollback, name the backup path that holds the bytes from just
@@ -90,23 +90,23 @@ For an existing configuration, setup and uninstall recovery refuse a detected
 replacement or edit and name the recovery backup. Quit clients before editing their configuration;
 these checks do not lock out another writer modifying the same file in place,
 or exclude pathname changes between the final check and publication.
-Setup refreshes an existing `rea` registration only when its launcher proves REA
+Setup refreshes an existing `acl-rea` registration only when its launcher proves ACL-REA
 ownership. Foreign or unresolved launcher identity blocks setup before any
 backup or write, including an OpenCode legacy entry that migration would remove.
 Review the existing launcher and manually rename or remove that registration to
 approve replacing it. A different existing installation path is foreign to the
 current entrypoint; a path that cannot be resolved remains unknown. Cordis uses
-its stable REA entry ID instead of launcher identity.
-Setup also retains valid environment overrides in REA's existing server entry,
+its stable ACL-REA entry ID instead of launcher identity.
+Setup also retains valid environment overrides in ACL-REA's existing server entry,
 such as `REA_MCP_OUTPUT_SCHEMA_PROFILE`,
 `REA_MCP_MAX_RESPONSE_BYTES`, and `REA_MCP_TOOL_FAMILIES`.
 Detected provider settings replace only matching environment keys.
-Setup manages REA's launcher, selected provider settings, and recommended timeout
+Setup manages ACL-REA's launcher, selected provider settings, and recommended timeout
 defaults. Codex approval policies, tool selections, and other caller-owned server
 settings are preserved. Known malformed policy values block setup before it
 writes the configuration or a backup; see
 [Codex settings preservation](client-configuration.md#codex-and-devin).
-Setup and doctor report a malformed REA environment map or invalid runtime
+Setup and doctor report a malformed ACL-REA environment map or invalid runtime
 setting before setup writes files. Repair the named setting in the client
 configuration; setup does not silently discard the rest of the map.
 This includes malformed loader/exclusion JSON arrays and a Ghidra compiler
@@ -119,7 +119,7 @@ setting dependencies are checked against the effective merged environment.
 Setup preserves each layer's overrides instead of copying inherited settings
 into the file it updates.
 
-After setup, REA reports which agents, analysis tools, and workflow files passed
+After setup, ACL-REA reports which agents, analysis tools, and workflow files passed
 its final checks. Restart any agent named in the completion message, then begin
 your investigation. Failed steps and diagnostics remain in terminal history.
 
@@ -132,7 +132,7 @@ even when an explicit client is not detected. Each client is configured once.
 with status `planned` and exit code 0:
 
 ```bash
-rea setup --client codex --client cursor --skill=false --dry-run
+acl-rea setup --client codex --client cursor --skill=false --dry-run
 ```
 
 Prompt UI and progress are written to stderr so stdout remains available for
@@ -142,25 +142,25 @@ interactive setup requires stdin, stdout, and stderr to all be terminals; when
 any stream is redirected, setup stays non-interactive. Declining or cancelling
 returns status `cancelled` with exit code 0.
 
-For automation, `rea setup --json` reports the plan and a compact `.doctor`
-readiness projection without applying it. Use `rea doctor --json` for full
+For automation, `acl-rea setup --json` reports the plan and a compact `.doctor`
+readiness projection without applying it. Use `acl-rea doctor --json` for full
 health diagnostics and canonical tool catalog details. Pair
 `--yes` with explicit scope such as `--client codex`, or use
 `--all-detected` when the broad scope is intended. Without a scope flag,
-`--yes` is limited to existing REA-owned registrations; it does not select all
+`--yes` is limited to existing ACL-REA-owned registrations; it does not select all
 detected clients. An unapproved actual apply reports `needs_confirmation` and
 exits 1. Installing missing Hopper non-interactively additionally requires
 `--install-hopper`:
 
 ```bash
-rea setup --yes --all-detected --install-hopper --json
+acl-rea setup --yes --all-detected --install-hopper --json
 ```
 
 Client configuration writes detect changes to the file read by setup, including
 when a matching recovery backup already exists. A detected conflict reports
 `reason: "conflict"` and preserves the newer file; review it and rerun setup.
 Rollback likewise requires the file identity and content installed by that
-transaction. Requests for the same resolved path are serialized within one REA
+transaction. Requests for the same resolved path are serialized within one ACL-REA
 process. These checks do not provide an operating-system compare-and-swap or
 coordinate arbitrary external writers, so avoid editing client configuration
 while setup is applying it.
@@ -205,7 +205,7 @@ These checks do not lock out another writer modifying the same inode or exclude
 pathname changes between the last check and publication. Avoid editing managed
 skill files or running another installer while setup applies them.
 
-`rea setup --skill-client claude_code --yes --json` refreshes and verifies the
+`acl-rea setup --skill-client claude_code --yes --json` refreshes and verifies the
 selected skill destination independently of MCP registration selection. The
 final `doctor.scope.skill_clients` records which skill destinations were
 checked; `doctor.scope.clients` continues to describe required registrations.
@@ -225,40 +225,40 @@ the matching skill and on-demand references and adds
 is already configured. Codex also receives a
 `tool_timeout_sec` derived from known provider startup plus operation headroom.
 
-## Limit REA to one project or agent profile
+## Limit ACL-REA to one project or agent profile
 
-Setup registers REA for the whole client. For Claude Code it writes
-`mcpServers.rea` in `~/.claude.json` and installs the bundled skill under
-`~/.claude/skills`, so every project that Claude Code opens can call REA. To
-offer REA's tools only where they're wanted, use one of the routes below.
+Setup registers ACL-REA for the whole client. For Claude Code it writes
+`mcpServers.acl-rea` in `~/.claude.json` and installs the bundled skill under
+`~/.claude/skills`, so every project that Claude Code opens can call ACL-REA. To
+offer ACL-REA's tools only where they're wanted, use one of the routes below.
 
-Both routes control which sessions discover REA's MCP server and skill. They
+Both routes control which sessions discover ACL-REA's MCP server and skill. They
 leave shell commands, filesystem access and network access available. An agent
-under the same OS account can run `rea` from `PATH` or `npx` and read other
-profiles and REA output. For clean-room separation, use an implementation
+under the same OS account can run `acl-rea` from `PATH` or `npx` and read other
+profiles and ACL-REA output. For clean-room separation, use an implementation
 environment with filesystem and network restrictions that prevent reading or
-fetching REA, the target and analysis output, including through shared
+fetching ACL-REA, the target and analysis output, including through shared
 installations and package registries. A separate account or container must
 enforce those restrictions.
 
 For Claude Code, check existing default-profile state before choosing either
-route. Setup is additive: a previous user-level REA registration and personal
+route. Setup is additive: a previous user-level ACL-REA registration and personal
 skill remain active in other projects. Back up the default configuration and
-REA skill first, then, with `CLAUDE_CONFIG_DIR` unset, remove the REA user
-registration with `claude mcp remove --scope user rea` and remove the known
-REA-installed `~/.claude/skills/reverse-engineer-anything` directory. Preserve
-unrelated registrations and skills. `rea uninstall` applies to other clients
+ACL-REA skill first, then, with `CLAUDE_CONFIG_DIR` unset, remove the ACL-REA user
+registration with `claude mcp remove --scope user acl-rea` and remove the known
+ACL-REA-installed `~/.claude/skills/acl-reverse-engineer-anything` directory. Preserve
+unrelated registrations and skills. `acl-rea uninstall` applies to other clients
 as well, so it is broader than this Claude-only migration.
 
 **A separate Claude Code profile.** Claude Code keeps settings, skills and session
 history under `CLAUDE_CONFIG_DIR`. Setup follows the same
 variable: it writes the registration to `$CLAUDE_CONFIG_DIR/.claude.json` and
 the skill to `$CLAUDE_CONFIG_DIR/skills`.
-For REA setup, an empty `CLAUDE_CONFIG_DIR` is treated as unset: registration
+For ACL-REA setup, an empty `CLAUDE_CONFIG_DIR` is treated as unset: registration
 goes to `~/.claude.json` and the skill goes to `~/.claude/skills`.
 
 ```bash
-CLAUDE_CONFIG_DIR=~/.claude-rea npx rea-agents setup --client claude_code
+CLAUDE_CONFIG_DIR=~/.claude-rea npx acl-rea-agents setup --client claude_code
 CLAUDE_CONFIG_DIR=~/.claude-rea claude
 ```
 
@@ -274,20 +274,20 @@ environment and can otherwise inspect or recreate default-profile state:
 
 ```bash
 CLAUDE_CONFIG_DIR=~/.claude-rea claude mcp list
-CLAUDE_CONFIG_DIR=~/.claude-rea npx rea-agents doctor --client claude_code --skill --json
-CLAUDE_CONFIG_DIR=~/.claude-rea npx -y rea-agents@latest setup --client claude_code --dry-run
+CLAUDE_CONFIG_DIR=~/.claude-rea npx acl-rea-agents doctor --client claude_code --skill --json
+CLAUDE_CONFIG_DIR=~/.claude-rea npx -y acl-rea-agents@latest setup --client claude_code --dry-run
 ```
 
 After reviewing an update plan, rerun that same prefixed setup command without
 `--dry-run` and approve its exact changes. Profile removal likewise needs the
-prefix on `claude mcp remove --scope user rea` and any `rea uninstall` command;
+prefix on `claude mcp remove --scope user acl-rea` and any `acl-rea uninstall` command;
 keep the broader client scope of uninstall in mind. Restart the selected
 profile after changing its registration.
 
-`claude mcp remove` removes only the registration. To remove REA from this
+`claude mcp remove` removes only the registration. To remove ACL-REA from this
 profile without running the broader uninstall flow, first back up the profile's
-REA-managed skill directory, then remove
-`$CLAUDE_CONFIG_DIR/skills/reverse-engineer-anything` as well. Keep other skills
+ACL-REA-managed skill directory, then remove
+`$CLAUDE_CONFIG_DIR/skills/acl-reverse-engineer-anything` as well. Keep other skills
 in the profile intact.
 
 The commands above use POSIX shell assignment syntax. In native Windows
@@ -298,14 +298,14 @@ restore the previous selection afterward:
 $previousClaudeConfigDir = $env:CLAUDE_CONFIG_DIR
 try {
   $env:CLAUDE_CONFIG_DIR = Join-Path $HOME ".claude-rea"
-  npx rea-agents setup --client claude_code
+  npx acl-rea-agents setup --client claude_code
   claude mcp list
-  npx rea-agents doctor --client claude_code --skill --json
-  npx -y rea-agents@latest setup --client claude_code --dry-run
+  npx acl-rea-agents doctor --client claude_code --skill --json
+  npx -y acl-rea-agents@latest setup --client claude_code --dry-run
   # After reviewing the plan, repeat setup without --dry-run and approve it.
   claude
   # Profile removal, when intended, also belongs inside this selected scope:
-  # claude mcp remove --scope user rea
+  # claude mcp remove --scope user acl-rea
 } finally {
   if ($null -eq $previousClaudeConfigDir) {
     Remove-Item Env:CLAUDE_CONFIG_DIR -ErrorAction SilentlyContinue
@@ -322,7 +322,7 @@ or unsets the variable when it was absent.
 
 **One project.** Install without configuring Claude Code: use the curl
 installer's `--no-setup`, or run setup only for other clients. Then register
-REA from the project directory at Claude Code's local scope.
+ACL-REA from the project directory at Claude Code's local scope.
 
 This route uses the default Claude profile. Keep `CLAUDE_CONFIG_DIR` unset for
 the entire local lifecycle: registration, backup, listing, version replacement
@@ -336,26 +336,26 @@ Register with the variable unset, substituting the absolute runtime and entry
 script from your existing installation or setup dry-run:
 
 ```bash
-claude mcp add --scope local rea -- "/absolute/path/to/node" "/absolute/path/to/rea/scripts/rea.mjs" mcp
+claude mcp add --scope local acl-rea -- "/absolute/path/to/node" "/absolute/path/to/acl-rea/scripts/acl-rea.mjs" mcp
 ```
 
 On native Windows, use the same project directory and absolute paths:
 
 ```powershell
-claude mcp add --scope local rea -- "C:\Program Files\nodejs\node.exe" "C:\tools\rea\scripts\rea.mjs" mcp
+claude mcp add --scope local acl-rea -- "C:\Program Files\nodejs\node.exe" "C:\tools\acl-rea\scripts\acl-rea.mjs" mcp
 ```
 
 Local scope stores the entry under that directory's path in `~/.claude.json`,
 so other projects don't load it. This route doesn't install the bundled skill.
 Avoid `--scope project`, which writes `.mcp.json` into the repository where it
-can be committed or copied. `rea doctor` and `rea uninstall` read only the
+can be committed or copied. `acl-rea doctor` and `acl-rea uninstall` read only the
 user-level entry, so they don't report or remove a local-scope registration;
-remove it with `claude mcp remove --scope local rea` from the same directory.
-`rea update` doesn't refresh it either, so it continues using the selected installation.
+remove it with `claude mcp remove --scope local acl-rea` from the same directory.
+`acl-rea update` doesn't refresh it either, so it continues using the selected installation.
 To move it to a newer release, first back up the project entry in
 `~/.claude.json` and record its environment and other metadata. In particular,
 preserve caller-selected overrides such as `REA_MCP_OUTPUT_SCHEMA_PROFILE` and
-`REA_MCP_MAX_RESPONSE_BYTES`, and `REA_MCP_TOOL_FAMILIES`. Run `claude mcp remove --scope local rea` from the
+`REA_MCP_MAX_RESPONSE_BYTES`, and `REA_MCP_TOOL_FAMILIES`. Run `claude mcp remove --scope local acl-rea` from the
 same directory, then recreate it with the platform-appropriate command above
 and the new version. Reapply every recorded environment value with Claude
 Code's `mcp add --env NAME=value` options and restore any other retained entry
@@ -369,7 +369,7 @@ with the default profile with `CLAUDE_CONFIG_DIR` unset. For local scope, run
 
 ## Check readiness for your task
 
-Run `rea doctor` when you need diagnosis. It reads host prerequisites and agent
+Run `acl-rea doctor` when you need diagnosis. It reads host prerequisites and agent
 configuration without changing them. Without options, it audits every detected
 registration, the installed skill and optional analysis engines; its overall
 `healthy` value can be false while your chosen workflow works. An audit-wide
@@ -381,7 +381,7 @@ such as `registration_environment:<client>` when doctor cannot establish what
 the client passes. `--filter-output` applies to an unhealthy report as to a
 healthy one, including inside the `--full-output` envelope, which still has
 `ok: false`, and the exit status is still 1:
-`rea doctor --filter-output healthy --json` prints `false`. JSON Lines output
+`acl-rea doctor --filter-output healthy --json` prints `false`. JSON Lines output
 frames an unhealthy report whole as an error record.
 
 Doctor's `providerInspections` are host-level engine and registration checks,
@@ -397,11 +397,11 @@ Select the part you want to check:
 
 | Task                                | Readiness check                                                            |
 | ----------------------------------- | -------------------------------------------------------------------------- |
-| Static JavaScript/Electron analysis | Run `rea analyze-javascript-application PATH --json` directly.             |
-| One analysis engine                 | `rea doctor --provider ghidra --json` (or `hopper`, `ida`, `jadx`, `kuna`) |
-| One agent registration              | `rea doctor --client codex --json` (see [client IDs](#supported-agents))   |
-| Installed workflow instructions     | `rea doctor --skill --json`                                                |
-| Desktop app environment builds      | `rea doctor --provider desktop_build --client claude_code --json`          |
+| Static JavaScript/Electron analysis | Run `acl-rea analyze-javascript-application PATH --json` directly.         |
+| One analysis engine                 | `acl-rea doctor --provider ghidra --json` (or `hopper`, `ida`, `jadx`, `kuna`) |
+| One agent registration              | `acl-rea doctor --client codex --json` (see [client IDs](#supported-agents)) |
+| Installed workflow instructions     | `acl-rea doctor --skill --json`                                            |
+| Desktop app environment builds      | `acl-rea doctor --provider desktop_build --client claude_code --json`      |
 
 A scoped report has `scope.mode: "explicit"`. Its `scope_checks` determine
 `healthy` and the exit status. Other checks appear in `informational_checks`;
@@ -423,7 +423,7 @@ records with other text, doctor adds a non-blocking
 setting names appear in that registration's `provider_settings`. Selecting the
 client or an affected provider places the check in `scope_checks`; it never
 changes `healthy`, because the client may still pass the setting on. Preview
-`rea setup --client <client-id> --skill=false --dry-run` from that terminal and
+`acl-rea setup --client <client-id> --skill=false --dry-run` from that terminal and
 approve it to record the settings, then restart the client. To see what the
 running server can use, call `binary_session` in the client and read
 `result.tool_availability`. For Hopper, only an explicit `HOPPER_LAUNCHER_PATH`
@@ -470,23 +470,23 @@ their own status. `open_binary` keeps the refusal described above.
 
 ## Diagnose, update, and remove
 
-`rea doctor --json` is strictly read-only. `rea update` updates only the npm or Bun global installation that owns the running CLI. Source checkouts and package-runner copies must be updated through the mechanism that owns them; a fresh package-runner invocation can use `npx rea-agents@latest` or `bunx rea-agents@latest`. `rea uninstall` removes only REA-owned agent registrations and skill files; `--purge-data` additionally removes REA cache and state paths.
+`acl-rea doctor --json` is strictly read-only. `acl-rea update` updates only the npm or Bun global installation that owns the running CLI. Source checkouts and package-runner copies must be updated through the mechanism that owns them; a fresh package-runner invocation can use `npx acl-rea-agents@latest` or `bunx acl-rea-agents@latest`. `acl-rea uninstall` removes only ACL-REA-owned agent registrations and skill files; `--purge-data` additionally removes ACL-REA cache and state paths.
 
 ```bash
-rea update
-rea uninstall
-rea uninstall --purge-data
+acl-rea update
+acl-rea uninstall
+acl-rea uninstall --purge-data
 ```
 
 Uninstall preserves Hopper, Node.js, Evidence files, captures, unrelated skills
 and other MCP servers. Uninstall and `--purge-data` leave the saved provider
-settings file `rea.json` in place and can run when it is malformed. Purging
-removes REA's legacy cache and state under
-`~/.rea`, the default Kuna cache (`~/Library/Caches/rea/kuna` on macOS or
-`${XDG_CACHE_HOME:-~/.cache}/rea/kuna` on Linux), and Linux Hopper release
-archives under `${XDG_CACHE_HOME:-~/.cache}/rea/hopper-releases`. Other cache
+settings file `acl-rea.json` in place and can run when it is malformed. Purging
+removes ACL-REA's legacy cache and state under
+`~/.acl-rea`, the default Kuna cache (`~/Library/Caches/acl-rea/kuna` on macOS or
+`${XDG_CACHE_HOME:-~/.cache}/acl-rea/kuna` on Linux), and Linux Hopper release
+archives under `${XDG_CACHE_HOME:-~/.cache}/acl-rea/hopper-releases`. Other cache
 namespaces remain intact. A caller-selected `REA_KUNA_CACHE_DIR` is retained
-and reported because REA cannot establish ownership of its entire contents.
+and reported because ACL-REA cannot establish ownership of its entire contents.
 Lexically equivalent spellings of that default directory, including a trailing
 separator, a `.` segment, or a repeated separator, share its purge result.
 The comparison preserves POSIX `..` traversal and literal backslashes.
@@ -542,7 +542,7 @@ entry:
    ```
 
    Replace `REA_CACHE_KEY` with the key from the failing `_npx` path. Check that
-   `info` reports that location and the expected `rea-agents` version. Its
+   `info` reports that location and the expected `acl-rea-agents` version. Its
    `valid` label describes the cache entry metadata, not the presence of every
    installed file. These subcommands require npm with `cache npx` support.
 
@@ -551,7 +551,7 @@ entry:
 
    ```powershell
    npm.cmd cache npx rm REA_CACHE_KEY
-   npx.cmd --yes rea-agents@6.7.0 doctor --json
+   npx.cmd --yes acl-rea-agents@6.7.0 doctor --json
    ```
 
    Keep the key argument: this recovery does not require clearing all npm caches
@@ -571,7 +571,7 @@ Read-only metadata and version checks time out after 10 seconds. This does not
 interrupt a package installation already in progress. If a probe cannot be
 stopped, the updater reports a cleanup failure.
 
-`rea update` installs the exact resolved
+`acl-rea update` installs the exact resolved
 release into the npm prefix or Bun global directory that owns the running
 package, then checks the new executable's version before reporting success.
 That verification covers the CLI version; it does not establish readiness of
@@ -611,38 +611,38 @@ A source build or a later release is required for functionality added to main
 after the installed release. Package startup alone does not verify a provider's real
 platform workflow.
 
-To check the published version, run `npm view rea-agents dist-tags.latest`.
+To check the published version, run `npm view acl-rea-agents dist-tags.latest`.
 Use the connected server's actual tool list and advertised input schemas for
 feature selection. The same package version string in a development checkout
 does not establish that its bytes match the npm tarball. Update a registration
 through a reviewed, scoped setup plan, then restart/reconnect the agent.
 
-### Run REA from a checkout
+### Run ACL-REA from a checkout
 
 To run code that is not released yet, build a checkout with the Node.js
 version in `.nvmrc`:
 
 ```bash
-git clone https://github.com/morluto/rea.git
-cd rea
+git clone https://github.com/Ashz05/ACL-REA.git
+cd ACL-REA
 npm ci
 npm run build:cached
 ```
 
 These commands do not build the Windows x64 native addon or its manifest.
 Windows workflows that need native controls require the extra step in
-[Windows source checkouts](https://github.com/morluto/rea/blob/main/CONTRIBUTING.md#windows-source-checkouts).
+[Windows source checkouts](https://github.com/Ashz05/ACL-REA/blob/main/CONTRIBUTING.md#windows-source-checkouts).
 
-Then run `npm link` once in the checkout to put its `rea` on your `PATH`, or,
-wherever these docs say `rea …`, run
-`node /absolute/path/to/rea/scripts/rea.mjs …`. Setup run this way registers
-the checkout's `scripts/rea.mjs` with your agents.
+Then run `npm link` once in the checkout to put its `acl-rea` on your `PATH`, or,
+wherever these docs say `acl-rea …`, run
+`node /absolute/path/to/acl-rea/scripts/acl-rea.mjs …`. Setup run this way registers
+the checkout's `scripts/acl-rea.mjs` with your agents.
 
-Avoid `npx rea-agents` from inside this checkout. Its package name is
-`rea-agents`, so npm can select the checkout, including when the requested
-version matches it. If the checkout's `rea` command is unavailable, the launch
-fails. Use the linked `rea` or
-`node /absolute/path/to/rea/scripts/rea.mjs` forms above. Run setup through
+Avoid `npx acl-rea-agents` from inside this checkout. Its package name is
+`acl-rea-agents`, so npm can select the checkout, including when the requested
+version matches it. If the checkout's `acl-rea` command is unavailable, the launch
+fails. Use the linked `acl-rea` or
+`node /absolute/path/to/acl-rea/scripts/acl-rea.mjs` forms above. Run setup through
 that entrypoint to register the checkout for your agent.
 
 After `git pull`, run `npm ci` and `npm run build:cached` again. If the
@@ -650,23 +650,23 @@ checkout's skill changed, refresh each installed copy before restarting its
 agent. For example, preview and review the Claude Code skill changes:
 
 ```bash
-rea setup --skill-client claude_code --dry-run --json
+acl-rea setup --skill-client claude_code --dry-run --json
 ```
 
-Then apply the reviewed changes with `rea setup --skill-client claude_code --yes --json`.
+Then apply the reviewed changes with `acl-rea setup --skill-client claude_code --yes --json`.
 Substitute the relevant skill client; use the checkout's
-`node /absolute/path/to/rea/scripts/rea.mjs` form if `rea` is not linked. For desktop builds, also pack the [build computer's runtime
+`node /absolute/path/to/acl-rea/scripts/acl-rea.mjs` form if `acl-rea` is not linked. For desktop builds, also pack the [build computer's runtime
 archive](../desktop-build-computer.md#requirements) again.
 
 ## Skill-only installation
 
 ```bash
-npx skills add morluto/rea --skill reverse-engineer-anything
+npx skills add Ashz05/ACL-REA --skill acl-reverse-engineer-anything
 ```
 
-This installs agent instructions and bundled references, not REA MCP
+This installs agent instructions and bundled references, not ACL-REA MCP
 registration or analysis engines. Follow the skill's
-[conditional connection guide](https://github.com/morluto/rea/blob/main/.agents/skills/reverse-engineer-anything/SKILL.md#connect-only-when-needed).
+[conditional connection guide](https://github.com/Ashz05/ACL-REA/blob/main/.agents/skills/acl-reverse-engineer-anything/SKILL.md#connect-only-when-needed).
 Working tools can be used immediately. If tools are missing, inspect the current
 client's registration with `doctor --client codex --json` (substitute its client
 ID), then plan repairs with `setup --client codex --dry-run --json`. Show and
@@ -680,7 +680,7 @@ and the release boundary above. Static JavaScript CLI inspection can proceed
 while MCP is unavailable:
 
 ```bash
-npx -y rea-agents@latest analyze-javascript-application /absolute/path/to/app --json
+npx -y acl-rea-agents@latest analyze-javascript-application /absolute/path/to/app --json
 ```
 
 It returns the complete Evidence record directly and requires no native engine.
@@ -740,8 +740,8 @@ hosted connector; see [its configuration](client-configuration.md#other-client-s
 
 Some clients require a minimum release.
 `droid`, `dsh`, `kimi`, `qoder`, `trae`, `workbuddy` and `zcode` require
-`rea-agents@6.5.0` or later. `freebuff` requires 6.8.0 or later; older releases
-reject `rea setup --client freebuff` as an unsupported client. `lm_studio`
+`acl-rea-agents@6.5.0` or later. `freebuff` requires 6.8.0 or later; older releases
+reject `acl-rea setup --client freebuff` as an unsupported client. `lm_studio`
 requires a release after 6.8.0. `cline_vscode`, `cline_vscode_insiders`,
 `cline_vscodium`, `cline_cursor`, `cline_windsurf`, `kiro`, `mastracode`, `zed`,
 `amp`, `mcporter`, `fx`, `junie`, `goose` and `kilo` require a release after
@@ -791,10 +791,10 @@ above. Install REA and Hopper in that container, give it access to the files you
 want to analyze, and configure your agent to launch REA there. Verify installation
 and analysis before relying on that workflow.
 
-`rea doctor` checks health; it does not offer to install Hopper. Run `rea setup`
+`acl-rea doctor` checks health; it does not offer to install Hopper. Run `acl-rea setup`
 for installation. Setup cannot prompt when its output is redirected or during a
 container image build. To approve Hopper installation without prompts, run
-`rea setup --yes --install-hopper`.
+`acl-rea setup --yes --install-hopper`.
 
 If a Hopper request fails on macOS or Linux, the setup result's `download`
 field names the request (`release_feed`, `package` or `public_key`), its `url`,
@@ -906,11 +906,11 @@ desktop display. Unattended package-manager access requires
 mount, REA first verifies the conflict and then uses an unprivileged user and
 mount namespace with a private mode-1777 tmpfs over that directory only. The
 host mount and the rest of `/tmp` remain unchanged; this fallback never invokes
-`sudo`. `rea doctor --provider hopper --json` reports the selected
+`sudo`. `acl-rea doctor --provider hopper --json` reports the selected
 strategy and both host and effective mount facts.
 
 You do not need to start a separate `Xvfb :99` server. REA starts and manages its
-own display. After installation, run `rea doctor --provider hopper --json` and
+own display. After installation, run `acl-rea doctor --provider hopper --json` and
 check `hopper-demo-runtime` for display and Python problems. Setup also runs these
 health checks: installing the package is only one step toward a working provider.
 
@@ -927,7 +927,7 @@ APT resolves the concrete package (for example, `libpython3.12t64` on Ubuntu
 24.04). Doctor includes these fresh observations in the `embedded_python`
 details of its `hopper-demo-runtime` check, alongside the private-display
 diagnostic. Failed inspections remain unknown rather than proving a library
-absent. Run `rea setup --yes --install-hopper` to repair a supported install.
+absent. Run `acl-rea setup --yes --install-hopper` to repair a supported install.
 This prerequisite check does not launch the bridge or validate a custom Python
 interpreter configured inside Hopper; that interpreter needs its own matching
 shared runtime. Custom installation prefixes or shared-library ABIs require
@@ -940,7 +940,7 @@ registrations and skill, then reports `needs_human` with the Hopper failure. On
 Arch Linux and CachyOS, the unversioned compatibility package `zlib-ng-compat`
 may conflict with Hopper's versioned `zlib` dependency. Resolve the package
 conflict yourself, install Hopper's official package manually, or use another
-provider such as Ghidra; rerun `rea setup` after installing Hopper.
+provider such as Ghidra; rerun `acl-rea setup` after installing Hopper.
 
 If setup cannot finish releasing its resources, a normally returned structured
 result reports `needs_human` and includes `cleanup.reason` with the identified
@@ -976,9 +976,9 @@ sessions before removing that recovery directory and retrying.
 ### Launcher paths and troubleshooting
 
 On macOS, REA checks executable Hopper launchers in this order: the canonical
-system application, the canonical application installed by `rea setup` under
+system application, the canonical application installed by `acl-rea setup` under
 `~/Applications`, then other `Hopper*.app` bundles in `/Applications` and
-`~/Applications`. The Homebrew cask location is an optional `rea doctor`
+`~/Applications`. The Homebrew cask location is an optional `acl-rea doctor`
 diagnostic; to use a Homebrew-installed launcher for CLI/MCP startup, set
 `HOPPER_LAUNCHER_PATH` to the path reported by doctor. REA does not run Homebrew
 while loading runtime configuration.
@@ -987,13 +987,13 @@ and skips directories.
 On Linux, it prefers executable `/opt/hopper/bin/Hopper`, then executable
 `~/.local/share/rea/hopper/bin/Hopper`, followed by `/opt/hopper-v4/bin/hopper`
 and `/usr/bin/hopper`; if none exists, `/opt/hopper/bin/Hopper` remains the
-diagnostic fallback. `rea doctor` checks only the current platform's candidates, in the
+diagnostic fallback. `acl-rea doctor` checks only the current platform's candidates, in the
 same order; other platforms have no automatic candidates.
 `HOPPER_LAUNCHER_PATH` overrides those choices:
 
 ```bash
 export HOPPER_LAUNCHER_PATH=/absolute/path/to/Hopper
-rea doctor --provider hopper --json
+acl-rea doctor --provider hopper --json
 ```
 
 Hopper startup allows 120,000 ms for launch, initial analysis, and authenticated
@@ -1109,7 +1109,7 @@ does not guess.
 Set `HOPPER_LOADER_ARGS_JSON` in REA's launch environment to a JSON array of
 strings to override the derived Hopper loader arguments, for example
 `["-l","Mach-O"]`. Empty string elements are preserved; NUL bytes are not
-accepted. An omitted setting or empty array uses the derived arguments. `rea
+accepted. An omitted setting or empty array uses the derived arguments. `acl-rea
 setup` forwards an explicitly selected setting to supported registrations;
 restart the MCP server to apply a change. These arguments are Hopper-specific.
 FAT64 is distinct from the CPU architecture: FAT32 containers can contain 64-bit
@@ -1170,7 +1170,7 @@ starting an unattended job. Ephemeral macOS runners therefore need a
 pre-provisioned user session or a deliberate interactive bootstrap step.
 
 When Hopper cannot start in CI, run
-`rea doctor --provider hopper --json` in the failing runner.
+`acl-rea doctor --provider hopper --json` in the failing runner.
 Structured failures distinguish private-display dependencies, an unsupported
 demo dialog or build, process-ownership conflicts, and an early lifecycle exit.
 Once launcher authentication succeeds, an absent first-run dialog is reported as
@@ -1307,8 +1307,8 @@ Extract Ghidra and install the JDK outside REA, then export absolute paths:
 ```bash
 export GHIDRA_INSTALL_DIR=/absolute/path/to/ghidra_12.2_PUBLIC
 export JAVA_HOME=/absolute/path/to/jdk-25 # optional if java/javac are on PATH
-rea doctor --json
-rea setup
+acl-rea doctor --json
+acl-rea setup
 ```
 
 On macOS, [Homebrew OpenJDK is keg-only](https://formulae.brew.sh/formula/openjdk)
@@ -1333,18 +1333,18 @@ On Windows, configure the existing installation in PowerShell:
 ```powershell
 $env:GHIDRA_INSTALL_DIR = "C:\tools\ghidra_12.2_PUBLIC"
 $env:JAVA_HOME = "C:\Program Files\Java\jdk-25"
-rea doctor --json
+acl-rea doctor --json
 rea providers --json
 ```
 
-`rea setup` can configure supported Windows agents and install the bundled
+`acl-rea setup` can configure supported Windows agents and install the bundled
 REA skill after approval. Managed registrations use the absolute selected Node or
 Bun runtime and REA entry script, including when setup ran through a package runner. Hopper
 installation remains unavailable on Windows. Setup never installs Ghidra,
 Java, or Python. It preserves valid detected Ghidra/JDK settings in agent
 registrations. See [Windows Ghidra P0](../providers/windows-ghidra-p0.md) for provider diagnostics.
 
-`rea mcp add` registers the selected server launcher directly in client settings.
+`acl-rea mcp add` registers the selected server launcher directly in client settings.
 It does not acquire a package or start the server. Omit `--command` to register
 the runtime and REA entrypoint currently executing the CLI. Use `--agent` to
 select clients; repeat it for a mixed selection. With no selection, REA uses
@@ -1360,7 +1360,7 @@ the file and creates no new backup. The result reports exact
 unchanged, failed or not-started outcomes. A partial failure returns a nonzero
 status while retaining successful client outcomes and recovery paths.
 
-User-level registration for a client that `rea setup` also supports uses that
+User-level registration for a client that `acl-rea setup` also supports uses that
 client's setup definition, so the same native read rules apply, and doctor,
 update and uninstall inspect, refresh and remove what it wrote. For Kilo Code
 that is the last user-scope file Kilo loads (its config root, `KILO_CONFIG`,
@@ -1376,17 +1376,17 @@ workspace settings exclude `rea`, leave it off a nonempty allowlist, or define
 a different `rea` entry with higher precedence. On Windows, registration refuses
 to write a Claude Desktop MSIX configuration the running app could overwrite,
 or any file this process's MSIX AppData redirection would divert.
-Because `rea mcp add` writes without an approval step, after it changes Claude
+Because `acl-rea mcp add` writes without an approval step, after it changes Claude
 Desktop's configuration it prints a notice on stderr: a running Claude Desktop
 can rewrite the file from memory and drop the registration, so quit it fully,
-rerun `rea mcp add`, then start it again. The JSON report is unchanged.
+rerun `acl-rea mcp add`, then start it again. The JSON report is unchanged.
 fx registration follows `FX_HOME` and fails without writing when fx would
 refuse its value or when it contains `.` or `..` segments, which could name the
 home folder.
 
 `--no-global` writes only project-level settings. A selection containing Amp or
 another client without project storage fails before any writes; select those
-clients in a separate global registration. Managed `rea setup` remains available
+clients in a separate global registration. Managed `acl-rea setup` remains available
 for its supported clients and additional setup tasks. Registration preserves
 Windows launcher paths and arguments as data. Windows ACL privacy cannot be
 verified through POSIX mode bits; Fx results distinguish requested Windows modes
@@ -1512,7 +1512,7 @@ by that server.
 For a CLI retry with an example 30-minute allowance:
 
 ```sh
-REA_GHIDRA_STARTUP_TIMEOUT_MS=1800000 rea analyze /absolute/path/to/app.exe --provider ghidra --json
+REA_GHIDRA_STARTUP_TIMEOUT_MS=1800000 acl-rea analyze /absolute/path/to/app.exe --provider ghidra --json
 ```
 
 For MCP, update the runtime setting and resolve any retained cleanup before the
@@ -1576,7 +1576,7 @@ value for newly accepted operations on the existing Program; explicit `null`
 removes the deadline. A transient timeout remains uncached so the same function
 can be retried after an update. See the
 [analysis settings and recovery](../reference/limits-and-recovery.md#runtime-settings-through-mcp).
-Codex/Kimi registrations derived by `rea setup` add the selected launch value
+Codex/Kimi registrations derived by `acl-rea setup` add the selected launch value
 to the tool deadline as a single-decompile estimate; a runtime update does not
 change that registration. A bulk call can need that limit for
 every attempted function plus listing and file work; select the client deadline
@@ -1587,7 +1587,7 @@ pseudocode is never treated as original source or Hopper-equivalent text.
 
 ### Missing macOS native decompiler
 
-If `rea doctor --json` reports `native_decompiler` as missing on macOS x64 or
+If `acl-rea doctor --json` reports `native_decompiler` as missing on macOS x64 or
 arm64, the official release archive does not ship a macOS decompiler. Ghidra
 12.2's `ghidra_12.2_PUBLIC_20261016.zip` includes only `os/linux_x86_64` and
 `os/win_x86_64`, the same gap tracked in
@@ -1603,7 +1603,7 @@ decompiler_dir="$GHIDRA_INSTALL_DIR/Ghidra/Features/Decompiler/os/mac_x86_64"
 mkdir -p "$decompiler_dir"
 test ! -e "$decompiler_dir/decompile" && test ! -L "$decompiler_dir/decompile" &&
   install -m 755 ghidra_opt "$decompiler_dir/decompile"
-rea doctor --json
+acl-rea doctor --json
 ```
 
 The copy step requires the destination to be absent and preserves an existing
@@ -1630,13 +1630,13 @@ decompiler_dir="$GHIDRA_INSTALL_DIR/Ghidra/Features/Decompiler/os/mac_arm_64"
 mkdir -p "$decompiler_dir"
 test ! -e "$decompiler_dir/decompile" && test ! -L "$decompiler_dir/decompile" &&
   install -m 755 ghidra_opt "$decompiler_dir/decompile"
-rea doctor --json
+acl-rea doctor --json
 ```
 
 Verified on Ghidra 12.2 on macOS 26.3 arm64 with Apple clang 21: the build
 produced a Mach-O arm64 `ghidra_opt`, the doctor check
 `ghidra-native_decompiler` turned healthy with "reports mach-o arm64, which
-matches darwin/arm64", and `rea decompile` on an arm64 Mach-O returned
+matches darwin/arm64", and `acl-rea decompile` on an arm64 Mach-O returned
 decompiled C through the headless provider. The JDK is not needed for the make
 step, only for the Ghidra provider. The Darwin block also sets
 `ADDITIONAL_FLAGS=-mmacosx-version-min=10.6 -w`, which Apple clang 21 accepts.
@@ -1649,7 +1649,7 @@ On Linux/macOS, opt in with an absolute storage directory:
 
 ```bash
 export REA_GHIDRA_CHECKPOINT_DIR=/absolute/rea-checkpoints
-rea decompile /absolute/target/app --procedure entry --provider ghidra --json
+acl-rea decompile /absolute/target/app --procedure entry --provider ghidra --json
 ```
 
 Use the same setting in the MCP server environment. CLI and MCP share the
@@ -1739,11 +1739,11 @@ opens its own read-only project copy; it does not import the packed program.
 export REA_ANALYSIS_PROVIDER=ghidra
 export REA_GHIDRA_PROJECT_PATH=/absolute/projects/app-analysis.gpr
 export REA_GHIDRA_PROGRAM_NAME=app
-rea decompile /absolute/target/app --procedure entry --provider ghidra --json
+acl-rea decompile /absolute/target/app --procedure entry --provider ghidra --json
 ```
 
 Set the same variables in the MCP server environment and restart/reconnect;
-`open_binary` still selects the original target file. `rea setup` retains these
+`open_binary` still selects the original target file. `acl-rea setup` retains these
 explicit settings in a saved registration. Fresh import remains the default
 when the project setting is absent. This route supports native ELF, PE and
 Mach-O programs on POSIX without provider-pinned import preparation; Windows,
@@ -2017,7 +2017,7 @@ generator also pins CLI recovery commands to the same version.
 
 The repository's single-plugin marketplaces are declared in
 `.claude-plugin/marketplace.json` and `.agents/plugins/marketplace.json`.
-Both select an exact `rea-agents` npm version instead of mutable source-checkout
+Both select an exact `acl-rea-agents` npm version instead of mutable source-checkout
 contents. Release Please updates their selectors alongside the plugin manifests.
 Claude Code and Codex do not need plugin-only publication or generated skill
 files committed to Git. The Cursor Marketplace plugin is the exception in
@@ -2036,32 +2036,32 @@ A source plugin uses the locally built runtime and generated skill; rebuild afte
 source changes. Missing builds and mismatched version pins fail with an actionable
 error. The authored `.agents/skills/` tree is not the plugin's shipped skill layout.
 Windows source workflows that need native controls still require the
-[Windows source-checkout build](https://github.com/morluto/rea/blob/main/native/windows/README.md#build).
+[Windows source-checkout build](https://github.com/Ashz05/ACL-REA/blob/main/native/windows/README.md#build).
 
 In Claude Code:
 
 ```text
-/plugin marketplace add morluto/rea
-/plugin install rea@rea
+/plugin marketplace add Ashz05/ACL-REA
+/plugin install acl-rea@acl-rea
 ```
 
-In Codex CLI, add the marketplace and install REA:
+In Codex CLI, add the marketplace and install ACL-REA:
 
 ```bash
-codex plugin marketplace add morluto/rea
-codex plugin add rea@rea
+codex plugin marketplace add Ashz05/ACL-REA
+codex plugin add acl-rea@acl-rea
 ```
 
 Each release updates both manifest versions and their pinned server version
 together, which is when installed copies refresh the bundled skill and move to
-the new server. A plugin does not run `rea setup`, so provider
-configuration still follows the sections above. Use the plugin or a
-`rea setup` registration for a client, not both, to avoid two `rea` servers.
+the new server. A plugin does not run `acl-rea setup`, so provider
+configuration still follows the sections above. Use the plugin or an
+`acl-rea setup` registration for a client, not both, to avoid two `acl-rea` servers.
 
-`rea doctor` does not see plugin-owned state. Its client and skill checks read
-only the registrations and skill locations that `rea setup` manages, so for a
-plugin-only install `rea doctor --client <id>` and `rea doctor --skill` report
-`missing` and recommend `rea setup`. Do not follow that remediation. Check the
+`acl-rea doctor` does not see plugin-owned state. Its client and skill checks read
+only the registrations and skill locations that `acl-rea setup` manages, so for a
+plugin-only install `acl-rea doctor --client <id>` and `acl-rea doctor --skill` report
+`missing` and recommend `acl-rea setup`. Do not follow that remediation. Check the
 plugin with the client instead (`claude plugin list` and `/mcp` in Claude
 Code, `codex plugin list` in Codex, Cursor's plugin settings for a Marketplace
 install).
@@ -2071,13 +2071,13 @@ For analysis engines, ask the connected server: have the agent call
 server the plugin started can use, with reasons and remediation. See
 [MCP contracts](../reference/mcp-contracts.md).
 
-A plugin does not put `rea` on your `PATH`. To check an engine from a
+A plugin does not put `acl-rea` on your `PATH`. To check an engine from a
 terminal, use the package runner at the version the plugin pins:
 
 <!-- x-release-please-start-version -->
 
 ```bash
-npx -y rea-agents@6.10.1 doctor --provider ghidra --json
+npx -y acl-rea-agents@1.0.0 doctor --provider ghidra --json
 ```
 
 <!-- x-release-please-end -->
@@ -2090,14 +2090,14 @@ The server inherits the client's environment, so a setting such as
 ### Cursor Marketplace
 
 Cursor's Marketplace installs this public repository as one plugin. The
-install includes both the `reverse-engineer-anything` skill and the `rea` MCP
-server. REA does not publish an MCP-only "Add to Cursor" install link, because
+install includes both the `acl-reverse-engineer-anything` skill and the `acl-rea` MCP
+server. ACL-REA does not publish an MCP-only "Add to Cursor" install link, because
 that link would register the server without the skill.
 
 The manifest is `.cursor-plugin/plugin.json`. Cursor discovers `mcp.json` at
 the repository root and the skill directory named by `skills`. The committed
-skill is `.cursor-plugin/skills/reverse-engineer-anything`, a copy of the
-authored skill at `.agents/skills/reverse-engineer-anything`.
+skill is `.cursor-plugin/skills/acl-reverse-engineer-anything`, a copy of the
+authored skill at `.agents/skills/acl-reverse-engineer-anything`.
 `node scripts/generate-cursor-plugin-skill.mjs --check` fails when that copy
 drifts, including in `npm run docs:check` and package prepack. Marketplace
 installs are a Git checkout and do not contain `dist/`. The server entry
@@ -2108,9 +2108,9 @@ therefore runs the published package instead of a local build:
 ```json
 {
   "mcpServers": {
-    "rea": {
+    "acl-rea": {
       "command": "npx",
-      "args": ["-y", "rea-agents@6.10.1", "mcp"]
+      "args": ["-y", "acl-rea-agents@1.0.0", "mcp"]
     }
   }
 }
@@ -2121,25 +2121,25 @@ therefore runs the published package instead of a local build:
 Release Please updates that pin with `.cursor-plugin/plugin.json` and
 `package.json`. The skill text can describe capabilities newer than the pinned
 server until the next release; follow the connected server's tool list. The
-same pin is what `rea doctor --provider <id>` should use when you inspect an
+same pin is what `acl-rea doctor --provider <id>` should use when you inspect an
 engine from a terminal, as shown above.
 
 A Marketplace install gives you:
 
-- the `reverse-engineer-anything` skill and its references
-- an `rea` MCP server launched with `npx -y rea-agents@<pinned version> mcp`
-  (Cursor shows it as `plugin-rea-rea`)
-- the shared plugin logo at `assets/rea-plugin.png`
+- the `acl-reverse-engineer-anything` skill and its references
+- an `acl-rea` MCP server launched with `npx -y acl-rea-agents@<pinned version> mcp`
+  (Cursor shows it as `plugin-acl-rea-acl-rea`)
+- the shared plugin logo at `assets/acl-rea-plugin.png`
 
-It does not install analysis engines, put `rea` on `PATH`, or write
-`~/.cursor/mcp.json`. `rea setup --client cursor` remains the direct
+It does not install analysis engines, put `acl-rea` on `PATH`, or write
+`~/.cursor/mcp.json`. `acl-rea setup --client cursor` remains the direct
 registration path and still writes that file plus the setup-owned skill. Use
 the Marketplace plugin or that registration, not both, so Cursor does not
-start two `rea` servers.
+start two `acl-rea` servers.
 
 Node.js and npm must be available to Cursor. The plugin does not install them.
 Restart Cursor after the plugin is listed. If tools stay missing, read the
-plugin server's launch error. `rea doctor --client cursor` does not see
+plugin server's launch error. `acl-rea doctor --client cursor` does not see
 Marketplace state and can report `missing`; do not run setup to repair a
 plugin-only install.
 
@@ -2149,16 +2149,16 @@ This repository change does not submit the plugin.
 
 ## MCP Registry
 
-REA is published in the official MCP Registry as `io.github.morluto/rea`. Registry
-clients can discover the server and install the existing public `rea-agents` npm
+ACL-REA is published in the official MCP Registry as `io.github.Ashz05/acl-rea`. Registry
+clients can discover the server and install the existing public `acl-rea-agents` npm
 package; the Registry entry does not introduce a second distribution artifact.
 
-For a client that supports Registry discovery, search for `io.github.morluto/rea`
+For a client that supports Registry discovery, search for `io.github.Ashz05/acl-rea`
 and select the npm package. The published metadata launches the existing stdio
 server through `npx` with the `mcp` command.
 
-For supported clients, prefer `rea setup`: it records the absolute JavaScript
-runtime and entry script of the REA installation performing setup. Client starts
+For supported clients, prefer `acl-rea setup`: it records the absolute JavaScript
+runtime and entry script of the ACL-REA installation performing setup. Client starts
 then use that installation directly, keeping the client's working directory
 without running npm or Bun package resolution there. Registry clients control
 their own package acquisition; Registry metadata cannot name local absolute paths.
@@ -2169,9 +2169,9 @@ installation (use the command shown in a setup dry-run):
 ```json
 {
   "mcpServers": {
-    "rea": {
+    "acl-rea": {
       "command": "/absolute/path/to/node",
-      "args": ["/absolute/path/to/rea/scripts/rea.mjs", "mcp"]
+      "args": ["/absolute/path/to/acl-rea/scripts/acl-rea.mjs", "mcp"]
     }
   }
 }
@@ -2186,48 +2186,48 @@ that cache entry and the selected runtime remaining installed. Removing either
 makes startup fail; it does not download or resolve another package. Restore the
 same installation and rerun setup. Changing package requests, cache roots, or
 runtimes can create a different installation identity. If the old entry cannot be
-identified, restore it first or manually remove the confirmed REA registration
+identified, restore it first or manually remove the confirmed ACL-REA registration
 before running setup again. A global installation provides a more durable path.
 
 ## Package runners and global installation
 
-Package runners can read project configuration. Acquire REA from a trusted
-working directory outside the target project and any REA source checkout, and
-pass absolute target paths to analysis commands. To run REA from its checkout,
-use the [source checkout instructions](#run-rea-from-a-checkout).
-REA cannot validate package acquisition that happens before its entrypoint starts.
+Package runners can read project configuration. Acquire ACL-REA from a trusted
+working directory outside the target project and any ACL-REA source checkout, and
+pass absolute target paths to analysis commands. To run ACL-REA from its checkout,
+use the [source checkout instructions](#run-acl-rea-from-a-checkout).
+ACL-REA cannot validate package acquisition that happens before its entrypoint starts.
 To request the latest release explicitly, use:
 
 ```bash
-npx rea-agents@latest setup
+npx acl-rea-agents@latest setup
 ```
 
-REA runs the version npm selects. To update older agent registrations, run the
+ACL-REA runs the version npm selects. To update older agent registrations, run the
 latest-version command and review its setup plan. For unattended package
-downloads, add `--yes` before the package name; this does not approve REA's
+downloads, add `--yes` before the package name; this does not approve ACL-REA's
 setup changes.
 
 For an intentional rollback, make the package request explicit:
 
 ```bash
-npm exec --yes --package=rea-agents@2.4.0 -- rea setup
+npm exec --yes --package=acl-rea-agents@2.4.0 -- acl-rea setup
 ```
 
 Setup binds persistent MCP registrations to the installation that performed setup.
 Running current setup later migrates recognized legacy package-runner registrations
 through the normal reviewed setup transaction.
 
-With Bun, `bunx rea-agents setup` (or `bunx rea-agents@latest setup`) is the
+With Bun, `bunx acl-rea-agents setup` (or `bunx acl-rea-agents@latest setup`) is the
 equivalent acquisition entry point. Managed registrations use the selected Bun
-executable and REA entry script directly. Windows registrations likewise use
+executable and ACL-REA entry script directly. Windows registrations likewise use
 absolute runtime and script paths, without a package-runner command shim.
 
-REA supports Node.js 22.x (>=22.23.4), 24.x (>=24.22.1), and 26.12.1+. Node.js 23, 25, earlier 26.x releases, and prereleases are unsupported. It uses the npm already paired with that runtime and never upgrades Node.js, npm, or Homebrew.
+ACL-REA supports Node.js 22.x (>=22.23.4), 24.x (>=24.22.1), and 26.12.1+. Node.js 23, 25, earlier 26.x releases, and prereleases are unsupported. It uses the npm already paired with that runtime and never upgrades Node.js, npm, or Homebrew.
 
-When REA runs on Bun, the `rea doctor` `node` check reports the Bun version and
+When ACL-REA runs on Bun, the `acl-rea doctor` `node` check reports the Bun version and
 the Node.js compatibility version Bun declares, and passes when that
 compatibility version is in the supported range. Bun does not enforce the V8
-heap flags REA gives its owned helper processes, so Evidence that reports those
+heap flags ACL-REA gives its owned helper processes, so Evidence that reports those
 limits on Node.js records them as unavailable under Bun. On Windows, the owned
 Job Object of each JavaScript helper (source analyzer, source-map codec and HAR
 decoder) instead limits its committed memory to that helper's heap budget plus
@@ -2236,44 +2236,44 @@ the matching bundled Windows native artifact; an artifact without the control
 refuses to start the helper rather than running it unlimited. CI tests Node.js
 only.
 
-Running `npm install rea-agents` without `--global` installs the executable only
-in the current project's `node_modules/.bin`; it does not make `rea` available
+Running `npm install acl-rea-agents` without `--global` installs the executable only
+in the current project's `node_modules/.bin`; it does not make `acl-rea` available
 on the shell `PATH`. Use the setup command above for the guided setup
-journey, `npx -y rea-agents@latest` for unattended one-off commands, or install globally
-with `npm install --global rea-agents` for a shell-visible `rea` command.
+journey, `npx -y acl-rea-agents@latest` for unattended one-off commands, or install globally
+with `npm install --global acl-rea-agents` for a shell-visible `acl-rea` command.
 
 For many concurrent agent sessions, run setup directly from a global installation
 to avoid keeping a separate npm launcher process for each MCP connection:
 
 ```bash
-npm install --global rea-agents
-rea setup
+npm install --global acl-rea-agents
+acl-rea setup
 ```
 
 Review the plan, approve the selected client changes, then restart those clients.
 This registers the installed entrypoint directly; installing the global package
 alone does not replace existing `npx` registrations. Each client still has its own
-REA process and analysis state. Direct registrations follow the installed CLI;
-use `rea update` to update it. Running setup through `npx` again selects the
+ACL-REA process and analysis state. Direct registrations follow the installed CLI;
+use `acl-rea update` to update it. Running setup through `npx` again selects the
 installation that executes setup, potentially in npm's temporary package cache;
 retain that cache entry for as long as the registration uses it.
 
-### npm workspace errors before REA starts
+### npm workspace errors before ACL-REA starts
 
-An `npx` launch can inspect the caller's npm project before executing REA. For
+An `npx` launch can inspect the caller's npm project before executing ACL-REA. For
 example, a direct dependency whose override conflicts with its declared spec
-can cause npm's `EOVERRIDE`, even when the requested REA package is already
-cached. This is a package-runner failure: REA has not started and cannot return
+can cause npm's `EOVERRIDE`, even when the requested ACL-REA package is already
+cached. This is a package-runner failure: ACL-REA has not started and cannot return
 an MCP error. [#3690](https://github.com/morluto/rea/issues/3690) reproduced it
 outside OpenCode as well as through that client's workspace-default launch.
 
 Use the direct global-installation setup flow above to replace the affected
-package-runner registration, then restart the client. If REA is already installed
-globally, run that installed `rea setup --client <client-id> --dry-run`, review
+package-runner registration, then restart the client. If ACL-REA is already installed
+globally, run that installed `acl-rea setup --client <client-id> --dry-run`, review
 the direct launcher in the plan, and apply the approved scope. Installing a
 global copy alone does not change an existing registration. Keep the client's
 working directory: changing it to bypass npm inspection can change the meaning
-of relative target paths. A direct REA entrypoint preserves that directory
+of relative target paths. A direct ACL-REA entrypoint preserves that directory
 without asking npm to resolve the workspace's dependency graph.
 
 ### Global installation wrapper
@@ -2281,15 +2281,15 @@ without asking npm to resolve the workspace's dependency graph.
 The optional curl wrapper installs only the global npm package:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/morluto/rea/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/Ashz05/ACL-REA/main/install.sh | bash
 ```
 
-It prints the version, runtime, npm command, and destination before installing. When a controlling terminal exists it starts `rea setup`; otherwise it prints the command to run later.
+It prints the version, runtime, npm command, and destination before installing. When a controlling terminal exists it starts `acl-rea setup`; otherwise it prints the command to run later.
 
 Pass options with `bash -s --`:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/morluto/rea/main/install.sh |
+curl -fsSL https://raw.githubusercontent.com/Ashz05/ACL-REA/main/install.sh |
   bash -s -- --dry-run
 ```
 
@@ -2297,15 +2297,15 @@ To review a version-pinned installer before running it, select the release
 version, download its tagged script, and inspect the downloaded file:
 
 ```bash
-rea_version=6.7.0
-curl -fsSL "https://raw.githubusercontent.com/morluto/rea/rea-agents-${rea_version}/install.sh" -o rea-install.sh
-less rea-install.sh
+acl_rea_version=6.7.0
+curl -fsSL "https://raw.githubusercontent.com/Ashz05/ACL-REA/acl-rea-agents-${acl_rea_version}/install.sh" -o acl-rea-install.sh
+less acl-rea-install.sh
 ```
 
 After reviewing it, install the same package version:
 
 ```bash
-bash rea-install.sh --version "$rea_version"
+bash acl-rea-install.sh --version "$acl_rea_version"
 ```
 
 The tag pins the selected script revision; `--version` selects the npm package

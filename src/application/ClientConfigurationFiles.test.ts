@@ -5,7 +5,7 @@ import { parseClientConfiguration } from "./ClientConfigurationDocument.js";
 import { inlineRegistrationOverride } from "./ClientConfigurationFiles.js";
 
 const client = { configPath: "/home/u/.config/kilo/kilo.json" };
-const command = ["/usr/bin/node", "/opt/rea/cli.js", "mcp"];
+const command = ["/usr/bin/node", "/opt/acl-rea/cli.js", "mcp"];
 const kilo = (environment: Record<string, string>) => ({
   type: "local",
   command,
@@ -19,7 +19,7 @@ const sources = (
   {
     ...expectResultValue(
       parseClientConfiguration(
-        JSON.stringify({ mcp: { rea: kilo(file) } }),
+        JSON.stringify({ mcp: { "acl-rea": kilo(file) } }),
         "kilo",
       ),
     ),
@@ -28,7 +28,7 @@ const sources = (
   {
     ...expectResultValue(
       parseClientConfiguration(
-        JSON.stringify({ mcp: { rea: { environment: inline } } }),
+        JSON.stringify({ mcp: { "acl-rea": { environment: inline } } }),
         "kilo",
       ),
     ),

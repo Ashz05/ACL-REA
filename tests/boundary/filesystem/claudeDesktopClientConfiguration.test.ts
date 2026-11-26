@@ -207,7 +207,7 @@ describe("Windows Claude Desktop configuration location", () => {
       configureClientConfiguration(client, {}, command),
     ).resolves.toEqual({ status: "configured" });
     expect(await readJson(privateConfig)).toEqual({
-      mcpServers: { rea: reaEntry },
+      mcpServers: { "acl-rea": reaEntry },
     });
   });
 
@@ -221,7 +221,7 @@ describe("Windows Claude Desktop configuration location", () => {
       const { home, env, appDataConfig } = await windowsProfile();
       const foreign = join(env.LOCALAPPDATA, "Packages", family);
       await mkdir(foreign, { recursive: true });
-      const appDataOriginal = { mcpServers: { rea: reaEntry } };
+      const appDataOriginal = { mcpServers: { "acl-rea": reaEntry } };
       const deploymentConfig = join(env.LOCALAPPDATA, "Claude-3p", CONFIG);
       const deploymentOriginal = {
         deploymentMode: "3p",
@@ -288,7 +288,7 @@ describe("Claude Desktop MSIX process view without its own private folder (#4278
     ).resolves.toMatchObject({ status: "configured" });
     expect(await readJson(appDataConfig)).toMatchObject({
       preferences: {},
-      mcpServers: { rea: reaEntry },
+      mcpServers: { "acl-rea": reaEntry },
     });
   });
 
@@ -328,7 +328,7 @@ it("preserves explicit AppData root whitespace throughout setup, doctor and unin
   );
   const original = { mcpServers: { other: { command: "other-server" } } };
   const otherOriginal = {
-    mcpServers: { rea: reaEntry },
+    mcpServers: { "acl-rea": reaEntry },
     preferences: { preserve: true },
   };
   await writeJson(otherConfig, otherOriginal);
@@ -339,7 +339,7 @@ it("preserves explicit AppData root whitespace throughout setup, doctor and unin
     configureClientConfiguration(client, {}, command),
   ).resolves.toEqual({
     status: "configured",
-    backupPath: `${appDataConfig}.rea.backup`,
+    backupPath: `${appDataConfig}.acl-rea.backup`,
   });
   await writeJson(privateConfig, original);
   client = claudeDesktop(home, selected);
@@ -352,7 +352,7 @@ it("preserves explicit AppData root whitespace throughout setup, doctor and unin
     configureClientConfiguration(client, {}, command),
   ).resolves.toEqual({
     status: "configured",
-    backupPath: `${privateConfig}.rea.backup`,
+    backupPath: `${privateConfig}.acl-rea.backup`,
   });
   const status = (
     await readClientRegistrationStatuses(home, command[1], {
@@ -372,8 +372,8 @@ it("preserves explicit AppData root whitespace throughout setup, doctor and unin
   expect(await readJson(appDataConfig)).toEqual(original);
   expect(await readJson(privateConfig)).toEqual(original);
   expect(await readJson(otherConfig)).toEqual(otherOriginal);
-  expect(await readJson(`${appDataConfig}.rea.backup`)).toEqual(original);
-  expect(await readJson(`${privateConfig}.rea.backup`)).toEqual(original);
+  expect(await readJson(`${appDataConfig}.acl-rea.backup`)).toEqual(original);
+  expect(await readJson(`${privateConfig}.acl-rea.backup`)).toEqual(original);
 });
 
 describe("MSIX Claude Desktop registration lifecycle", () => {
@@ -386,7 +386,7 @@ describe("MSIX Claude Desktop registration lifecycle", () => {
     };
     await writeJson(privateConfig, privateOriginal);
     // Earlier setups wrote AppData, which the package never reads.
-    await writeJson(appDataConfig, { mcpServers: { rea: reaEntry } });
+    await writeJson(appDataConfig, { mcpServers: { "acl-rea": reaEntry } });
     const appDataOriginal = await readFile(appDataConfig, "utf8");
     const status = async () =>
       (
@@ -409,23 +409,23 @@ describe("MSIX Claude Desktop registration lifecycle", () => {
       inspectClientConfiguration(client, {}, command),
     ).resolves.toEqual({
       status: "update",
-      backupPath: `${privateConfig}.rea.backup`,
+      backupPath: `${privateConfig}.acl-rea.backup`,
     });
     await expect(
       configureClientConfiguration(client, {}, command),
     ).resolves.toEqual({
       status: "configured",
-      backupPath: `${privateConfig}.rea.backup`,
+      backupPath: `${privateConfig}.acl-rea.backup`,
     });
 
     expect(await readJson(privateConfig)).toEqual({
       ...privateOriginal,
       mcpServers: {
         ...privateOriginal.mcpServers,
-        rea: reaEntry,
+        "acl-rea": reaEntry,
       },
     });
-    expect(await readJson(`${privateConfig}.rea.backup`)).toEqual(
+    expect(await readJson(`${privateConfig}.acl-rea.backup`)).toEqual(
       privateOriginal,
     );
     expect(await readFile(appDataConfig, "utf8")).toBe(appDataOriginal);
@@ -494,7 +494,7 @@ describe("MSIX Claude Desktop registration lifecycle", () => {
 
     expect(await readJson(appDataConfig)).toEqual({
       preferences: { theme: "light" },
-      mcpServers: { rea: reaEntry },
+      mcpServers: { "acl-rea": reaEntry },
     });
     await expect(access(privateConfig)).rejects.toMatchObject({
       code: "ENOENT",
@@ -547,7 +547,7 @@ describe("MSIX Claude Desktop uninstall", () => {
     const { home, env, appDataConfig, container, privateConfig } =
       await windowsProfile();
     await mkdir(container, { recursive: true });
-    await writeJson(appDataConfig, { mcpServers: { rea: reaEntry } });
+    await writeJson(appDataConfig, { mcpServers: { "acl-rea": reaEntry } });
 
     const result = await runUninstall(
       false,
@@ -565,14 +565,14 @@ describe("MSIX Claude Desktop uninstall", () => {
       }),
     );
     expect(await readJson(appDataConfig)).toEqual({
-      mcpServers: { rea: reaEntry },
+      mcpServers: { "acl-rea": reaEntry },
     });
   });
 
   it("retains an unrelated rea-named entry when the package view is unknown", async () => {
     const { home, env, appDataConfig, container } = await windowsProfile();
     await mkdir(container, { recursive: true });
-    const unrelated = { mcpServers: { rea: { command: "unrelated-server" } } };
+    const unrelated = { mcpServers: { "acl-rea": { command: "unrelated-server" } } };
     await writeJson(appDataConfig, unrelated);
     const result = await runUninstall(
       false,
@@ -588,7 +588,7 @@ describe("MSIX Claude Desktop uninstall", () => {
       preferences: {},
       mcpServers: { other: { command: "other" }, rea: reaEntry },
     });
-    await writeJson(appDataConfig, { mcpServers: { rea: reaEntry } });
+    await writeJson(appDataConfig, { mcpServers: { "acl-rea": reaEntry } });
 
     const result = await runUninstall(
       false,

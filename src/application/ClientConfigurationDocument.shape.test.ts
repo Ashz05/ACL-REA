@@ -63,8 +63,8 @@ describe("parseClientConfiguration shape diagnostics", () => {
   });
 
   it("reports only duplicates in the effective server object", () => {
-    const owned = '{"command":"rea","args":["mcp"]}';
-    const activeTable = `{"mcpServers":{"rea":null,"rea":${owned}}}`;
+    const owned = '{"command":"acl-rea","args":["mcp"]}';
+    const activeTable = `{"mcpServers":{"acl-rea":null,"rea":${owned}}}`;
     const active = expectResultValue(
       parseClientConfiguration(activeTable, "json"),
     );
@@ -76,8 +76,8 @@ describe("parseClientConfiguration shape diagnostics", () => {
     // Removing from the effective parent leaves an earlier repeated parent
     // inactive. Its members are not registrations the client would reveal.
     const inactiveParent =
-      `{"mcpServers":{"rea":{"command":"/usr/bin/false"}},` +
-      `"mcpServers":{"rea":${owned}}}`;
+      `{"mcpServers":{"acl-rea":{"command":"/usr/bin/false"}},` +
+      `"mcpServers":{"acl-rea":${owned}}}`;
     const parsed = expectResultValue(
       parseClientConfiguration(inactiveParent, "json"),
     );

@@ -8,7 +8,7 @@ strings. It reads the file without resolving or executing the target and does
 not require a Windows SDK, COM, or a network.
 
 ```bash
-rea inspect-windows-shortcut /absolute/path/to/shortcut.lnk --json
+acl-rea inspect-windows-shortcut /absolute/path/to/shortcut.lnk --json
 ```
 
 The CLI resolves relative paths against the caller's working directory. MCP

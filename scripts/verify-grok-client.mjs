@@ -46,9 +46,9 @@ const skillDirectory = join(
   account,
   ".agents",
   "skills",
-  "reverse-engineer-anything",
+  "acl-reverse-engineer-anything",
 );
-const expectedNames = TOOL_CONTRACTS.map((tool) => "rea__" + tool.name).sort();
+const expectedNames = TOOL_CONTRACTS.map((tool) => "acl-rea__" + tool.name).sort();
 let clientVersion = null;
 let expectedSkill;
 let turn = 0;
@@ -65,7 +65,7 @@ const searchLimit = 255;
 const discovered = new Map();
 const searchedQueries = new Set();
 const discoveryPages = [];
-let pendingQuery = "rea";
+let pendingQuery = "acl-rea";
 let schemasChecked = 0;
 let analysisRequested = false;
 let evidenceSeen = false;
@@ -206,7 +206,7 @@ await withVerifierCleanup(async () => {
             diagnosticsRequested = true;
             const diagnostic = [
               process.execPath,
-              join(runtimeRoot, "scripts/rea.mjs"),
+              join(runtimeRoot, "scripts/acl-rea.mjs"),
               "doctor",
               "--client",
               "grok_build",
@@ -257,7 +257,7 @@ await withVerifierCleanup(async () => {
           discoveryPages.push({ query: pendingQuery, response: discovery });
           searchedQueries.add(pendingQuery);
           for (const tool of discovery.results
-            .filter((result) => result.server === "rea")
+            .filter((result) => result.server === "acl-rea")
             .flatMap((result) => result.tools)) {
             const previous = discovered.get(tool.tool_name);
             if (previous !== undefined)
@@ -362,7 +362,7 @@ await withVerifierCleanup(async () => {
     });
     const q = JSON.stringify;
     const original = `# Keep unrelated settings and server state.
-disabled_mcp_servers = ["rea", "other"]
+disabled_mcp_servers = ["acl-rea", "other"]
 [cli]
 auto_update = false
 [features]
@@ -385,7 +385,7 @@ enabled = false
     const rea = async (args) =>
       commands.exec(
         process.execPath,
-        [join(runtimeRoot, "scripts/rea.mjs"), ...args, "--json"],
+        [join(runtimeRoot, "scripts/acl-rea.mjs"), ...args, "--json"],
         { env: environment, cwd: workspace, timeout: 60_000, stdin: "pipe" },
       );
     clientVersion = (
@@ -438,7 +438,7 @@ enabled = false
         }
       }
     }
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.acl-rea.backup`, "utf8"), original);
     const configured = await readFile(configPath, "utf8");
     assert(
       configured.includes("unrelated-server") &&
@@ -449,7 +449,7 @@ enabled = false
     );
     assert.deepEqual(repeated.appliedActions, []);
     assert.equal(await readFile(configPath, "utf8"), configured);
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.acl-rea.backup`, "utf8"), original);
     const skill = await readFile(join(skillDirectory, "SKILL.md"), "utf8");
     expectedSkill = skill
       .trimEnd()
@@ -495,10 +495,10 @@ enabled = false
     const init = events.find(
       (event) => event.type === "system" && event.subtype === "init",
     );
-    assert(init?.mcp_servers?.some((server) => server.name === "rea"));
+    assert(init?.mcp_servers?.some((server) => server.name === "acl-rea"));
     assert(
       init.mcp_servers.every((server) =>
-        ["rea", "other"].includes(server.name),
+        ["acl-rea", "other"].includes(server.name),
       ),
       "Do not inherit foreign MCP configuration",
     );

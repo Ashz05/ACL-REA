@@ -58,7 +58,7 @@ const example = async () =>
       parse(
         await readFile(
           new URL(
-            "../../../examples/github-actions/rea-analysis.yml",
+            "../../../examples/github-actions/acl-rea-analysis.yml",
             import.meta.url,
           ),
           "utf8",
@@ -83,8 +83,8 @@ it("keeps the example manually triggered, least-privileged, pinned and failure-p
     if (step.uses !== undefined) expect(step.uses).toMatch(/@[a-f0-9]{40}$/u);
   }
   expect(
-    job.steps.find((step) => step.name === "Install pinned REA")?.run,
-  ).toContain(`--save-exact rea-agents@${packageVersion}`);
+    job.steps.find((step) => step.name === "Install pinned ACL-REA")?.run,
+  ).toContain(`--save-exact acl-rea-agents@${packageVersion}`);
   const upload = job.steps.find((step) =>
     step.uses?.startsWith("actions/upload-artifact@"),
   );
@@ -115,12 +115,12 @@ it("links to the workflow asset outside the documentation site's base", async ()
       return typeof href === "string" ? [href] : [];
     })
     .filter((href) =>
-      href.endsWith("examples/github-actions/rea-analysis.yml"),
+      href.endsWith("examples/github-actions/acl-rea-analysis.yml"),
     );
   expect(workflowLinks.length).toBeGreaterThan(0);
   for (const href of workflowLinks)
     expect(href).toBe(
-      "https://github.com/morluto/rea/blob/main/examples/github-actions/rea-analysis.yml",
+      "https://github.com/Ashz05/ACL-REA/blob/main/examples/github-actions/acl-rea-analysis.yml",
     );
 });
 
@@ -153,7 +153,7 @@ describe.skipIf(process.platform === "win32")(
             await mkdir(directory);
           await writeFile(outputs, "");
           // Use the real executable, not a stub that invents a successful report.
-          await symlink(resolve("scripts/rea.mjs"), join(bin, "rea"));
+          await symlink(resolve("scripts/acl-rea.mjs"), join(bin, "acl-rea"));
           const env = {
             PATH: [bin, dirname(process.execPath), "/usr/bin", "/bin"].join(
               delimiter,

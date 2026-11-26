@@ -85,7 +85,7 @@ const workspace = workspaceFixture.path;
 const runtime = join(workspace, "runtime");
 const path = join(workspace, "image.bin");
 const object = join(workspace, "image.o");
-const entrypoint = join(root, "scripts", "rea.mjs");
+const entrypoint = join(root, "scripts", "acl-rea.mjs");
 const env = {
   ...process.env,
   TMPDIR: runtime,

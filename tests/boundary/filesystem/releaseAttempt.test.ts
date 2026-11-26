@@ -32,7 +32,7 @@ it.each([
       merge_commit_sha: source,
       base: { ref: "main" },
       head: {
-        ref: "release-please--branches--main--components--rea-agents",
+        ref: "release-please--branches--main--components--acl-rea-agents",
         repo: { full_name: "fixture/rea" },
       },
       labels: [pending],
@@ -198,7 +198,7 @@ it("fails closed when a read is denied or the ref has an unknown target", async 
   ).rejects.toThrow("unexpected commit");
 });
 
-const versionTag = "rea-agents-6.10.2";
+const versionTag = "acl-rea-agents-6.10.2";
 
 it.each([
   {

@@ -6,7 +6,7 @@ module contents through the existing safe output tree. Neither operation execute
 the executable or decompiles bytecode.
 
 ```sh
-rea inspect-artifact ./hello --json
+acl-rea inspect-artifact ./hello --json
 rea extract-artifact ./hello --json
 ```
 

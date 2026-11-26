@@ -37,7 +37,7 @@ workflows that advertise `--evidence-bundle`, the same reference JSON resolves
 against one explicitly selected authenticated bundle:
 
 ```bash
-rea trace-application-feature request.json --evidence-bundle /absolute/path/evidence.json --json
+acl-rea trace-application-feature request.json --evidence-bundle /absolute/path/evidence.json --json
 ```
 
 This includes JavaScript traces/comparisons and runtime reconciliation, managed
@@ -47,7 +47,7 @@ member comparison CLI still takes two assembly paths; process comparison takes
 two capture Evidence JSON paths. Check command help for the installed version.
 An input bundle grants no implicit file lookup: `evidence-file` and historical
 graph file selectors are accepted only by contracts advertising them. See the
-[CLI reuse guide](https://github.com/morluto/rea/blob/main/docs/getting-started/cli.md#import-export-and-compare-evidence).
+[CLI reuse guide](https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-started/cli.md#import-export-and-compare-evidence).
 
 Completed `inspect_artifact` inventory also supports a summary and
 `view: {kind: "inventory", collection: "occurrences", logical_paths: ["package.json", "main.js"]}`.
@@ -114,7 +114,7 @@ or absence:
 Process captures are opt-in behavioral evidence, not a security sandbox. V3
 captures cannot be upgraded to V4; rerun the original scenario. Distinguish root
 exit from descendant settlement and require freshness when the task needs it.
-A timed-out target that must write a final report needs `finalization_ms`: REA
+A timed-out target that must write a final report needs `finalization_ms`: ACL-REA
 sends SIGTERM to the captured root, keeps observing, and sends SIGKILL once
 only if the target has not exited by the end of the interval.
 `exit.finalization.signals` lists each attempt with its delivery result; the
@@ -148,7 +148,7 @@ checked against the recordings. The state comes only from reads before the
 first related write; types, identity and list membership are inferences. The
 view also gives each state-changing tool a write plan, served only when a later
 recorded read confirms its effect and none contradicts it.
-`rea environment-serve manifest.json --evidence capture.json` derives that
+`acl-rea environment-serve manifest.json --evidence capture.json` derives that
 state at startup, answers read tools from it, serves the write tools whose plan
 is served, each applying its effect to that state, and serves `data/reset`,
 `data/add` and `data/get` on `/agentenv`; other write tools are not served, and
@@ -160,7 +160,7 @@ Use `view: {kind: "environment-coverage"}` with the same rules to see what an
 environment built from a capture would serve: read tools answered from the
 state or replayed with their reason, and each write tool served or withheld
 with a hint about what to record next; it does not apply the serve-time
-catalog and state size checks. `rea environment-build <capture.har> <dir>`
+catalog and state size checks. `acl-rea environment-build <capture.har> <dir>`
 inspects, projects and exports in one step and prints the same coverage, or
 `null` when the bundle serves replay.
 

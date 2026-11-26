@@ -105,7 +105,7 @@ try {
       }
       const transport = new StdioClientTransport({
         command: process.execPath,
-        args: ["scripts/rea.mjs", "mcp"],
+        args: ["scripts/acl-rea.mjs", "mcp"],
         cwd: process.cwd(),
         env,
         stderr: "pipe",
@@ -309,7 +309,7 @@ try {
         const cli = await execOwned(
           process.execPath,
           [
-            "scripts/rea.mjs",
+            "scripts/acl-rea.mjs",
             "inspect-native-instruction",
             fixture.path,
             compressed,

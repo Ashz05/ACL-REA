@@ -10,7 +10,7 @@ import {
   encodeCliSessionFrame,
 } from "./cliCommandSessionFrames.mjs";
 
-// Commands run through the same one-shot owner as scripts/rea.mjs. Output is
+// Commands run through the same one-shot owner as scripts/acl-rea.mjs. Output is
 // captured per command so this process can serve the next invocation.
 const packageRoot = resolve(
   dirname(fileURLToPath(import.meta.url)),
@@ -21,9 +21,9 @@ const { default: packageJson } = await import(
   { with: { type: "json" } }
 );
 
-// Present the launcher's entrypoint, as a fresh `rea` process does. The
+// Present the launcher's entrypoint, as a fresh `acl-rea` process does. The
 // runtime derives the current registration command from it at load time.
-process.argv[1] = resolve(packageRoot, "scripts/rea.mjs");
+process.argv[1] = resolve(packageRoot, "scripts/acl-rea.mjs");
 
 const runtimeFiles = [
   "dist/cli-runtime/cli.js",
@@ -37,7 +37,7 @@ prepareCliProcessEnvironment(
 );
 if (!(await compiledRuntimeExists(runtimeFiles))) {
   process.stderr.write(
-    `REA's compiled runtime is missing. Run \`npm ci && npm run build:cached\` in ${packageRoot} to install dependencies and build REA, then restart it. If this is an installed package, reinstall rea-agents.\n`,
+    `ACL-REA's compiled runtime is missing. Run \`npm ci && npm run build:cached\` in ${packageRoot} to install dependencies and build ACL-REA, then restart it. If this is an installed package, reinstall acl-rea-agents.\n`,
   );
   process.exit(1);
 }

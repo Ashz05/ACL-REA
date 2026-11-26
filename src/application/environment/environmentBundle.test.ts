@@ -110,14 +110,14 @@ describe("planEnvironmentBundle", () => {
   });
 
   it("copies and installs the tarball instead of the registry package when one is given", () => {
-    const planned = plan({ tarball: "/packed/rea-agents-1.2.3.tgz" });
-    expect(planned.copies.tarball).toBe("envs/grafana-example/rea-agents.tgz");
+    const planned = plan({ tarball: "/packed/acl-rea-agents-1.2.3.tgz" });
+    expect(planned.copies.tarball).toBe("envs/grafana-example/acl-rea-agents.tgz");
     const dockerfile = file(planned, "envs/grafana-example/Dockerfile");
-    expect(dockerfile).toContain("COPY rea-agents.tgz /tmp/\n");
+    expect(dockerfile).toContain("COPY acl-rea-agents.tgz /tmp/\n");
     expect(dockerfile).toContain(
-      "RUN npm install -g --ignore-scripts --no-fund --no-audit /tmp/rea-agents.tgz && rm /tmp/rea-agents.tgz\n",
+      "RUN npm install -g --ignore-scripts --no-fund --no-audit /tmp/acl-rea-agents.tgz && rm /tmp/acl-rea-agents.tgz\n",
     );
-    expect(dockerfile).not.toContain(`rea-agents@${PACKAGE_METADATA.version}`);
+    expect(dockerfile).not.toContain(`acl-rea-agents@${PACKAGE_METADATA.version}`);
   });
 
   it("writes a verifier that checks the served tool count and the status the server answers the first parameterless GET tool with", () => {
@@ -185,7 +185,7 @@ describe("planEnvironmentBundle", () => {
     expect(readme).toContain(
       `- State: \`${served.state?.evidenceId ?? ""}\`, derived from the capture`,
     );
-    expect(readme).toContain(`rea-agents@${PACKAGE_METADATA.version}`);
+    expect(readme).toContain(`acl-rea-agents@${PACKAGE_METADATA.version}`);
     expect(readme).toContain("```sh\nagent-env run .\n```");
     expect(readme).not.toContain("agent-env run grafana-example");
     expect(readme).toContain("## What the environment serves");

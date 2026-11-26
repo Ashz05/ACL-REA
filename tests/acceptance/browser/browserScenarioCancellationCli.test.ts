@@ -18,7 +18,7 @@ processTest
       [
         "--import",
         resolve("tests/fixtures/browserScenarioCancellation.mjs"),
-        resolve("scripts/rea.mjs"),
+        resolve("scripts/acl-rea.mjs"),
         "capture-browser-scenario",
         JSON.stringify({
           browser: { mode: "launch", executable_path: "/controlled/chromium" },

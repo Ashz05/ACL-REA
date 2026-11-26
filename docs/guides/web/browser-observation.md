@@ -21,8 +21,8 @@ authority are validated independently before selection and connection.
 
 ## Shipped surfaces
 
-- `list_browser_targets` / `rea list-browser-targets` discovers all eligible page targets at the endpoint by default, with an optional exact-origin filter.
-- `inspect_web_page` / `rea inspect-web-page` captures DOM structure, accessibility nodes, scripts, resources, safe response/DOM metadata, attach-window network and console metadata, WebSocket frame sizes, workers, quota, and optionally selected storage key names, redacted storage-content fingerprints, or script sources.
+- `list_browser_targets` / `acl-rea list-browser-targets` discovers all eligible page targets at the endpoint by default, with an optional exact-origin filter.
+- `inspect_web_page` / `acl-rea inspect-web-page` captures DOM structure, accessibility nodes, scripts, resources, safe response/DOM metadata, attach-window network and console metadata, WebSocket frame sizes, workers, quota, and optionally selected storage key names, redacted storage-content fingerprints, or script sources.
   An MCP call that omits `detail` returns the capture inline when its Evidence
   is at most 32 KiB. A larger capture is retained, and the call returns a
   summary with the small sections and counts. On a local page with 2,000 list
@@ -33,7 +33,7 @@ authority are validated independently before selection and connection.
   `inspect_analysis_view` view `{"kind":"web-page","collection":...}`.
   `compare_web_captures` needs the complete `normalized_result` inline, so
   request `detail: "complete"` for a capture you will compare.
-- `analyze_web_bundle` / `rea analyze-web-bundle` parses selected script artifacts without execution and derives chunk edges, route and endpoint candidates, vendor fingerprints, static WebMCP declarations, and optionally source-map/original-source evidence.
+- `analyze_web_bundle` / `acl-rea analyze-web-bundle` parses selected script artifacts without execution and derives chunk edges, route and endpoint candidates, vendor fingerprints, static WebMCP declarations, and optionally source-map/original-source evidence.
   Sources reported as JavaScript use JavaScript grammar even when the script
   has no URL or its URL ends in a different source extension.
   A `worker_import` chunk edge records a literal argument to an ambient
@@ -242,7 +242,7 @@ in an existing profile.
 For such a browser, pass the browser socket instead of the HTTP endpoint:
 
 ```bash
-rea list-browser-targets "ws://127.0.0.1:9222/devtools/browser/<id>"
+acl-rea list-browser-targets "ws://127.0.0.1:9222/devtools/browser/<id>"
 ```
 
 Chrome writes the port and the `/devtools/browser/<id>` path to the
@@ -309,8 +309,8 @@ Pass the endpoint and selected target for each call. An origin filter is
 optional and narrows the target set.
 
 ```bash
-rea list-browser-targets http://127.0.0.1:9222 --json
-rea inspect-web-page http://127.0.0.1:9222 TARGET_ID \
+acl-rea list-browser-targets http://127.0.0.1:9222 --json
+acl-rea inspect-web-page http://127.0.0.1:9222 TARGET_ID \
   --observation-ms 1000 \
   --json
 ```
@@ -323,7 +323,7 @@ collection early. `window_elapsed` identifies completion of the requested wait.
 Static bundle analysis and a user-driven observation window are separate operations:
 
 ```bash
-rea analyze-web-bundle http://127.0.0.1:9222 TARGET_ID \
+acl-rea analyze-web-bundle http://127.0.0.1:9222 TARGET_ID \
   --json
 rea observe-web-session http://127.0.0.1:9222 TARGET_ID \
   --observation-ms 10000 --json
@@ -379,7 +379,7 @@ descriptors. REA does not reload, evaluate, or invoke tools to fill that gap.
 Accessibility names/descriptions, console primitive text, JSON body shapes, WebSocket shapes, script content, and storage key names are selected independently:
 
 ```bash
-rea inspect-web-page http://127.0.0.1:9222 TARGET_ID \
+acl-rea inspect-web-page http://127.0.0.1:9222 TARGET_ID \
   --include-accessibility-text \
   --include-console-text \
   --include-json-body-shapes \

@@ -136,7 +136,7 @@ it.each(["bin", "hop"])(
     });
     expect(failure.error.details).not.toHaveProperty("related_cli_commands");
     expect(failure.error.remediation.action).not.toContain(
-      "rea inspect-wasm-artifact",
+      "acl-rea inspect-wasm-artifact",
     );
     const [, recoveryName, serializedInput] =
       failure.error.remediation.action.match(/call (\w+) with (\{[^}]*\})\./) ??

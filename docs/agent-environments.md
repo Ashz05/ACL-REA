@@ -4,12 +4,12 @@ For a first environment, start with the
 [quickstart](agent-environments-quickstart.md): record an app or use a saved
 session, build and run the environment, and add tasks and reward checks.
 
-Use `rea environment-build` to turn one recorded capture into an agent
+Use `acl-rea environment-build` to turn one recorded capture into an agent
 environment bundle in one offline step: a folder `agent-env run` builds and
 runs, whose MCP server answers from what the capture observed. See
 [Build a bundle in one step](#build-a-bundle-in-one-step).
 
-The steps it composes are separate commands too. `rea environment-serve` serves
+The steps it composes are separate commands too. `acl-rea environment-serve` serves
 an environment manifest as an agent environment: an MCP server whose tools
 answer from what one retained web network capture observed, plus the
 environment card the agentenv framework reads to discover it. By default the
@@ -17,13 +17,13 @@ server derives the [state the capture observed](#the-state-a-capture-observed)
 at startup and answers read tools from it, and the write tools whose effect the
 capture confirmed by changing it; `--replay-only` replays the capture's records
 instead. Nothing is fetched from the recorded application; every answer comes
-from retained Evidence. `rea environment-export` writes the same pair as a
+from retained Evidence. `acl-rea environment-export` writes the same pair as a
 bundle folder; see [Export a bundle](#export-a-bundle).
 
 ```sh
-rea inspect-web-network-capture /absolute/session.har har --format json > capture.json
-rea inspect-analysis-view view.json --format json > manifest.json
-rea environment-serve manifest.json --evidence capture.json --port 8765
+acl-rea inspect-web-network-capture /absolute/session.har har --format json > capture.json
+acl-rea inspect-analysis-view view.json --format json > manifest.json
+acl-rea environment-serve manifest.json --evidence capture.json --port 8765
 ```
 
 The first command inspects the capture; the second projects the
@@ -51,11 +51,11 @@ retained Evidence instead of charging the whole capture as inline input.
 ## Build a bundle in one step
 
 ```sh
-rea environment-build grafana.har ./grafana --json
+acl-rea environment-build grafana.har ./grafana --json
 agent-env run ./grafana
 ```
 
-`rea environment-build <capture> [directory]` takes a `.har` file, or capture
+`acl-rea environment-build <capture> [directory]` takes a `.har` file, or capture
 Evidence JSON from `inspect-web-network-capture` (HAR) or
 `capture-browser-scenario`, and writes the bundle
 [Export a bundle](#export-a-bundle) describes. It inspects a HAR as
@@ -154,7 +154,7 @@ at info level; the report is the only output on stdout:
     }
   },
   "tool_count": 37,
-  "package_source": { "kind": "registry", "specifier": "rea-agents@…" },
+  "package_source": { "kind": "registry", "specifier": "acl-rea-agents@…" },
   "files": [{ "path": "README.md", "bytes": 4210 }],
   "warnings": [{ "code": "name-from-file", "message": "…" }],
   "next": ["agent-env run /work/grafana"]
@@ -310,9 +310,9 @@ kept when the declared secret has at least 12 characters:
 ```
 
 ```sh
-APP_PASSWORD=… rea capture-browser-scenario scenario.json --format json > capture.json
-rea inspect-analysis-view view.json --format json > manifest.json   # view.json wraps capture.json as before
-rea environment-serve manifest.json --evidence capture.json --port 8765
+APP_PASSWORD=… acl-rea capture-browser-scenario scenario.json --format json > capture.json
+acl-rea inspect-analysis-view view.json --format json > manifest.json   # view.json wraps capture.json as before
+acl-rea environment-serve manifest.json --evidence capture.json --port 8765
 ```
 
 Each network transaction becomes one record, in request order, and the
@@ -506,7 +506,7 @@ unchanged.
 ## Serve a manifest
 
 ```sh
-rea environment-serve manifest.json --evidence capture.json [--replay-only] [--host 127.0.0.1] [--port 0]
+acl-rea environment-serve manifest.json --evidence capture.json [--replay-only] [--host 127.0.0.1] [--port 0]
 ```
 
 The server derives the state from the capture before it binds and serves from
@@ -515,7 +515,7 @@ see [Serve from the state](#serve-from-the-state).
 
 `--host` and `--port` default to `MCP_HOST` and `MCP_PORT` from the
 environment, then to `127.0.0.1` and an ephemeral port, exactly as
-[`rea mcp --http`](getting-started/cli.md#serve-mcp-over-streamable-http) resolves them. The
+[`acl-rea mcp --http`](getting-started/cli.md#serve-mcp-over-streamable-http) resolves them. The
 bound MCP URL is written to stderr as one JSON log line
 (`"msg":"MCP transport listening"` with `url`); `REA_LOG_LEVEL` overrides that
 log level. `ENVIRONMENT_NAME` renames the served environment; otherwise the
@@ -649,7 +649,7 @@ accepts.
 ## Serve from the state
 
 ```sh
-rea environment-serve manifest.json --evidence capture.json
+acl-rea environment-serve manifest.json --evidence capture.json
 ```
 
 Before it binds, the server derives the
@@ -979,18 +979,18 @@ Known limits of served writes:
 
 ## Export a bundle
 
-`rea environment-export` writes the same pair as a bundle folder the agentenv
+`acl-rea environment-export` writes the same pair as a bundle folder the agentenv
 framework runs directly, shaped like its own echo example:
 
 ```sh
-rea environment-export manifest.json --evidence capture.json ./grafana-example --json
+acl-rea environment-export manifest.json --evidence capture.json ./grafana-example --json
 agent-env run ./grafana-example
 ```
 
 ```text
 grafana-example/
   README.md                                 provenance, what it serves, run command, rights note
-  envs/grafana-example/Dockerfile           pinned image: node:24.22.1-bookworm-slim + rea-agents@<this version>
+  envs/grafana-example/Dockerfile           pinned image: node:24.22.1-bookworm-slim + acl-rea-agents@<this version>
   envs/grafana-example/env.toml             environment_name = "grafana-example"
   envs/grafana-example/manifest.json        byte-exact copy of manifest.json
   envs/grafana-example/evidence.json        byte-exact copy of capture.json
@@ -1015,7 +1015,7 @@ and replay share immutable response trees rather than copying the capture repeat
 `--name` replaces the manifest's portable kebab-case name as the env folder and env id
 (at most 63 characters for its DNS service label; Windows device names and
 labels interpreted as IP addresses are refused);
-`--package-tarball <path>` copies a packed `rea-agents` tarball into the env
+`--package-tarball <path>` copies a packed `acl-rea-agents` tarball into the env
 folder and makes the Dockerfile install it instead of the registry package and
 remove it in the same layer, which is how a checkout rather than a release is
 run. The command prints the
@@ -1043,7 +1043,7 @@ env's name. It installs Debian's `python3` because the framework's local
 sandbox probes a container's readiness with `python3` inside it, which the slim
 Node image lacks. It copies the two inputs owned by the image's non-root `node`
 user, so a private host umask cannot leave them unreadable, runs as that user and starts
-`rea environment-serve /env/manifest.json --evidence /env/evidence.json`. The
+`acl-rea environment-serve /env/manifest.json --evidence /env/evidence.json`. The
 `env.toml` names the environment because the framework otherwise reads the
 name from Python sources the image does not have.
 
@@ -1080,11 +1080,11 @@ captured application and must not be published without the rights to it.
 ## Measure fidelity against the application
 
 An environment agrees with its own capture by construction. What matters to an agent is how it answers the calls the
-capture did not make, what it shows after a write, and how it fails. `rea environment-compare` measures that against the
+capture did not make, what it shows after a write, and how it fails. `acl-rea environment-compare` measures that against the
 application itself:
 
 ```sh
-rea environment-compare manifest.json --evidence capture.json \
+acl-rea environment-compare manifest.json --evidence capture.json \
   --probe probe-crud.json --probe probe-reads.json --json
 ```
 

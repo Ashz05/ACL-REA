@@ -1,4 +1,4 @@
-$ rea completions bogus
+$ acl-rea completions bogus
 exit: 1
 --- stdout
 Error (INVALID_SHELL): Unknown shell 'bogus'. Supported: bash, fish, nushell, zsh

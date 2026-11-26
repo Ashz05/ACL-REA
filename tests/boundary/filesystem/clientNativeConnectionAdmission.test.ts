@@ -45,7 +45,7 @@ const PROGRAM = `
   ];
   const statuses = [];
   for (const [label, fields] of cases) {
-    const original = JSON.stringify({ mcpServers: { rea: { ...row, ...fields } } });
+    const original = JSON.stringify({ mcpServers: { "acl-rea": { ...row, ...fields } } });
     await writeFile(configPath, original);
     const status = (await readClientRegistrationStatuses(home, CURRENT_ENTRYPOINT_PATH, {
       environment: process.env, selectedClientIds: ['gemini_cli'],
@@ -58,7 +58,7 @@ const PROGRAM = `
   await mkdir(directory);
   const target = insideHome(join(directory, 'target.json'));
   const higher = insideHome(join(directory, 'readonly.json'));
-  const source = JSON.stringify({ mcpServers: { rea: { ...row, httpUrl: 'https://fixture.invalid/selected' } } });
+  const source = JSON.stringify({ mcpServers: { "acl-rea": { ...row, httpUrl: 'https://fixture.invalid/selected' } } });
   await writeFile(higher, source);
   const client = { id: 'gemini-cli', displayName: 'Gemini CLI', format: 'json',
     registrationProfile: mcpClientRegistrationProfile('gemini-cli'),
@@ -71,9 +71,9 @@ const PROGRAM = `
   try {
     const conflict = await registerMcpClient(client, { command, args }, undefined, resources, process.platform);
     const refused = { ok: conflict.ok, typed: !conflict.ok && conflict.error instanceof ConfigurationError,
-      targetExists: await exists(target), backupExists: await exists(target + '.rea.backup'),
+      targetExists: await exists(target), backupExists: await exists(target + '.acl-rea.backup'),
       higherUnchanged: await readFile(higher, 'utf8') === source };
-    const harmless = JSON.stringify({ mcpServers: { rea: { ...row, operator: { preserve: true } } } });
+    const harmless = JSON.stringify({ mcpServers: { "acl-rea": { ...row, operator: { preserve: true } } } });
     await writeFile(higher, harmless);
     const control = await registerMcpClient(client, { command, args }, undefined, resources, process.platform);
     console.log(JSON.stringify({ statuses, refused, control: { ok: control.ok,

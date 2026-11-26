@@ -119,19 +119,22 @@ const config = {
   "features.goals": false,
   "features.skill_search": false,
   "features.skip_host_skill_discovery": true,
-  "mcp_servers.rea.command": process.execPath,
-  "mcp_servers.rea.args": [join(values.repository, "scripts/rea.mjs"), "mcp"],
-  "mcp_servers.rea.cwd": values.repository,
-  "mcp_servers.rea.required": true,
-  "mcp_servers.rea.enabled_tools": enabled,
-  "mcp_servers.rea.startup_timeout_sec": 60,
-  "mcp_servers.rea.tool_timeout_sec": 360,
+  "mcp_servers.acl-rea.command": process.execPath,
+  "mcp_servers.acl-rea.args": [
+    join(values.repository, "scripts/acl-rea.mjs"),
+    "mcp",
+  ],
+  "mcp_servers.acl-rea.cwd": values.repository,
+  "mcp_servers.acl-rea.required": true,
+  "mcp_servers.acl-rea.enabled_tools": enabled,
+  "mcp_servers.acl-rea.startup_timeout_sec": 60,
+  "mcp_servers.acl-rea.tool_timeout_sec": 360,
 };
 for (const [key, value] of Object.entries(explicitEnv))
-  config[`mcp_servers.rea.env.${key}`] = value;
+  config[`mcp_servers.acl-rea.env.${key}`] = value;
 for (const tool of enabled) {
-  config[`mcp_servers.rea.tools.${tool}.approval_mode`] = "approve";
-  config[`mcp_servers.rea.tools.${tool}.output_token_limit`] = 32000;
+  config[`mcp_servers.acl-rea.tools.${tool}.approval_mode`] = "approve";
+  config[`mcp_servers.acl-rea.tools.${tool}.output_token_limit`] = 32000;
 }
 const schemaPath = join(workspace.path, "answer.schema.json");
 const answerPath = join(workspace.path, "answer.json");

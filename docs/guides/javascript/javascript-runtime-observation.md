@@ -3,7 +3,7 @@
 REA can attach to an already-running Node.js or Electron V8 Inspector target
 and retain script-load and execution-context metadata. The
 `list_javascript_runtime_targets` and `observe_javascript_runtime` MCP tools
-have equivalent `rea list-javascript-runtime-targets` and
+have equivalent `acl-rea list-javascript-runtime-targets` and
 `rea observe-javascript-runtime` commands. Successful calls return
 deterministic Evidence.
 
@@ -12,7 +12,7 @@ target ID. This surface is separate from browser CDP, Electron file-page
 inspection, and Process Capture:
 
 ```bash
-rea list-javascript-runtime-targets http://127.0.0.1:9229 \
+acl-rea list-javascript-runtime-targets http://127.0.0.1:9229 \
   --json
 rea observe-javascript-runtime http://127.0.0.1:9229 TARGET_ID \
   --runtime-kind node --json

@@ -53,7 +53,7 @@ const command = currentClientRegistrationCommand({ platform });
 beforeEach(clearClientLocationEnvironment);
 afterEach(() => vi.unstubAllEnvs());
 
-// Each client REA registers through `rea mcp add` is one client-table row, so
+// Each client REA registers through `acl-rea mcp add` is one client-table row, so
 // doctor, update and uninstall see what mcp add wrote (#7181).
 it.each([
   { agent: "cline", client: "cline_vscode" },
@@ -97,7 +97,7 @@ it.each([
 
     // An older, still REA-owned launcher: the package runner form that
     // current setup migrates to the selected installation.
-    const legacy = { command: "npx", args: ["-y", "rea-agents@1.0.0", "mcp"] };
+    const legacy = { command: "npx", args: ["-y", "acl-rea-agents@1.0.0", "mcp"] };
     const [outcome] = await registerMcpClientsOnHost(
       selected.value,
       legacy,
@@ -353,7 +353,7 @@ it("stops uninstall with MCPorter's recovery while its location is unknown", asy
   const home = await createTestTempDirectory("rea-mcporter-unknown-uninstall-");
   const environment = { MCPORTER_CONFIG: "config/mcporter.json" };
   const claude = join(home, ".claude.json");
-  const original = `${JSON.stringify({ mcpServers: { rea: { command: command[0], args: command.slice(1) } } })}\n`;
+  const original = `${JSON.stringify({ mcpServers: { "acl-rea": { command: command[0], args: command.slice(1) } } })}\n`;
   await writeFile(claude, original);
   const uninstall = await runUninstall(
     false,
@@ -469,7 +469,7 @@ it.skipIf(platform === "win32")(
       configureClientConfiguration(row, {}, command),
     ).resolves.toMatchObject({ status: "configured" });
     const backupMode = async () =>
-      (await stat(`${row.configPath}.rea.backup`)).mode & 0o777;
+      (await stat(`${row.configPath}.acl-rea.backup`)).mode & 0o777;
     expect(await backupMode()).toBe(0o600);
 
     const uninstall = await runUninstall(
@@ -501,7 +501,7 @@ it("reports a Junie registration Junie would not load in doctor and setup", asyn
   await mkdir(dirname(row.configPath), { recursive: true });
   await writeFile(
     row.configPath,
-    `${JSON.stringify({ mcpServers: { rea: { command: command[0], args: command.slice(1) } } })}\n`,
+    `${JSON.stringify({ mcpServers: { "acl-rea": { command: command[0], args: command.slice(1) } } })}\n`,
   );
   const status = (
     await readClientRegistrationStatuses(home, command[1], {
@@ -539,7 +539,7 @@ it.skipIf(platform === "win32")(
     const home = await createTestTempDirectory("rea-goose-layers-");
     const additional = join(home, "team", "goose.yaml");
     await mkdir(dirname(additional), { recursive: true });
-    const lower = "extensions:\n  rea:\n    enabled: false\n";
+    const lower = "extensions:\n  acl-rea:\n    enabled: false\n";
     await writeFile(additional, lower);
     const environment = { GOOSE_ADDITIONAL_CONFIG_FILES: additional };
     // The system layer is injected so the host's /etc/goose is never read.
@@ -655,16 +655,16 @@ it.skipIf(platform === "win32")(
         clientConfigurationRecordSchema.parse(
           parseGooseConfigurationYaml(await readFile(row.configPath, "utf8")),
         ).extensions as Record<string, Record<string, unknown>>
-      ).rea;
+      )["acl-rea"];
 
     const launcher = `    type: stdio\n    cmd: ${JSON.stringify(command[0])}\n    args: ${JSON.stringify(command.slice(1))}\n`;
 
     // A lower map stays in effect when the user entry declares none.
     await writeFile(
       team,
-      'extensions:\n  rea:\n    envs:\n      TEAM_SETTING: "1"\n',
+      'extensions:\n  acl-rea:\n    envs:\n      TEAM_SETTING: "1"\n',
     );
-    await writeFile(row.configPath, `extensions:\n  rea:\n${launcher}`);
+    await writeFile(row.configPath, `extensions:\n  acl-rea:\n${launcher}`);
     await expect(
       configureClientConfiguration(row, {}, command),
     ).resolves.toMatchObject({ status: "configured" });
@@ -674,7 +674,7 @@ it.skipIf(platform === "win32")(
     await writeFile(team, "{}\n");
     await writeFile(
       row.configPath,
-      `extensions:\n  rea:\n${launcher}    env:\n      KEEP: "1"\n`,
+      `extensions:\n  acl-rea:\n${launcher}    env:\n      KEEP: "1"\n`,
     );
     await expect(
       configureClientConfiguration(row, {}, command),
@@ -697,9 +697,9 @@ it.skipIf(platform === "win32")(
     // A requested setting over an inherited map keeps the inherited values.
     await writeFile(
       team,
-      'extensions:\n  rea:\n    envs:\n      TEAM_SETTING: "1"\n',
+      'extensions:\n  acl-rea:\n    envs:\n      TEAM_SETTING: "1"\n',
     );
-    await writeFile(row.configPath, `extensions:\n  rea:\n${launcher}`);
+    await writeFile(row.configPath, `extensions:\n  acl-rea:\n${launcher}`);
     await expect(
       configureClientConfiguration(
         row,
@@ -714,8 +714,8 @@ it.skipIf(platform === "win32")(
 
     // An inherited map under the env alias is replaced under that spelling,
     // so the merged entry never declares both env and envs.
-    await writeFile(team, 'extensions:\n  rea:\n    env:\n      KEEP: "1"\n');
-    await writeFile(row.configPath, `extensions:\n  rea:\n${launcher}`);
+    await writeFile(team, 'extensions:\n  acl-rea:\n    env:\n      KEEP: "1"\n');
+    await writeFile(row.configPath, `extensions:\n  acl-rea:\n${launcher}`);
     await expect(
       configureClientConfiguration(
         row,
@@ -743,7 +743,7 @@ it.skipIf(platform === "win32")(
     const { home, team, environment, systemPaths } = await gooseFixture(
       "rea-goose-add-alias-",
     );
-    await writeFile(team, 'extensions:\n  rea:\n    env:\n      KEEP: "1"\n');
+    await writeFile(team, 'extensions:\n  acl-rea:\n    env:\n      KEEP: "1"\n');
     const branch = join(home, "branch");
     const physical = join(home, "physical");
     const alias = join(branch, "alias");
@@ -785,10 +785,10 @@ it.skipIf(platform === "win32")(
       parseGooseConfigurationYaml(await readFile(actual, "utf8")),
     ).toMatchObject({
       model: "caller-selected",
-      extensions: { rea: { cmd: command[0], args: command.slice(1) } },
+      extensions: { "acl-rea": { cmd: command[0], args: command.slice(1) } },
     });
     expect(await readFile(lexical, "utf8")).toBe("model: unrelated\n");
-    expect(await readFile(`${actual}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${actual}.acl-rea.backup`, "utf8")).toBe(
       "model: caller-selected\n",
     );
     // Writing envs: {} beside the inherited alias would make the merged entry
@@ -812,7 +812,7 @@ it.skipIf(platform === "win32")(
     );
     await writeFile(
       team,
-      `extensions:\n  rea:\n    type: stdio\n    cmd: ${JSON.stringify(command[0])}\n    args: ${JSON.stringify(command.slice(1))}\n`,
+      `extensions:\n  acl-rea:\n    type: stdio\n    cmd: ${JSON.stringify(command[0])}\n    args: ${JSON.stringify(command.slice(1))}\n`,
     );
     await expect(
       configureClientConfiguration(row, {}, command),
@@ -838,7 +838,7 @@ it.skipIf(platform === "win32")(
     const system = systemPaths.gooseSystemConfig;
     await writeFile(
       system,
-      `extensions:\n  rea:\n    type: stdio\n    cmd: ${JSON.stringify(command[0])}\n    args: ${JSON.stringify(command.slice(1))}\n    enabled: false\n`,
+      `extensions:\n  acl-rea:\n    type: stdio\n    cmd: ${JSON.stringify(command[0])}\n    args: ${JSON.stringify(command.slice(1))}\n    enabled: false\n`,
     );
     await expect(
       configureClientConfiguration(row, {}, command),
@@ -875,12 +875,12 @@ it.skipIf(platform === "win32")(
     const { team, row } = await gooseFixture("rea-goose-inherited-policy-");
     await writeFile(
       team,
-      "extensions:\n  rea:\n    timeout: 900\n    enabled: false\n",
+      "extensions:\n  acl-rea:\n    timeout: 900\n    enabled: false\n",
     );
     await mkdir(dirname(row.configPath), { recursive: true });
     await writeFile(
       row.configPath,
-      `extensions:\n  rea:\n    type: stdio\n    cmd: ${JSON.stringify(command[0])}\n    args: ${JSON.stringify(command.slice(1))}\n`,
+      `extensions:\n  acl-rea:\n    type: stdio\n    cmd: ${JSON.stringify(command[0])}\n    args: ${JSON.stringify(command.slice(1))}\n`,
     );
     await expect(
       configureClientConfiguration(row, {}, command),
@@ -889,7 +889,7 @@ it.skipIf(platform === "win32")(
       clientConfigurationRecordSchema.parse(
         parseGooseConfigurationYaml(await readFile(row.configPath, "utf8")),
       ).extensions as Record<string, Record<string, unknown>>
-    ).rea;
+    )["acl-rea"];
     expect(entry).not.toHaveProperty("timeout");
     expect(entry).not.toHaveProperty("enabled");
     // Setup is idempotent over the inherited settings.
@@ -908,12 +908,12 @@ it.skipIf(platform === "win32")(
     // Goose replaces envs per layer, so the lower invalid value never runs.
     await writeFile(
       team,
-      "extensions:\n  rea:\n    envs:\n      REA_LOG_LEVEL: verbose\n",
+      "extensions:\n  acl-rea:\n    envs:\n      REA_LOG_LEVEL: verbose\n",
     );
     await mkdir(dirname(row.configPath), { recursive: true });
     await writeFile(
       row.configPath,
-      `extensions:\n  rea:\n    type: stdio\n    cmd: ${JSON.stringify(command[0])}\n    args: ${JSON.stringify(command.slice(1))}\n    envs:\n      REA_LOG_LEVEL: info\n`,
+      `extensions:\n  acl-rea:\n    type: stdio\n    cmd: ${JSON.stringify(command[0])}\n    args: ${JSON.stringify(command.slice(1))}\n    envs:\n      REA_LOG_LEVEL: info\n`,
     );
     const inspections = await readClientRegistrationInspections(
       home,
@@ -934,7 +934,7 @@ it.skipIf(platform === "win32")(
     );
     await writeFile(
       team,
-      `extensions:\n  rea:\n    type: stdio\n    cmd: ${JSON.stringify(command[0])}\n    args: ${JSON.stringify(command.slice(1))}\n`,
+      `extensions:\n  acl-rea:\n    type: stdio\n    cmd: ${JSON.stringify(command[0])}\n    args: ${JSON.stringify(command.slice(1))}\n`,
     );
     const uninstall = () =>
       runUninstall(
@@ -967,7 +967,7 @@ it.skipIf(platform === "win32")(
     // A partial user entry inherits REA's launcher from the lower layer.
     await writeFile(
       row.configPath,
-      "extensions:\n  rea:\n    envs:\n      KEEP: '1'\n",
+      "extensions:\n  acl-rea:\n    envs:\n      KEEP: '1'\n",
     );
     await expect(uninstall()).resolves.toMatchObject({
       status: "failed",
@@ -976,7 +976,7 @@ it.skipIf(platform === "win32")(
     expect(await readFile(team, "utf8")).toContain("rea:");
     // A disabled lower entry is not loaded, so nothing is retained.
     await writeFile(row.configPath, "extensions: {}\n");
-    await writeFile(team, "extensions:\n  rea:\n    enabled: false\n");
+    await writeFile(team, "extensions:\n  acl-rea:\n    enabled: false\n");
     await expect(uninstall()).resolves.toMatchObject({ status: "complete" });
   },
 );
@@ -990,7 +990,7 @@ it.skipIf(platform === "win32")(
     await writeFile(team, "extensions: [\n");
     const codex = join(home, ".codex", "config.toml");
     await mkdir(dirname(codex), { recursive: true });
-    const registration = `[mcp_servers.rea]\ncommand = ${JSON.stringify(command[0])}\nargs = ${JSON.stringify(command.slice(1))}\n`;
+    const registration = `[mcp_servers.acl-rea]\ncommand = ${JSON.stringify(command[0])}\nargs = ${JSON.stringify(command.slice(1))}\n`;
     await writeFile(codex, registration);
     const uninstall = await runUninstall(
       false,

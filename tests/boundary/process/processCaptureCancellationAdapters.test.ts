@@ -105,7 +105,7 @@ itWithCaptureCapability.each(["SIGINT", "SIGTERM"] as const)(
     );
     const cli = spawn(
       process.execPath,
-      ["scripts/rea.mjs", "capture-process", scenario, "--format", "json"],
+      ["scripts/acl-rea.mjs", "capture-process", scenario, "--format", "json"],
       { stdio: ["ignore", "pipe", "pipe"] },
     );
     let stdout = "";
@@ -176,7 +176,7 @@ itWithCaptureCapability(
         [
           "--import",
           hook,
-          "scripts/rea.mjs",
+          "scripts/acl-rea.mjs",
           "capture-process",
           scenario,
           "--format",

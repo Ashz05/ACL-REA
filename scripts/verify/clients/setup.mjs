@@ -20,7 +20,7 @@ export async function verifyClientSetup({
     const result = await commands.exec(
       process.execPath,
       [
-        join(runtimeRoot, "scripts/rea.mjs"),
+        join(runtimeRoot, "scripts/acl-rea.mjs"),
         command,
         "--client",
         client,
@@ -52,7 +52,7 @@ export async function verifyClientSetup({
   const doctor = await run("doctor", "--skill", "doctor.json");
   assert.equal(doctor.healthy, true);
 
-  const backup = `${configPath}.rea.backup`;
+  const backup = `${configPath}.acl-rea.backup`;
   assert.equal(await readFile(backup, "utf8"), original);
   const configured = await readFile(configPath, "utf8");
   checkConfigured(configured);

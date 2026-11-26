@@ -481,7 +481,7 @@ try {
     const cliResult = await commands.exec(
       process.execPath,
       [
-        "scripts/rea.mjs",
+        "scripts/acl-rea.mjs",
         "address-to-file-offset",
         path,
         expected.address,

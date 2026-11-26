@@ -88,7 +88,7 @@ describe("Cutter CLI commands", () => {
       }
       const launched = await spawnOwnedProviderProcess({
         command: process.execPath,
-        arguments: ["scripts/rea.mjs", "list-cutter-sessions", "--json"],
+        arguments: ["scripts/acl-rea.mjs", "list-cutter-sessions", "--json"],
         runId: randomUUID(),
         hostEnvironment: {
           ...process.env,

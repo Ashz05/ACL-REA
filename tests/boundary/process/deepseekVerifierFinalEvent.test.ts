@@ -51,7 +51,7 @@ if (process.argv.includes("--version")) {
       tools: TOOL_CONTRACTS.map(({ name }) => ({
         type: "function",
         function: {
-          name: "mcp__rea__" + name,
+          name: "mcp__acl-rea__" + name,
           parameters: { type: "string", pattern: "^fixture$" },
         },
       })),

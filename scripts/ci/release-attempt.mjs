@@ -96,7 +96,7 @@ async function versionAt(source) {
 }
 
 async function requireUnpublished(api, source, version) {
-  const tag = `rea-agents-${version}`;
+  const tag = `acl-rea-agents-${version}`;
   for (const path of [`git/ref/tags/${tag}`, `releases/tags/${tag}`]) {
     const response = await api(path);
     if (response.status !== 404)
@@ -105,7 +105,7 @@ async function requireUnpublished(api, source, version) {
       );
   }
   if ((await readNpmRelease(version)).status !== "absent")
-    throw new Error(`rea-agents@${version} is already on npm`);
+    throw new Error(`acl-rea-agents@${version} is already on npm`);
   const server = JSON.parse(
     await command("git", ["show", `${source}:server.json`]),
   );
@@ -245,7 +245,7 @@ async function main() {
     decision === "abandon" ? RELEASE_SOURCE : (RELEASE_SOURCE ?? GITHUB_SHA);
   const source = commit(decision === "publish" ? GITHUB_SHA : requestedSource);
   if (decision === "inspect-github" || decision === "verify-github") {
-    const tag = `rea-agents-${await versionAt(source)}`;
+    const tag = `acl-rea-agents-${await versionAt(source)}`;
     const published = await inspectGithubRelease(api, tag, source);
     if (decision === "inspect-github") {
       if (!published) {

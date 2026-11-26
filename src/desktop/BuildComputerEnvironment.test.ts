@@ -16,11 +16,11 @@ const host = async () => {
   const cache = join(root, "cache");
   const archive = join(
     cache,
-    "rea/build-computer",
-    `rea-${PRODUCT_IDENTITY.packageVersion}.tar.xz`,
+    "acl-rea/build-computer",
+    `acl-rea-${PRODUCT_IDENTITY.packageVersion}.tar.xz`,
   );
   await mkdir(bin);
-  await mkdir(join(cache, "rea/build-computer"), { recursive: true });
+  await mkdir(join(cache, "acl-rea/build-computer"), { recursive: true });
   for (const program of ["agent-env", "docker"])
     await writeFile(join(bin, program), "#!/bin/sh\n", { mode: 0o755 });
   await writeFile(archive, "packed");

@@ -77,8 +77,8 @@ try {
     "dist/android/JadxWorkspaceRoot.js",
     "dist/main.js",
     "dist/cli.js",
-    "scripts/rea-android-workspace-guardian.mjs",
-    "scripts/rea.mjs",
+    "scripts/acl-rea-android-workspace-guardian.mjs",
+    "scripts/acl-rea.mjs",
   ])
     if (!packagedPaths.has(required))
       throw new Error(`Windows package omitted ${required}`);
@@ -102,9 +102,9 @@ try {
   const entry = join(
     prefix,
     "node_modules",
-    "rea-agents",
+    "acl-rea-agents",
     "scripts",
-    "rea.mjs",
+    "acl-rea.mjs",
   );
   const environment = {
     ...process.env,
@@ -265,8 +265,8 @@ try {
     prefix,
     packageRoot:
       process.platform === "win32"
-        ? join(prefix, "node_modules", "rea-agents")
-        : join(prefix, "lib", "node_modules", "rea-agents"),
+        ? join(prefix, "node_modules", "acl-rea-agents")
+        : join(prefix, "lib", "node_modules", "acl-rea-agents"),
     tarball,
     workspace,
     environment,

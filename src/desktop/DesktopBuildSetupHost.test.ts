@@ -153,7 +153,7 @@ it.skipIf(process.platform === "win32").each([
     const bin = join(root, "bin");
     const home = join(root, "home");
     const cache = join(root, "cache");
-    const owned = join(cache, "rea/build-computer");
+    const owned = join(cache, "acl-rea/build-computer");
     await mkdir(bin);
     await mkdir(home);
     await mkdir(owned, { recursive: true });
@@ -163,15 +163,15 @@ it.skipIf(process.platform === "win32").each([
       join(bin, "uv"),
       `[ "$1 $2 $3" = "tool dir --bin" ] && echo ${join(home, ".local/bin")}`,
     );
-    const previous = join(owned, "rea-6.7.0.tar.xz");
+    const previous = join(owned, "acl-rea-6.7.0.tar.xz");
     if (present) await writeFile(previous, "packed by an earlier setup");
     await writeFile(
       join(home, ".claude.json"),
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: process.execPath,
-            args: ["/opt/rea/scripts/rea.mjs", "mcp"],
+            args: ["/opt/acl-rea/scripts/acl-rea.mjs", "mcp"],
             env: {
               REA_DOCKER_COMMAND: "/custom/docker",
               REA_BUILD_COMPUTER_REA_ARCHIVE: kept
@@ -203,7 +203,7 @@ it.skipIf(process.platform === "win32").each([
           REA_DOCKER_COMMAND: join(bin, "docker"),
           REA_BUILD_COMPUTER_REA_ARCHIVE: join(
             owned,
-            `rea-${PRODUCT_IDENTITY.packageVersion}.tar.xz`,
+            `acl-rea-${PRODUCT_IDENTITY.packageVersion}.tar.xz`,
           ),
         },
         archivePacked: false,
@@ -237,9 +237,9 @@ it.skipIf(process.platform === "win32")(
       join(home, ".claude.json"),
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: process.execPath,
-            args: ["/opt/rea/scripts/rea.mjs", "mcp"],
+            args: ["/opt/acl-rea/scripts/acl-rea.mjs", "mcp"],
             env: {
               REA_DOCKER_COMMAND: "/custom/docker",
               REA_BUILD_COMPUTER_REA_ARCHIVE: "/srv/rea-mine.tar.xz",

@@ -201,7 +201,7 @@ it("parses cache, timeout and job settings at the configuration boundary", () =>
   expect(readKunaConfiguration(environment, "linux")).toMatchObject({
     ok: true,
     value: {
-      cacheRoot: "/home/analyst/.cache/rea/kuna",
+      cacheRoot: "/home/analyst/.cache/acl-rea/kuna",
       cacheMaxBytes: 4 * 1024 ** 3,
       projectTimeoutMs: 1_800_000,
       functionTimeoutMs: 120_000,
@@ -214,9 +214,9 @@ it("parses cache, timeout and job settings at the configuration boundary", () =>
       { ...environment, XDG_CACHE_HOME: "/var/cache/analyst" },
       "linux",
     ),
-  ).toMatchObject({ value: { cacheRoot: "/var/cache/analyst/rea/kuna" } });
+  ).toMatchObject({ value: { cacheRoot: "/var/cache/analyst/acl-rea/kuna" } });
   expect(readKunaConfiguration(environment, "darwin")).toMatchObject({
-    value: { cacheRoot: "/home/analyst/Library/Caches/rea/kuna" },
+    value: { cacheRoot: "/home/analyst/Library/Caches/acl-rea/kuna" },
   });
   expect(
     readKunaConfiguration(
@@ -455,8 +455,8 @@ it.each(["darwin", "linux"] as const)(
       value: {
         cacheRoot:
           platform === "darwin"
-            ? `${home}/Library/Caches/rea/kuna`
-            : `${home}/.cache/rea/kuna`,
+            ? `${home}/Library/Caches/acl-rea/kuna`
+            : `${home}/.cache/acl-rea/kuna`,
       },
     });
     if (platform === "linux")
@@ -466,7 +466,7 @@ it.each(["darwin", "linux"] as const)(
           platform,
         ),
       ).toMatchObject({
-        value: { cacheRoot: "/workspace/alias/../cache/rea/kuna" },
+        value: { cacheRoot: "/workspace/alias/../cache/acl-rea/kuna" },
       });
   },
 );

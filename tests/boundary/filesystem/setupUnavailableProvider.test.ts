@@ -68,10 +68,10 @@ describe("setup with configured but unavailable providers", () => {
     const configured = await readFile(client.configPath, "utf8");
     expect(JSON.parse(configured)).toMatchObject({
       theme: "dark",
-      mcpServers: { rea: { env: environment } },
+      mcpServers: { "acl-rea": { env: environment } },
     });
     await expect(
-      readFile(`${client.configPath}.rea.backup`, "utf8"),
+      readFile(`${client.configPath}.acl-rea.backup`, "utf8"),
     ).resolves.toBe(original);
 
     const second = await runSetup(selected, createHost());
@@ -80,7 +80,7 @@ describe("setup with configured but unavailable providers", () => {
     expect(second.appliedActions).toEqual([]);
     await expect(readFile(client.configPath, "utf8")).resolves.toBe(configured);
     await expect(
-      readFile(`${client.configPath}.rea.backup`, "utf8"),
+      readFile(`${client.configPath}.acl-rea.backup`, "utf8"),
     ).resolves.toBe(original);
   });
 });

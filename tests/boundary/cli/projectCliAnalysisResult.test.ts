@@ -144,7 +144,7 @@ it("spells an input refusal with the CLI command and drops the MCP catalog claus
     operations: entry.operations,
     commands: entries,
   }) as { remediation: { action: string } };
-  expect(cliProjected.remediation.action).toContain("rea inspect-pe-resources");
+  expect(cliProjected.remediation.action).toContain("acl-rea inspect-pe-resources");
   expect(cliProjected.remediation.action).not.toContain("inspect_pe_resources");
   expect(cliProjected.remediation.action).not.toContain("tools/list");
 });
@@ -214,11 +214,11 @@ it("renders related_cli_flags and related_cli_commands from the CLI command regi
     details: {
       related_cli_commands: {
         analyze_function: "rea function",
-        procedure_pseudo_code: "rea decompile",
+        procedure_pseudo_code: "acl-rea decompile",
         search_procedures: "rea search --kind procedures",
-        inspect_plist: "rea inspect-plist",
-        inspect_wasm_artifact: "rea inspect-wasm-artifact",
-        inspect_native_load_image: "rea inspect-native-load-image",
+        inspect_plist: "acl-rea inspect-plist",
+        inspect_wasm_artifact: "acl-rea inspect-wasm-artifact",
+        inspect_native_load_image: "acl-rea inspect-native-load-image",
         analyze_javascript_application: "rea analyze-javascript-application",
       },
     },
@@ -357,15 +357,15 @@ it("names a target failure's alternative operations and providers in each adapte
       action: renderTargetFailureRecovery(facts, {
         operation: (op) =>
           op === "inspect_artifact"
-            ? "rea inspect-artifact"
-            : "rea inspect-desktop-application",
+            ? "acl-rea inspect-artifact"
+            : "acl-rea inspect-desktop-application",
         provider: (providerId) => `--provider ${providerId}`,
       }),
     },
   });
-  expect(cliProjected.remediation.action).toContain("rea inspect-artifact");
+  expect(cliProjected.remediation.action).toContain("acl-rea inspect-artifact");
   expect(cliProjected.remediation.action).toContain(
-    "rea inspect-desktop-application",
+    "acl-rea inspect-desktop-application",
   );
   expect(cliProjected.remediation.action).toContain("--provider ghidra");
 });
@@ -397,7 +397,7 @@ it("rewrites target recovery when cleanup drops the retry hint", () => {
     operations: entry.operations,
     commands: entries,
   }) as { remediation: { action: string } };
-  expect(cliProjected.remediation.action).toContain("rea inspect-artifact");
+  expect(cliProjected.remediation.action).toContain("acl-rea inspect-artifact");
   expect(cliProjected.remediation.action).not.toContain("inspect_artifact");
 });
 
@@ -436,13 +436,13 @@ it("omits MCP-only alternative operations from CLI target failure recovery", () 
         format: "evidence",
       },
       {
-        operation: () => "rea inspect-analysis-view",
+        operation: () => "acl-rea inspect-analysis-view",
         provider: (providerId) => `--provider ${providerId}`,
       },
     ),
   );
   expect(cliProjected.remediation.action).toContain(
-    "rea inspect-analysis-view",
+    "acl-rea inspect-analysis-view",
   );
   expect(cliProjected.remediation.action).not.toContain("get_evidence_bundle");
   expect(cliProjected.remediation.action).not.toContain(

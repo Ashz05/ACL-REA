@@ -12,7 +12,7 @@ import { connectLocalToolsMcp } from "../../fixtures/localToolsMcp.js";
 import { parseMcpToolError } from "../../fixtures/mcpToolError.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 const entrypoint = fileURLToPath(
-  new URL("../../../scripts/rea.mjs", import.meta.url),
+  new URL("../../../scripts/acl-rea.mjs", import.meta.url),
 );
 const cli = async (
   path: string,

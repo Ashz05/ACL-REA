@@ -61,7 +61,7 @@ it.each(["tables", "inline table"] as const)(
       parseToml(configured, { integersAsBigInt: "asNeeded" }),
     ).toMatchObject({
       mcp_servers: {
-        rea: {
+        "acl-rea": {
           ...codexToolPolicy,
           startup_timeout_sec: 19,
           tool_timeout_sec: 999,
@@ -78,7 +78,7 @@ it.each(["tables", "inline table"] as const)(
       ),
     ).toEqual({ status: "unchanged" });
     expect(await readFile(configPath, "utf8")).toBe(configured);
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
   },
 );
 
@@ -102,7 +102,7 @@ it.each([
     const configPath = join(home, ".codex/config.toml");
     await mkdir(dirname(configPath));
     const original = [
-      "[mcp_servers.rea]",
+      "[mcp_servers.acl-rea]",
       'command = "npx"',
       `args = ["-y", "${PRODUCT_IDENTITY.registrationPackageSpecifier}", "mcp"]`,
       "startup_timeout_sec = 30",
@@ -155,7 +155,7 @@ it.each([{ tools: ["binary_session"] }, { tools: ["*"] }, { tools: [] }])(
     const command = currentClientRegistrationCommand();
     const original = JSON.stringify({
       mcpServers: {
-        rea: {
+        "acl-rea": {
           command: command[0],
           args: command.slice(1),
           type: "stdio",
@@ -185,7 +185,7 @@ it.each([{ tools: ["binary_session"] }, { tools: ["*"] }, { tools: [] }])(
     ).toMatchObject({ status: "configured" });
     expect(JSON.parse(await readFile(configPath, "utf8"))).toMatchObject({
       mcpServers: {
-        rea: {
+        "acl-rea": {
           type: "stdio",
           tools,
           future_policy: { requireReview: true },
@@ -196,6 +196,6 @@ it.each([{ tools: ["binary_session"] }, { tools: ["*"] }, { tools: [] }])(
       await configureClientConfiguration(client, overrides, command),
     ).toEqual({ status: "unchanged" });
     expect(await status()).toMatchObject({ state: "aligned" });
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
   },
 );

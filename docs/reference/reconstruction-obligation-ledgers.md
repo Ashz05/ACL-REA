@@ -78,7 +78,7 @@ sample Evidence ID with an authenticated review record already present in
     "artifact_sha256": null,
     "application_node_id": null,
     "semantic_node_id": null,
-    "location": "rea --unknown-option"
+    "location": "acl-rea --unknown-option"
   },
   "required": true,
   "required_case_kinds": ["positive", "negative", "malformed"],

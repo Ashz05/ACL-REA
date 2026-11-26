@@ -51,7 +51,7 @@ export async function verifyProjectCoverage(run) {
   const scriptRoot = fileURLToPath(
     new URL("../tests/conformance/ghidra/", import.meta.url),
   );
-  const entrypoint = fileURLToPath(new URL("./rea.mjs", import.meta.url));
+  const entrypoint = fileURLToPath(new URL("./acl-rea.mjs", import.meta.url));
   const fixture = await VerifierFixture.open({
     prefix: "rea-ghidra-project-coverage-",
     private: false,

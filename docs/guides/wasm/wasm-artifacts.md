@@ -8,7 +8,7 @@ local WASM bytes using caller-supplied WABT tools
 returns `target_unavailable` with category `unsupported_target` and constraint
 `wasm_requires_static_inspection`, including the selected path in a valid
 `inspect_wasm_artifact` call. Use that target-free tool or
-`rea inspect-wasm-artifact <path> --format json` with the toolchain below.
+`acl-rea inspect-wasm-artifact <path> --format json` with the toolchain below.
 Check `binary_session` for configured capability availability. A recognized
 header is not validation of the complete module; missing WABT is reported
 separately as an unavailable capability, not as missing native engine support.
@@ -47,7 +47,7 @@ REA never installs tools or relaxes version admission to recover.
 ## Inspect a module
 
 ```bash
-REA_WABT_BIN_DIRECTORY=/absolute/wabt/bin rea inspect-wasm-artifact \
+REA_WABT_BIN_DIRECTORY=/absolute/wabt/bin acl-rea inspect-wasm-artifact \
   /artifacts/module.wasm --glue_paths /artifacts/glue.js \
   --candidate_paths /artifacts/other/module.wasm --format json
 ```
@@ -134,7 +134,7 @@ correct that argument if it caused the timeout. Runtime defaults do not insert
 omitted arguments into Evidence parameters. See the
 [analysis settings and recovery](../../reference/limits-and-recovery.md#precedence-and-lifetime).
 
-For example, `rea inspect-wasm-artifact /artifacts/module.wasm
+For example, `acl-rea inspect-wasm-artifact /artifacts/module.wasm
 --command-timeout-ms 60000 --format json` uses a 60-second per-command deadline;
 the equivalent MCP input is `{"path":"/artifacts/module.wasm",
 "command_timeout_ms":60000,"detail":"summary"}`. Summary delivery retains the
@@ -197,7 +197,7 @@ Candidates are caller-selected files; their identity does not imply validation.
 
 Both CLI and MCP use the same typed port and application service. MCP publishes
 SDK-compatible schemas and records Evidence for `get_evidence_bundle` readback.
-See [WABT provenance](https://github.com/morluto/rea/blob/main/third_party/wabt/README.md) and
+See [WABT provenance](https://github.com/Ashz05/ACL-REA/blob/main/third_party/wabt/README.md) and
 [testing lanes](../../testing-lanes.md#offline-wasm-artifacts) for real-tool verification.
 
 ## Compare core-module interfaces
@@ -226,7 +226,7 @@ portable inline Evidence in one JSON document, or
 resolves the same retained-reference inputs from an explicit saved bundle:
 
 ```bash
-rea compare-wasm-interfaces comparison-input.json --evidence-bundle /absolute/path/evidence.json --json
+acl-rea compare-wasm-interfaces comparison-input.json --evidence-bundle /absolute/path/evidence.json --json
 ```
 
 ```json

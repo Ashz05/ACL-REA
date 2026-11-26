@@ -60,7 +60,7 @@ const fixture = async (initial: string) => {
 };
 const original = `${JSON.stringify({
   "amp.mcpServers": {
-    rea: { command: "old", env: { KEEP_ME: "1" } },
+    "acl-rea": { command: "old", env: { KEEP_ME: "1" } },
     peer: { command: "peer" },
   },
   theme: "dark",
@@ -98,7 +98,7 @@ cliTest(
         expect((await stat(outcome.backup_path)).mode & 0o777).toBe(0o600);
       expect(JSON.parse(await readFile(f.settings, "utf8"))).toEqual({
         "amp.mcpServers": {
-          rea: {
+          "acl-rea": {
             command: "fixture-server",
             args: ["--mcp"],
             env: { KEEP_ME: "1" },
@@ -119,7 +119,7 @@ cliTest(
       expect(repeated.stderr).not.toContain("backup retained");
       expect(await readdir(f.directory)).toEqual([
         "settings.json",
-        "settings.json.rea.backup",
+        "settings.json.acl-rea.backup",
       ]);
     }
   },
@@ -135,7 +135,7 @@ cliTest(
       original,
     ] as const) {
       const f = await fixture(initial);
-      if (initial === original) await mkdir(`${f.settings}.rea.backup`);
+      if (initial === original) await mkdir(`${f.settings}.acl-rea.backup`);
       for (const json of [false, true]) {
         const result = await cli.run({
           arguments: ["mcp", "add", ...(json ? ["--json"] : [])],
@@ -154,7 +154,7 @@ cliTest(
         expect(await readFile(f.settings, "utf8")).toBe(initial);
         expect(await readdir(f.directory)).toEqual(
           initial === original
-            ? ["settings.json", "settings.json.rea.backup"]
+            ? ["settings.json", "settings.json.acl-rea.backup"]
             : ["settings.json"],
         );
       }
@@ -203,10 +203,10 @@ cliTest(
       const registered = await run();
       expect(registered.exitCode, registered.stdout).toBe(0);
       expect(
-        JSON.parse(await readFile(f.settings, "utf8"))["amp.mcpServers"].rea
+        JSON.parse(await readFile(f.settings, "utf8"))["amp.mcpServers"]["acl-rea"]
           .env,
       ).toEqual({ KEEP_ME: "1" });
-      expect(await readFile(`${f.settings}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${f.settings}.acl-rea.backup`, "utf8")).toBe(original);
       await writeFile(f.settings, "broken JSON\n");
       const rejected = await run();
       expect(rejected.exitCode).toBe(1);
@@ -216,7 +216,7 @@ cliTest(
         ),
       ).toMatchObject({ status: "failed" });
       expect(await readFile(f.settings, "utf8")).toBe("broken JSON\n");
-      expect(await readFile(`${f.settings}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${f.settings}.acl-rea.backup`, "utf8")).toBe(original);
     }
   },
 );
@@ -279,7 +279,7 @@ cliTest(
         ok: true,
       });
       expect(
-        JSON.parse(await readFile(f.settings, "utf8"))["amp.mcpServers"].rea,
+        JSON.parse(await readFile(f.settings, "utf8"))["amp.mcpServers"]["acl-rea"],
       ).toMatchObject({ command, args: [], env: { KEEP_ME: "1" } });
     }
   },

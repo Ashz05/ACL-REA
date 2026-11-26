@@ -649,7 +649,7 @@ class ContextCaptureTests(unittest.TestCase):
             root = Path(directory)
             runtime = root / 'runtime'
             (runtime / 'scripts').mkdir(parents=True)
-            (runtime / 'scripts' / 'rea.mjs').write_text('')
+            (runtime / 'scripts' / 'acl-rea.mjs').write_text('')
             (runtime / 'package-lock.json').write_text('{}')
             (runtime / '.nvmrc').write_text('24.22.1\n')
             auth_home = root / 'source-auth'
@@ -690,7 +690,7 @@ class ContextCaptureTests(unittest.TestCase):
                 root = Path(directory)
                 runtime = root / 'runtime'
                 (runtime / 'scripts').mkdir(parents=True)
-                (runtime / 'scripts/rea.mjs').write_text('')
+                (runtime / 'scripts/acl-rea.mjs').write_text('')
                 (runtime / 'package-lock.json').write_text('{}')
                 (runtime / '.nvmrc').write_text('24.22.1\n')
                 (runtime / 'AGENTS.md').write_text('Foreign project instructions must not reach the trial')
@@ -723,7 +723,7 @@ class ContextCaptureTests(unittest.TestCase):
                     with self.assertRaises(SystemExit) as completed:
                         agent.main()
                 self.assertEqual(completed.exception.code, 125 if drift else 0)
-                self.assertEqual('[mcp_servers.rea]' in observed['config'], not control)
+                self.assertEqual('[mcp_servers.acl-rea]' in observed['config'], not control)
                 self.assertEqual('required = true' in observed['config'], not control)
                 self.assertNotIn('Use the registered REA MCP server', observed['config'])
                 self.assertIn('code_mode_host = ' + ('true' if mode == 'client-code' else 'false'), observed['config'])

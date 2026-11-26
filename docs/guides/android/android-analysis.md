@@ -2,7 +2,7 @@
 
 REA wraps an existing headless JADX engine through `src/android/`. Its source is
 kept as an unmodified, commit-pinned Git submodule; see
-[upstream provenance](https://github.com/morluto/rea/blob/main/third_party/README.md). CLI and MCP use the same
+[upstream provenance](https://github.com/Ashz05/ACL-REA/blob/main/third_party/README.md). CLI and MCP use the same
 application workflow and return artifact-bound Evidence inline.
 
 This family is present on repository main and in npm 4.1.0. Check the
@@ -152,7 +152,7 @@ type tokens or establish runtime eligibility.
 Use a **full JDK 17 or newer** (including its compiler module) and
 [**jadx-headless-mcp 0.8.0**](https://github.com/1013503897/jadx-headless-mcp/releases/download/v0.8.0/jadx-headless-mcp-0.8.0-all.jar).
 Verify the downloaded JAR's SHA-256 against
-[REA's pinned release metadata](https://github.com/morluto/rea/blob/main/src/android/JadxRelease.ts)
+[REA's pinned release metadata](https://github.com/Ashz05/ACL-REA/blob/main/src/android/JadxRelease.ts)
 before using it. The following download and verification commands work for npm
 package consumers as well as repository checkouts; the repository-only
 `npm run fixtures:android` helper is not included in the npm package.
@@ -195,7 +195,7 @@ environment values:
 ```powershell
 $env:REA_JADX_MCP_JAR = 'D:\tools\jadx-headless-mcp-0.8.0-all.jar'
 $env:JAVA_HOME = 'D:\tools\jdk-21'
-rea inspect-android-package 'D:\targets\Example.apk'
+acl-rea inspect-android-package 'D:\targets\Example.apk'
 ```
 
 REA selects `JAVA_HOME\bin\java.exe`, or resolves `java.exe` on the selected
@@ -222,14 +222,14 @@ the pinned JADX 0.8.0 JAR; see the real verification lane below.
 ## Answer an analyst question
 
 ```sh
-rea inspect-android-package /path/Example.apk
-rea search-android-classes /path/Example.apk MainActivity
-rea inspect-android-class /path/Example.apk example.MainActivity
-rea inspect-android-method /path/Example.apk example.MainActivity onCreate
-rea inspect-android-method /path/Example.apk example.MainActivity select --overload-index 1
-rea trace-android-references /path/Example.apk example.MainActivity
-rea trace-android-references /path/Example.apk example.MainActivity --method-name onCreate
-rea trace-android-references /path/Example.apk example.MainActivity --method-name select --overload-index 1
+acl-rea inspect-android-package /path/Example.apk
+acl-rea search-android-classes /path/Example.apk MainActivity
+acl-rea inspect-android-class /path/Example.apk example.MainActivity
+acl-rea inspect-android-method /path/Example.apk example.MainActivity onCreate
+acl-rea inspect-android-method /path/Example.apk example.MainActivity select --overload-index 1
+acl-rea trace-android-references /path/Example.apk example.MainActivity
+acl-rea trace-android-references /path/Example.apk example.MainActivity --method-name onCreate
+acl-rea trace-android-references /path/Example.apk example.MainActivity --method-name select --overload-index 1
 ```
 
 Equivalent MCP methods are `inspect_android_package`, `search_android_classes`,
@@ -342,7 +342,7 @@ build's `mapping.txt` with `mapping_path` on `inspect_android_class` or
 `inspect_android_method`, or `--mapping-path` on the matching CLI command:
 
 ```sh
-rea inspect-android-class /path/Example.apk a.b --mapping-path /path/mapping.txt \
+acl-rea inspect-android-class /path/Example.apk a.b --mapping-path /path/mapping.txt \
   --detail summary --evidence_output /tmp/class-evidence.json
 ```
 
@@ -492,7 +492,7 @@ CLI uses the same selection and delivery contracts. Its common one-shot
 default remains complete; summary delivery requires an explicit Evidence path:
 
 ```sh
-rea inspect-android-jni-bindings /absolute/Example.apk \
+acl-rea inspect-android-jni-bindings /absolute/Example.apk \
   --query '{"class_name":"org.conscrypt.NativeCrypto","method_names":["EVP_PKEY_new_RSA"],"abis":["arm64-v8a"]}' \
   --detail summary --evidence_output /absolute/fresh-jni-evidence.json
 ```
@@ -721,7 +721,7 @@ and range, with `details.limit` identifying the runtime setting. An invalid
 provider-local launch value can also be repaired by a runtime override; reset
 exposes that invalid launch value again. See the
 [analysis settings and recovery](../../reference/limits-and-recovery.md#invalid-launch-configuration).
-A passing JADX configuration check in `rea doctor` reports its launch-derived
+A passing JADX configuration check in `acl-rea doctor` reports its launch-derived
 `operation_timeout_ms`; it does not inspect another running server's overrides. Explicit
 cancellation still ends the operation immediately, and partial observations
 and owned-process cleanup are unchanged. Raising the deadline does not extend

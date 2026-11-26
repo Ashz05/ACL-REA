@@ -17,7 +17,7 @@ export interface CursorPluginBundleInput {
   };
   readonly mcp: {
     readonly mcpServers?: {
-      readonly rea?: {
+      readonly "acl-rea"?: {
         readonly command?: string;
         readonly args?: readonly string[];
       };
@@ -38,7 +38,7 @@ export interface CursorPluginInspection {
   };
   readonly mcp: {
     readonly mcpServers: {
-      readonly rea: {
+      readonly "acl-rea": {
         readonly command: string;
         readonly args: readonly string[];
       };

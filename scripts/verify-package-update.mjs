@@ -18,11 +18,11 @@ export async function verifyPackageUpdate({
   const metadataPath = join(packageRoot, "package.json");
   const metadata = JSON.parse(await readFile(metadataPath, "utf8"));
   const archive = await readFile(tarball);
-  const entry = join(packageRoot, "scripts", "rea.mjs");
+  const entry = join(packageRoot, "scripts", "acl-rea.mjs");
   const home = join(workspace, "update-home");
   const codexPath = join(home, ".codex", "config.toml");
   const originalConfig =
-    '[mcp_servers.rea]\ncommand = "npx"\nargs = ["-y", "rea-agents@0.0.0", "mcp"]\n';
+    '[mcp_servers.acl-rea]\ncommand = "npx"\nargs = ["-y", "acl-rea-agents@0.0.0", "mcp"]\n';
   await mkdir(dirname(codexPath), { recursive: true });
   await writeFile(codexPath, originalConfig);
   let fixtureFailure;
@@ -59,7 +59,7 @@ export async function verifyPackageUpdate({
       request.url.startsWith("/") ? `${registry}${request.url}` : request.url,
     );
     const { pathname } = requested;
-    if (pathname === "/rea-agents") {
+    if (pathname === "/acl-rea-agents") {
       response.setHeader("Content-Type", "application/json");
       response.end(
         JSON.stringify({

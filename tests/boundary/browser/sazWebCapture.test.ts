@@ -102,7 +102,7 @@ const fixture = async (bytes: Buffer) => {
   return path;
 };
 const entrypoint = fileURLToPath(
-  new URL("../../../scripts/rea.mjs", import.meta.url),
+  new URL("../../../scripts/acl-rea.mjs", import.meta.url),
 );
 const cliResponse = async (path: string, extra: string[] = []) => {
   try {

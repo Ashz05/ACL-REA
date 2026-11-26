@@ -304,7 +304,7 @@ describe("process CLI errors", () => {
     await expect(
       execFileAsync(
         process.execPath,
-        ["scripts/rea.mjs", "capture-process", "/missing/scenario.json"],
+        ["scripts/acl-rea.mjs", "capture-process", "/missing/scenario.json"],
         { cwd: process.cwd() },
       ),
     ).rejects.toMatchObject({
@@ -506,7 +506,7 @@ it("reports the JSON depth constraint through the compiled comparison CLI", asyn
   await writeFile(left, JSON.stringify(input.left));
   await writeFile(right, JSON.stringify(input.right));
   const cli = fileURLToPath(
-    new URL("../../../scripts/rea.mjs", import.meta.url),
+    new URL("../../../scripts/acl-rea.mjs", import.meta.url),
   );
   const cliArguments = [cli, "compare-process-captures", left, right, "--json"];
   const baseline = await execFileAsync(process.execPath, cliArguments);

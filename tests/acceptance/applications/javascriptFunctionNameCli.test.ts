@@ -36,7 +36,7 @@ it.each([
     await writeFile(join(root, "app.js"), source);
     const { stdout } = await execute(
       process.execPath,
-      ["scripts/rea.mjs", "analyze-javascript-application", root, "--json"],
+      ["scripts/acl-rea.mjs", "analyze-javascript-application", root, "--json"],
       { cwd: process.cwd(), maxBuffer: 16 * 1024 * 1024 },
     );
     const result = javascriptApplicationAnalysisResultSchema.parse(

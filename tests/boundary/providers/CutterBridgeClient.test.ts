@@ -276,7 +276,7 @@ describe("CutterBridgeClient: selected POSIX paths", () => {
       await symlink(`${target}/child`, `${home}/linked`);
       const selectedHome = `${home}/linked/..`;
       const suffix =
-        selection === "default" ? ".cache/rea/cutter-bridge" : "bridge";
+        selection === "default" ? ".cache/acl-rea/cutter-bridge" : "bridge";
       const actualDirectory = `${target}/${suffix}`;
       await mkdir(actualDirectory, { recursive: true, mode: 0o700 });
       const sessionId = "27d3e3f1-f1e5-49ae-91ec-95af1f343a5a";
@@ -1416,7 +1416,7 @@ describe("CutterBridgeClient: conservative platform checks", () => {
     ).resolves.toMatchObject({
       bridge_directory: join(
         "C:\\Users\\fixture\\AppData\\Local",
-        "REA",
+        "ACL-REA",
         "CutterBridge",
       ),
     });
@@ -1424,7 +1424,7 @@ describe("CutterBridgeClient: conservative platform checks", () => {
     const accountBridgeDirectory = join(
       userInfo().homedir,
       ".cache",
-      "rea",
+      "acl-rea",
       "cutter-bridge",
     );
     await expect(
@@ -1461,7 +1461,7 @@ describe("CutterBridgeClient: bridge paths and native descriptor reads", () => {
     const defaultDirectory = join(
       selectedHome,
       ".cache",
-      "rea",
+      "acl-rea",
       "cutter-bridge",
     );
     await mkdir(tildeDirectory, { recursive: true, mode: 0o700 });

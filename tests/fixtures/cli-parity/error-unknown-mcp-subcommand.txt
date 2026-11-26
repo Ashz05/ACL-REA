@@ -1,12 +1,12 @@
-$ rea mcp bogus
+$ acl-rea mcp bogus
 exit: 1
 --- stdout
 code: COMMAND_NOT_FOUND
-message: 'bogus' is not a command for 'rea mcp'.
+message: 'bogus' is not a command for 'acl-rea mcp'.
 cta:
   description: "Suggested command:"
   commands[1]{command,description}:
-    rea mcp --help,see all available commands
+    acl-rea mcp --help,see all available commands
 <end>
 --- stderr
 <end>

@@ -50,7 +50,7 @@ await withVerifierFixture(rootFixture, async () => {
     JSON.parse(
       execFileSync(
         process.execPath,
-        [resolve("scripts/rea.mjs"), ...args, "--json"],
+        [resolve("scripts/acl-rea.mjs"), ...args, "--json"],
         {
           encoding: "utf8",
           timeout: 120_000,

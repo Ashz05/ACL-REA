@@ -218,7 +218,7 @@ cliTest(
       "COPY --chown=node:node manifest.json evidence.json /env/",
     );
     expect(lines.indexOf("USER node")).toBeGreaterThan(lines.indexOf(install));
-    expect(dockerfile).not.toContain("rea-agents.tgz");
+    expect(dockerfile).not.toContain("acl-rea-agents.tgz");
     expect(lines.at(-1)).toBe(
       'CMD ["rea","environment-serve","/env/manifest.json","--evidence","/env/evidence.json"]',
     );
@@ -379,7 +379,7 @@ cliTest.skipIf(process.platform === "win32")(
     expect(
       Buffer.compare(
         await readFile(
-          join(physical, "bundle/envs/grafana-example/rea-agents.tgz"),
+          join(physical, "bundle/envs/grafana-example/acl-rea-agents.tgz"),
         ),
         bytes,
       ),

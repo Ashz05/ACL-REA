@@ -1,4 +1,4 @@
-$ COMPLETE=bash rea -- rea mcp ""
+$ COMPLETE=bash rea -- acl-rea mcp ""
 exit: 0
 --- stdout
 add<0x0b>doctor<end>

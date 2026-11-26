@@ -47,9 +47,9 @@ cliTest.for(["codex", "cursor"] as const)(
       client === "codex" ? parseToml(text) : JSON.parse(text);
     const setting =
       client === "codex"
-        ? "mcp_servers.rea.env.REA_MCP_TOOL_CATALOG_PROFILE"
-        : "mcpServers.rea.env.REA_MCP_TOOL_CATALOG_PROFILE";
-    const backup = `${config}.rea.backup`;
+        ? "mcp_servers.acl-rea.env.REA_MCP_TOOL_CATALOG_PROFILE"
+        : "mcpServers.acl-rea.env.REA_MCP_TOOL_CATALOG_PROFILE";
+    const backup = `${config}.acl-rea.backup`;
     const planned = await setup("--dry-run", "hot-cold");
     expect(planned.exitCode, planned.stderr).toBe(0);
     expect(planned.json).toMatchObject({
@@ -121,8 +121,8 @@ cliTest.for(["codex", "cursor"] as const)(
     const parsed = client === "codex" ? parseToml(text) : JSON.parse(text);
     expect(parsed).not.toHaveProperty(
       client === "codex"
-        ? "mcp_servers.rea.env.REA_MCP_TOOL_CATALOG_PROFILE"
-        : "mcpServers.rea.env.REA_MCP_TOOL_CATALOG_PROFILE",
+        ? "mcp_servers.acl-rea.env.REA_MCP_TOOL_CATALOG_PROFILE"
+        : "mcpServers.acl-rea.env.REA_MCP_TOOL_CATALOG_PROFILE",
     );
   },
 );
@@ -162,7 +162,7 @@ cliTest(
     const upfront = await setup("--yes");
     expect(upfront.exitCode, upfront.stderr).toBe(0);
     const initial = await read();
-    const registration = parseDshCordisDocument(initial).servers.rea;
+    const registration = parseDshCordisDocument(initial).servers["acl-rea"];
     expect(registration).toMatchObject({ transport: "stdio" });
     expect(registration).not.toHaveProperty(setting);
     expect(initial).toContain(original);
@@ -183,7 +183,7 @@ cliTest(
     const optedIn = await setup("--yes", "hot-cold");
     expect(optedIn.exitCode, optedIn.stderr).toBe(0);
     const saved = await read();
-    expect(parseDshCordisDocument(saved).servers.rea).toHaveProperty(
+    expect(parseDshCordisDocument(saved).servers["acl-rea"]).toHaveProperty(
       setting,
       "hot-cold",
     );
@@ -195,7 +195,7 @@ cliTest(
     const restored = await setup("--yes", "full");
     expect(restored.exitCode, restored.stderr).toBe(0);
     const full = await read();
-    expect(parseDshCordisDocument(full).servers.rea).toHaveProperty(
+    expect(parseDshCordisDocument(full).servers["acl-rea"]).toHaveProperty(
       setting,
       "full",
     );

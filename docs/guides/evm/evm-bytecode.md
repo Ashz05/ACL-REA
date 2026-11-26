@@ -6,8 +6,8 @@ contract investigation, compatibility, audit and CTF showcases use the same
 portable primitive. It does not require an active native binary target.
 
 ```sh
-rea inspect-evm-interface ./runtime.hex hex --json
-rea inspect-evm-interface ./runtime.bin raw --json
+acl-rea inspect-evm-interface ./runtime.hex hex --json
+acl-rea inspect-evm-interface ./runtime.bin raw --json
 ```
 
 ```json
@@ -27,7 +27,7 @@ their distinct classifications.
 The host must already provide util-linux `prlimit`, normally `/usr/bin/prlimit`;
 `REA_EVM_PRLIMIT_COMMAND` can select another absolute executable. REA installs
 no system tools and changes no user configuration. [Upstream provenance and
-license](https://github.com/morluto/rea/blob/main/third_party/evmole/README.md) are packaged.
+license](https://github.com/Ashz05/ACL-REA/blob/main/third_party/evmole/README.md) are packaged.
 
 Limiter discovery validates the selected path without launching it. A relative
 path or directory is reported as `not_configured`, a missing file as
@@ -129,7 +129,7 @@ accept positive safe integers; changes apply to the next call without a REA
 restart. The CLI accepts the same exact policy as JSON, for example:
 
 ```sh
-rea inspect-evm-interface ./runtime.hex hex --producer-limits '{"input_bytes":8388608,"output_bytes":33554432}'
+acl-rea inspect-evm-interface ./runtime.hex hex --producer-limits '{"input_bytes":8388608,"output_bytes":33554432}'
 ```
 
 The owned worker's 256 MiB JavaScript heap remains separate. The worker command

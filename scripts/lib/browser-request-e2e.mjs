@@ -322,7 +322,7 @@ const assertQueuedWritesStopped = async (executable, site) => {
  */
 export async function verifyBrowserRequestSteps(
   executable,
-  entrypoint = fileURLToPath(new URL("../rea.mjs", import.meta.url)),
+  entrypoint = fileURLToPath(new URL("../acl-rea.mjs", import.meta.url)),
 ) {
   const site = await startBrowserRequestSite();
   let root;

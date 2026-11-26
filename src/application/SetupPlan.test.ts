@@ -54,7 +54,7 @@ it.skipIf(process.platform === "win32")(
       configPath,
       JSON.stringify({
         mcpServers: {
-          rea: { command: process.execPath, args: [alias, "mcp"] },
+          "acl-rea": { command: process.execPath, args: [alias, "mcp"] },
         },
       }),
     );
@@ -101,7 +101,7 @@ it.skipIf(process.platform === "win32")(
 it.each([
   {
     settings: { startup_timeout_sec: 0 },
-    launcher: { command: "rea", args: ["mcp"] },
+    launcher: { command: "acl-rea", args: ["mcp"] },
     state: "invalid",
     identity: "owned",
     status: "invalid",
@@ -130,7 +130,7 @@ it.each([
     await mkdir(pathInside(workspace.root, ".cursor"));
     await writeFile(
       configPath,
-      JSON.stringify({ mcpServers: { rea: { ...launcher, ...settings } } }),
+      JSON.stringify({ mcpServers: { "acl-rea": { ...launcher, ...settings } } }),
     );
     const registrations = await readClientRegistrationStatuses(
       home,

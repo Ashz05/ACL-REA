@@ -28,7 +28,7 @@ const run = createVerifierRun();
 const root = await VerifierFixture.open({ prefix: "rea-go-verifier-" });
 // Keep Go's directory enumeration below the private root's Windows ownership lease.
 const sourceRoot = join(root.path, "source");
-const entrypoint = fileURLToPath(new URL("./rea.mjs", import.meta.url));
+const entrypoint = fileURLToPath(new URL("./acl-rea.mjs", import.meta.url));
 const environment = Object.fromEntries(
   Object.entries(process.env).filter(([, value]) => typeof value === "string"),
 );

@@ -1,4 +1,4 @@
-$ rea completions nushell
+$ acl-rea completions nushell
 exit: 0
 --- stdout
 # External completer for rea

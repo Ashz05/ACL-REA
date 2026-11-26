@@ -88,7 +88,7 @@ resolve to the callee's local entry.
 With a caller-installed Ghidra and compatible JDK on a supported Linux/macOS host:
 
 ```bash
-rea analyze /absolute/path/to/ppc.elf --provider ghidra --json
+acl-rea analyze /absolute/path/to/ppc.elf --provider ghidra --json
 rea function /absolute/path/to/ppc.elf function_name --provider ghidra --json
 ```
 

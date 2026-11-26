@@ -21,7 +21,7 @@ def write_json(path, value):
 
 def prepare_discovery(root, site):
     """Publish the complete skill, including its relative reference documents."""
-    source = root / ".agents/skills/reverse-engineer-anything"
+    source = root / ".agents/skills/acl-reverse-engineer-anything"
     manifest = source / "SKILL.md"
     skill = manifest.read_bytes()
     reader = Path(__file__).with_name("read-authored-skill-manifest.mjs")
@@ -53,20 +53,20 @@ def prepare_discovery(root, site):
     })
     entry = {
         "identifier": f"urn:air:rea.tools:skill:{name}",
-        "displayName": "REA reverse engineering skill",
+        "displayName": "ACL-REA reverse engineering skill",
         "description": description,
         "type": "application/zip",
         "url": artifact_url,
     }
     write_json(site / ".well-known/ai-catalog.json", {
         "specVersion": "1.0",
-        "host": {"displayName": "REA", "documentationUrl": f"{SITE_ORIGIN}/get-started/"},
+        "host": {"displayName": "ACL-REA", "documentationUrl": f"{SITE_ORIGIN}/get-started/"},
         "entries": [entry],
     })
     write_json(site / ".well-known/ard.json", {"entries": [{
         **entry,
         "representativeQueries": [
-            "Explain how a feature works in a shipped executable using REA.",
+            "Explain how a feature works in a shipped executable using ACL-REA.",
             "Trace an Electron application's behavior back to its packaged JavaScript.",
             "Build an AgentEnv bundle from a web application capture.",
         ],

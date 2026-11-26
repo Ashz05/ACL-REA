@@ -136,7 +136,7 @@ try {
         ],
         { timeout: 120_000, maxBuffer: 8 * 1024 * 1024 },
       );
-      packageRoot = join(prefix, "node_modules", "rea-agents");
+      packageRoot = join(prefix, "node_modules", "acl-rea-agents");
     } catch (cause) {
       throw new Error("Packaged Windows verifier installation failed.", {
         cause,
@@ -226,7 +226,7 @@ try {
     APPDATA: join(workspace, "appdata"),
     LOCALAPPDATA: join(workspace, "localappdata"),
   };
-  const entry = join(packageRoot, "scripts/rea.mjs");
+  const entry = join(packageRoot, "scripts/acl-rea.mjs");
   const report = {
     ok: false,
     platform: "win32",

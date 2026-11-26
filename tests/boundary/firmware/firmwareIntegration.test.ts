@@ -898,7 +898,7 @@ it.each([
     };
     expect(projectAnalysisError(result.error)).toMatchObject(error);
     expect(projectAnalysisError(result.error).message).not.toContain(
-      "rea doctor",
+      "acl-rea doctor",
     );
     expect(
       delivery.toCallToolResult(result, toolContract(operation))

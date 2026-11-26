@@ -11,7 +11,7 @@ import { mcpRegistrationReportSchema } from "../../../src/contracts/mcpRegistrat
 
 const ompConfigurationSchema = z.object({
   mcpServers: z.object({
-    rea: z.object({ command: z.string(), args: z.array(z.string()) }),
+    "acl-rea": z.object({ command: z.string(), args: z.array(z.string()) }),
   }),
 });
 
@@ -92,10 +92,10 @@ for (const { runner, userAgent } of [
           await readFile(join(home, ".omp", "agent", "mcp.json"), "utf8"),
         ),
       );
-      const { command, args } = configuration.mcpServers.rea;
+      const { command, args } = configuration.mcpServers["acl-rea"];
       expect([command, ...args]).toEqual(
         currentClientRegistrationCommand({
-          entrypointPath: resolve("scripts/rea.mjs"),
+          entrypointPath: resolve("scripts/acl-rea.mjs"),
           environment,
         }),
       );

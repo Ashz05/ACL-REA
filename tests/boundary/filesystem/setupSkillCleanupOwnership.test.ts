@@ -84,7 +84,7 @@ describe("setup skill backup cleanup ownership", () => {
         throw new Error("Shared skill root missing");
       const manifest = join(destination.path, "SKILL.md");
       const original = "stale managed skill\n";
-      const firstBackup = `${manifest}.rea.backup`;
+      const firstBackup = `${manifest}.acl-rea.backup`;
       const backup =
         stage === "recovery"
           ? `${firstBackup}.${createHash("sha256").update(original).digest("hex")}.recovery`

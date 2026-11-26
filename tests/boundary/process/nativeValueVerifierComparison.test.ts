@@ -41,7 +41,7 @@ processTest.for([
       const bundlePath = join(process.argv[1], "source.json");
       await writeFile(bundlePath, JSON.stringify(createEvidenceBundle([evidence], [])));
       const transport = new StdioClientTransport({ command: process.execPath,
-        args: [${JSON.stringify(fileURLToPath(new URL("../../../scripts/rea.mjs", import.meta.url)))}, "mcp"],
+        args: [${JSON.stringify(fileURLToPath(new URL("../../../scripts/acl-rea.mjs", import.meta.url)))}, "mcp"],
         env: { PATH: process.env.PATH ?? "", REA_LOG_LEVEL: "silent",
           HOPPER_LAUNCHER_PATH: "/rea-unconfigured-deep-provider/hopper" }, stderr: "pipe" });
       const client = new Client({ name: "synthetic-verifier-comparison", version: "1" });

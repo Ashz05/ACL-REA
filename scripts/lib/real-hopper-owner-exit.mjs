@@ -136,7 +136,7 @@ export async function verifyLinuxHopperOwnerExit({
           const result = await commands.exec(
             process.execPath,
             [
-              "scripts/rea.mjs",
+              "scripts/acl-rea.mjs",
               "inspect",
               target,
               "--provider",

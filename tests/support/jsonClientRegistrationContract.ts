@@ -115,7 +115,7 @@ export const jsonClientRegistrationContract = (
       for (const [key, value] of Object.entries(initialSettings))
         expect(parsed[key]).toEqual(value);
       expect(parsed.mcpServers.other).toEqual(unrelatedServer);
-      expect(parsed.mcpServers.rea).toEqual({
+      expect(parsed.mcpServers["acl-rea"]).toEqual({
         command: command[0],
         args: command.slice(1),
       });
@@ -144,7 +144,7 @@ export const jsonClientRegistrationContract = (
       const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
       for (const [key, value] of Object.entries(settingsWithoutServers))
         expect(parsed[key]).toEqual(value);
-      expect(parsed.mcpServers.rea).toEqual({
+      expect(parsed.mcpServers["acl-rea"]).toEqual({
         command: command[0],
         args: command.slice(1),
       });
@@ -157,7 +157,7 @@ export const jsonClientRegistrationContract = (
         (await configureClientConfiguration(client, {}, command)).status,
       ).toBe("configured");
       const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
-      expect(parsed.mcpServers.rea).toEqual({
+      expect(parsed.mcpServers["acl-rea"]).toEqual({
         command: command[0],
         args: command.slice(1),
       });
@@ -177,7 +177,7 @@ export const jsonClientRegistrationContract = (
       ).toBe("removed");
       const parsed = JSON.parse(await readFile(client.configPath, "utf8"));
       expect(parsed.mcpServers.other).toEqual({ command: "other-server" });
-      expect(parsed.mcpServers.rea).toBeUndefined();
+      expect(parsed.mcpServers["acl-rea"]).toBeUndefined();
     });
   });
 };

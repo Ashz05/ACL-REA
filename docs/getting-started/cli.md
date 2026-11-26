@@ -8,16 +8,16 @@ For a pinned, noninteractive workflow with retained reports, see
 
 ## Run a command
 
-After [installing REA](installation.md), use `rea`. You can also run a command
+After [installing REA](installation.md), use `acl-rea`. You can also run a command
 without a global installation:
 
 ```bash
-npx -y rea-agents@latest analyze-javascript-application /absolute/path/to/app --json
+npx -y acl-rea-agents@latest analyze-javascript-application /absolute/path/to/app --json
 ```
 
 Use an extracted application directory or an ASAR as the target. Static
 JavaScript analysis returns the application graph and Evidence directly.
-Generic `rea analyze PATH` selects this workflow for directories and `.asar`
+Generic `acl-rea analyze PATH` selects this workflow for directories and `.asar`
 files when neither `--provider` nor `--snapshot` is supplied. See
 [JavaScript artifact reconstruction](../guides/javascript/javascript-artifact-reconstruction.md)
 for results, integrity checks and coverage.
@@ -27,9 +27,9 @@ application. When an agent or a person reads the result, save it to a file and
 project a summary, a module page or one module from the saved Evidence:
 
 ```bash
-rea analyze-javascript-application /absolute/path/to/app --json > app-evidence.json
+acl-rea analyze-javascript-application /absolute/path/to/app --json > app-evidence.json
 jq -c '{source: {kind: "inline", evidence: .}, view: {kind: "summary"}}' app-evidence.json > app-view.json
-rea inspect-analysis-view app-view.json
+acl-rea inspect-analysis-view app-view.json
 ```
 
 The request can also name the saved file instead of embedding it:
@@ -44,7 +44,7 @@ reads the request from standard input, so a generated request needs no
 temporary file:
 
 ```bash
-jq -nc '{source: {kind: "evidence-file", path: "app-evidence.json"}, view: {kind: "summary"}}' | rea inspect-analysis-view -
+jq -nc '{source: {kind: "evidence-file", path: "app-evidence.json"}, view: {kind: "summary"}}' | acl-rea inspect-analysis-view -
 ```
 
 Standard input is read once as a single UTF-8 JSON document without a
@@ -55,7 +55,7 @@ relative inputs, auxiliary files or output destinations. An empty string never
 selects the working directory; use an explicit `.` when selecting that directory
 is supported by the command.
 
-Command options use the kebab-case spelling that `rea <command> --help`
+Command options use the kebab-case spelling that `acl-rea <command> --help`
 lists, such as `--max-rows`. The camelCase spelling of an option, such as
 `--maxRows`, fails with `PARSE_ERROR` and names the documented flag:
 `Unknown flag: --maxRows. Did you mean --max-rows?`
@@ -76,9 +76,9 @@ module page. See
 views, feature traces and comparisons that take the same saved Evidence.
 
 Add `--timings` to a command to write one JSON timing record to stderr. For
-example, `rea inspect-elf-notes program --json --timings > result.json` keeps
+example, `acl-rea inspect-elf-notes program --json --timings > result.json` keeps
 stdout as a parseable result and writes
-`{"rea_timings":{"version":1,"command_ms":42}}` to stderr. `command_ms`
+`{"acl_rea_timings":{"version":1,"command_ms":42}}` to stderr. `command_ms`
 measures CLI command dispatch and result delivery; it is not provider-only or
 analysis-only time. The flag is off by default, and the record omits stages
 that REA did not measure. Root version reporting does not dispatch a command
@@ -92,7 +92,7 @@ Use `--format jsonl` to consume row-oriented results one record per line:
 cat > observations-view.json <<'JSON'
 {"source":{"kind":"evidence-file","path":"app-evidence.json"},"view":{"kind":"javascript-facts","property_keys":[],"offset":0,"limit":32}}
 JSON
-rea inspect-analysis-view observations-view.json --format jsonl > observations.jsonl
+acl-rea inspect-analysis-view observations-view.json --format jsonl > observations.jsonl
 ```
 
 This request selects up to 32 observation identities and their provenance,
@@ -179,12 +179,12 @@ in JSON Lines mode. MCP application results and Evidence contracts are unchanged
 
 ## Shell completion
 
-The CLI includes optional shell completion. Run `rea completions --help` to
+The CLI includes optional shell completion. Run `acl-rea completions --help` to
 see the available shells and their setup commands. For Bash, load the hook
 into the current shell:
 
 ```bash
-eval "$(rea completions bash)"
+eval "$(acl-rea completions bash)"
 ```
 
 For zsh, initialize completion before loading the hook. If your shell already
@@ -193,13 +193,13 @@ runs `compinit`, place the hook after that existing initialization:
 ```zsh
 autoload -Uz compinit
 compinit
-eval "$(rea completions zsh)"
+eval "$(acl-rea completions zsh)"
 ```
 
 The Bash hook supports macOS system Bash 3.2. It uses optional completion
 features when the shell provides them and falls back to portable registration.
 Completion includes standard global options and the active command's options;
-`rea mcp ` offers only `add` and `doctor`. Output-option values remain data when
+`acl-rea mcp ` offers only `add` and `doctor`. Output-option values remain data when
 resolving the command scope.
 
 For future interactive non-login Bash sessions, add the command to
@@ -220,9 +220,9 @@ Language (CIL) without loading or executing the assembly and require no native
 analysis engine:
 
 ```bash
-rea inspect-managed-artifact /absolute/path/Assembly.dll --json
-rea inspect-managed-members /absolute/path/Assembly.dll --json
-rea inspect-managed-members /absolute/path/Assembly.dll --type Example.Parser --json
+acl-rea inspect-managed-artifact /absolute/path/Assembly.dll --json
+acl-rea inspect-managed-members /absolute/path/Assembly.dll --json
+acl-rea inspect-managed-members /absolute/path/Assembly.dll --type Example.Parser --json
 ```
 
 Replace `Example.Parser` with an exact `full_name` from the member inspection,
@@ -248,7 +248,7 @@ with the same `--type`, `--max-snapshot-bytes` and
 MCP `compare_managed_members` does:
 
 ```bash
-rea compare-managed-members /absolute/path/v1/Assembly.dll /absolute/path/v2/Assembly.dll --type Example.Parser --json
+acl-rea compare-managed-members /absolute/path/v1/Assembly.dll /absolute/path/v2/Assembly.dll --type Example.Parser --json
 ```
 
 The comparison Evidence records both selected paths and those options. Two
@@ -269,7 +269,7 @@ for supported deployment forms, selection semantics, and coverage limits.
 
 ## SQLite snapshots
 
-For a local database snapshot, use `rea inspect-sqlite-database PATH --json`.
+For a local database snapshot, use `acl-rea inspect-sqlite-database PATH --json`.
 Add `--table NAME --row-limit 20` to read a bounded sample from an ordinary
 table. This command does not require a native analysis provider. See
 [SQLite database snapshots](../guides/data/sqlite-databases.md) for database/WAL identity,
@@ -281,7 +281,7 @@ Inspect embedded Go build metadata without installing Go or configuring a
 disassembler:
 
 ```bash
-rea inspect-go-binary /absolute/path/to/program --json
+acl-rea inspect-go-binary /absolute/path/to/program --json
 ```
 
 The shared CLI/MCP workflow reports compiler version, modules, replacements,
@@ -292,11 +292,11 @@ Project that Evidence, or Rust dependency Evidence, as CycloneDX. The command
 prints JSON on stdout:
 
 ```bash
-rea inspect-go-binary /absolute/path/to/program --json > go-evidence.json
+acl-rea inspect-go-binary /absolute/path/to/program --json > go-evidence.json
 cat > cyclonedx-view.json <<'JSON'
 {"source":{"kind":"evidence-file","path":"go-evidence.json"},"view":{"kind":"cyclonedx"}}
 JSON
-rea inspect-analysis-view cyclonedx-view.json --json | jq '.normalized_result.document' > sbom.cdx.json
+acl-rea inspect-analysis-view cyclonedx-view.json --json | jq '.normalized_result.document' > sbom.cdx.json
 ```
 
 See [CycloneDX dependencies](../guides/native/cyclonedx-view.md).
@@ -304,7 +304,7 @@ See [CycloneDX dependencies](../guides/native/cyclonedx-view.md).
 Inspect a Godot PCK without running the game:
 
 ```sh
-rea inspect-artifact game.pck --detail summary --evidence_output evidence.json --json
+acl-rea inspect-artifact game.pck --detail summary --evidence_output evidence.json --json
 rea extract-artifact game.pck --json
 ```
 
@@ -315,7 +315,7 @@ for embedded packs, batch queries and unknown encrypted coverage.
 Inspect a UnityFS AssetBundle without running Unity:
 
 ```sh
-rea inspect-artifact content.bundle --detail summary --evidence_output evidence.json --json
+acl-rea inspect-artifact content.bundle --detail summary --evidence_output evidence.json --json
 rea extract-artifact content.bundle --json
 ```
 
@@ -326,7 +326,7 @@ and LZMA coverage boundaries.
 Inspect a WeChat mini-program package without WeChat or an unpacker:
 
 ```sh
-rea inspect-artifact app.wxapkg --detail summary --evidence_output evidence.json --json
+acl-rea inspect-artifact app.wxapkg --detail summary --evidence_output evidence.json --json
 rea extract-artifact app.wxapkg --json
 ```
 
@@ -337,7 +337,7 @@ extraction. See [wxapkg](../wxapkg.md) for layout and coverage boundaries.
 Inspect an ESP32-family app or bootloader image without esptool:
 
 ```sh
-rea inspect-artifact firmware.bin --json
+acl-rea inspect-artifact firmware.bin --json
 rea extract-artifact firmware.bin --json
 ```
 
@@ -348,8 +348,8 @@ blocks. See [ESP images](../esp-image.md) for recognition, coverage and refusals
 Inspect an ESP flash dump, or one read from a flash address other than 0:
 
 ```sh
-rea inspect-artifact flash.bin --json
-rea inspect-artifact dump.bin --target-format esp-flash-image --flash-offset 0x1000 --json
+acl-rea inspect-artifact flash.bin --json
+acl-rea inspect-artifact dump.bin --target-format esp-flash-image --flash-offset 0x1000 --json
 rea extract-artifact flash.bin --json
 ```
 
@@ -360,7 +360,7 @@ with ESP image facts for app partitions and the OTA records. See
 Inspect a Node.js SEA carrier without running it:
 
 ```sh
-rea inspect-artifact ./application --json
+acl-rea inspect-artifact ./application --json
 rea extract-artifact ./application --json
 ```
 
@@ -370,7 +370,7 @@ fuse observations, and the real-fixture verification lane.
 Inventory and extract Intel HEX or S-record regions:
 
 ```sh
-rea inspect-artifact ./firmware.hex --json
+acl-rea inspect-artifact ./firmware.hex --json
 rea extract-artifact ./firmware.hex --json
 ```
 
@@ -380,7 +380,7 @@ names, metadata and limits.
 Inspect and extract stored U-Boot legacy uImage payloads and components:
 
 ```sh
-rea inspect-artifact ./firmware.bin --detail summary --evidence_output firmware.json --json
+acl-rea inspect-artifact ./firmware.bin --detail summary --evidence_output firmware.json --json
 rea extract-artifact ./firmware.bin --json
 ```
 
@@ -390,7 +390,7 @@ unknown names, resource limits and retained views. Compressed bytes stay stored.
 Inspect an Android A/B OTA `payload.bin` (CrAU v2) without applying the update:
 
 ```sh
-rea inspect-artifact ./payload.bin --detail summary --evidence_output payload.json --json
+acl-rea inspect-artifact ./payload.bin --detail summary --evidence_output payload.json --json
 rea extract-artifact ./payload.bin --json
 ```
 
@@ -410,13 +410,13 @@ Extraction verifies each written file before publishing the output. REA syncs
 the file, reopens it, and checks its size and SHA-256 against the bytes it wrote.
 Each file adds filesystem work, so archives with many small files can take
 longer to extract even when their total size is modest. If you only need the
-archive inventory, run `rea inspect-artifact <path> --json` to get it without
+archive inventory, run `acl-rea inspect-artifact <path> --json` to get it without
 writing an extracted tree.
 
 Inventory and extract UF2 or DfuSe regions:
 
 ```sh
-rea inspect-artifact ./firmware.uf2 --json
+acl-rea inspect-artifact ./firmware.uf2 --json
 rea extract-artifact ./firmware.dfu --json
 ```
 
@@ -426,7 +426,7 @@ the DfuSe suffix CRC and limits.
 Inventory and extract U-Boot FIT images:
 
 ```sh
-rea inspect-artifact ./boot.itb --json
+acl-rea inspect-artifact ./boot.itb --json
 rea extract-artifact ./boot.itb --json
 ```
 
@@ -436,7 +436,7 @@ and limits.
 Inspect and extract an Android boot or vendor_boot image:
 
 ```sh
-rea inspect-artifact ./boot.img --detail summary --evidence_output boot.json --json
+acl-rea inspect-artifact ./boot.img --detail summary --evidence_output boot.json --json
 rea extract-artifact ./vendor_boot.img --json
 ```
 
@@ -447,7 +447,7 @@ footer. `ANDROID!` does not record boot versus init_boot versus recovery.
 Inventory and extract an ISO 9660 disc image without mounting it:
 
 ```sh
-rea inspect-artifact ./installer.iso --detail summary --evidence_output installer.json --json
+acl-rea inspect-artifact ./installer.iso --detail summary --evidence_output installer.json --json
 rea extract-artifact ./installer.iso --json
 ```
 
@@ -457,8 +457,8 @@ names, multi-extent and interleaved files, and what is not decoded.
 Inspect local model declarations without loading weights:
 
 ```bash
-rea inspect-model-artifact /absolute/path/model.gguf --json
-rea inspect-model-artifact /absolute/path/model.safetensors --hash full --json
+acl-rea inspect-model-artifact /absolute/path/model.gguf --json
+acl-rea inspect-model-artifact /absolute/path/model.safetensors --hash full --json
 ```
 
 Default hashing reads only headers and leaves full-file identity unknown.
@@ -470,7 +470,7 @@ uses `--detail summary --evidence_output FILE`. See [model files](../model-artif
 Inspect Unity IL2CPP metadata names without Unity or a disassembler:
 
 ```bash
-rea inspect-il2cpp-metadata /absolute/path/global-metadata.dat --json
+acl-rea inspect-il2cpp-metadata /absolute/path/global-metadata.dat --json
 ```
 
 The command decodes a version 24, 27, 29, 31 or 39 `global-metadata.dat` and reports assembly
@@ -488,7 +488,7 @@ Inspect an embedded cargo-auditable Rust dependency list without installing
 Rust or configuring a disassembler:
 
 ```bash
-rea inspect-rust-binary /absolute/path/to/program --json
+acl-rea inspect-rust-binary /absolute/path/to/program --json
 ```
 
 The same workflow reports package names, versions, sources, the root package,
@@ -500,7 +500,7 @@ Inspect a PE Authenticode certificate table without executing the image or
 verifying signatures:
 
 ```bash
-rea inspect-pe-certificates /absolute/path/to/application.exe --json
+acl-rea inspect-pe-certificates /absolute/path/to/application.exe --json
 ```
 
 The workflow reports `WIN_CERTIFICATE` entries and, for PKCS#7 signedData,
@@ -511,7 +511,7 @@ directory is observed absence of that table. See
 Inspect PE import and delay-load tables without executing the image:
 
 ```bash
-rea inspect-pe-imports /absolute/path/to/application.exe --json
+acl-rea inspect-pe-imports /absolute/path/to/application.exe --json
 ```
 
 The workflow reports DLL names, named and ordinal functions, delay-load
@@ -523,7 +523,7 @@ Inspect a Windows Shell Link (`.lnk`) without resolving or executing the
 target:
 
 ```bash
-rea inspect-windows-shortcut /absolute/path/to/shortcut.lnk --json
+acl-rea inspect-windows-shortcut /absolute/path/to/shortcut.lnk --json
 ```
 
 The workflow reports header flags and FILETIMEs, IDList items, LinkInfo volume
@@ -535,7 +535,7 @@ as argument length and a minimized ShowCommand. See
 Inspect ELF PT_NOTE and SHT_NOTE tables without executing the image:
 
 ```bash
-rea inspect-elf-notes /absolute/path/to/program --json
+acl-rea inspect-elf-notes /absolute/path/to/program --json
 ```
 
 The workflow reports note owners, types, descriptor hashes, and supported
@@ -545,7 +545,7 @@ observed absence of those declarations. See [ELF note tables](../elf-notes.md).
 Inspect DWARF compile units without executing the image:
 
 ```bash
-rea inspect-dwarf-units /absolute/path/to/program --json
+acl-rea inspect-dwarf-units /absolute/path/to/program --json
 ```
 
 The workflow reads DWARF 2 through 5 unit headers and the unit DIE from an
@@ -559,8 +559,8 @@ opened; pass the DWARF file inside it. See
 Inspect ELF separate debug-file linkage without executing the image:
 
 ```bash
-rea inspect-elf-debug-link /absolute/path/to/program --json
-rea inspect-elf-debug-link /absolute/path/to/program --candidate-path /absolute/path/to/program.debug --json
+acl-rea inspect-elf-debug-link /absolute/path/to/program --json
+acl-rea inspect-elf-debug-link /absolute/path/to/program --candidate-path /absolute/path/to/program.debug --json
 ```
 
 The workflow reports `.gnu_debuglink` name and CRC32, `.gnu_debugaltlink`
@@ -574,7 +574,7 @@ Inspect ELF needed libraries and required symbol versions without executing
 the image or invoking the dynamic loader:
 
 ```bash
-rea inspect-elf-dependencies /absolute/path/to/program --json
+acl-rea inspect-elf-dependencies /absolute/path/to/program --json
 ```
 
 The fields, coverage rules and delivery options are documented in
@@ -584,7 +584,7 @@ List ELF and Mach-O initializer and finalizer functions without executing the
 image:
 
 ```bash
-rea inspect-native-initializers /absolute/path/to/program --json
+acl-rea inspect-native-initializers /absolute/path/to/program --json
 ```
 
 The workflow reports `DT_INIT`, init/fini arrays, legacy `.ctors`/`.dtors`, and
@@ -595,7 +595,7 @@ their resolved targets. Universal Mach-O files need `--architecture`. See
 Inspect ELF unwind function ranges without executing the image:
 
 ```bash
-rea inspect-elf-unwind-ranges /absolute/path/to/program --json
+acl-rea inspect-elf-unwind-ranges /absolute/path/to/program --json
 ```
 
 The workflow reports FDE start, end, and size, the containing section, an exact
@@ -609,7 +609,7 @@ observed absence of those declarations. See
 Inspect an Apple `.ips` crash report without executing a target:
 
 ```bash
-rea inspect-apple-ips /absolute/path/to/report.ips --json
+acl-rea inspect-apple-ips /absolute/path/to/report.ips --json
 ```
 
 The workflow reports first-line metadata, process/exception/termination facts,
@@ -620,7 +620,7 @@ Inspect Linux kernel module metadata without executing the module or requiring
 `modinfo`:
 
 ```bash
-rea inspect-kernel-module /absolute/path/to/module.ko --json
+acl-rea inspect-kernel-module /absolute/path/to/module.ko --json
 ```
 
 The workflow reports ordered `.modinfo` keys (duplicate `alias` and `parm`
@@ -637,8 +637,8 @@ Read a Linux kernel image's version banner and embedded `CONFIG_IKCONFIG`
 build config without executing it:
 
 ```bash
-rea inspect-kernel-build-config /absolute/path/to/vmlinux --json
-rea inspect-kernel-build-config /absolute/path/to/bzImage --name CONFIG_MODULE_SIG --json
+acl-rea inspect-kernel-build-config /absolute/path/to/vmlinux --json
+acl-rea inspect-kernel-build-config /absolute/path/to/bzImage --name CONFIG_MODULE_SIG --json
 ```
 
 The workflow reports the banner version, builder, and compiler, the config
@@ -653,7 +653,7 @@ Inspect a CPython 3.7–3.15 `.pyc` header and nested marshal code objects
 without executing bytecode or installing Python:
 
 ```bash
-rea inspect-python-pyc /absolute/path/to/module.pyc --json
+acl-rea inspect-python-pyc /absolute/path/to/module.pyc --json
 ```
 
 The workflow reports the pinned CPython version for the magic, PEP 552 hash or
@@ -663,7 +663,7 @@ not decompiled. See [CPython pyc inspection](../python-pyc.md).
 Inspect an Erlang BEAM file without executing bytecode:
 
 ```bash
-rea inspect-erlang-beam /absolute/path/to/app.beam --json
+acl-rea inspect-erlang-beam /absolute/path/to/app.beam --json
 ```
 
 The workflow reports IFF chunk names, atom tables, exports, imports, lambdas,
@@ -674,8 +674,8 @@ Inspect a Maven POM or Gradle module-metadata file without running Maven or
 Gradle, resolving a tree, or contacting a repository:
 
 ```bash
-rea inspect-maven-gradle-metadata /absolute/path/to/pom.xml --json
-rea inspect-maven-gradle-metadata /absolute/path/to/demo-1.2.3.module --json
+acl-rea inspect-maven-gradle-metadata /absolute/path/to/pom.xml --json
+acl-rea inspect-maven-gradle-metadata /absolute/path/to/demo-1.2.3.module --json
 ```
 
 The workflow reports coordinates as spelled, dependency and
@@ -686,7 +686,7 @@ unresolved property or parent references. See
 Inspect a NuGet `.nupkg` without restoring the package or contacting a feed:
 
 ```bash
-rea inspect-nuget-nupkg /absolute/path/to/Demo.Package.1.2.3.nupkg --json
+acl-rea inspect-nuget-nupkg /absolute/path/to/Demo.Package.1.2.3.nupkg --json
 ```
 
 The workflow reports package identity, license and repository fields as present,
@@ -694,7 +694,7 @@ dependency groups with version ranges, and a ZIP contents inventory with
 path-derived folder roles. Missing or malformed `.nuspec` members still return
 the inventory with limitations. See [NuGet packages](../guides/managed/nuget-nupkg.md).
 
-Complete `rea decompile --json` Evidence can be saved and inspected through
+Complete `acl-rea decompile --json` Evidence can be saved and inspected through
 `inspect-analysis-view` with an inline source and
 `view: {kind: "native", facet: "pseudocode", offset: 0, limit: 20000}`.
 The projection reads that saved observation without starting a provider;
@@ -709,17 +709,17 @@ native target. Substitute
 your target, search text and function name or address in these examples:
 
 ```bash
-rea analyze /absolute/path/to/program --provider ghidra --json
-rea search /absolute/path/to/program "search" --provider ghidra --json
+acl-rea analyze /absolute/path/to/program --provider ghidra --json
+acl-rea search /absolute/path/to/program "search" --provider ghidra --json
 rea function /absolute/path/to/program main --provider ghidra --json
-rea decompile /absolute/path/to/program 0x1000 --provider ghidra --json
+acl-rea decompile /absolute/path/to/program 0x1000 --provider ghidra --json
 rea xrefs /absolute/path/to/program 0x1000 --provider ghidra --json
-rea trace /absolute/path/to/program "search" --provider ghidra --json
+acl-rea trace /absolute/path/to/program "search" --provider ghidra --json
 ```
 
 `analyze` and `inspect` share the native overview workflow. `function` returns
 a function dossier; `decompile` returns pseudocode. For assembly instructions
-alone, use `rea instructions`. A macOS `.app` bundle can be supplied directly.
+alone, use `acl-rea instructions`. A macOS `.app` bundle can be supplied directly.
 
 A complete dossier can reach several megabytes of value-flow and references.
 `rea function ... --detail summary --evidence_output /absolute/path/dossier.json` returns the
@@ -731,7 +731,7 @@ as an `inspect-analysis-view` source, selecting the summary's
 MCP `analyze_function` defaults to the same summary and retains the complete
 dossier in the session for `inspect_analysis_view`.
 
-Run `rea --help` or a command's `--help` for arguments and output options.
+Run `acl-rea --help` or a command's `--help` for arguments and output options.
 The [generated catalog](../reference/mcp-contracts.md#generated-catalog) lists all CLI commands and MCP
 tools. Provider-specific target support is described in the
 [native guide](../guides/native/native-investigation.md), [DOS guide](../providers/ghidra-dos.md),
@@ -755,7 +755,7 @@ With automatic selection, REA uses the single available provider that supports
 the target. When several providers support it, select one explicitly:
 
 ```bash
-rea analyze /absolute/path/to/program --provider hopper
+acl-rea analyze /absolute/path/to/program --provider hopper
 ```
 
 Set `REA_ANALYSIS_PROVIDER` for a standing preference. An explicit `--provider`
@@ -779,7 +779,7 @@ entries record a refused kind, format, architecture, or role. An availability-on
 message describes the recorded rejections without claiming that every provider
 is unconfigured or that target support is known.
 For Hopper, Ghidra, IDA, JADX, and Kuna, run
-`rea doctor --provider ID --json` to diagnose the selected engine;
+`acl-rea doctor --provider ID --json` to diagnose the selected engine;
 `--provider desktop_build` checks the desktop application build host instead of
 an analysis engine. Other adapters,
 such as `pwntools-elf`, report their configuration requirements directly and are
@@ -874,9 +874,9 @@ cannot be retained, the entire history is excluded instead of reverting the
 question to an earlier revision or disposition.
 
 ```bash
-rea analyze /absolute/path/to/program --provider ghidra --snapshot /absolute/path/to/analysis/program.json
+acl-rea analyze /absolute/path/to/program --provider ghidra --snapshot /absolute/path/to/analysis/program.json
 # Repeat the same query to reuse its saved result.
-rea analyze /absolute/path/to/program --provider ghidra --snapshot /absolute/path/to/analysis/program.json
+acl-rea analyze /absolute/path/to/program --provider ghidra --snapshot /absolute/path/to/analysis/program.json
 ```
 
 An exact CLI cache hit is normally read before starting a provider process.
@@ -971,11 +971,11 @@ canonical form, or compare two supplied bundles:
 ```bash
 rea evidence-import /absolute/path/to/evidence/bundle.json
 rea evidence-export /absolute/path/to/evidence/bundle.json /absolute/path/to/evidence/canonical.json
-rea compare /absolute/path/to/evidence/left.json /absolute/path/to/evidence/right.json
-rea compare left.json right.json --record_pairs '[{"left_evidence_id":"ev_<left-sha256>","right_evidence_id":"ev_<right-sha256>"}]' --json
+acl-rea compare /absolute/path/to/evidence/left.json /absolute/path/to/evidence/right.json
+acl-rea compare left.json right.json --record_pairs '[{"left_evidence_id":"ev_<left-sha256>","right_evidence_id":"ev_<right-sha256>"}]' --json
 ```
 
-`rea compare` is the CLI form of the MCP `compare_bundles` tool.
+`acl-rea compare` is the CLI form of the MCP `compare_bundles` tool.
 
 `rea evidence-import` performs process-local bundle authentication and
 validation, reporting record and Unknown-revision counts. `unknowns_added`
@@ -983,7 +983,7 @@ counts revisions, not distinct Unknown IDs. It does not retain records in a
 separate or background MCP server process. To retain records across calls in an
 active MCP session, use the MCP tool `import_evidence_bundle` in that session.
 
-`rea compare` compares records by Evidence identity and explicit pairs. It does
+`acl-rea compare` compares records by Evidence identity and explicit pairs. It does
 not read artifact contents: the inventories of two builds are unresolved
 records, or one opaque change when you pair them. Use `compare-artifacts`,
 described at the end of this section, to compare their contents.
@@ -994,7 +994,7 @@ to export its Evidence for comparison.
 
 `--record_pairs` accepts an inline JSON array or the path to a local JSON
 file containing that array, matching MCP `compare_bundles.record_pairs`. For a
-file, use `rea compare left.json right.json --record_pairs pairs.json --json`.
+file, use `acl-rea compare left.json right.json --record_pairs pairs.json --json`.
 Pair IDs must exist on their named sides and be one-to-one. Without pairs,
 one-sided membership remains unknown; REA does not infer correspondence from
 position or display names.
@@ -1005,7 +1005,7 @@ To discover records in a saved bundle without returning their payloads, page
 its metadata with `inspect-evidence-bundle`:
 
 ```bash
-rea inspect-evidence-bundle '{"path":"/absolute/path/to/evidence/bundle.json","detail":"summary","filters":{"operation":"analyze_function"},"offset":0,"limit":64}' --json
+acl-rea inspect-evidence-bundle '{"path":"/absolute/path/to/evidence/bundle.json","detail":"summary","filters":{"operation":"analyze_function"},"offset":0,"limit":64}' --json
 ```
 
 For paging defaults, continuation, ordering and counts, see the
@@ -1028,7 +1028,7 @@ belong to one connection. Separate CLI calls can consume full saved records or
 resolve exact retained IDs from an explicitly selected local bundle:
 
 ```bash
-rea trace-application-feature request.json --evidence-bundle /absolute/path/evidence.json --json
+acl-rea trace-application-feature request.json --evidence-bundle /absolute/path/evidence.json --json
 ```
 
 Here `request.json` uses the same logical Evidence input as MCP, for example
@@ -1075,9 +1075,9 @@ Compare two artifact inventories with `compare-artifacts`. It takes the same
 from a bundle. Relative paths resolve from the working directory:
 
 ```bash
-rea inspect-artifact old.zip --json > old.json
-rea inspect-artifact new.zip --json > new.json
-rea compare-artifacts '{"left":{"kind":"evidence-file","path":"old.json"},"right":{"kind":"evidence-file","path":"new.json"}}' --json
+acl-rea inspect-artifact old.zip --json > old.json
+acl-rea inspect-artifact new.zip --json > new.json
+acl-rea compare-artifacts '{"left":{"kind":"evidence-file","path":"old.json"},"right":{"kind":"evidence-file","path":"new.json"}}' --json
 ```
 
 A one-shot `compare-artifacts` command keeps no session Evidence, so it refuses a
@@ -1259,18 +1259,18 @@ user permissions; consult the chosen guide for host requirements and effects.
 
 ## Start the MCP server
 
-Start REA's MCP server with `rea mcp` (or `rea --mcp`). The per-command
-`rea <command> --mcp` form returns `MCP_MODE_REMOVED` and points to
-`rea mcp`.
+Start REA's MCP server with `acl-rea mcp` (or `acl-rea --mcp`). The per-command
+`acl-rea <command> --mcp` form returns `MCP_MODE_REMOVED` and points to
+`acl-rea mcp`.
 
 ## Serve MCP over streamable HTTP
 
-`rea mcp` speaks stdio to the client that launched it. To serve the same MCP
+`acl-rea mcp` speaks stdio to the client that launched it. To serve the same MCP
 catalog over streamable HTTP for one local client, such as an agent environment
 runtime, start the dispatcher entry with `--http`:
 
 ```sh
-rea mcp --http --port 8765
+acl-rea mcp --http --port 8765
 ```
 
 `--host` and `--port` default to `MCP_HOST` and `MCP_PORT` from the environment,
@@ -1285,14 +1285,14 @@ after hostname normalization; the explicit list replaces `MCP_ALLOWED_HOSTS`.
 For example:
 
 ```sh
-rea mcp --http --host 0.0.0.0 --allowed-hosts 127.0.0.1,rea.lan
+acl-rea mcp --http --host 0.0.0.0 --allowed-hosts 127.0.0.1,rea.lan
 ```
 
 Requests with a different `Host` or browser `Origin` receive `403`; a missing
 `Origin` is accepted. The announced client URL uses the bound hostname when
 admitted, otherwise the first declared hostname, with the actual bound port.
 It is written to stderr as one JSON log line (`"msg":"MCP transport listening"`) whatever `REA_LOG_LEVEL`
-is set to; nothing is written to stdout. `rea mcp --http --help` lists the accepted options. The listener serves
+is set to; nothing is written to stdout. `acl-rea mcp --http --help` lists the accepted options. The listener serves
 one client at a time: a session ends with the client's `DELETE`, and a client
 that connects while another session is open takes it over, so a client that
 exited without ending its session needs no restart. The listener runs until
@@ -1303,7 +1303,7 @@ entry keep stdio.
 
 ## Serve an environment manifest
 
-`rea environment-serve <manifest.json> --evidence <capture.json>
+`acl-rea environment-serve <manifest.json> --evidence <capture.json>
 [--replay-only] [--host H] [--port N]` serves an environment manifest
 projected by `inspect-analysis-view` as an agent environment: an MCP server at
 `/mcp`, the environment card at `/.well-known/agent-env.json`, and a
@@ -1325,17 +1325,17 @@ member is `{"served": true, "evidence_id": …}`,
 [serve from the state](../agent-environments.md#serve-from-the-state).
 
 ```sh
-rea environment-serve manifest.json --evidence capture.json --port 8765
+acl-rea environment-serve manifest.json --evidence capture.json --port 8765
 ```
 
-`--host` and `--port` resolve like `rea mcp --http`: flags, then `MCP_HOST` and
+`--host` and `--port` resolve like `acl-rea mcp --http`: flags, then `MCP_HOST` and
 `MCP_PORT`, then `127.0.0.1` and an ephemeral port. A non-loopback bind requires
 `MCP_ALLOWED_HOSTS` with the same hostname rules and Host/Origin gates as above.
 `environment-serve` uses this environment setting; `--allowed-hosts` belongs to
-`rea mcp --http`. For example:
+`acl-rea mcp --http`. For example:
 
 ```sh
-MCP_ALLOWED_HOSTS=127.0.0.1,rea.lan rea environment-serve manifest.json --evidence capture.json --host 0.0.0.0
+MCP_ALLOWED_HOSTS=127.0.0.1,rea.lan acl-rea environment-serve manifest.json --evidence capture.json --host 0.0.0.0
 ```
 
 `ENVIRONMENT_NAME` renames
@@ -1347,7 +1347,7 @@ return and do not establish.
 
 ## Build an environment bundle
 
-`rea environment-build <capture> [dir] [--name <name>] [--template-rule <rule> ...]
+`acl-rea environment-build <capture> [dir] [--name <name>] [--template-rule <rule> ...]
 [--format-rules-only] [--package-tarball <path>] [--capture-timeout-ms <ms>] [--dry-run]` builds the bundle
 `environment-export` writes from one recorded capture: a `.har` file, which it
 inspects as `inspect-web-network-capture` does, or capture Evidence JSON from
@@ -1364,7 +1364,7 @@ and why each write is withheld with a hint, the files, warnings and the next
 command. `--dry-run` writes nothing and may omit the directory.
 
 ```sh
-rea environment-build grafana.har ./grafana --json
+acl-rea environment-build grafana.har ./grafana --json
 ```
 
 See [agent environments](../agent-environments.md#build-a-bundle-in-one-step)
@@ -1372,7 +1372,7 @@ for the report, the hints and what the bundle ships.
 
 ## Export an environment bundle
 
-`rea environment-export <manifest.json> --evidence <capture.json> <dir>
+`acl-rea environment-export <manifest.json> --evidence <capture.json> <dir>
 [--package-tarball <path>] [--name <override>]` writes the same manifest and
 capture pair as a bundle folder the agentenv framework runs with
 `agent-env run <dir>`. It reads each file once, authenticates and cross-checks
@@ -1383,16 +1383,16 @@ copies the bytes it authenticated, refuses to write into a directory that
 exists and is not empty, and never overwrites a file.
 
 ```sh
-rea environment-export manifest.json --evidence capture.json ./grafana-example --json
+acl-rea environment-export manifest.json --evidence capture.json ./grafana-example --json
 ```
 
 The folder holds a `README.md` with the bundle's provenance, an env folder
-`envs/<name>/` with a `Dockerfile` that installs this exact `rea-agents`
+`envs/<name>/` with a `Dockerfile` that installs this exact `acl-rea-agents`
 version and serves the copied `manifest.json` and `evidence.json` (written
 with mode `0600` on POSIX; Windows retains inherited ACLs) with
 `environment-serve` (from the state by default), a Python verifier under
 `artifacts/check_<name>/` that checks the served tool count and one served
-answer, and the smoke task `tasks/smoke.json`. `--package-tarball` copies a packed `rea-agents`
+answer, and the smoke task `tasks/smoke.json`. `--package-tarball` copies a packed `acl-rea-agents`
 tarball into the env folder and installs it instead of the registry package,
 which is how the hosted lane proves a checkout rather than a release. `--name`
 replaces the manifest's kebab-case name as the env folder and env id; a device
@@ -1403,7 +1403,7 @@ of the serve command's stopped document. See
 [agent environments](../agent-environments.md#export-a-bundle) for the folder
 layout and what the smoke task checks.
 
-`rea environment-export` prints the written files and exits `0` on success.
+`acl-rea environment-export` prints the written files and exits `0` on success.
 Input-pair refusals, an occupied destination, a missing package tarball, and
 invalid labels fail before writing output. Host permission failures identify
 whether reading or writing was denied and retain the affected path.
@@ -1422,7 +1422,7 @@ separate obligation.
 
 ## Compare an environment with its application
 
-`rea environment-compare <manifest.json> --evidence <capture.json> --probe <probe.json> [--probe <probe.json> ...]`
+`acl-rea environment-compare <manifest.json> --evidence <capture.json> --probe <probe.json> [--probe <probe.json> ...]`
 compares the environment the pair serves with probe captures of the application it came from. Each probe is capture
 Evidence of one call sequence recorded against the application after a reset; the environment's state is reset before
 each probe, every request to the application's origin is answered as the served environment answers it, and the
@@ -1433,24 +1433,24 @@ without response bodies, or without the request bodies its writes need. See
 [agent environments](../agent-environments.md#measure-fidelity-against-the-application) for the report.
 
 ```sh
-rea environment-compare manifest.json --evidence capture.json --probe probe.json --json
+acl-rea environment-compare manifest.json --evidence capture.json --probe probe.json --json
 ```
 
 ## Report version and runtime
 
-`rea --version` prints the package version. Add an output format to get the
+`acl-rea --version` prints the package version. Add an output format to get the
 version with the runtime and platform context that a support request needs:
 
 Version reports do not initialize analysis providers. Invalid global settings
 or output options still report their usual errors.
 
 ```bash
-rea --version --json
+acl-rea --version --json
 ```
 
 ```json
 {
-  "name": "rea-agents",
+  "name": "acl-rea-agents",
   "version": "6.7.0",
   "runtime": { "id": "node", "version": "24.22.1" },
   "platform": "linux",
@@ -1470,7 +1470,7 @@ rea --version --json
 | `runtime.node_compatibility_version` | Bun only: the Node.js version it reports compatibility with.                                                   |
 | `platform`, `architecture`           | Node.js `process.platform` and `process.arch`, such as `linux` and `x64`.                                      |
 | `supported_runtime.range`            | Supported Node.js range.                                                                                       |
-| `supported_runtime.satisfied`        | Whether this runtime is supported, judged as `rea doctor` judges it; Bun by its Node.js compatibility version. |
+| `supported_runtime.satisfied`        | Whether this runtime is supported, judged as `acl-rea doctor` judges it; Bun by its Node.js compatibility version. |
 
 The field names are stable. The report contains no paths, environment values,
 user or host names, and it starts no provider and reads no target. `--format`
@@ -1480,14 +1480,14 @@ takes precedence. With other output controls, `--version` keeps its existing
 behavior: valid controls such as `--filter-output` or `--full-output` print the
 plain version, and invalid combinations report the usual output-flag error,
 such as `UNSUPPORTED_OUTPUT_COMBINATION` for `--json` with `--token-limit`. Use
-`rea doctor` for provider and host readiness.
+`acl-rea doctor` for provider and host readiness.
 
 ## Output and exit status
 
 Commands reject surplus positional arguments before execution, including commands
-that accept no positionals. Use `rea <command> --help` for the declared argument
+that accept no positionals. Use `acl-rea <command> --help` for the declared argument
 shape; a final variadic argument continues to accept multiple values.
-`rea mcp add` accepts options only and rejects unknown options before reading or
+`acl-rea mcp add` accepts options only and rejects unknown options before reading or
 backing up client settings or starting registration. Its `--agent` and
 `--command`/`-c` options accept spaced and equals forms. Values must be nonempty; a following flag does not satisfy a spaced option's
 missing value.
@@ -1499,7 +1499,7 @@ arguments are preserved, including an empty argument after the executable. An
 empty executable, unfinished quote or NUL character fails before registration. For example:
 
 ```sh
-rea mcp add --agent cursor --command '"/path with spaces/server" "" --mcp' --json
+acl-rea mcp add --agent cursor --command '"/path with spaces/server" "" --mcp' --json
 ```
 
 The registered executable is `/path with spaces/server`, with arguments `""` and
@@ -1509,7 +1509,7 @@ runtime and entrypoint arguments without converting them to text and parsing the
 again. No package acquisition or server execution occurs during registration.
 `--no-global` refuses any selection requiring global storage before writing files.
 
-`rea mcp add --schema --json` returns the named input and output JSON Schemas.
+`acl-rea mcp add --schema --json` returns the named input and output JSON Schemas.
 Successful and partial registration reports contain the exact `command`, `args`
 and a `clients` outcome list. `ok` is true only when every selected client is
 configured or unchanged. Failed clients retain actionable errors; cancellation
@@ -1529,12 +1529,12 @@ source must be updated before registration can succeed; readonly layers are neve
 copied into the selected file. An unknown project root fails before writing and
 does not fall back to global settings.
 
-`rea mcp add --command` accepts stdio launcher text. An HTTP(S) URL in the
+`acl-rea mcp add --command` accepts stdio launcher text. An HTTP(S) URL in the
 executable position is refused before any settings change; configure remote MCP
 transport in the client's own settings. Launcher arguments that happen to
 contain URLs remain arguments.
 
-`rea mcp doctor --json` checks production MCP startup and reports child logs in
+`acl-rea mcp doctor --json` checks production MCP startup and reports child logs in
 `diagnostics`. It drains stderr while retaining at most its first 64 KiB of raw
 bytes as text, omitting a final UTF-8 code point if it crosses that byte limit.
 `stderr_bytes` counts all observed bytes, including omitted output;
@@ -1601,7 +1601,7 @@ For an artifact inventory request that selects the `occurrences` collection
 and includes `logical_path` and `artifact_id` in its view fields:
 
 ```bash
-rea inspect-analysis-view request.json --format csv \
+acl-rea inspect-analysis-view request.json --format csv \
   --filter-output normalized_result.items --columns logical_path,artifact_id
 ```
 
@@ -1654,11 +1654,11 @@ the CLI result should use JSON; either argument order is accepted.
 | `3`       | `audit-release-exposure` completed with `--fail_on` and an exposed check meets that severity. Unknown and unassessed checks do not change this status.                                                                                                                                                                                                                                 |
 | `128 + N` | Signal-derived status. An unhandled signal may have ended the process, with the shell or runtime preserving the conventional status; a command may instead have handled the signal, waited for its operation and cleanup to settle, and assigned the same status (`130` for SIGINT, `143` for SIGTERM). In the handled case, it may also have printed a structured `cancelled` result. |
 
-`rea mcp --http` is long-running and prints no structured result. It exits
+`acl-rea mcp --http` is long-running and prints no structured result. It exits
 `130` on SIGINT or `143` on SIGTERM after closing the listener, the session and
 its providers, and `1` when that cleanup fails.
 
-`rea environment-serve` is also long-running: it serves until SIGINT or
+`acl-rea environment-serve` is also long-running: it serves until SIGINT or
 SIGTERM, closes the listener, then prints one structured
 `{"status":"stopped", …}` document naming the URL, environment and tool count
 and exits `130` or `143` through the shared cancellation handler below.
@@ -1672,7 +1672,7 @@ server resources. It preserves a primary listener diagnostic, or a
 tool count and Evidence identifiers. The successful `stopped` document is
 returned only after cleanup is confirmed. The same in-process server owner
 retains failed stages for retry; the CLI exposes no separate retry command.
-`rea environment-build` is one-shot too: it prints its report and exits `0`,
+`acl-rea environment-build` is one-shot too: it prints its report and exits `0`,
 or prints the refusing stage's structured error and exits `1`, writing nothing
 when the refusal comes before the bundle is written. SIGINT cancels it with a
 `cancelled` error; a cancellation before the bundle stage writes nothing.
@@ -1710,7 +1710,7 @@ successful run, and a later cancellation reports `cancelled` in
 `--evidence_output`, and for cancellation before publication or raw provider
 observations, the failure output is unchanged.
 
-When the reader of piped output closes early, as `rea ... | head` does, the
+When the reader of piped output closes early, as `acl-rea ... | head` does, the
 CLI stops writing, prints no error and exits `141` (`128 + 13`, the status of a
 SIGPIPE-terminated writer). The operation itself may have completed; only its
 output was declined.
@@ -1735,7 +1735,7 @@ REA's failure status:
 
 ```bash
 set -o pipefail
-rea inspect-artifact ./app.asar --json | jq . > inspection.json
+acl-rea inspect-artifact ./app.asar --json | jq . > inspection.json
 ```
 
 `--token-count` reports a tokenx estimate for the selected emitted document,
@@ -1755,14 +1755,14 @@ selected phandle references. See [devicetree inspection](../devicetree.md) for
 limits and retained-view pagination.
 
 ```bash
-rea inspect-devicetree /artifacts/board.dtb --json
-rea inspect-devicetree /artifacts/board.dtb --detail summary --evidence_output /artifacts/board-evidence.json --json
+acl-rea inspect-devicetree /artifacts/board.dtb --json
+acl-rea inspect-devicetree /artifacts/board.dtb --detail summary --evidence_output /artifacts/board-evidence.json --json
 ```
 
 ### PE TLS and load configuration
 
 ```sh
-rea inspect-pe-load-config /absolute/path/to/application.exe --json
+acl-rea inspect-pe-load-config /absolute/path/to/application.exe --json
 ```
 
 Reports TLS callbacks and size-covered load-config fields without execution.
@@ -1772,7 +1772,7 @@ Use `--max-callbacks` and `--max-file-bytes` to set read budgets. See
 ### Binary hardening
 
 ```sh
-rea inspect-binary-hardening /absolute/path/to/program --json
+acl-rea inspect-binary-hardening /absolute/path/to/program --json
 ```
 
 Reports ELF, PE, and Mach-O hardening rows without execution. A missing import
@@ -1787,8 +1787,8 @@ sourcemaps and bytecode without running the executable. See
 ### Release exposure
 
 ```sh
-rea audit-release-exposure /absolute/path/to/MyApp.app --json
-rea audit-release-exposure ./dist/MyApp.app --fail_on high --json
+acl-rea audit-release-exposure /absolute/path/to/MyApp.app --json
+acl-rea audit-release-exposure ./dist/MyApp.app --fail_on high --json
 ```
 
 Reports what static analysis of a shipped `.app`, install directory, ASAR, or

@@ -836,7 +836,7 @@ it.each([
       expect(projected.remediation.action).toContain(
         "do not recreate a completed report from a refused decode",
       );
-      expect(projected.remediation.action).not.toContain("rea doctor");
+      expect(projected.remediation.action).not.toContain("acl-rea doctor");
       expect(result.error.partialObservation).toMatchObject({
         kind: "file-snapshot-hash",
         path,

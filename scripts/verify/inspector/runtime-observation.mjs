@@ -32,7 +32,7 @@ const client = new Client({
 });
 const transport = new StdioClientTransport({
   command: process.execPath,
-  args: ["scripts/rea.mjs", "mcp"],
+  args: ["scripts/acl-rea.mjs", "mcp"],
   cwd: repository,
   env: environment,
   stderr: "pipe",
@@ -240,7 +240,7 @@ async function inspectorUrl(process_) {
 async function runCli(arguments_) {
   const { stdout } = await execute(
     process.execPath,
-    ["scripts/rea.mjs", ...arguments_],
+    ["scripts/acl-rea.mjs", ...arguments_],
     {
       cwd: repository,
       env: environment,

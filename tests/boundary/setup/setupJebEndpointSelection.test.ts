@@ -15,8 +15,8 @@ it("validates selected and existing JEB endpoints without losing caller selectio
   const registration = (endpoint: string) =>
     JSON.stringify({
       mcpServers: {
-        rea: {
-          command: "rea",
+        "acl-rea": {
+          command: "acl-rea",
           args: ["mcp"],
           env: { REA_JEB_MCP_URL: endpoint },
         },
@@ -61,5 +61,5 @@ it("validates selected and existing JEB endpoints without losing caller selectio
   const repaired = await setup();
   expect(repaired.status, JSON.stringify(repaired)).toBe("ready");
   const saved = JSON.parse(await readFile(path, "utf8"));
-  expect(saved.mcpServers.rea.env.REA_JEB_MCP_URL).toBe(selectedEndpoint);
+  expect(saved.mcpServers["acl-rea"].env.REA_JEB_MCP_URL).toBe(selectedEndpoint);
 });

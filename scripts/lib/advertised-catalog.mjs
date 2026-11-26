@@ -62,7 +62,7 @@ const listPackagedTools = async (profile, packageRoot) => {
     // the fixture keeps its home until that cleanup confirms.
     const transport = await createOwnedMcpStdioTransport({
       command: process.execPath,
-      arguments: [join(packageRoot, "scripts/rea.mjs"), "mcp"],
+      arguments: [join(packageRoot, "scripts/acl-rea.mjs"), "mcp"],
       cwd: home,
       hostEnvironment: environment,
       expectedCommand: null,

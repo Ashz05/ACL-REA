@@ -78,7 +78,7 @@ exit 1
       if (adapter === "cli") {
         const output = await execFileOutput(
           process.execPath,
-          ["scripts/rea.mjs", ...scenario.argv],
+          ["scripts/acl-rea.mjs", ...scenario.argv],
           {
             env: { ...process.env, REA_ADB_PATH: binary },
             timeout: 20_000,

@@ -20,7 +20,7 @@ implementation or version. Evidence identifies the command profile as
 the executable is GNU objdump. Other implementations may accept some commands
 while differing in supported options and output.
 
-`inspect_with_objdump` and `rea inspect-with-objdump` capture stdout and stderr as inline Evidence. Artifact inspection Evidence records SHA-256 digests before and after the provider call and whether those observed digests differ; this cannot prove the exact bytes consumed if the artifact changes during execution. Choose one artifact operation: `file_headers`, `section_headers`, `symbols`, `relocations`, `dwarf`, `disassemble`, or `disassemble_all`. `disassemble` maps to `-d`; `disassemble_all` maps to `-D` and has different symbol-boundary semantics. The pathless `inspect_with_objdump {"operation":"architectures"}` MCP call or `rea list-objdump-architectures` CLI command maps to `-i` and produces subjectless Evidence containing the selected command’s output, not a guarantee that any target is supported. GNU objdump uses this option to list its compiled-in BFD targets.
+`inspect_with_objdump` and `acl-rea inspect-with-objdump` capture stdout and stderr as inline Evidence. Artifact inspection Evidence records SHA-256 digests before and after the provider call and whether those observed digests differ; this cannot prove the exact bytes consumed if the artifact changes during execution. Choose one artifact operation: `file_headers`, `section_headers`, `symbols`, `relocations`, `dwarf`, `disassemble`, or `disassemble_all`. `disassemble` maps to `-d`; `disassemble_all` maps to `-D` and has different symbol-boundary semantics. The pathless `inspect_with_objdump {"operation":"architectures"}` MCP call or `acl-rea list-objdump-architectures` CLI command maps to `-i` and produces subjectless Evidence containing the selected command’s output, not a guarantee that any target is supported. GNU objdump uses this option to list its compiled-in BFD targets.
 
 Failure to launch the selected executable reports provider unavailability, the
 configured command and the host error under `boundary: "provider-launch"`.
@@ -37,15 +37,15 @@ For DWARF, REA does not follow local debug links by default. Set `follow_debug_l
 For a known native symbol, use `operation: "disassemble", symbol: "my_function"` in MCP or `--symbol my_function` in CLI. REA passes `--disassemble=my_function` to objdump before collecting output, rather than producing the whole disassembly and filtering it afterward. Omit `symbol` to keep full code-section disassembly. Other operations reject this selector. Use a nonempty, NUL-free name with well-formed Unicode; unsupported values are rejected before reading the artifact or starting objdump. Symbol names are passed unchanged; matching, versioned symbols, aliases and the end of the disassembly follow the selected executable's semantics. Evidence records the selector and actual arguments. An empty match does not establish artifact-wide absence, and the selected observation does not contain the omitted disassembly; request the complete operation when needed.
 
 ```sh
-rea inspect-with-objdump ./program disassemble
-rea inspect-with-objdump ./program disassemble --symbol my_function
-rea inspect-with-objdump ./program dwarf
-rea inspect-with-objdump ./program dwarf --follow-debug-links
+acl-rea inspect-with-objdump ./program disassemble
+acl-rea inspect-with-objdump ./program disassemble --symbol my_function
+acl-rea inspect-with-objdump ./program dwarf
+acl-rea inspect-with-objdump ./program dwarf --follow-debug-links
 ```
 
 Captured stdout and stderr share `max_output_bytes` (CLI: `--max-output-bytes`), default 16777216 bytes (16 MiB). Select an integer from 1 to 44651859 bytes. The maximum leaves room for worst-case JSON escaping of both Evidence output mirrors under Node's single-string ceiling. The selected budget applies on the next call without a restart; `output_budget_bytes` reports it and `output_budget_source` distinguishes a default from an explicit request. On exhaustion REA retains a prefix, requests provider termination, marks `output_truncated` with unknown completion, and records the budget as `output_limit`, a `max_output_bytes` parameter control (the CLI `--full-output` envelope names its option in `meta.cli_controls`). Narrow or page the native command, or raise the selected budget. Verify command effects and outstanding cleanup before deciding whether repeating it is safe. Client deadlines and receive buffers remain separate. Concurrent one-shot captures reserve their selected budgets within a 128 MiB aggregate admission and eight-operation capacity; wait for active work or select a smaller output budget when that capacity is occupied.
 
-`inspect_with_objdump`, `rea list-objdump-architectures`, and one-shot `execute_rizin_command` accept `command_timeout_ms` (CLI: `--command-timeout-ms`). Omitted means 120000. The integer range is 1 to 2147483647. Target preflight shares one budget across stat and digest. The one-shot command receives that budget again. It applies on the next call; no restart is required. It does not raise the separately selected `max_output_bytes`, a Ghidra or Hopper startup deadline, or a debugger session deadline.
+`inspect_with_objdump`, `acl-rea list-objdump-architectures`, and one-shot `execute_rizin_command` accept `command_timeout_ms` (CLI: `--command-timeout-ms`). Omitted means 120000. The integer range is 1 to 2147483647. Target preflight shares one budget across stat and digest. The one-shot command receives that budget again. It applies on the next call; no restart is required. It does not raise the separately selected `max_output_bytes`, a Ghidra or Hopper startup deadline, or a debugger session deadline.
 
 ## GDB
 
@@ -365,20 +365,20 @@ Discovery reads the session descriptors that the plugin publishes in the bridge
 directory. Set `REA_CUTTER_BRIDGE_DIR` in both REA's environment and the environment
 that starts Cutter to select a custom directory. Both expand `~` and `~/` paths
 against the current user's home, including `~\` paths on Windows. By default,
-they use `%LOCALAPPDATA%\REA\CutterBridge` on Windows when `LOCALAPPDATA` is set,
-and `~/.cache/rea/cutter-bridge` otherwise. The two processes must resolve the
+they use `%LOCALAPPDATA%\ACL-REA\CutterBridge` on Windows when `LOCALAPPDATA` is set,
+and `~/.cache/acl-rea/cutter-bridge` otherwise. The two processes must resolve the
 same directory for discovery to find the published sessions.
 
 REA's npm package includes the plugin as `bridge/cutter/rea_bridge.py`. Use the
-copy from the REA version you run (`rea --version`, or the version in an
-`npx rea-agents@<version>` registration). An `npx` installation keeps that
+copy from the REA version you run (`acl-rea --version`, or the version in an
+`npx acl-rea-agents@<version>` registration). An `npx` installation keeps that
 package in npm's cache rather than a stable folder, so take the file from the
 published package of the same version instead (in Windows PowerShell, use
 `npm.cmd`):
 
 ```sh
-npm pack rea-agents@<version>
-tar -xzf rea-agents-<version>.tgz package/bridge/cutter/rea_bridge.py
+npm pack acl-rea-agents@<version>
+tar -xzf acl-rea-agents-<version>.tgz package/bridge/cutter/rea_bridge.py
 ```
 
 Copy the extracted `package/bridge/cutter/rea_bridge.py` into the `python`

@@ -423,7 +423,7 @@ captureTest(
     const cli = spawn(
       process.execPath,
       [
-        "scripts/rea.mjs",
+        "scripts/acl-rea.mjs",
         "capture-process",
         cliScenarioPath,
         "--format",

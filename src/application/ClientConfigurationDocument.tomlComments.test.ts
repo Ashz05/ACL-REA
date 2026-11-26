@@ -10,7 +10,7 @@ import {
 
 const original = [
   'root = "retained # root string"',
-  "[mcp_servers.rea] # server header note",
+  "[mcp_servers.acl-rea] # server header note",
   'command = "old # command token" # command note',
   "args = [",
   '  "argument # value token", # array note',
@@ -19,7 +19,7 @@ const original = [
   "# multiline value token",
   '""" # multiline note',
   "literal = 'literal # value token' # literal note",
-  "[mcp_servers.rea.tools.binary_session] # tool header note",
+  "[mcp_servers.acl-rea.tools.binary_session] # tool header note",
   'approval_mode = "approve" # caller approval',
   "[mcp_servers.other]",
   'command = "other" # peer note',
@@ -79,11 +79,11 @@ it.each([
 
 it("retains comments from dotted REA assignments and nested inline values", () => {
   for (const source of [
-    'mcp_servers.rea.command = "old # string token" # dotted note\n',
-    'mcp_servers = { rea = { args = ["old # string token", # inline value note\n] }, other = { command = "other" } }\n',
+    'mcp_servers.acl-rea.command = "old # string token" # dotted note\n',
+    'mcp_servers = { acl-rea = { args = ["old # string token", # inline value note\n] }, other = { command = "other" } }\n',
   ]) {
     const parsed = expectResultValue(parseClientConfiguration(source, "toml"));
-    const { rea: removed, ...servers } = parsed.servers;
+    const { "acl-rea": removed, ...servers } = parsed.servers;
     expect(removed).toBeDefined();
     const result = serializeClientConfiguration(
       withClientServers(parsed, servers, HOST_PLATFORM.platform),
@@ -109,12 +109,12 @@ it.each(["toml", "grok"] as const)(
   "retains scalar types in an inline %s registration while refreshing its launcher",
   (format) => {
     const source =
-      'mcp_servers = { rea = { command = "old", large = 1e20, exact = 9007199254740992.0, limit = inf, floor = -inf, unknown = nan, zero = -0.0, date = 2026-11-10, clock = 12:34:56, local = 2026-11-10T12:34:56, offset = 2026-11-10T12:34:56-05:00 }, peer = { command = "peer" } } # retained\n';
+      'mcp_servers = { acl-rea = { command = "old", large = 1e20, exact = 9007199254740992.0, limit = inf, floor = -inf, unknown = nan, zero = -0.0, date = 2026-11-10, clock = 12:34:56, local = 2026-11-10T12:34:56, offset = 2026-11-10T12:34:56-05:00 }, peer = { command = "peer" } } # retained\n';
     const parsed = expectResultValue(parseClientConfiguration(source, format));
-    const previous = parsed.servers.rea as Record<string, unknown>;
+    const previous = parsed.servers["acl-rea"] as Record<string, unknown>;
     const servers = {
       ...parsed.servers,
-      rea: { ...previous, command: "new" },
+      "acl-rea": { ...previous, command: "new" },
     };
     const result = serializeClientConfiguration(
       withClientServers(parsed, servers, HOST_PLATFORM.platform),

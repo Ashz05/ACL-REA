@@ -18,7 +18,11 @@ const authoredSkill = async (
   files: Readonly<Record<string, string>>,
 ) => {
   for (const [path, content] of Object.entries(files)) {
-    const target = join(root, ".agents/skills/reverse-engineer-anything", path);
+    const target = join(
+      root,
+      ".agents/skills/acl-reverse-engineer-anything",
+      path,
+    );
     await mkdir(join(target, ".."), { recursive: true });
     await writeFile(target, content);
   }
@@ -29,9 +33,9 @@ describe("Cursor Marketplace plugin", () => {
     const inspected = await inspectCursorPluginBundle(repositoryRoot);
     expect(inspected.issues).toEqual([]);
     expect(inspected.packageVersion).toBe(inspected.manifest.version);
-    expect(inspected.mcp.mcpServers.rea).toEqual({
+    expect(inspected.mcp.mcpServers["acl-rea"]).toEqual({
       command: "npx",
-      args: ["-y", `rea-agents@${inspected.packageVersion}`, "mcp"],
+      args: ["-y", `acl-rea-agents@${inspected.packageVersion}`, "mcp"],
     });
   });
 
@@ -59,30 +63,30 @@ describe("Cursor Marketplace plugin", () => {
   it("reports each drifted manifest field without accepting a partial server", () => {
     const aligned = {
       manifest: {
-        name: "rea",
+        name: "acl-rea",
         version: "6.8.0",
         description: "Reverse engineer anything",
-        author: { name: "morluto" },
-        repository: "https://github.com/morluto/rea",
+        author: { name: "Ashz05" },
+        repository: "https://github.com/Ashz05/ACL-REA",
         license: "MIT",
-        keywords: ["rea"],
+        keywords: ["acl-rea"],
         skills: ".cursor-plugin/skills",
-        logo: "assets/rea-plugin.png",
+        logo: "assets/acl-rea-plugin.png",
       },
       mcp: {
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: "npx",
-            args: ["-y", "rea-agents@6.8.0", "mcp"],
+            args: ["-y", "acl-rea-agents@6.8.0", "mcp"],
           },
         },
       },
       packageVersion: "6.8.0",
       logoExists: true,
-      skillNames: ["reverse-engineer-anything"],
+      skillNames: ["acl-reverse-engineer-anything"],
       skillFrontmatter: {
-        name: "reverse-engineer-anything",
-        description: "Use REA",
+        name: "acl-reverse-engineer-anything",
+        description: "Use ACL-REA",
       },
     };
     expect(cursorPluginBundleIssues(aligned)).toEqual([]);
@@ -92,11 +96,11 @@ describe("Cursor Marketplace plugin", () => {
         manifest: { ...aligned.manifest, name: "other", mcpServers: {} },
         mcp: {
           mcpServers: {
-            rea: { command: "node", args: ["dist/mcp/main.js"] },
+            "acl-rea": { command: "node", args: ["dist/mcp/main.js"] },
           },
         },
         logoExists: false,
-        skillNames: ["rea-tool-design", "reverse-engineer-anything"],
+        skillNames: ["acl-rea-tool-design", "acl-reverse-engineer-anything"],
       }).map(({ field }) => field),
     ).toEqual([
       "name",
@@ -111,16 +115,16 @@ describe("Cursor Marketplace plugin", () => {
     const root = await createTestTempDirectory("rea-cursor-plugin-skill-");
     await authoredSkill(root, {
       "SKILL.md":
-        "---\nname: reverse-engineer-anything\ndescription: Use REA\n---\n\n# REA\n",
+        "---\nname: acl-reverse-engineer-anything\ndescription: Use ACL-REA\n---\n\n# ACL-REA\n",
       "references/guide.md": "# Guide\n",
     });
     await syncCursorPluginSkill({ root, check: false });
     const skill = join(
       root,
-      ".cursor-plugin/skills/reverse-engineer-anything/SKILL.md",
+      ".cursor-plugin/skills/acl-reverse-engineer-anything/SKILL.md",
     );
     expect(await readFile(skill, "utf8")).toBe(
-      "---\nname: reverse-engineer-anything\ndescription: Use REA\n---\n\n# REA\n",
+      "---\nname: acl-reverse-engineer-anything\ndescription: Use ACL-REA\n---\n\n# ACL-REA\n",
     );
     await expect(
       syncCursorPluginSkill({ root, check: true }),
@@ -133,7 +137,7 @@ describe("Cursor Marketplace plugin", () => {
     await writeFile(
       join(
         root,
-        ".cursor-plugin/skills/reverse-engineer-anything/references/extra.md",
+        ".cursor-plugin/skills/acl-reverse-engineer-anything/references/extra.md",
       ),
       "extra\n",
     );

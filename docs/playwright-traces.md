@@ -5,8 +5,8 @@ local Playwright **trace v10** ZIP. Import is offline: recorded URLs are not
 requested, and no browser, application or trace viewer is started.
 
 ```sh
-rea inspect-playwright-trace /absolute/trace.zip --json
-rea inspect-playwright-trace /absolute/trace.zip --detail summary \
+acl-rea inspect-playwright-trace /absolute/trace.zip --json
+acl-rea inspect-playwright-trace /absolute/trace.zip --detail summary \
   --evidence_output /absolute/new-evidence.bundle.json --json
 ```
 

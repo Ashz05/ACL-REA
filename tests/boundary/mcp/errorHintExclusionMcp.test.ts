@@ -6,7 +6,7 @@ import { projectAnalysisError } from "../../../src/domain/analysisErrorProjectio
 import { BinaryTargetError } from "../../../src/domain/configurationErrors.js";
 import { createToolResultDelivery } from "../../../src/server/toolResult.js";
 
-const CLI_ISSUE_REPORT_URL = "https://github.com/morluto/rea/issues";
+const CLI_ISSUE_REPORT_URL = "https://github.com/Ashz05/ACL-REA/issues";
 
 const delivery = createToolResultDelivery(STDIO_DEFAULT_MAX_BUFFER_SIZE);
 
@@ -49,7 +49,7 @@ describe("MCP error delivery excludes CLI-only issue hints", () => {
       const serialized = JSON.stringify(toolResult);
       expect(serialized).toContain(expectedCode);
       expect(serialized).not.toContain(CLI_ISSUE_REPORT_URL);
-      expect(serialized).not.toContain("github.com/morluto/rea/issues");
+      expect(serialized).not.toContain("github.com/Ashz05/ACL-REA/issues");
     },
   );
 });

@@ -168,7 +168,7 @@ it("renders a build bundle from a request with REA's payload and starts it", asy
     extra_packages: ["librsvg2-common"],
   });
   const env = join(runner.state, "bundle", "envs", "mousepad");
-  expect(await readFile(join(env, "rea-payload.tar"), "utf8")).toBe(
+  expect(await readFile(join(env, "acl-rea-payload.tar"), "utf8")).toBe(
     "a packed REA build",
   );
   const module = await readFile(join(env, "mousepad_app.py"), "utf8");

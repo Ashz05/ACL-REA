@@ -169,7 +169,7 @@ it.skipIf(process.platform === "win32")(
     const child = spawn(
       process.execPath,
       [
-        "scripts/rea.mjs",
+        "scripts/acl-rea.mjs",
         "inspect-electron-page",
         browser.endpoint,
         "electron-page",

@@ -36,7 +36,7 @@ const installCliRuntime = async (
     workspace.path("node_modules"),
     "junction",
   );
-  await copyScriptsWithImports(["scripts/rea.mjs"], workspace.root);
+  await copyScriptsWithImports(["scripts/acl-rea.mjs"], workspace.root);
   await Promise.all([
     workspace.write(
       "package.json",
@@ -73,7 +73,7 @@ describe("version report dispatch", () => {
       const invoke = (arguments_: readonly string[], invalidLogLevel = false) =>
         processes.run(
           process.execPath,
-          [workspace.path("scripts/rea.mjs"), ...arguments_],
+          [workspace.path("scripts/acl-rea.mjs"), ...arguments_],
           {
             cwd: workspace.root,
             env: {
@@ -123,7 +123,7 @@ describe("doctor configuration dispatch", () => {
       const invoke = (args: readonly string[], completion = "") =>
         processes.run(
           process.execPath,
-          [workspace.path("scripts/rea.mjs"), ...args],
+          [workspace.path("scripts/acl-rea.mjs"), ...args],
           {
             cwd: workspace.root,
             env: {
@@ -214,7 +214,7 @@ describe("runtime admission dispatch", () => {
       );
       const result = await processes.run(
         process.execPath,
-        [workspace.path("scripts/rea.mjs"), "--version"],
+        [workspace.path("scripts/acl-rea.mjs"), "--version"],
         { cwd: workspace.root },
       );
       expect(result.exitCode).toBe(1);
@@ -248,7 +248,7 @@ describe("runtime admission dispatch", () => {
         );
         const result = await processes.run(
           process.execPath,
-          [workspace.path("scripts/rea.mjs"), "fixture"],
+          [workspace.path("scripts/acl-rea.mjs"), "fixture"],
           { cwd: workspace.root },
         );
         expect(result.exitCode).toBe(0);
@@ -270,7 +270,7 @@ describe("executable dispatcher", () => {
       );
       const result = await processes.run(
         process.execPath,
-        [workspace.path("scripts/rea.mjs"), "fixture"],
+        [workspace.path("scripts/acl-rea.mjs"), "fixture"],
         { cwd: workspace.root },
       );
       expect(result.exitCode).toBe(1);
@@ -302,7 +302,7 @@ describe("executable dispatcher", () => {
       const invoke = async (args: readonly string[]): Promise<unknown> => {
         const { exitCode, stdout } = await processes.run(
           process.execPath,
-          [join(scripts, "rea.mjs"), ...args],
+          [join(scripts, "acl-rea.mjs"), ...args],
           { cwd: workspace.root },
         );
         expect(exitCode).toBe(0);
@@ -362,7 +362,7 @@ describe("executable dispatcher", () => {
   workspaceCliTest(
     "explains how to restore a missing compiled runtime",
     async ({ processes, workspace }) => {
-      await copyScriptsWithImports(["scripts/rea.mjs"], workspace.root);
+      await copyScriptsWithImports(["scripts/acl-rea.mjs"], workspace.root);
       await workspace.write(
         "package.json",
         JSON.stringify({ type: "module", version: "1.0.0" }),
@@ -371,7 +371,7 @@ describe("executable dispatcher", () => {
       for (const args of [["mcp"], ["mcp", "doctor"], ["--help"]]) {
         const result = await processes.run(
           process.execPath,
-          [workspace.path("scripts/rea.mjs"), ...args],
+          [workspace.path("scripts/acl-rea.mjs"), ...args],
           { cwd: workspace.root },
         );
         expect(result).toMatchObject({
@@ -381,7 +381,7 @@ describe("executable dispatcher", () => {
           ),
         });
         expect(result.stderr).toContain(
-          "If this is an installed package, reinstall rea-agents.",
+          "If this is an installed package, reinstall acl-rea-agents.",
         );
         expect(result).toMatchObject({
           stderr: expect.not.stringContaining("ERR_MODULE_NOT_FOUND"),
@@ -401,7 +401,7 @@ describe("executable dispatcher JavaScript shutdown", () => {
       );
       const result = await processes.run(
         process.execPath,
-        [workspace.path("scripts/rea.mjs"), "fixture"],
+        [workspace.path("scripts/acl-rea.mjs"), "fixture"],
         { cwd: workspace.root },
       );
       expect(result.exitCode).toBe(cleanupFails ? 1 : 141);
@@ -435,7 +435,7 @@ describe("executable dispatcher JavaScript shutdown", () => {
       );
       const result = await processes.run(
         process.execPath,
-        [workspace.path("scripts/rea.mjs"), "fixture"],
+        [workspace.path("scripts/acl-rea.mjs"), "fixture"],
         { cwd: workspace.root },
       );
       expect(result.exitCode).toBe(
@@ -461,7 +461,7 @@ describe("executable dispatcher JavaScript shutdown", () => {
       );
       const result = await processes.run(
         process.execPath,
-        [workspace.path("scripts/rea.mjs"), "fixture"],
+        [workspace.path("scripts/acl-rea.mjs"), "fixture"],
         { cwd: workspace.root },
       );
       expect(result.exitCode).toBe(1);
@@ -479,7 +479,7 @@ describe("executable dispatcher JavaScript shutdown", () => {
       );
       const result = await processes.run(
         process.execPath,
-        [workspace.path("scripts/rea.mjs"), "fixture"],
+        [workspace.path("scripts/acl-rea.mjs"), "fixture"],
         { cwd: workspace.root },
       );
       expect(result.exitCode).toBe(1);
@@ -498,7 +498,7 @@ describe("executable dispatcher JavaScript shutdown", () => {
       );
       const result = await processes.run(
         process.execPath,
-        [workspace.path("scripts/rea.mjs"), "fixture"],
+        [workspace.path("scripts/acl-rea.mjs"), "fixture"],
         { cwd: workspace.root },
       );
       expect(result.exitCode).toBe(1);
@@ -516,7 +516,7 @@ describe("executable dispatcher JavaScript shutdown", () => {
       );
       const result = await processes.run(
         process.execPath,
-        [workspace.path("scripts/rea.mjs"), "fixture"],
+        [workspace.path("scripts/acl-rea.mjs"), "fixture"],
         { cwd: workspace.root },
       );
       expect(result.exitCode).toBe(141);
@@ -539,7 +539,7 @@ describe("project-scoped Amp registration dispatch", () => {
       const result = await processes.run(
         process.execPath,
         [
-          workspace.path("scripts/rea.mjs"),
+          workspace.path("scripts/acl-rea.mjs"),
           "mcp",
           "add",
           "--no-global",
@@ -565,7 +565,7 @@ describe("project-scoped Amp registration dispatch", () => {
       const result = await processes.run(
         process.execPath,
         [
-          workspace.path("scripts/rea.mjs"),
+          workspace.path("scripts/acl-rea.mjs"),
           "mcp",
           "add",
           "--no-global",
@@ -591,7 +591,7 @@ describe("project-scoped Amp registration dispatch", () => {
       const invoke = (arguments_: readonly string[]) =>
         processes.run(
           process.execPath,
-          [workspace.path("scripts/rea.mjs"), ...arguments_],
+          [workspace.path("scripts/acl-rea.mjs"), ...arguments_],
           {
             cwd: workspace.root,
             env: { ...process.env, REA_LOG_LEVEL: "silent" },
@@ -656,7 +656,7 @@ describe("executable dispatcher exit", () => {
       );
       const result = await processes.run(
         process.execPath,
-        [workspace.path("scripts/rea.mjs"), "fixture"],
+        [workspace.path("scripts/acl-rea.mjs"), "fixture"],
         { cwd: workspace.root },
       );
       expect(result.exitCode, result.stderr).toBe(3);
@@ -672,7 +672,7 @@ describe("executable dispatcher exit", () => {
       );
       const result = await processes.run(
         process.execPath,
-        [workspace.path("scripts/rea.mjs"), "fixture"],
+        [workspace.path("scripts/acl-rea.mjs"), "fixture"],
         { cwd: workspace.root },
       );
       expect(result.exitCode, result.stderr).toBe(4);

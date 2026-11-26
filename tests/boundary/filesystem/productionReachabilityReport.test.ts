@@ -30,7 +30,7 @@ it("reports test-only candidates without losing dynamic, worker or published roo
     "package.json": JSON.stringify({
       name: "reachability-fixture",
       type: "module",
-      bin: { fixture: "scripts/rea.mjs" },
+      bin: { fixture: "scripts/acl-rea.mjs" },
       exports: { "./published": "./src/published.ts" },
     }),
     "src/main.ts":
@@ -42,7 +42,7 @@ it("reports test-only candidates without losing dynamic, worker or published roo
     "src/composition/javascriptAnalysisWorkerProcess.ts":
       'import { workerFact } from "../workerFacts.js"; console.log(workerFact);',
     "src/workerFacts.ts": "export const workerFact = 5;",
-    "scripts/rea.mjs": 'import "../src/main.js";',
+    "scripts/acl-rea.mjs": 'import "../src/main.js";',
     "tests/facts.test.ts":
       'import { testOnly } from "../src/facts.js"; import { retired } from "../src/testOnly.js"; console.log(testOnly, retired);',
   };

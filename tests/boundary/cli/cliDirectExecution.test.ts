@@ -13,7 +13,7 @@ processTest.for([[], ["--version"]] as const)(
     expect(direct.exitCode).toBe(1);
     expect(direct.stdout).toBe("");
     expect(direct.stderr).toContain("dist/cli.js is the command registry");
-    expect(direct.stderr).toContain("scripts/rea.mjs");
+    expect(direct.stderr).toContain("scripts/acl-rea.mjs");
   },
 );
 
@@ -21,7 +21,7 @@ processTest(
   "still serves --version through the dispatcher",
   async ({ processes }) => {
     const dispatched = await processes.run(process.execPath, [
-      "scripts/rea.mjs",
+      "scripts/acl-rea.mjs",
       "--version",
     ]);
     expect(dispatched.exitCode).toBe(0);

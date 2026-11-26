@@ -99,3 +99,4 @@ export const validateMcpHttpCommand = (
     ...(port === undefined ? {} : { port: port.data }),
     ...(allowedHosts === undefined ? {} : { allowedHosts: allowedHosts.data }),
   };
+};

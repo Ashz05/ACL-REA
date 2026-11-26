@@ -24,7 +24,7 @@ export REA_ADB_PATH=/absolute/path/to/adb
 ```
 
 REA never installs the Android SDK, an emulator, or a system image.
-Readiness is `rea inspect-adb-client`: it runs `adb version` and reports the
+Readiness is `acl-rea inspect-adb-client`: it runs `adb version` and reports the
 resolved binary, its version, and where it was selected from. A missing
 binary reports `capability_unavailable` with the `REA_ADB_PATH` remediation
 rather than attempting an installation. A path that cannot resolve to a file
@@ -53,26 +53,26 @@ serial is reachable. Device state is checked by each device operation.
 
 ```sh
 # Device identity
-rea inspect-adb-client
-rea list-adb-devices
-rea inspect-adb-device emulator-5554
-rea inspect-adb-display emulator-5554
-rea list-adb-features emulator-5554
-rea list-adb-services emulator-5554
+acl-rea inspect-adb-client
+acl-rea list-adb-devices
+acl-rea inspect-adb-device emulator-5554
+acl-rea inspect-adb-display emulator-5554
+acl-rea list-adb-features emulator-5554
+acl-rea list-adb-services emulator-5554
 
 # Find and acquire an app (the easy-get flow)
 rea resolve-adb-packages emulator-5554 whatsapp
-rea list-adb-packages emulator-5554 --scope third_party
-rea inspect-adb-package emulator-5554 com.whatsapp
+acl-rea list-adb-packages emulator-5554 --scope third_party
+acl-rea inspect-adb-package emulator-5554 com.whatsapp
 rea pull-adb-package emulator-5554 com.whatsapp --output-directory /tmp/acq
-rea inspect-android-package /tmp/acq/com.whatsapp/base.apk
+acl-rea inspect-android-package /tmp/acq/com.whatsapp/base.apk
 
 # Device state and files
-rea list-adb-processes emulator-5554
-rea inspect-adb-window emulator-5554
+acl-rea list-adb-processes emulator-5554
+acl-rea inspect-adb-window emulator-5554
 rea read-adb-setting emulator-5554 global adb_enabled
 rea read-adb-logcat emulator-5554 --count 200
-rea list-adb-directory emulator-5554 /data/data/com.whatsapp
+acl-rea list-adb-directory emulator-5554 /data/data/com.whatsapp
 rea pull-adb-file emulator-5554 /data/local/tmp/notes.txt --output-directory /tmp/acq
 rea push-adb-file emulator-5554 /tools/frida-server /data/local/tmp/frida-server
 rea capture-adb-screen emulator-5554 --output-directory /tmp/shots
@@ -84,14 +84,14 @@ rea start-adb-app emulator-5554 com.example.app
 rea read-adb-logcat emulator-5554 --pid 12345
 rea start-adb-activity emulator-5554 android.intent.action.VIEW --data-uri https://example.com
 rea stop-adb-app emulator-5554 com.example.app
-rea uninstall-adb-package emulator-5554 com.example.app
+acl-rea uninstall-adb-package emulator-5554 com.example.app
 ```
 
 Equivalent MCP methods use the snake_case names (`list_adb_devices`,
 `pull_adb_package`, `resolve_adb_packages`, …). Device operations take
 `serial` exactly as `adb devices` reports it. The pulled APK set feeds the
 existing analysis families directly, for example
-`rea inspect-android-package /tmp/acq/<package>/base.apk`.
+`acl-rea inspect-android-package /tmp/acq/<package>/base.apk`.
 
 ## Operations
 

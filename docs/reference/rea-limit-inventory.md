@@ -5,8 +5,8 @@ from this revision. The inventory includes numeric `REA_` launch limits and
 the fixed reconnect control generated into the Hopper bridge.
 `scripts/verify/rea-numeric-limits.mjs` checks recognized TypeScript source
 reads (tests excluded) against the environment seeds of
-[`ANALYSIS_SETTINGS`](https://github.com/morluto/rea/blob/main/src/domain/analysisSettingDefinitions.ts) or an
-exception in [`numericLimitRegistry.ts`](https://github.com/morluto/rea/blob/main/src/domain/numericLimitRegistry.ts)
+[`ANALYSIS_SETTINGS`](https://github.com/Ashz05/ACL-REA/blob/main/src/domain/analysisSettingDefinitions.ts) or an
+exception in [`numericLimitRegistry.ts`](https://github.com/Ashz05/ACL-REA/blob/main/src/domain/numericLimitRegistry.ts)
 with a reason. Static syntax recognition cannot prove arbitrary dynamic reads
 or how often a function executes.
 

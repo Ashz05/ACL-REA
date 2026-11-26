@@ -36,7 +36,7 @@ export function hasDeepSeekSkillBody(messages, directory, body) {
     .replaceAll(">", "&gt;");
   const base = `Base directory for this skill: ${escapedDirectory}`;
   const open =
-    '<skill_content name="reverse-engineer-anything">\n<skill_resources>\n';
+    '<skill_content name="acl-reverse-engineer-anything">\n<skill_resources>\n';
   const instructions = `\n</skill_resources>\n\n<skill_instructions>\n${body}\n</skill_instructions>\n</skill_content>`;
   return messages.some(({ content }) => {
     if (typeof content !== "string") return false;

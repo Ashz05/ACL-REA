@@ -45,10 +45,10 @@ const skillDirectory = join(
   account,
   ".agents",
   "skills",
-  "reverse-engineer-anything",
+  "acl-reverse-engineer-anything",
 );
 const expectedDevices = TOOL_CONTRACTS.map(
-  (tool) => "mcp__rea_" + tool.name,
+  (tool) => "mcp__acl-rea_" + tool.name,
 ).sort();
 let clientVersion = null;
 let expectedSkillBody;
@@ -94,7 +94,7 @@ await withVerifierCleanup(async () => {
     const target = join(lab, "fixture α测试");
     await mkdir(target);
     await writeFile(join(target, "app.js"), CLIENT_JAVASCRIPT_FIXTURE_SOURCE);
-    const analysisDevice = "xd://mcp__rea_analyze_javascript_application";
+    const analysisDevice = "xd://mcp__acl-rea_analyze_javascript_application";
     const containsText = (value, text) => {
       if (typeof value === "string") return value.includes(text);
       return (
@@ -128,8 +128,8 @@ await withVerifierCleanup(async () => {
         );
         if (requestIndex === 1)
           return call(requestIndex, "read", {
-            i: "Load REA skill",
-            path: "skill://reverse-engineer-anything:raw",
+            i: "Load ACL-REA skill",
+            path: "skill://acl-reverse-engineer-anything:raw",
           });
         assert(
           expectedSkillBody !== undefined &&
@@ -139,11 +139,11 @@ await withVerifierCleanup(async () => {
         skillLoaded = true;
         if (requestIndex === 2)
           return call(requestIndex, "read", {
-            i: "Inspect REA native tool contract",
+            i: "Inspect ACL-REA native tool contract",
             path: analysisDevice,
           });
         assert(
-          containsText(replies, "# mcp__rea_analyze_javascript_application"),
+          containsText(replies, "# mcp__acl-rea_analyze_javascript_application"),
         );
         assert(
           containsText(replies, "input_path") &&
@@ -182,7 +182,7 @@ await withVerifierCleanup(async () => {
     const original = JSON.stringify(
       {
         mcpServers: { other: { command: "unrelated-server", enabled: false } },
-        disabledServers: ["rea", "other"],
+        disabledServers: ["acl-rea", "other"],
       },
       null,
       2,
@@ -221,7 +221,7 @@ await withVerifierCleanup(async () => {
     const rea = async (args, env = environment) =>
       commands.exec(
         process.execPath,
-        [join(runtimeRoot, "scripts/rea.mjs"), ...args, "--json"],
+        [join(runtimeRoot, "scripts/acl-rea.mjs"), ...args, "--json"],
         { env, cwd: workspace, timeout: 60_000, stdin: "pipe" },
       );
     clientVersion = (
@@ -321,7 +321,7 @@ await withVerifierCleanup(async () => {
         }
       }
     }
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.acl-rea.backup`, "utf8"), original);
     const configured = await readFile(configPath, "utf8");
     const registration = JSON.parse(configured);
     assert.equal(registration.mcpServers.other.command, "unrelated-server");
@@ -331,7 +331,7 @@ await withVerifierCleanup(async () => {
     );
     assert.deepEqual(repeated.appliedActions, []);
     assert.equal(await readFile(configPath, "utf8"), configured);
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.acl-rea.backup`, "utf8"), original);
     expectedSkillBody = await readFile(
       join(skillDirectory, "SKILL.md"),
       "utf8",
@@ -383,12 +383,12 @@ await withVerifierCleanup(async () => {
       .flatMap((event) =>
         event.message.slice("xd://: mounted ".length).split(", "),
       )
-      .filter((name) => name.startsWith("mcp__rea_"));
+      .filter((name) => name.startsWith("mcp__acl-rea_"));
     catalogSize = mounted.length;
     assert.deepEqual(
       mounted.sort(),
       expectedDevices,
-      "Native OMP must mount the complete REA catalog",
+      "Native OMP must mount the complete ACL-REA catalog",
     );
     catalogMounted = true;
     assert(

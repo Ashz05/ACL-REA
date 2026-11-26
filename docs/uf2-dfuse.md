@@ -8,8 +8,8 @@ RP2040 and RP2350 bootloaders, of TinyUF2 on ESP32-S2 and ESP32-S3, and of
 `esptool merge-bin --format uf2`. Decoding is static and needs no external tool.
 
 ```sh
-rea inspect-artifact ./firmware.uf2 --json
-rea inspect-artifact ./firmware.dfu --detail summary --evidence_output evidence.json --json
+acl-rea inspect-artifact ./firmware.uf2 --json
+acl-rea inspect-artifact ./firmware.dfu --detail summary --evidence_output evidence.json --json
 rea extract-artifact ./firmware.uf2 --json
 ```
 

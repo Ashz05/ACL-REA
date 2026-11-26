@@ -36,7 +36,7 @@ if (
   );
 await access(executable);
 const entrypoint =
-  process.argv[2] ?? fileURLToPath(new URL("./rea.mjs", import.meta.url));
+  process.argv[2] ?? fileURLToPath(new URL("./acl-rea.mjs", import.meta.url));
 const run = createVerifierRun();
 const runtime = await VerifierFixture.open({
   prefix: "rea-history-verifier-",

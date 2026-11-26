@@ -23,7 +23,7 @@ const httpCommand = (args: readonly string[]) => {
 const parseMcpHttpArguments = (args: readonly string[]) =>
   validateMcpHttpCommand(httpCommand(args));
 
-describe("rea mcp --http arguments", () => {
+describe("acl-rea mcp --http arguments", () => {
   it("accepts --http with optional host and port in either flag spelling", () => {
     expect(parseMcpHttpArguments(["--http"])).toEqual({ ok: true });
     expect(
@@ -61,7 +61,7 @@ describe("rea mcp --http arguments", () => {
 
   it("renders help from the option schema without Incur global options", () => {
     const help = renderMcpHttpHelp();
-    expect(help).toContain("rea mcp --http");
+    expect(help).toContain("acl-rea mcp --http");
     expect(help).toContain("--host");
     expect(help).toContain("--port");
     expect(help).toContain("MCP_PORT");
@@ -149,7 +149,7 @@ processTest(
   "keeps a flag-shaped output format with the doctor command without starting HTTP",
   async ({ processes }) => {
     const result = await processes.run(process.execPath, [
-      fileURLToPath(new URL("../../../scripts/rea.mjs", import.meta.url)),
+      fileURLToPath(new URL("../../../scripts/acl-rea.mjs", import.meta.url)),
       "mcp",
       "--format",
       "--http",
@@ -173,7 +173,7 @@ processTest(
       ["--port", "8765"],
     ] as const) {
       const result = await processes.run(process.execPath, [
-        fileURLToPath(new URL("../../../scripts/rea.mjs", import.meta.url)),
+        fileURLToPath(new URL("../../../scripts/acl-rea.mjs", import.meta.url)),
         "mcp",
         flag,
         value,
@@ -191,7 +191,7 @@ processTest(
   "rejects an invalid earlier host list before the compiled CLI opens a listener",
   async ({ processes }) => {
     const child = processes.spawn(process.execPath, [
-      fileURLToPath(new URL("../../../scripts/rea.mjs", import.meta.url)),
+      fileURLToPath(new URL("../../../scripts/acl-rea.mjs", import.meta.url)),
       "mcp",
       "--http",
       "--host",

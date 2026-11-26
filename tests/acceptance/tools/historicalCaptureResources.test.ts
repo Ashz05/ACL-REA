@@ -19,7 +19,7 @@ import { parseMcpToolError } from "../../fixtures/mcpToolError.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
 const execute = promisify(execFile);
-const cli = fileURLToPath(new URL("../../../scripts/rea.mjs", import.meta.url));
+const cli = fileURLToPath(new URL("../../../scripts/acl-rea.mjs", import.meta.url));
 const entry = JSON.stringify({
   startedDateTime: "2026-01-01T00:00:00.000Z",
   time: 1,
@@ -113,7 +113,7 @@ it.skipIf(
       },
     });
     expect(JSON.stringify(response)).not.toContain("caller-marked");
-    expect(JSON.stringify(response)).not.toContain("rea doctor");
+    expect(JSON.stringify(response)).not.toContain("acl-rea doctor");
     const remediation = String(exhausted.error.remediation?.action ?? "");
     expect(remediation).toContain(
       captureDecoderHeapContinuingRecovery(testHeap),

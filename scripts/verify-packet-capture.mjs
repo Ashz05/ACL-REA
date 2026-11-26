@@ -30,7 +30,7 @@ if (process.platform !== "linux")
 if (!isAbsolute(process.env.REA_TSHARK_COMMAND ?? ""))
   throw new Error("Supply absolute REA_TSHARK_COMMAND for TShark 4.x.");
 const entrypoint =
-  process.argv[2] ?? fileURLToPath(new URL("./rea.mjs", import.meta.url));
+  process.argv[2] ?? fileURLToPath(new URL("./acl-rea.mjs", import.meta.url));
 const run = createVerifierRun();
 const root = await VerifierFixture.open({
   prefix: "rea-capture-verifier-",

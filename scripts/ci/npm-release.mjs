@@ -14,7 +14,7 @@ export async function readNpmRelease(version, request = fetch) {
   return readQualifiedNpmRelease(version, releaseNpmTag(version), request);
 }
 
-/** REA update follows stable latest even when the candidate is published on next. */
+/** ACL-REA update follows stable latest even when the candidate is published on next. */
 export function stableUpdateVersion(version, published) {
   if (published.status !== "published" || published.taggedVersion !== version)
     throw new Error(`npm does not select ${version} on its release channel`);
@@ -45,7 +45,7 @@ export async function waitForNpmRelease(
     if (attempt < attempts) await pause(intervalMs);
   }
   throw new Error(
-    `rea-agents@${version} was not visible on npm after ${attempts} attempts over ${windowMinutes} minutes. Re-run the failed verification after the version becomes visible.`,
+    `acl-rea-agents@${version} was not visible on npm after ${attempts} attempts over ${windowMinutes} minutes. Re-run the failed verification after the version becomes visible.`,
   );
 }
 
@@ -65,7 +65,7 @@ async function main() {
   if (process.env.GITHUB_STEP_SUMMARY !== undefined) {
     await appendFile(
       process.env.GITHUB_STEP_SUMMARY,
-      `npm: rea-agents@${version} is published, matches the qualified tarball, and is selected by ${published.tag}.\n`,
+      `npm: acl-rea-agents@${version} is published, matches the qualified tarball, and is selected by ${published.tag}.\n`,
     );
   }
   process.stdout.write(`${JSON.stringify({ version, ...published })}\n`);

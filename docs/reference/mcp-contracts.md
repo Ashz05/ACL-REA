@@ -378,7 +378,7 @@ complete discovery of all code or strings. An unbound source keeps
 The CLI uses the same projector. For an original complete Evidence JSON file,
 write `{"source":{"kind":"evidence-file","path":"/absolute/source.json"},"view":{"kind":"native-inventory","limit":32}}`
 to `/absolute/view-request.json`, then run
-`rea inspect-analysis-view /absolute/view-request.json --json`. This also reads
+`acl-rea inspect-analysis-view /absolute/view-request.json --json`. This also reads
 pre-summary source records without changing their identity; no live provider is started.
 
 Unavailable or inapplicable native collections keep `items.rows: null` and
@@ -600,7 +600,7 @@ No matches means no direct referrers among the examined retained records; it
 does not establish absence elsewhere or validate a conclusion.
 
 For a portable exported bundle, the CLI shares this projection:
-`rea inspect-evidence-bundle '{"path":"/tmp/evidence.json","detail":"summary","filters":{"operation":"analyze_function"},"offset":0,"limit":64}' --format json`.
+`acl-rea inspect-evidence-bundle '{"path":"/tmp/evidence.json","detail":"summary","filters":{"operation":"analyze_function"},"offset":0,"limit":64}' --format json`.
 Follow `page.next_offset` to discover further matching records without their
 payloads, or omit both paging fields for the complete summary.
 `"detail":"records"` with an `evidence_id` filter returns that complete record,
@@ -698,7 +698,7 @@ client deadline. Configure the client's tool timeout with execution, cleanup
 and delivery headroom, or report that change is needed when not authorized.
 Session status does not establish that all target-free work stopped. Detailed
 host settings and bounded retry guidance live in the shipped skill's
-[recovery reference](https://github.com/morluto/rea/blob/main/.agents/skills/reverse-engineer-anything/references/connection-and-recovery.md#distinguish-client-and-server-deadlines).
+[recovery reference](https://github.com/Ashz05/ACL-REA/blob/main/.agents/skills/acl-reverse-engineer-anything/references/connection-and-recovery.md#distinguish-client-and-server-deadlines).
 
 ### Untrusted target content
 
@@ -1144,7 +1144,7 @@ operation can change either selection; call `binary_session` for current state. 
 not establish provider readiness or resource cleanup.
 
 `binary_session` reports the active package, server, SDK, and negotiated
-protocol details. `rea doctor` separately inspects supported JSON/TOML client
+protocol details. `acl-rea doctor` separately inspects supported JSON/TOML client
 registrations, reports their command vectors as aligned, stale, missing, or
 invalid, and keeps live-server state `unknown` unless the active connection
 supplies identity.
@@ -1409,7 +1409,7 @@ Use `open_bundle_resources` for a bundle whose executable cannot be resolved.
 When `path` is omitted and the open target is itself a plist, a plist that
 cannot be read or decoded is reported against that target
 (`target_unavailable`), not as an input issue on `path`.
-The CLI `rea inspect-plist <path>` opens its selected artifact for one invocation.
+The CLI `acl-rea inspect-plist <path>` opens its selected artifact for one invocation.
 
 Each provider client receives `binary_session.analysis_run.run_id` before any
 provider startup, including clients whose startup fails. `process_lineage` is
@@ -1471,7 +1471,7 @@ described below.
 
 The source-checkout helper `node scripts/print-mcp-config.mjs /path/to/target`
 prints a registration containing these settings; `--kind database` selects the
-database kind. The helper is not part of the installed npm package. `rea setup`
+database kind. The helper is not part of the installed npm package. `acl-rea setup`
 does not copy these one-shot target settings into generated registrations.
 
 ## Transports
@@ -1486,7 +1486,7 @@ startup capacity ends startup with a transport resource constraint; it has no
 runtime override. HTTP startup never reads stdin.
 
 stdio is the default transport and the only one that client registrations,
-`rea mcp doctor` and the MCP registry entry describe. `rea mcp --http [--host H]
+`acl-rea mcp doctor` and the MCP registry entry describe. `acl-rea mcp --http [--host H]
 [--port N]` is an opt-in alternative that serves the same catalog over the
 streamable HTTP transport at `/mcp`; it replaces stdio for that process rather
 than running beside it. Host and port come from the flags, then `MCP_HOST` and
@@ -1563,7 +1563,7 @@ On such a bind, requests whose `Host` header is outside the SDK loopback allowli
 the configured name and the bound address are refused with `403`, and a browser
 `Origin` outside that allowlist is refused the same way (a missing `Origin`
 passes). A non-loopback bind requires `MCP_ALLOWED_HOSTS`, or
-`--allowed-hosts` for `rea mcp --http`, listing every client host name or IP
+`--allowed-hosts` for `acl-rea mcp --http`, listing every client host name or IP
 address. Configuration validates and canonicalizes complete tokens once;
 URLs, ports and empty entries are refused. Both Host and Origin checks remain
 active on that declared list. The announced URL uses the bound hostname if
@@ -2350,7 +2350,7 @@ or reconnect using `REA_MCP_TOOL_CATALOG_PROFILE=full`.
 
 The catalog identity covers the complete in-scope inventory, the discovery
 contract and the hot/cold policy; its count includes `discover_tools`. It differs
-from full advertisement and remains stable as tools load. `rea mcp doctor`
+from full advertisement and remains stable as tools load. `acl-rea mcp doctor`
 checks the profile's initial advertisement and identity. The domain inventory in
 `binary_session.tool_availability` continues to describe provider and target
 availability, independently of whether a definition is loaded. Load a listed
@@ -2387,7 +2387,7 @@ doctor treats a server without the prompts capability as an empty inventory.
 Recovery instructions recommend runtime settings tools only when `application`
 is advertised; otherwise they explain launch settings and how to widen the scope.
 The server identity digest and
-`rea mcp doctor` tool and prompt inventory derive from the
+`acl-rea mcp doctor` tool and prompt inventory derive from the
 same selected scope, so a scoped server reports itself healthy; a scope
 without the `session` family cannot serve `binary_session`, and doctor says
 so explicitly instead of reporting a mismatch. Canonical server-side
@@ -2396,7 +2396,7 @@ the tools that remain advertised. The default (unset) advertises the complete
 catalog exactly as before. Saved registrations with an invalid selection
 report `invalid` in status instead of starting a server that fails.
 
-`rea setup --client <id> --tool-families <ids>` writes the same selection
+`acl-rea setup --client <id> --tool-families <ids>` writes the same selection
 into the `env` object of that client's `rea` entry, so the scope travels with
 the registration; rerunning setup with a different selection refreshes it.
 
@@ -2566,7 +2566,7 @@ Custom clients upgrading from 6.1 should follow the
 Run `npm run docs:generate` in a source checkout to generate the machine-readable
 catalog at `docs/public/product-catalog.json`. Run `npm run docs:build` and
 `npm run docs:preview` to serve it locally at `/rea/product-catalog.json`. A
-successful [CI documentation job](https://github.com/morluto/rea/blob/main/.github/workflows/ci.yml)
+successful [CI documentation job](https://github.com/Ashz05/ACL-REA/blob/main/.github/workflows/ci.yml)
 uploads the catalog, packaged skill, and portable conformance projections in
 the `generated-docs` artifact. These copies describe the source revision that
 generated them. For a running server, use `binary_session` for catalog identity

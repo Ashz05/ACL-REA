@@ -71,7 +71,7 @@ describe("additional client configuration dialects", () => {
     };
     await writeFile(
       cursor.configPath,
-      JSON.stringify({ mcpServers: { rea: registration } }),
+      JSON.stringify({ mcpServers: { "acl-rea": registration } }),
     );
 
     expect(
@@ -89,7 +89,7 @@ describe("additional client configuration dialects", () => {
     const after = parseJsonc(await readFile(cursor.configPath, "utf8")) as {
       readonly mcpServers: Readonly<Record<string, unknown>>;
     };
-    expect(after.mcpServers.rea).toEqual(registration);
+    expect(after.mcpServers["acl-rea"]).toEqual(registration);
   });
 
   it("treats an empty XDG config home as unset for OpenCode setup", async () => {
@@ -207,7 +207,7 @@ describe("OpenCode JSONC registration edits", () => {
       await configureClientConfiguration(client, {}, command),
     ).toMatchObject({
       status: "configured",
-      backupPath: `${client.configPath}.rea.backup`,
+      backupPath: `${client.configPath}.acl-rea.backup`,
     });
     const updated = await readFile(client.configPath, "utf8");
     const errors: ParseError[] = [];
@@ -219,7 +219,7 @@ describe("OpenCode JSONC registration edits", () => {
     expect(updated).toContain("// An independently managed server.");
     expect(parsed.model).toBe("provider/model");
     expect((parsed.mcp as Record<string, unknown>).other).toBeDefined();
-    expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
       original,
     );
 
@@ -234,7 +234,7 @@ describe("OpenCode JSONC registration edits", () => {
     expect(removedErrors).toEqual([]);
     expect(removedText).toContain("// Client-wide preferences stay intact.");
     expect(removedText).toContain("// An independently managed server.");
-    expect((removed.mcp as Record<string, unknown>).rea).toBeUndefined();
+    expect((removed.mcp as Record<string, unknown>)["acl-rea"]).toBeUndefined();
     expect((removed.mcp as Record<string, unknown>).other).toBeDefined();
   });
 
@@ -252,12 +252,12 @@ describe("OpenCode JSONC registration edits", () => {
     });
     expect(await readFile(client.configPath, "utf8")).toBe(invalid);
     await expect(
-      readFile(`${client.configPath}.rea.backup`),
+      readFile(`${client.configPath}.acl-rea.backup`),
     ).rejects.toMatchObject({ code: "ENOENT" });
   });
 });
 
-const ownedCursorRow = '"rea": { "command": "rea", "args": ["mcp"] }';
+const ownedCursorRow = '"rea": { "command": "acl-rea", "args": ["mcp"] }';
 const cursorPeer = '"peer": { "command": "peer" }';
 const cursorFollowing = '"following": { "command": "following" }';
 const peer = { peer: { command: "peer" } };
@@ -315,7 +315,7 @@ it.each<{
     const configPath = join(home, ".cursor", "mcp.json");
     await mkdir(join(home, ".cursor"));
     const original = `{ // Client preferences\n"theme": "dark",\n"mcpServers": {\n${body}}}\n`;
-    const firstBackup = `${configPath}.rea.backup`;
+    const firstBackup = `${configPath}.acl-rea.backup`;
     const historical = '{"theme":"before setup"}\n';
     await writeFile(configPath, original);
     if (repeat) await writeFile(firstBackup, historical);
@@ -402,7 +402,7 @@ describe("OpenCode V2 native server table", () => {
       timeout: { catalog: 30000 },
       servers: {
         other: { type: "local", command: ["node", "other.js"] },
-        rea: { type: "local", command: [...command], disabled: false },
+        "acl-rea": { type: "local", command: [...command], disabled: false },
       },
     });
     expect(await hostRegistrationStatuses(home)).toEqual(
@@ -431,7 +431,7 @@ describe("OpenCode V2 native server table", () => {
     const stale = ["npx", "-y", `${PRODUCT_IDENTITY.packageName}@3.2.0`, "mcp"];
     await writeFile(
       client.configPath,
-      `${JSON.stringify({ mcp: { servers: { rea: { type: "local", command: stale } } } })}\n`,
+      `${JSON.stringify({ mcp: { servers: { "acl-rea": { type: "local", command: stale } } } })}\n`,
     );
 
     expect(await hostRegistrationStatuses(home)).toEqual(
@@ -446,7 +446,7 @@ describe("OpenCode V2 native server table", () => {
       parseOpenCode(await readFile(client.configPath, "utf8")).mcp,
     ).toEqual({
       servers: {
-        rea: { type: "local", command: [...command], disabled: false },
+        "acl-rea": { type: "local", command: [...command], disabled: false },
       },
     });
     expect((await systemUninstallHost(home).removeClient(client)).status).toBe(
@@ -500,7 +500,7 @@ describe("OpenCode V2 native server table", () => {
       parseOpenCode(await readFile(client.configPath, "utf8")).mcp,
     ).toEqual({
       servers,
-      rea: { type: "local", command: [...command], enabled: true },
+      "acl-rea": { type: "local", command: [...command], enabled: true },
     });
   });
 });
@@ -512,7 +512,7 @@ it("removes an owned V2 array launcher despite obsolete args beside a server nam
     mcp: {
       servers: {
         type: typeServer,
-        rea: { type: "local", command, args: [1] },
+        "acl-rea": { type: "local", command, args: [1] },
       },
     },
   });
@@ -532,7 +532,7 @@ it("removes an owned V2 array launcher despite obsolete args beside a server nam
   expect(parseOpenCode(await readFile(client.configPath, "utf8")).mcp).toEqual({
     servers: { type: typeServer },
   });
-  expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+  expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
     original,
   );
 });
@@ -547,7 +547,7 @@ describe("OpenCode project-scoped registration", () => {
 
     const configuration = (argv: readonly string[]) => ({
       mcp: {
-        servers: { rea: { type: "local", command: argv, disabled: false } },
+        servers: { "acl-rea": { type: "local", command: argv, disabled: false } },
       },
     });
     const projectPath = join(projectDir, "opencode.json");
@@ -569,12 +569,12 @@ describe("OpenCode project-scoped registration", () => {
       ({ name }) => name === "opencode",
     );
     if (userClient === undefined) throw new Error("missing OpenCode client");
-    const stale = ["npx", "-y", "rea-agents@1.0.0", "mcp"];
+    const stale = ["npx", "-y", "acl-rea-agents@1.0.0", "mcp"];
     await mkdir(dirname(userClient.configPath), { recursive: true });
     await writeFile(
       userClient.configPath,
       JSON.stringify({
-        mcp: { rea: { type: "local", command: stale, enabled: true } },
+        mcp: { "acl-rea": { type: "local", command: stale, enabled: true } },
       }),
     );
 
@@ -604,7 +604,7 @@ describe("OpenCode project-scoped registration", () => {
     vi.spyOn(process, "cwd").mockReturnValue(projectDir);
 
     const alignedCommand = command;
-    const staleCommand = ["npx", "-y", "rea-agents@1.0.0", "mcp"];
+    const staleCommand = ["npx", "-y", "acl-rea-agents@1.0.0", "mcp"];
 
     const projectConfigPath = resolve(projectDir, "opencode.json");
     await writeFile(
@@ -612,7 +612,7 @@ describe("OpenCode project-scoped registration", () => {
       JSON.stringify({
         mcp: {
           servers: {
-            rea: {
+            "acl-rea": {
               type: "local",
               command: staleCommand,
               enabled: true,
@@ -637,7 +637,7 @@ describe("OpenCode project-scoped registration", () => {
       `Replace the launcher in ${projectConfigPath} with the installed JavaScript runtime and REA entry script`,
     );
     expect(status?.remediation).toContain(
-      "remove the project override and run rea setup --client opencode",
+      "remove the project override and run acl-rea setup --client opencode",
     );
 
     // Disabled project registration
@@ -646,7 +646,7 @@ describe("OpenCode project-scoped registration", () => {
       JSON.stringify({
         mcp: {
           servers: {
-            rea: {
+            "acl-rea": {
               type: "local",
               command: alignedCommand,
               disabled: true,
@@ -797,8 +797,8 @@ describe("platform-aware client config paths", () => {
 
 describe("client registration command ownership", () => {
   it.skipIf(process.platform === "win32").each([
-    ["rea", "rea-agents"],
-    ["rea-agents", "rea"],
+    ["acl-rea", "acl-rea-agents"],
+    ["acl-rea-agents", "acl-rea"],
   ])(
     "recognizes %s through its %s launcher alias",
     async (registered, current) => {
@@ -826,13 +826,13 @@ describe("client registration command ownership", () => {
       const foreign = join(root, "other.mjs");
       await writeFile(owned, "// owned\n");
       await writeFile(foreign, "// foreign\n");
-      await symlink(owned, join(root, "rea"));
-      await symlink(foreign, join(root, "rea-agents"));
+      await symlink(owned, join(root, "acl-rea"));
+      await symlink(foreign, join(root, "acl-rea-agents"));
       await symlink(join(root, "missing.mjs"), join(root, "missing"));
-      for (const candidate of ["rea-agents", "missing"]) {
+      for (const candidate of ["acl-rea-agents", "missing"]) {
         const command = [join(root, candidate), "mcp"];
         expect(
-          classifyClientRegistrationCommand(command, join(root, "rea")),
+          classifyClientRegistrationCommand(command, join(root, "acl-rea")),
         ).toBe(candidate === "missing" ? "unknown" : "foreign");
       }
     },
@@ -923,7 +923,7 @@ describe("client launcher traversal semantics", () => {
   );
 
   it("recognizes prior exact REA releases while rejecting foreign package commands", () => {
-    expect(classifyClientRegistrationCommand(["rea", "mcp"], undefined)).toBe(
+    expect(classifyClientRegistrationCommand(["acl-rea", "mcp"], undefined)).toBe(
       "owned",
     );
     const cwdMatchingEntry = resolve("./rea");

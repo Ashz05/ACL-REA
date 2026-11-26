@@ -32,7 +32,7 @@ export async function createVerifierCommands(){
    if(args.includes('setup')){
     assert(args.includes('cline'));assert.equal(options.cwd,env.HOME);
     const path=join(env.HOME,'.cline','data','settings');await mkdir(path,{recursive:true});
-    await writeFile(join(path,'cline_mcp_settings.json'),JSON.stringify({mcpServers:{rea:{command:'recorded-server',args:['mcp'],env:{RECORDED:'yes'}}}}));
+    await writeFile(join(path,'cline_mcp_settings.json'),JSON.stringify({mcpServers:{"acl-rea":{command:'recorded-server',args:['mcp'],env:{RECORDED:'yes'}}}}));
     await event('setup');return {stdout:'{}',stderr:''};
    }
    assert.deepEqual(args,['--data-dir',join(env.HOME,'.cline','data'),'config','mcp']);

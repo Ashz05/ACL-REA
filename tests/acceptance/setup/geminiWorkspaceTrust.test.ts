@@ -198,7 +198,7 @@ for (const scenario of [
         Buffer.compare(await readFile(fixture.user), fixture.originalUser),
       ).toBe(0);
       await expect(
-        access(`${fixture.workspace}.rea.backup`),
+        access(`${fixture.workspace}.acl-rea.backup`),
       ).rejects.toMatchObject({
         code: "ENOENT",
       });
@@ -277,7 +277,7 @@ cliTest(
         Buffer.compare(await readFile(fixture.user), fixture.originalUser),
       ).toBe(0);
       await expect(
-        access(`${fixture.workspace}.rea.backup`),
+        access(`${fixture.workspace}.acl-rea.backup`),
       ).rejects.toMatchObject({
         code: "ENOENT",
       });

@@ -59,7 +59,7 @@ const skillDirectory = join(
   account,
   ".agents",
   "skills",
-  "reverse-engineer-anything",
+  "acl-reverse-engineer-anything",
 );
 assert.equal(
   isPathWithinRoot(skillDirectory, `${skillDirectory}-sibling/AGENTS.md`),
@@ -194,11 +194,11 @@ await withVerifierCleanup(async () => {
           const skill = tools.find((t) => t.name === "skill");
           assert(skill, "OpenCode must expose its native skill tool");
           skillRequested = true;
-          return call(skill.name, { name: "reverse-engineer-anything" });
+          return call(skill.name, { name: "acl-reverse-engineer-anything" });
         }
         assert(
           skillLoaded,
-          "OpenCode must load the installed personal REA skill",
+          "OpenCode must load the installed personal ACL-REA skill",
         );
         return call(analysis.name, { input_path: target, format: "directory" });
       },
@@ -259,7 +259,7 @@ await withVerifierCleanup(async () => {
       join(skillDirectory, "SKILL.md"),
       "utf8",
     );
-    assert(installedSkill.includes("name: reverse-engineer-anything"));
+    assert(installedSkill.includes("name: acl-reverse-engineer-anything"));
     const skillLines = installedSkill.split("\n");
     const headerEnd = skillLines.indexOf("---", 1);
     assert(

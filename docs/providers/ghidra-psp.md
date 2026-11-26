@@ -53,7 +53,7 @@ Do not modify the Ghidra installation while a session is running.
 ## Ordinary public interfaces
 
 ```bash
-rea analyze /absolute/path/to/psp.elf --provider ghidra --json
+acl-rea analyze /absolute/path/to/psp.elf --provider ghidra --json
 rea function /absolute/path/to/psp.elf function_name --provider ghidra --json
 ```
 

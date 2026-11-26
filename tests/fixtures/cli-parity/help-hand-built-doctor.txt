@@ -1,9 +1,9 @@
-$ rea doctor --help
+$ acl-rea doctor --help
 exit: 0
 --- stdout
-rea doctor — Check whether REA is ready
+acl-rea doctor — Check whether REA is ready
 
-Usage: rea doctor [options]
+Usage: acl-rea doctor [options]
 
 Options:
   --target <string>   Optional app path to check

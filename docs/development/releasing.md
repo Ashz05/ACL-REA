@@ -85,7 +85,7 @@ success or failure without replacing your shell's own trap.
   set -eu
   work="$(mktemp -d)"
   trap 'rm -rf "$work"' EXIT
-  gh run download "$RELEASE_RUN_ID" --repo morluto/rea \
+  gh run download "$RELEASE_RUN_ID" --repo Ashz05/ACL-REA \
     --name verified-release-package --dir "$work/verified"
   npm install --ignore-scripts --no-save --no-package-lock --no-audit --no-fund \
     --prefix "$work/prefix" "$work/verified/package.tgz"
@@ -94,7 +94,7 @@ success or failure without replacing your shell's own trap.
     -r scripts/verify/advertised-schemas/requirements.txt
   REA_REQUIRE_SCHEMA_ENGINES=1 REA_SCHEMA_ENGINES_PYTHON="$work/engines/bin/python" \
     node scripts/verify-advertised-schemas.mjs --complete \
-    --package-root="$work/prefix/node_modules/rea-agents"
+    --package-root="$work/prefix/node_modules/acl-rea-agents"
 )
 ```
 
@@ -212,14 +212,14 @@ already-applied patch fails closed.
 
 ## Contributor-aware release notes
 
-Use [the rea-changelog-update skill](https://github.com/morluto/rea/blob/main/.agents/skills/rea-changelog-update/SKILL.md)
+Use [the acl-rea-changelog-update skill](https://github.com/Ashz05/ACL-REA/blob/main/.agents/skills/acl-rea-changelog-update/SKILL.md)
 to turn the bot draft into grouped Highlights, Changes, and Fixes with inline
 `Thanks @...` credit. `npm run release:notes -- inventory` collects the full
 selected Git range and paginated GitHub PR/author/closing-issue metadata;
 `record --summary` produces a compact provenance link for public notes, while
 `record` produces the full record for review. Credit a contribution once even
 when it appears in highlights, details and migrations; omit maintainer
-`@morluto` self-thanks. Keep complete authorship metadata in the inventory
+`@Ashz05` self-thanks. Keep complete authorship metadata in the inventory
 instead of duplicating a credit ledger in the release body. `check` validates credits
 and optional PR-body equality, and `render` writes the verified release section.
 Run a subcommand without its required options to see its usage. GitHub reads
@@ -234,7 +234,7 @@ and checkpoint checks. The contribution inventory is a reviewed snapshot, not
 a signed attestation; the offline checker verifies local range coverage and
 credit consistency, not GitHub's authorship independently.
 
-Before editing the live PR, add `rea:release-notes-finalized` to prevent ordinary
+Before editing the live PR, add `acl-rea:release-notes-finalized` to prevent ordinary
 main-push proposals from overwriting the editorial notes. Wait for any already
 running proposal to finish. The guard applies to main-push automation; do not
 run manual checkpoint preparation over finalized notes. Remove the label to
@@ -427,7 +427,7 @@ the combined contracts with the released package version.
 Before merging, check whether GitHub permits merge commits:
 
 ```bash
-gh api repos/morluto/rea --jq .allow_merge_commit
+gh api repos/Ashz05/ACL-REA --jq .allow_merge_commit
 ```
 
 If disabled, a maintainer must arrange an approved ancestry-preserving merge
@@ -450,7 +450,7 @@ tag is an ancestor of main:
 
 ```bash
 git fetch origin main --tags
-git merge-base --is-ancestor rea-agents-5.0.0 origin/main
+git merge-base --is-ancestor acl-rea-agents-5.0.0 origin/main
 ```
 
 Close the superseded main proposal before merging the synchronization PR.

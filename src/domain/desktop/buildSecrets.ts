@@ -19,7 +19,7 @@ export const buildSecretHandleSchema = z
   .string()
   .regex(/^[a-z0-9][a-z0-9._\-]{0,62}$/u)
   .describe(
-    "The handle of a secret: the name of a file the person wrote in REA's build-secrets folder. Lowercase letters, digits, dot, dash and underscore.",
+    "The handle of a secret: the name of a file the person wrote in ACL-REA's build-secrets folder. Lowercase letters, digits, dot, dash and underscore.",
   );
 
 /** The fewest characters a secret holds, so a scan can tell it from ordinary text. */

@@ -84,20 +84,18 @@ it.skipIf(process.platform === "win32")(
       configPath: existing,
     } as const;
     expect(
-      await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+      await configureClientConfiguration(client, {}, ["acl-rea", "mcp"]),
     ).toMatchObject({ status: "configured" });
     expect((await lstat(existing)).mode & 0o777).toBe(0o640);
-    expect((await lstat(`${existing}.rea.backup`)).mode & 0o777).toBe(0o640);
-    expect(await readFile(`${existing}.rea.backup`, "utf8")).toBe(original);
+    expect((await lstat(`${existing}.acl-rea.backup`)).mode & 0o777).toBe(0o640);
+    expect(await readFile(`${existing}.acl-rea.backup`, "utf8")).toBe(original);
     expect(
-      await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+      await configureClientConfiguration(client, {}, ["acl-rea", "mcp"]),
     ).toMatchObject({ status: "unchanged" });
     expect((await lstat(existing)).mode & 0o777).toBe(0o640);
 
     expect(
-      await configureClientConfiguration({ ...client, configPath: fresh }, {}, [
-        "rea",
-        "mcp",
+      await configureClientConfiguration({ ...client, configPath: fresh }, {}, ["acl-rea", "mcp",
       ]),
     ).toMatchObject({ status: "configured" });
     expect((await lstat(fresh)).mode & 0o777).toBe(0o600);
@@ -128,7 +126,7 @@ const editedSinceSetup = async (prefix: string) => {
   const beforeSetup = '{"keep":"before setup"}\n';
   await writeFile(configPath, beforeSetup);
   expect(
-    await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+    await configureClientConfiguration(client, {}, ["acl-rea", "mcp"]),
   ).toMatchObject({ status: "configured" });
   const configured = JSON.parse(await readFile(configPath, "utf8")) as Record<
     string,
@@ -136,7 +134,7 @@ const editedSinceSetup = async (prefix: string) => {
   >;
   const beforeUninstall = `${JSON.stringify({ ...configured, keep: "edited after setup" }, null, 2)}\n`;
   await writeFile(configPath, beforeUninstall);
-  const recoveryPath = `${configPath}.rea.backup.${createHash("sha256")
+  const recoveryPath = `${configPath}.acl-rea.backup.${createHash("sha256")
     .update(beforeUninstall, "utf8")
     .digest("hex")}.recovery`;
   return {
@@ -149,7 +147,7 @@ const editedSinceSetup = async (prefix: string) => {
   };
 };
 
-const refreshedLauncher = ["npx", "-y", "rea-agents", "mcp"] as const;
+const refreshedLauncher = ["npx", "-y", "acl-rea-agents", "mcp"] as const;
 
 describe("uninstall backups after edits made since setup", () => {
   it("preserves the pre-uninstall bytes when removal succeeds", async () => {
@@ -168,7 +166,7 @@ describe("uninstall backups after edits made since setup", () => {
       keep: "edited after setup",
       mcpServers: {},
     });
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(
       beforeSetup,
     );
     expect(await readFile(recoveryPath, "utf8")).toBe(beforeUninstall);
@@ -251,7 +249,7 @@ describe("uninstall backups after edits made since setup", () => {
       expect(failed?.detail).toContain(recoveryPath);
       expect(failed?.detail).toContain(guidance);
       expect(failed?.detail).not.toContain(fault.message);
-      expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(
+      expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(
         beforeSetup,
       );
       expect(await readFile(recoveryPath, "utf8")).toBe(beforeUninstall);
@@ -308,11 +306,11 @@ it("accepts a literal UTF-8 replacement character without changing its value", a
       configPath,
     },
     {},
-    ["rea", "mcp"],
+    ["acl-rea", "mcp"],
   );
   expect(result.status).toBe("configured");
   expect(
-    Buffer.compare(await readFile(`${configPath}.rea.backup`), original),
+    Buffer.compare(await readFile(`${configPath}.acl-rea.backup`), original),
   ).toBe(0);
   expect(JSON.parse(await readFile(configPath, "utf8")).label).toBe("\uFFFD");
 });
@@ -320,7 +318,7 @@ it("accepts a literal UTF-8 replacement character without changing its value", a
 it("previews the recovery path without writing and then backs up the applied update", async () => {
   const { configPath, client, beforeSetup, beforeUninstall, recoveryPath } =
     await editedSinceSetup("rea-client-current-recovery-");
-  const firstBackup = `${configPath}.rea.backup`;
+  const firstBackup = `${configPath}.acl-rea.backup`;
   expect(
     await inspectClientConfiguration(client, {}, refreshedLauncher),
   ).toEqual({
@@ -339,7 +337,7 @@ it("previews the recovery path without writing and then backs up the applied upd
   });
   expect(JSON.parse(await readFile(configPath, "utf8"))).toMatchObject({
     keep: "edited after setup",
-    mcpServers: { rea: { command: "npx", args: ["-y", "rea-agents", "mcp"] } },
+    mcpServers: { "acl-rea": { command: "npx", args: ["-y", "acl-rea-agents", "mcp"] } },
   });
   expect(await readFile(firstBackup, "utf8")).toBe(beforeSetup);
   expect(await readFile(recoveryPath, "utf8")).toBe(beforeUninstall);
@@ -372,7 +370,7 @@ it("blocks setup and uninstall when the current backup path is occupied", async 
     detail: expect.stringContaining(recoveryPath),
   });
   expect(await readFile(configPath, "utf8")).toBe(beforeUninstall);
-  expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(beforeSetup);
+  expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(beforeSetup);
   expect(await readFile(recoveryPath, "utf8")).toBe("occupied by other data");
 });
 
@@ -400,7 +398,7 @@ it.skipIf(process.platform === "win32" || process.getuid?.() === 0)(
         },
       });
       await expect(lstat(configPath)).rejects.toMatchObject({ code: "ENOENT" });
-      await expect(lstat(`${configPath}.rea.backup`)).rejects.toMatchObject({
+      await expect(lstat(`${configPath}.acl-rea.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
     } finally {
@@ -414,7 +412,7 @@ describe("TOML client configuration comparison", () => {
     const value = "-inf";
     const root = await createTestTempDirectory("rea-client-toml-");
     const configPath = join(root, "config.toml");
-    const original = `unrelated = ${value}\n[mcp_servers.rea]\ncommand = "npx"\nargs = ["-y", "rea-agents@6.1.0", "mcp"]\nstartup_timeout_sec = ${value}\n`;
+    const original = `unrelated = ${value}\n[mcp_servers.acl-rea]\ncommand = "npx"\nargs = ["-y", "acl-rea-agents@6.1.0", "mcp"]\nstartup_timeout_sec = ${value}\n`;
     await writeFile(configPath, original);
     const client = {
       name: "codex",
@@ -423,17 +421,17 @@ describe("TOML client configuration comparison", () => {
       configPath,
     } as const;
     expect(
-      await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+      await configureClientConfiguration(client, {}, ["acl-rea", "mcp"]),
     ).toEqual({
       status: "configured",
-      backupPath: `${configPath}.rea.backup`,
+      backupPath: `${configPath}.acl-rea.backup`,
     });
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
     expect(await readFile(configPath, "utf8")).toContain(
       `unrelated = ${value}`,
     );
     expect(
-      await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+      await configureClientConfiguration(client, {}, ["acl-rea", "mcp"]),
     ).toEqual({
       status: "unchanged",
     });
@@ -444,7 +442,7 @@ const unrelatedToml = [
   "# Keep this explanation.",
   'notify = ["a", "b"]',
   "literal = 'C:\\demo\\path'",
-  'disabled_mcp_servers = ["rea", "other"] # Not a Codex registration.',
+  'disabled_mcp_servers = ["acl-rea", "other"] # Not a Codex registration.',
   "",
 ].join("\n");
 
@@ -469,17 +467,17 @@ describe("Codex configuration text preservation", () => {
   it.each([
     {
       name: "quoted tables and nested environment",
-      original: `${unrelatedToml}[mcp_servers."rea"]\ncommand = "npx"\nargs = ["-y", "rea-agents@6.1.0", "mcp"]\n[mcp_servers.rea.env]\nOLD = "value"\n${unrelatedServer}`,
+      original: `${unrelatedToml}[mcp_servers.acl-rea]\ncommand = "npx"\nargs = ["-y", "acl-rea-agents@6.1.0", "mcp"]\n[mcp_servers.acl-rea.env]\nOLD = "value"\n${unrelatedServer}`,
       preserved: [unrelatedToml, unrelatedServer],
     },
     {
       name: "dotted registration keys",
-      original: `${unrelatedToml}mcp_servers.rea.command = "npx"\nmcp_servers.rea.args = ["-y", "rea-agents@6.1.0", "mcp"]\n${unrelatedServer}`,
+      original: `${unrelatedToml}mcp_servers.acl-rea.command = "npx"\nmcp_servers.acl-rea.args = ["-y", "acl-rea-agents@6.1.0", "mcp"]\n${unrelatedServer}`,
       preserved: [unrelatedToml, unrelatedServer],
     },
     {
       name: "inline server table",
-      original: `${unrelatedToml}mcp_servers = { rea = { command = "npx", args = ["-y", "rea-agents@6.1.0", "mcp"] }, other = { command = 'other' } } # Shared table.\n`,
+      original: `${unrelatedToml}mcp_servers = { acl-rea = { command = "npx", args = ["-y", "acl-rea-agents@6.1.0", "mcp"] }, other = { command = 'other' } } # Shared table.\n`,
       preserved: [
         unrelatedToml,
         "other = { command = 'other' }",
@@ -489,13 +487,13 @@ describe("Codex configuration text preservation", () => {
     {
       name: "BOM, CRLF, and multiline text resembling a registration",
       original:
-        `\uFEFF${unrelatedToml}banner = '''\n[mcp_servers.rea]\n# This is string content.\n'''\n`.replaceAll(
+        `\uFEFF${unrelatedToml}banner = '''\n[mcp_servers.acl-rea]\n# This is string content.\n'''\n`.replaceAll(
           "\n",
           "\r\n",
         ),
       preserved: [
         unrelatedToml.replaceAll("\n", "\r\n"),
-        "banner = '''\r\n[mcp_servers.rea]\r\n# This is string content.\r\n'''",
+        "banner = '''\r\n[mcp_servers.acl-rea]\r\n# This is string content.\r\n'''",
       ],
     },
   ])(
@@ -512,7 +510,7 @@ describe("Codex configuration text preservation", () => {
       await writeFile(configPath, original);
 
       expect(
-        await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+        await configureClientConfiguration(client, {}, ["acl-rea", "mcp"]),
       ).toMatchObject({ status: "configured" });
       const configured = await readFile(configPath, "utf8");
       for (const text of preserved) expect(configured).toContain(text);
@@ -521,7 +519,7 @@ describe("Codex configuration text preservation", () => {
         original.startsWith("\uFEFF"),
       );
       expect(
-        await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+        await configureClientConfiguration(client, {}, ["acl-rea", "mcp"]),
       ).toEqual({ status: "unchanged" });
       expect(await readFile(configPath, "utf8")).toBe(configured);
 
@@ -531,9 +529,9 @@ describe("Codex configuration text preservation", () => {
       const removed = await readFile(configPath, "utf8");
       for (const text of preserved) expect(removed).toContain(text);
       expect(unrelatedValues(removed)).toEqual(unrelatedValues(original));
-      expect(parseToml(removed)).not.toHaveProperty("mcp_servers.rea");
+      expect(parseToml(removed)).not.toHaveProperty("mcp_servers.acl-rea");
       expect(removed.startsWith("\uFEFF")).toBe(original.startsWith("\uFEFF"));
-      expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
     },
   );
 
@@ -548,9 +546,9 @@ describe("Codex configuration text preservation", () => {
     } as const;
     const original =
       "# Keep this explanation.\n# And this trailing comment.\n\n";
-    const backup = `${configPath}.rea.backup`;
+    const backup = `${configPath}.acl-rea.backup`;
     const configure = () =>
-      configureClientConfiguration(client, {}, ["rea", "mcp"]);
+      configureClientConfiguration(client, {}, ["acl-rea", "mcp"]);
     await writeFile(configPath, original);
     expect(await configure()).toEqual({
       status: "configured",
@@ -558,7 +556,7 @@ describe("Codex configuration text preservation", () => {
     });
     const configured = await readFile(configPath, "utf8");
     expect(configured).toContain(original.trimEnd());
-    expect(parseToml(configured)).toHaveProperty("mcp_servers.rea");
+    expect(parseToml(configured)).toHaveProperty("mcp_servers.acl-rea");
     expect(await configure()).toEqual({ status: "unchanged" });
     expect(await readFile(configPath, "utf8")).toBe(configured);
 
@@ -567,11 +565,11 @@ describe("Codex configuration text preservation", () => {
     );
     const removed = await readFile(configPath, "utf8");
     expect(removed).toContain(original.trimEnd());
-    expect(parseToml(removed)).not.toHaveProperty("mcp_servers.rea");
+    expect(parseToml(removed)).not.toHaveProperty("mcp_servers.acl-rea");
     expect(await readFile(backup, "utf8")).toBe(original);
     expect(await configure()).toMatchObject({ status: "configured" });
     expect(parseToml(await readFile(configPath, "utf8"))).toHaveProperty(
-      "mcp_servers.rea",
+      "mcp_servers.acl-rea",
     );
     expect(await readFile(backup, "utf8")).toBe(original);
   });
@@ -586,17 +584,17 @@ describe("Codex configuration text preservation", () => {
       configPath,
     } as const;
     const original =
-      "# Keep this explanation.\n[mcp_servers.rea]\ncommand = [broken\n";
+      "# Keep this explanation.\n[mcp_servers.acl-rea]\ncommand = [broken\n";
     await writeFile(configPath, original);
     expect(
-      await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+      await configureClientConfiguration(client, {}, ["acl-rea", "mcp"]),
     ).toEqual({ status: "failed", reason: "readback" });
     expect((await systemUninstallHost(root).removeClient(client)).status).toBe(
       "failed",
     );
     expect(await readFile(configPath, "utf8")).toBe(original);
     await expect(
-      readFile(`${configPath}.rea.backup`, "utf8"),
+      readFile(`${configPath}.acl-rea.backup`, "utf8"),
     ).rejects.toMatchObject({ code: "ENOENT" });
   });
 });
@@ -610,7 +608,7 @@ it
     const configPath = join(root, "config.json");
     await writeFile(
       configPath,
-      '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}},"keep":true}\n',
+      '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}},"keep":true}\n',
     );
     await chmod(configPath, mode);
     const host = systemUninstallHost(root);

@@ -5,8 +5,8 @@ an explicit local ELF, PE, or Mach-O file. No disassembler, pwntools install, or
 target execution is required. Universal Mach-O files return one image per slice.
 
 ```sh
-rea inspect-binary-hardening /absolute/path/to/program --json
-rea inspect-binary-hardening /absolute/path/to/program --max-file-bytes 1048576 --json
+acl-rea inspect-binary-hardening /absolute/path/to/program --json
+acl-rea inspect-binary-hardening /absolute/path/to/program --max-file-bytes 1048576 --json
 ```
 
 MCP accepts `{ "path": "/absolute/path/to/program" }`. CLI paths may be relative

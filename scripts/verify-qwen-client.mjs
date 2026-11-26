@@ -139,7 +139,7 @@ await withVerifierCleanup(async () => {
     ]) {
       const response = await commands.exec(
         process.execPath,
-        [join(runtimeRoot, "scripts/rea.mjs"), ...step, "--json"],
+        [join(runtimeRoot, "scripts/acl-rea.mjs"), ...step, "--json"],
         { env: baseEnvironment, cwd: repo, timeout: 60_000, stdin: "pipe" },
       );
       const result = JSON.parse(response.stdout);
@@ -163,15 +163,15 @@ await withVerifierCleanup(async () => {
       );
     }
     assert.equal(
-      await readFile(join(profile, "settings.json.rea.backup"), "utf8"),
+      await readFile(join(profile, "settings.json.acl-rea.backup"), "utf8"),
       original,
     );
     const configured = JSON.parse(
       await readFile(join(profile, "settings.json"), "utf8"),
     );
     registrationCommand = [
-      configured.mcpServers.rea.command,
-      ...configured.mcpServers.rea.args,
+      configured.mcpServers["acl-rea"].command,
+      ...configured.mcpServers["acl-rea"].args,
     ];
     assert.deepEqual(configured.model, { name: "rea-client-fixture" });
     assert.equal(configured.skills, undefined);
@@ -181,7 +181,7 @@ await withVerifierCleanup(async () => {
     });
     const skillFile = join(
       sharedSkills,
-      "reverse-engineer-anything",
+      "acl-reverse-engineer-anything",
       "SKILL.md",
     );
     const normalizedSkill = (await readFile(skillFile, "utf8"))
@@ -196,7 +196,7 @@ await withVerifierCleanup(async () => {
     clientPath = baseEnvironment.PATH;
     if (reducedPath) {
       assert.equal(
-        configured.mcpServers.rea.env?.PATH,
+        configured.mcpServers["acl-rea"].env?.PATH,
         undefined,
         "Setup must not persist its ambient PATH into the registration",
       );
@@ -234,7 +234,7 @@ await withVerifierCleanup(async () => {
         const messages = body.messages ?? [];
         const toolResponseText = (callId) =>
           qwenToolResponseText(messages, callId);
-        const expectedSkill = `Base directory for this skill: ${join(sharedSkills, "reverse-engineer-anything")}\nImportant: ALWAYS resolve absolute paths from this base directory when working with skills.\n\n${expectedSkillBody}\n`;
+        const expectedSkill = `Base directory for this skill: ${join(sharedSkills, "acl-reverse-engineer-anything")}\nImportant: ALWAYS resolve absolute paths from this base directory when working with skills.\n\n${expectedSkillBody}\n`;
         if (skillRead?.callId !== undefined && !selectedSkillLoaded) {
           const reply = toolResponseText(skillRead.callId);
           assert(reply, "Qwen did not return the requested skill file read.");
@@ -309,7 +309,7 @@ await withVerifierCleanup(async () => {
           };
         } else if (skillCallId === undefined) {
           assert(skill, "Qwen must expose its native skill tool.");
-          message = call(skill.name, { skill: "reverse-engineer-anything" });
+          message = call(skill.name, { skill: "acl-reverse-engineer-anything" });
           skillCallId = message.tool_calls[0].id;
         } else if (!selectedSkillLoaded) {
           if (skillRead === undefined) {
@@ -392,7 +392,7 @@ await withVerifierCleanup(async () => {
       "--approval-mode",
       mode === "chat" ? "default" : "yolo",
       "--allowed-mcp-server-names",
-      "rea",
+      "acl-rea",
       "--output-format",
       "stream-json",
       "--max-session-turns",
@@ -423,13 +423,13 @@ await withVerifierCleanup(async () => {
     );
     assert(initialized);
     const observed = initialized.tools
-      .filter((n) => n.startsWith("mcp__rea__"))
+      .filter((n) => n.startsWith("mcp__acl-rea__"))
       .sort();
     catalogSize = observed.length;
     assert.deepEqual(
       observed,
-      TOOL_CONTRACTS.map((c) => `mcp__rea__${c.name}`).sort(),
-      "Qwen must discover the complete REA catalog",
+      TOOL_CONTRACTS.map((c) => `mcp__acl-rea__${c.name}`).sort(),
+      "Qwen must discover the complete ACL-REA catalog",
     );
     assert.equal(fixture.failure, undefined);
     assert(

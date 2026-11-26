@@ -260,13 +260,13 @@ describe("CLI startup imports", () => {
       ),
     ).resolves.toContain("isomorphic-git");
     await expect(
-      resolvedPackages(["scripts/rea.mjs", "mcp", "add", "--help"]),
+      resolvedPackages(["scripts/acl-rea.mjs", "mcp", "add", "--help"]),
     ).resolves.toContain("mcp-registration");
   });
 
   it("does not load command-specific code to register the command catalog", async () => {
     await expect(
-      resolvedPackages(["scripts/rea.mjs", "--help"]),
+      resolvedPackages(["scripts/acl-rea.mjs", "--help"]),
     ).resolves.toEqual(new Set());
     await expect(
       resolvedPackages(evaluate('await import("./dist/cli.js");')),
@@ -276,7 +276,7 @@ describe("CLI startup imports", () => {
   it("renders guidance without loading the tool catalog or provider composition", async () => {
     await expect(
       resolvedPackages([
-        "scripts/rea.mjs",
+        "scripts/acl-rea.mjs",
         "guided-workflows",
         "--action",
         "render",
@@ -307,7 +307,7 @@ describe("CLI startup imports", () => {
 
     await expect(
       resolvedPackages([
-        "scripts/rea.mjs",
+        "scripts/acl-rea.mjs",
         "analyze-javascript-application",
         source,
         "--json",
@@ -339,7 +339,7 @@ describe("CLI one-shot command imports", () => {
     await writeFile(input, "Some bytes to inspect.");
     await expect(
       resolvedPackages(
-        ["scripts/rea.mjs", "inspect-byte-entropy", input, "--json"],
+        ["scripts/acl-rea.mjs", "inspect-byte-entropy", input, "--json"],
         HEAVY_SHARED_MODULES,
       ),
     ).resolves.toEqual(new Set(["inspect-byte-entropy"]));
@@ -349,7 +349,7 @@ describe("CLI one-shot command imports", () => {
     const source = await createTestTempDirectory("rea-cli-js-summary-imports-");
     await writeFile(join(source, "index.js"), "export const answer = 42;\n");
     const command = [
-      "scripts/rea.mjs",
+      "scripts/acl-rea.mjs",
       "analyze-javascript-application",
       source,
       "--json",
@@ -381,13 +381,13 @@ describe("Bundled heavy startup controls", () => {
   it("detects bundled heavy modules through native command and AnalysisView runs", async () => {
     await expect(
       resolvedPackages(
-        ["scripts/rea.mjs", "match-native-functions", "--help"],
+        ["scripts/acl-rea.mjs", "match-native-functions", "--help"],
         HEAVY_SHARED_MODULES,
       ),
     ).resolves.toContain("session-tool-contracts");
     await expect(
       resolvedPackages(
-        ["scripts/rea.mjs", "inspect-analysis-view", "--help"],
+        ["scripts/acl-rea.mjs", "inspect-analysis-view", "--help"],
         HEAVY_SHARED_MODULES,
       ),
     ).resolves.toContain("analysis-view-result");
@@ -401,7 +401,7 @@ describe("Bundled heavy startup controls", () => {
       () =>
         entropyCommands.exec(
           process.execPath,
-          ["scripts/rea.mjs", "inspect-byte-entropy", samplePath, "--json"],
+          ["scripts/acl-rea.mjs", "inspect-byte-entropy", samplePath, "--json"],
           {
             cwd: process.cwd(),
             maxBuffer: 16 * 1_024 * 1_024,
@@ -418,13 +418,13 @@ describe("Bundled heavy startup controls", () => {
       }),
     );
     const viewResolved = await resolvedPackages(
-      ["scripts/rea.mjs", "inspect-analysis-view", viewInputPath, "--json"],
+      ["scripts/acl-rea.mjs", "inspect-analysis-view", viewInputPath, "--json"],
       HEAVY_SHARED_MODULES,
     );
     expect(viewResolved).toContain("analysis-view-service");
     expect(viewResolved).toContain("analysis-view-result");
     const appContractResolved = await resolvedPackages(
-      ["scripts/rea.mjs", "trace-application-feature", "--help"],
+      ["scripts/acl-rea.mjs", "trace-application-feature", "--help"],
       HEAVY_SHARED_MODULES,
     );
     expect(appContractResolved).toContain("application-tool-contracts");
@@ -441,7 +441,7 @@ describe("Bundled heavy startup controls", () => {
     ]) {
       await expect(
         resolvedPackages(
-          ["scripts/rea.mjs", command, "--help"],
+          ["scripts/acl-rea.mjs", command, "--help"],
           HEAVY_SHARED_MODULES,
         ),
       ).resolves.toEqual(new Set());
@@ -455,7 +455,7 @@ describe("MCP startup imports", () => {
       command: process.execPath,
       args: [
         `--import=${createResolutionHook(DEFERRED_IMPORTS)}`,
-        "scripts/rea.mjs",
+        "scripts/acl-rea.mjs",
         "mcp",
       ],
       cwd: process.cwd(),

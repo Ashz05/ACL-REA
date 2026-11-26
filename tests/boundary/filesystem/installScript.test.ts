@@ -22,9 +22,9 @@ const execFileAsync = promisify(execFile);
 // `uname` in createFixture reports `x86_64` / `Linux`, so the host labels
 // resolve to `linux/x64`.
 const UNSUPPORTED_NODE_RECOVERY_LINUX_X64 =
-  "REA installation failed: Node.js 20.0.0 is unsupported.\n" +
+  "ACL-REA installation failed: Node.js 20.0.0 is unsupported.\n" +
   "\n" +
-  "REA requires Node.js 22.x (>=22.23.4), 24.x (>=24.22.1), or 26.12.1+. Install one via:\n" +
+  "ACL-REA requires Node.js 22.x (>=22.23.4), 24.x (>=24.22.1), or 26.12.1+. Install one via:\n" +
   "  nvm:  nvm install 24 && nvm use 24      (https://github.com/nvm-sh/nvm)\n" +
   "  fnm:  fnm install 24 && fnm use 24      (https://github.com/Schniz/fnm)\n" +
   "  Direct download for linux/x64:\n" +
@@ -78,10 +78,10 @@ describe("curl installer scenarios", () => {
       REA_VERSION: "0.3.0",
       FAKE_CURL_FAIL: "1",
     });
-    expect(result.stdout).toContain("REA 0.3.0 is installed");
+    expect(result.stdout).toContain("ACL-REA 0.3.0 is installed");
     expect(result.stdout).toContain("Run ");
     expect(await readFile(fixture.npmLog, "utf8")).toBe(
-      `install --global --prefix ${join(fixture.home, ".local")} rea-agents@0.3.0\n`,
+      `install --global --prefix ${join(fixture.home, ".local")} acl-rea-agents@0.3.0\n`,
     );
     expect(await readFile(fixture.reaLog, "utf8")).toBe("--version\n");
     expect(await readdir(fixture.temporary)).toEqual([]);
@@ -90,10 +90,10 @@ describe("curl installer scenarios", () => {
   it("plans the latest REA release without invoking npm", async () => {
     const fixture = await createFixture();
     const result = await runInstaller(fixture, ["--dry-run"], {
-      FAKE_CURL_BODY: '{"tag_name":"rea-agents-0.4.1"}',
+      FAKE_CURL_BODY: '{"tag_name":"acl-rea-agents-0.4.1"}',
     });
     expect(result.stdout).toContain("Version: 0.4.1");
-    expect(result.stdout).toContain("rea-agents@0.4.1");
+    expect(result.stdout).toContain("acl-rea-agents@0.4.1");
     expect(result.stdout).toContain("no changes made");
     await expect(readFile(fixture.npmLog, "utf8")).rejects.toMatchObject({
       code: "ENOENT",
@@ -112,55 +112,55 @@ describe("curl installer scenarios", () => {
       "unreadable Node version",
       ["--version", "0.3.0"],
       { FAKE_NODE_VERSION: "invalid" },
-      "REA installation failed: the active Node.js version could not be read. Check that node works and is on PATH, then retry.\n",
+      "ACL-REA installation failed: the active Node.js version could not be read. Check that node works and is on PATH, then retry.\n",
     ],
     [
       "release lookup",
       [],
       { FAKE_CURL_FAIL: "1" },
-      "REA installation failed: the latest REA release could not be resolved. Check network access or pass --version VERSION, then retry.\n",
+      "ACL-REA installation failed: the latest ACL-REA release could not be resolved. Check network access or pass --version VERSION, then retry.\n",
     ],
     [
       "release response",
       [],
       { FAKE_CURL_BODY: "not-json" },
-      "REA installation failed: the release response was invalid. Retry later or pass --version VERSION.\n",
+      "ACL-REA installation failed: the release response was invalid. Retry later or pass --version VERSION.\n",
     ],
     [
       "release tag",
       [],
       { FAKE_CURL_BODY: '{"tag_name":"unrelated-1.0.0"}' },
-      "REA installation failed: the latest release tag was invalid. Retry later or pass --version VERSION.\n",
+      "ACL-REA installation failed: the latest release tag was invalid. Retry later or pass --version VERSION.\n",
     ],
     [
       "npm failure",
       ["--version", "0.3.0"],
       { FAKE_NPM_FAIL: "1" },
-      "REA installation failed: npm could not install REA. Check registry access and npm permissions, then retry.\n",
+      "ACL-REA installation failed: npm could not install ACL-REA. Check registry access and npm permissions, then retry.\n",
     ],
     [
       "npm prefix",
       ["--version", "0.3.0"],
       { FAKE_PLATFORM: "Darwin", FAKE_NPM_PREFIX_FAIL: "1" },
-      "REA installation failed: the npm global prefix could not be read. Repair the npm configuration, then retry.\n",
+      "ACL-REA installation failed: the npm global prefix could not be read. Repair the npm configuration, then retry.\n",
     ],
     [
       "missing installed command",
       ["--version", "0.3.0"],
       { FAKE_NPM_SKIP_BINARY: "1" },
-      "REA installation failed: npm completed without installing the rea command. Check the npm global bin directory and PATH, then retry.\n",
+      "ACL-REA installation failed: npm completed without installing the acl-rea command. Check the npm global bin directory and PATH, then retry.\n",
     ],
     [
       "unreadable installed version",
       ["--version", "0.3.0"],
       { FAKE_REA_VERSION_FAIL: "1" },
-      "REA installation failed: the installed REA version could not be read. Reinstall the requested version, then retry.\n",
+      "ACL-REA installation failed: the installed ACL-REA version could not be read. Reinstall the requested version, then retry.\n",
     ],
     [
       "version mismatch",
       ["--version", "0.3.0"],
       { FAKE_REA_VERSION: "9.9.9" },
-      "REA installation failed: installed version 9.9.9 does not match 0.3.0. Reinstall the requested version, then retry.\n",
+      "ACL-REA installation failed: installed version 9.9.9 does not match 0.3.0. Reinstall the requested version, then retry.\n",
     ],
   ] as const)(
     "fails closed with actionable recovery for %s",
@@ -186,7 +186,7 @@ describe("curl installer scenarios", () => {
       }),
     ).rejects.toMatchObject({
       stderr:
-        "REA installation failed: curl is required. Install curl, then rerun this installer.\n",
+        "ACL-REA installation failed: curl is required. Install curl, then rerun this installer.\n",
     });
   });
 });
@@ -198,7 +198,7 @@ describe("installer reported version", () => {
       runInstaller(fixture, ["--version", "0.3.0"], { FAKE_REA_VERSION: "" }),
     ).rejects.toMatchObject({
       stderr:
-        "REA installation failed: the installed REA version could not be read. Reinstall the requested version, then retry.\n",
+        "ACL-REA installation failed: the installed ACL-REA version could not be read. Reinstall the requested version, then retry.\n",
     });
   });
 });
@@ -249,7 +249,7 @@ describe("installer TTY fallback", () => {
 
     expect(exitCode).toBe(0);
     expect(output).toContain(
-      `Run ${join(fixture.home, ".local/bin/rea")} setup to configure Hopper and agents.`,
+      `Run ${join(fixture.home, ".local/bin/acl-rea")} setup to configure Hopper and agents.`,
     );
     expect(await readFile(fixture.reaLog, "utf8")).toBe("--version\n");
     expect(await readFile(fixture.installerStderrLog, "utf8")).toBe("");
@@ -378,7 +378,7 @@ describe("Linux user-prefix installer", () => {
       "--global",
       "--prefix",
       join(home, ".local"),
-      "rea-agents@0.3.0",
+      "acl-rea-agents@0.3.0",
       "",
     ]);
     expect((await readFile(argvLog)).toString()).toBe(printed.stdout);
@@ -393,11 +393,11 @@ describe("native macOS installer", () => {
       FAKE_NPM_PREFIX: join(fixture.home, "npm global prefix"),
     });
     expect(result.stdout).toContain(
-      "  Command: npm install --global rea-agents@0.3.0\n",
+      "  Command: npm install --global acl-rea-agents@0.3.0\n",
     );
-    expect(result.stdout).toContain("REA 0.3.0 is installed");
+    expect(result.stdout).toContain("ACL-REA 0.3.0 is installed");
     expect(await readFile(fixture.npmLog, "utf8")).toBe(
-      "prefix --global\ninstall --global rea-agents@0.3.0\n",
+      "prefix --global\ninstall --global acl-rea-agents@0.3.0\n",
     );
     expect(await readFile(fixture.reaLog, "utf8")).toBe("--version\n");
     expect(await readdir(fixture.temporary)).toEqual([]);
@@ -412,7 +412,7 @@ describe("installer semantic version parsing", () => {
     ).rejects.toMatchObject({
       stdout: "",
       stderr:
-        "REA installation failed: version must be an exact semantic version.\n",
+        "ACL-REA installation failed: version must be an exact semantic version.\n",
     });
     await expect(readFile(fixture.npmLog, "utf8")).rejects.toMatchObject({
       code: "ENOENT",
@@ -432,7 +432,7 @@ describe("installer semantic version parsing", () => {
       ).rejects.toMatchObject({
         stdout: "",
         stderr:
-          "REA installation failed: version must be an exact semantic version.\n",
+          "ACL-REA installation failed: version must be an exact semantic version.\n",
       });
       await expect(readFile(fixture.npmLog, "utf8")).rejects.toMatchObject({
         code: "ENOENT",
@@ -453,10 +453,10 @@ describe("installer semantic version parsing", () => {
     expect(failure).toBeInstanceOf(Error);
     const stderr = getProcessOutput(failure, "stderr");
     expect(stderr).toBe(
-      "REA installation failed: npm cannot install an exact version with build metadata. Pass a version without build metadata, then retry.\n",
+      "ACL-REA installation failed: npm cannot install an exact version with build metadata. Pass a version without build metadata, then retry.\n",
     );
     expect(getProcessOutput(failure, "stdout")).not.toContain(
-      "REA install plan",
+      "ACL-REA install plan",
     );
     await expect(readFile(fixture.npmLog, "utf8")).rejects.toMatchObject({
       code: "ENOENT",
@@ -479,17 +479,17 @@ describe("installer semantic version parsing", () => {
   it("rejects build metadata in the latest release tag before printing a plan", async () => {
     const fixture = await createFixture();
     const failure = await runInstaller(fixture, [], {
-      FAKE_CURL_BODY: '{"tag_name":"rea-agents-1.2.3+build.01"}',
+      FAKE_CURL_BODY: '{"tag_name":"acl-rea-agents-1.2.3+build.01"}',
     }).then(
       () => undefined,
       (cause: unknown) => cause,
     );
     expect(failure).toBeInstanceOf(Error);
     expect(getProcessOutput(failure, "stderr")).toBe(
-      "REA installation failed: npm cannot install an exact version with build metadata. Pass a version without build metadata, then retry.\n",
+      "ACL-REA installation failed: npm cannot install an exact version with build metadata. Pass a version without build metadata, then retry.\n",
     );
     expect(getProcessOutput(failure, "stdout")).not.toContain(
-      "REA install plan",
+      "ACL-REA install plan",
     );
     await expect(readFile(fixture.npmLog, "utf8")).rejects.toMatchObject({
       code: "ENOENT",
@@ -500,11 +500,11 @@ describe("installer semantic version parsing", () => {
     const fixture = await createFixture();
     await expect(
       runInstaller(fixture, [], {
-        FAKE_CURL_BODY: '{"tag_name":"rea-agents-1.2.3-01"}',
+        FAKE_CURL_BODY: '{"tag_name":"acl-rea-agents-1.2.3-01"}',
       }),
     ).rejects.toMatchObject({
       stderr:
-        "REA installation failed: the latest release tag was invalid. Retry later or pass --version VERSION.\n",
+        "ACL-REA installation failed: the latest release tag was invalid. Retry later or pass --version VERSION.\n",
     });
     await expect(readFile(fixture.npmLog, "utf8")).rejects.toMatchObject({
       code: "ENOENT",
@@ -570,15 +570,15 @@ while [ "$#" -gt 0 ]; do
 done
 [ "\${FAKE_NPM_SKIP_BINARY:-}" = "1" ] && exit 0
 mkdir -p "$prefix/bin"
-cp "$FAKE_REA_SOURCE" "$prefix/bin/rea"
-chmod +x "$prefix/bin/rea"
+cp "$FAKE_REA_SOURCE" "$prefix/bin/acl-rea"
+chmod +x "$prefix/bin/acl-rea"
 `,
     ),
     executable(
       join(bin, "curl"),
       `#!/bin/sh
 [ "\${FAKE_CURL_FAIL:-}" = "1" ] && exit 1
-if [ -n "\${FAKE_CURL_BODY:-}" ]; then printf '%s' "$FAKE_CURL_BODY"; else printf '%s' '{"tag_name":"rea-agents-0.3.0"}'; fi
+if [ -n "\${FAKE_CURL_BODY:-}" ]; then printf '%s' "$FAKE_CURL_BODY"; else printf '%s' '{"tag_name":"acl-rea-agents-0.3.0"}'; fi
 `,
     ),
     executable(

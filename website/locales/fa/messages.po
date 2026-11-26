@@ -2348,7 +2348,7 @@ msgid "Terminal · refresh agent setup"
 msgstr "ترمینال * راه اندازی عامل تازه"
 
 # Reviewed for readable setup and analysis terminology.
-#. {ph0}: <code>npx -y rea-agents@latest</code>
+#. {ph0}: <code>npx -y acl-rea-agents@latest</code>
 #: website/public/faq/index.html:303
 #, python-brace-format
 msgctxt "page:faq/index.html"
@@ -2670,7 +2670,7 @@ msgstr ""
 "{ph0}به روز رسانی REA {ph1}، مامور خود را دوباره راه اندازی کنید و همان کار "
 "را دوباره امتحان کنید. انتشار اخیر ممکن است مشکل را حل کند."
 
-#. {ph0}: <a href="https://github.com/morluto/rea/issues/new/choose" >
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/issues/new/choose" >
 #. {ph1}: </a >
 #: website/public/faq/index.html:517
 #, python-brace-format
@@ -2708,9 +2708,9 @@ msgctxt "page:faq/index.html"
 msgid "How can I share an example or contribute?"
 msgstr "چگونه می توانم یک مثال را به اشتراک بگذارم یا کمک کنم ؟"
 
-#. {ph0}: <a href="https://github.com/morluto/rea/issues/new/choose" >
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/issues/new/choose" >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/rea/pulls">
+#. {ph2}: <a href="https://github.com/Ashz05/ACL-REA/pulls">
 #. {ph3}: </a >
 #: website/public/faq/index.html:543
 #, python-brace-format
@@ -3690,7 +3690,7 @@ msgstr ""
 "{ph0}راهنمای تحقیق را انتخاب کنید{ph1}{ph2}نمونه های کار شده برای یک باینری "
 "، یک برنامه Electron و یک مرورگر.{ph3}"
 
-#. {ph0}: <a href="https://github.com/morluto/rea/issues">
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/issues">
 #. {ph1}: </a >
 #. {ph2}: <span>
 #. {ph3}: </span>
@@ -7534,7 +7534,7 @@ msgstr ""
 #. squares-flag-checker/ctfcli.yaml" >
 #. {ph3}: </a >
 #. {ph4}: <a
-#. href="https://github.com/morluto/rea/blob/main/website/evidence/ctf-masked-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/website/evidence/ctf-masked-
 #. squares.md" >
 #. {ph5}: </a >
 #: website/public/showcase/ctf/index.html:704
@@ -11224,7 +11224,7 @@ msgstr ""
 #. {ph0}: <span class="prompt-symbol" aria-hidden="true">
 #. {ph1}: </span >
 #. {ph2}: <span id="first-install-prompt" >
-#. {ph3}: <span translate="no">npx rea-agents@latest setup</span>
+#. {ph3}: <span translate="no">npx acl-rea-agents@latest setup</span>
 #. {ph4}: </span >
 #. {ph5}: <span class="terminal-cursor" aria-hidden="true">
 #. {ph6}: </span>
@@ -11266,7 +11266,7 @@ msgstr ""
 #. {ph0}: <span class="prompt-symbol" aria-hidden="true">
 #. {ph1}: </span >
 #. {ph2}: <span id="agent-install-prompt" >
-#. {ph3}: <span translate="no">npx rea-agents@latest setup</span>
+#. {ph3}: <span translate="no">npx acl-rea-agents@latest setup</span>
 #. {ph4}: </span >
 #. {ph5}: <span class="terminal-cursor" aria-hidden="true">
 #. {ph6}: </span>
@@ -11285,7 +11285,7 @@ msgstr ""
 #. {ph0}: <span class="prompt-symbol" aria-hidden="true">
 #. {ph1}: </span >
 #. {ph2}: <span id="home-install-prompt" >
-#. {ph3}: <span translate="no">npx rea-agents@latest setup</span>
+#. {ph3}: <span translate="no">npx acl-rea-agents@latest setup</span>
 #. {ph4}: </span >
 #. {ph5}: <span class="terminal-cursor" aria-hidden="true">
 #. {ph6}: </span>
@@ -11625,7 +11625,7 @@ msgid "Switch to dark mode"
 msgstr "تغییر به حالت تیره"
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/rea/blob/main/docs/guides/web/web-network-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/web/web-network-
 #. captures.md" >
 #. {ph1}: </a >
 #: website/public/guides/browser/index.html:487
@@ -12951,7 +12951,7 @@ msgid "Back to top"
 msgstr "بازگشت به بالا"
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/rea/blob/main/website/evidence/reverse-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/website/evidence/reverse-
 #. engineering-models.md" >
 #. {ph1}: </a >
 #: website/public/blog/reverse-engineering-models/index.html:783
@@ -13246,7 +13246,7 @@ msgstr "Claude Desktop · از گفت‌وگوی دسکتاپ استفاده ک�
 
 #. {ph0}: <a href="https://claude.ai/download">
 #. {ph1}: </a>
-#. {ph2}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph2}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/client-configuration.md#claude-desktop" >
 #. {ph3}: </a >
 #: website/public/get-started/index.html:597
@@ -13293,10 +13293,10 @@ msgctxt "page:get-started/index.html"
 msgid "Setup ID"
 msgstr "شناسهٔ راه‌اندازی"
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/client-configuration.md" >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph2}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/installation.md#released-package-and-main" >
 #. {ph3}: </a >
 #: website/public/get-started/index.html:757
@@ -13324,7 +13324,7 @@ msgstr ""
 "در گفت‌وگوی Grok Bot از آن بخواهید یک سرور MCP سفارشی به نام {ph0} با این "
 "فرمان روی رایانهٔ Bot اضافه کند:"
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/client-configuration.md#other-client-settings" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:788
@@ -13593,7 +13593,7 @@ msgstr ""
 "Automation به برنامه‌ای که REA را اجرا می‌کند اجازه بدهید و دوباره امتحان "
 "کنید."
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/installation.md#hopper" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1099
@@ -13671,11 +13671,11 @@ msgstr ""
 "راه‌اندازی را دوباره اجرا کنید، پیکربندی به‌روز برنامه را تأیید کنید و "
 "دستیار را دوباره اجرا کنید."
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/installation.md#ghidra" >
 #. {ph1}: </a >
 #. {ph2}: <a
-#. href="https://github.com/morluto/rea/blob/main/docs/providers/windows-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/docs/providers/windows-
 #. ghidra-p0.md" >
 #. {ph3}: </a >
 #: website/public/get-started/index.html:1258
@@ -13725,7 +13725,7 @@ msgstr ""
 "راه‌اندازی و دستیار را دوباره اجرا کنید."
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/rea/blob/main/docs/providers/ida-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/docs/providers/ida-
 #. provider.md" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1376
@@ -13874,15 +13874,15 @@ msgid "Process behavior"
 msgstr "رفتار فرایند"
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/rea/blob/main/docs/guides/android/flutter-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/android/flutter-
 #. analysis.md" >
 #. {ph1}: </a >
 #. {ph2}: <a
-#. href="https://github.com/morluto/rea/blob/main/docs/guides/javascript/javascript-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/javascript/javascript-
 #. artifact-reconstruction.md" >
 #. {ph3}: </a >
 #. {ph4}: <a
-#. href="https://github.com/morluto/rea/blob/main/docs/guides/evm/evm-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/evm/evm-
 #. bytecode.md" >
 #. {ph5}: </a >
 #. {ph6}: <a href="../guides/">
@@ -13974,7 +13974,7 @@ msgstr ""
 "کنید، طرح آن را بررسی کنید و برنامهٔ دستیار را دوباره اجرا کنید."
 
 #. {ph0}: <code>rea update</code>
-#. {ph1}: <code>npx rea-agents@latest uninstall</code>
+#. {ph1}: <code>npx acl-rea-agents@latest uninstall</code>
 #: website/public/get-started/index.html:1806
 #, python-brace-format
 msgctxt "page:get-started/index.html"
@@ -13985,7 +13985,7 @@ msgstr ""
 "اگر CLI سراسری را نصب کرده‌اید، آن را با {ph0} به‌روز کنید. از {ph1} برای "
 "حذف پیکربندی برنامه‌ها و مهارت REA استفاده کنید."
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/installation.md#diagnose-update-and-remove" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1812
@@ -14214,7 +14214,7 @@ msgstr ""
 "در macOS، ساخت به Xcode Command Line Tools، ‏make وbison نیاز دارد. از "
 "راهنمای رایانه‌تان استفاده کنید:"
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/installation.md#missing-macos-native-decompiler" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1216
@@ -14223,7 +14223,7 @@ msgctxt "page:get-started/index.html"
 msgid "{ph0}macOS · Intel{ph1}"
 msgstr "{ph0}macOS · Intel{ph1}"
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/installation.md#macos-arm64-native-decompiler" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1222
@@ -14648,7 +14648,7 @@ msgstr ""
 " را اجرا کنید."
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/rea/blob/main/CONTRIBUTING.md#development-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/CONTRIBUTING.md#development-
 #. setup" >
 #. {ph1}: </a >
 #. {ph2}: <code>6.4.0</code>
@@ -14882,7 +14882,7 @@ msgstr ""
 "می‌نویسد، محیط را صادر می‌کند و روی رایانه‌ای تازه با تصویر صفحه، ماوس و "
 "صفحه‌کلید آن را بررسی می‌کند."
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/desktop-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/desktop-
 #. build-
 #. computer.md#set-up-a-build-host">
 #. {ph1}: </a>
@@ -15264,10 +15264,10 @@ msgid ""
 "name warnings identify places to review; they do not remove those values."
 msgstr ""
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/agent-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/agent-
 #. environments-quickstart.md" >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/rea/blob/main/docs/agent-
+#. {ph2}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/agent-
 #. environments.md" >
 #. {ph3}: </a >
 #: website/public/guides/rl-environments/index.html:474
@@ -15566,7 +15566,7 @@ msgstr ""
 "برای دریافت کمک و گفت‌وگو دربارهٔ تحلیل‌هایتان، {ph0}به Discord "
 "بپیوندید{ph1}."
 
-#. {ph0}: <a href="https://github.com/morluto/rea/issues/new/choose" >
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/issues/new/choose" >
 #. {ph1}: </a >
 #: website/public/index.html:1285
 #, python-brace-format
@@ -15637,7 +15637,7 @@ msgstr ""
 #. {ph0}: <a href="../../get-started/">
 #. {ph1}: </a>
 #. {ph2}: <a
-#. href="https://github.com/morluto/rea/blob/main/docs/guides/android/android-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/android/android-
 #. analysis.md" >
 #. {ph3}: </a >
 #: website/public/showcase/aegis/index.html:714

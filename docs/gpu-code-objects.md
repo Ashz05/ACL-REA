@@ -235,7 +235,7 @@ The CLI uses the same service and contracts. It defaults to
 `--evidence_output`:
 
 ```sh
-rea inspect-gpu-code-objects /artifacts/library.so --analysis kernels \
+acl-rea inspect-gpu-code-objects /artifacts/library.so --analysis kernels \
   --targets '["sm_100"]' --detail summary \
   --view '{"collection":"kernels","names":["kernel_name"]}' \
   --evidence_output /analysis/library-gpu.evidence.json --json

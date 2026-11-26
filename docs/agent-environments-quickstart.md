@@ -65,7 +65,7 @@ record those actions and the reads that show their results.
 Build the environment into a new or empty directory:
 
 ```sh
-rea environment-build ./session.har ./my-env --name my-env --json
+acl-rea environment-build ./session.har ./my-env --name my-env --json
 ```
 
 You can also pass capture Evidence JSON saved by REA's
@@ -154,7 +154,7 @@ and after it. When recording against your test app:
 
 Also record filters, searches, sorting, and paging if your tasks need them.
 The agent should check that every recording step completed before using it.
-The [recording workflow](https://github.com/morluto/rea/blob/main/.agents/skills/reverse-engineer-anything/references/environments.md)
+The [recording workflow](https://github.com/Ashz05/ACL-REA/blob/main/.agents/skills/acl-reverse-engineer-anything/references/environments.md)
 has the detailed browser instructions, including timeouts and handling IDs
 assigned by the app.
 
@@ -180,7 +180,7 @@ probe. Restore that starting data before each probe sequence, then compare
 the saved probe recordings with the environment:
 
 ```sh
-rea environment-compare ./my-env/envs/my-env/manifest.json \
+acl-rea environment-compare ./my-env/envs/my-env/manifest.json \
   --evidence ./my-env/envs/my-env/evidence.json \
   --probe ./probe-create-edit-delete.json --probe ./probe-reads.json --json
 ```

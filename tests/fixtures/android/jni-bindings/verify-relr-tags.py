@@ -63,7 +63,7 @@ def verify(root, cc, lld, node):
                         assert slot["file_offset"] == int(oracle["file_offset"], 16)
                         assert slot["value"] == oracle["resolved_word"]
                         assert slot["relocation"]["encoding"] == "relr"
-                evidence = json.loads(run(node, str(root / "scripts/rea.mjs"),
+                evidence = json.loads(run(node, str(root / "scripts/acl-rea.mjs"),
                                           "inspect-native-initializers", str(library), "--json"))
                 report = evidence["normalized_result"]
                 constructor = next(entry for entry in report["entries"] if entry["kind"] == "init_array")

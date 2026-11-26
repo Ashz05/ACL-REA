@@ -49,5 +49,5 @@ await withVerifierCleanup(async () => {
   });
 }, [() => commands.close()]);
 process.stdout.write(
-  `${JSON.stringify({ verifier_run: await completeVerifierRun(verifierRun), package: "rea-agents", version, source, ...result })}\n`,
+  `${JSON.stringify({ verifier_run: await completeVerifierRun(verifierRun), package: "acl-rea-agents", version, source, ...result })}\n`,
 );

@@ -26,7 +26,7 @@ project the graph; CLI and MCP use the same workflow and return
 artifact-bound Evidence inline:
 
 ```sh
-rea inspect-artifact /path/to/Example.hap --format json > inspection.json
+acl-rea inspect-artifact /path/to/Example.hap --format json > inspection.json
 node --input-type=module -e 'import { readFileSync } from "node:fs"; console.log(JSON.stringify({ inventory_evidence: [JSON.parse(readFileSync("inspection.json", "utf8"))] }));' > projection-input.json
 rea project-harmony-application-graph projection-input.json --format json
 ```
@@ -111,7 +111,7 @@ no META-INF signing entries; that does not establish whether the package is sign
 The release artifact's compiler/SDK versions and reproducible source build have
 not been independently established. This lane does not complete the pinned
 toolchain acceptance in #1431 and does not verify Ark decoding or signatures.
-Set `REA_HARMONY_ENTRYPOINT` to an installed package's `scripts/rea.mjs` to run
+Set `REA_HARMONY_ENTRYPOINT` to an installed package's `scripts/acl-rea.mjs` to run
 the same checks against that package; the default lane uses the repository build.
 
 Packaging-model and App Pack child presence use inventoried file/slice paths even

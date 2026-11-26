@@ -129,7 +129,7 @@ def audit_url(item):
                 return dict(result, status="broken", reason="Release asset is missing")
             return dict(result, status="ok", via="gh api", endpoint=target.endpoint)
         request = Request(value.split("#", 1)[0], headers={
-            "User-Agent": "REA-Website-Verifier/1.0 (+https://github.com/morluto/rea)",
+            "User-Agent": "ACL-REA-Website-Verifier/1.0 (+https://github.com/Ashz05/ACL-REA)",
         })
         with urlopen(request, timeout=15) as response:
             return dict(result, status="ok", http_status=response.status, final_url=response.url)

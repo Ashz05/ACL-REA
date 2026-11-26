@@ -15,7 +15,7 @@ import {
 } from "../support/process/processFixture.js";
 
 const entrypoint = fileURLToPath(
-  new URL("../../scripts/rea.mjs", import.meta.url),
+  new URL("../../scripts/acl-rea.mjs", import.meta.url),
 );
 const progressSchema = z.object({
   rea_progress: z.object({

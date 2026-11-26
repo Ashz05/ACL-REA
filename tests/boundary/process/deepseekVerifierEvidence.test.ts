@@ -27,7 +27,7 @@ it("binds the verbatim skill body to the installed directory in one tool result"
   const body = 'Use the installed skill.\r\nKeep a \\ literal and "quotes".';
   const hint =
     "Base directory for this skill: /temporary/skills/author &amp; &lt;team&gt;";
-  const payload = `<skill_content name="reverse-engineer-anything">
+  const payload = `<skill_content name="acl-reverse-engineer-anything">
 <skill_resources>
 ${hint}
 Resolve relative paths mentioned by this skill against the base directory before using them. Load referenced resources only as needed.

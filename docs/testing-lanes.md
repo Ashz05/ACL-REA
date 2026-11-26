@@ -172,7 +172,7 @@ It also invokes the actual bridge methods on detached Ghidra model objects to
 check ambiguous dispatches, signed literals, precision bounds, shared targets,
 and conflicting labels. This reflection fixture depends on the pinned Ghidra
 model and does not claim a compiler produced those synthetic graph shapes.
-Pass `--entrypoint /path/to/installed/rea-agents/scripts/rea.mjs` directly to
+Pass `--entrypoint /path/to/installed/acl-rea-agents/scripts/acl-rea.mjs` directly to
 `scripts/verify-real-ghidra-switch.mjs` to verify an installed package through
 the same compiler oracles and CLI/MCP checks.
 
@@ -614,7 +614,7 @@ and after only when it did. The decompiler effect on the original MIPS case
 was observed on the reporter's binary, not in this lane. The lane never
 executes the fixture and needs the [supported Ghidra and JDK installation](getting-started/installation.md#ghidra)
 with the native decompiler and a Linux C compiler. The
-change-selected [Ghidra bridge CI lane](https://github.com/morluto/rea/blob/main/.github/workflows/ghidra-bridge-sources.yml)
+change-selected [Ghidra bridge CI lane](https://github.com/Ashz05/ACL-REA/blob/main/.github/workflows/ghidra-bridge-sources.yml)
 runs it with its checksum-verified Ghidra distribution. Read-only sessions
 (Windows P0 and caller-owned existing projects) record the same limitation but
 mark nothing volatile; no real-provider lane covers them.
@@ -1284,7 +1284,7 @@ ends the lane at once.
 
 The verifier writes the Grafana-shaped HAR the view tests own, packs the
 checkout with `npm pack`, builds the bundle from the HAR with
-`rea environment-build --package-tarball` through the built CLI, the command
+`acl-rea environment-build --package-tarball` through the built CLI, the command
 users run, so the image installs this checkout rather than the registry
 package, and runs `agent-env run` on the bundle. It checks that the build
 reports the 28-record capture, the default template rules, the planned file set
@@ -1358,7 +1358,7 @@ input descriptors, checks recovered CLI errors, and verifies retry on the same
 MCP connection after repeated runtime-removal denial. These are controlled
 faults, not naturally occurring permission failures; no WASM target is executed.
 Pass an installed package's
-`scripts/rea.mjs` as the first argument to run the same lane against the package.
+`scripts/acl-rea.mjs` as the first argument to run the same lane against the package.
 `npm run verify:wasm:package` packs and installs REA into an isolated temporary
 prefix with lifecycle scripts disabled and runs the same required real-tool lane.
 It requires WABT configuration and makes no host tool installation.

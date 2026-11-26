@@ -50,7 +50,7 @@ const { values } = parseArgs({
 const compilerOnly = values["compiler-oracle-only"];
 const entrypoint =
   values.entrypoint === undefined
-    ? fileURLToPath(new URL("./rea.mjs", import.meta.url))
+    ? fileURLToPath(new URL("./acl-rea.mjs", import.meta.url))
     : resolve(values.entrypoint);
 assert.ok(
   process.platform === "linux" && process.arch === "x64",

@@ -8,7 +8,7 @@ labels, functions, or memory bytes. The hydration semantics are adapted from
 `effeb734fc570c32650f88b159608979dc7b423e` (MIT), cross-checked against
 .NET's `MethodTable.h` at runtime commit
 `a3b2d40328be0be3f8dd43f0e5cc925b8827b044` (MIT). The required notice ships in
-[`licenses/nativeaot-parser-MIT.txt`](https://github.com/morluto/rea/blob/main/licenses/nativeaot-parser-MIT.txt).
+[`licenses/nativeaot-parser-MIT.txt`](https://github.com/Ashz05/ACL-REA/blob/main/licenses/nativeaot-parser-MIT.txt).
 
 The optional headless Ghidra adapter remains available for database annotations
 and broader recovery. It uses the same pinned upstream commit as an opt-in
@@ -90,8 +90,8 @@ The built-in CLI path uses a MethodTable address returned by the parser or
 another observation:
 
 ```sh
-rea inspect-native-load-image ./NativeAotFixture --provider ghidra --json
-rea inspect-native-data-type ./NativeAotFixture --address 0xMETHODTABLE_ADDRESS --provider ghidra --json
+acl-rea inspect-native-load-image ./NativeAotFixture --provider ghidra --json
+acl-rea inspect-native-data-type ./NativeAotFixture --address 0xMETHODTABLE_ADDRESS --provider ghidra --json
 rea function ./NativeAotFixture 0xADDRESS --provider ghidra --json
 ```
 

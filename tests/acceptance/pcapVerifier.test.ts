@@ -36,7 +36,7 @@ it.skipIf(
       };
       const cli = await execute(
         process.execPath,
-        ["scripts/rea.mjs", "inspect-pcap-capture", capture, "--json"],
+        ["scripts/acl-rea.mjs", "inspect-pcap-capture", capture, "--json"],
         { env: environment, timeout: 60_000, maxBuffer: 8 * 1024 * 1024 },
       );
       const result = pcapResultSchemas.inspect_pcap_capture.parse(

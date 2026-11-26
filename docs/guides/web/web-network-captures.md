@@ -5,8 +5,8 @@ retained producer evidence. This is an offline operation: recorded URLs are
 never fetched, and no browser or proxy listener is started.
 
 ```sh
-rea inspect-web-network-capture /absolute/session.har har --json
-rea inspect-web-network-capture /absolute/session.har har --record 2 --record 0 --json
+acl-rea inspect-web-network-capture /absolute/session.har har --json
+acl-rea inspect-web-network-capture /absolute/session.har har --record 2 --record 0 --json
 ```
 
 ```json
@@ -120,7 +120,7 @@ Native mitmproxy decoding requires a caller-supplied **mitmdump 12.3.1 on
 Linux**. Set its absolute executable path:
 
 ```sh
-REA_MITMDUMP_COMMAND=/absolute/mitmdump rea inspect-web-network-capture /absolute/session.mitm mitmproxy --json
+REA_MITMDUMP_COMMAND=/absolute/mitmdump acl-rea inspect-web-network-capture /absolute/session.mitm mitmproxy --json
 ```
 
 REA does not install mitmproxy. Its owned process uses a private configuration
@@ -139,8 +139,8 @@ Fiddler Everywhere saves traffic in **Session Archive Zip (`.saz`)** files.
 Inspect native SAZ directly, without installing Fiddler or converting to HAR:
 
 ```sh
-rea inspect-web-network-capture /absolute/session.saz saz --json
-rea inspect-web-network-capture /absolute/session.saz saz --record 0 --json
+acl-rea inspect-web-network-capture /absolute/session.saz saz --json
+acl-rea inspect-web-network-capture /absolute/session.saz saz --record 0 --json
 ```
 
 MCP uses the same `capture_path`, `format: "saz"`, and optional
@@ -232,7 +232,7 @@ and previously admitted capture Evidence remains available.
 ```bash
 # Compile your own schema with your existing protoc, including local imports:
 protoc --include_imports --descriptor_set_out=/evidence/api.pb api.proto
-rea inspect-web-network-capture /evidence/session.har har --record 3 \
+acl-rea inspect-web-network-capture /evidence/session.har har --record 3 \
   --protobuf-schema /evidence/api.pb --protobuf-message example.Response \
   --detail summary --evidence_output /evidence/session-evidence.json --json
 ```
@@ -613,7 +613,7 @@ flags. Complete detail is the CLI default. A summary requires a bundle so all
 facts and their source closure survive process exit:
 
 ```bash
-rea compare-static-and-observed-endpoints /evidence/compare-input.json \
+acl-rea compare-static-and-observed-endpoints /evidence/compare-input.json \
   --detail summary --evidence_output /evidence/comparison.json --json
 ```
 
@@ -1128,7 +1128,7 @@ each body as temporary bytes before it is decoded and parsed, and every value
 it keeps, within the same 96 MiB budget. Documents hold whole recorded response
 values whose recorded text and rendered JSON are each at most 256 KiB, so a
 capture with many read-only paths yields a correspondingly larger state result.
-The view performs no network activity and serves nothing; `rea environment-serve`
+The view performs no network activity and serves nothing; `acl-rea environment-serve`
 derives it from the capture at startup, serves read tools and the served write
 plans from it and loads replacement states through the AgentEnv data plane, as
 [serve from the state](../../agent-environments.md#serve-from-the-state) describes.
@@ -1149,7 +1149,7 @@ every parent that view refuses, with the same errors, and it is always
 inferred. Call it after each recording to see which writes an environment
 built from it would serve. It does not apply the serve-time admission checks:
 an environment whose served catalog exceeds the discovery budget, or whose
-state exceeds what `data/add` loads, serves replay, and `rea environment-build`
+state exceeds what `data/add` loads, serves replay, and `acl-rea environment-build`
 then reports `coverage: null`; otherwise the build prints this summary as its
 `coverage`. See
 [Build a bundle in one step](../../agent-environments.md#build-a-bundle-in-one-step)
@@ -1211,8 +1211,8 @@ MCP advertises the same strict named input contract used by the application. His
 Select `format: "qlog"` through `inspect_web_network_capture`, or:
 
 ```bash
-rea inspect-web-network-capture /absolute/origin.qlog qlog --json
-rea inspect-web-network-capture /absolute/origin.qlog qlog --record 95 --record 0 --json
+acl-rea inspect-web-network-capture /absolute/origin.qlog qlog --json
+acl-rea inspect-web-network-capture /absolute/origin.qlog qlog --record 95 --record 0 --json
 ```
 
 The initial profile is **aioquic 1.5.0, JSON qlog 0.3**: one JSON object with

@@ -118,7 +118,7 @@ describe("server and catalog identity", () => {
       catalog: DEFAULT_CATALOG_IDENTITY,
       startedAt: "2026-07-13T00:00:00.000Z",
       commandPath: undefined,
-      expected: { server_path: "/registered/rea.mjs" },
+      expected: { server_path: "/registered/acl-rea.mjs" },
     });
 
     expect(identity.server.command_path).toBeNull();
@@ -138,12 +138,12 @@ it.skipIf(process.platform === "win32")(
     const scratch = join(root, "scratch");
     await mkdir(scripts, { recursive: true });
     await mkdir(scratch);
-    const canonical = join(scripts, "rea.mjs");
+    const canonical = join(scripts, "acl-rea.mjs");
     const other = join(root, "other.mjs");
     await writeFile(canonical, "entrypoint");
     await writeFile(other, "other entrypoint");
     await symlink(scripts, join(scratch, "link"));
-    const selected = `${scratch}/link/../scripts/rea.mjs`;
+    const selected = `${scratch}/link/../scripts/acl-rea.mjs`;
     // Bun selects a script through native traversal (#8844).
     const identity = (server_path: string) =>
       createServerIdentity({
@@ -167,17 +167,17 @@ it.skipIf(process.platform === "win32")(
       reasons: [],
     });
     // Node resolves its entrypoint lexically, so this spelling runs
-    // scratch/rea.mjs even though traversal through the link leaves scratch.
+    // scratch/acl-rea.mjs even though traversal through the link leaves scratch.
     // Bun traverses the link and runs a different file.
-    const lexical = join(scratch, "rea.mjs");
+    const lexical = join(scratch, "acl-rea.mjs");
     await writeFile(lexical, "lexical entrypoint");
-    await writeFile(join(root, "package", "rea.mjs"), "traversed entrypoint");
+    await writeFile(join(root, "package", "acl-rea.mjs"), "traversed entrypoint");
     const crossing = (runtime: "node" | "bun") =>
       createServerIdentity({
         catalog: DEFAULT_CATALOG_IDENTITY,
         startedAt: "2026-07-13T00:00:00.000Z",
         commandPath: lexical,
-        expected: { server_path: `${scratch}/link/../rea.mjs` },
+        expected: { server_path: `${scratch}/link/../acl-rea.mjs` },
         runtime,
       }).alignment;
     expect(crossing("node")).toMatchObject({ state: "aligned", reasons: [] });

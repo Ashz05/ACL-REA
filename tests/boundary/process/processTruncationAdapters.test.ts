@@ -28,7 +28,7 @@ const capture = async (
     );
     await writeFile(path, JSON.stringify(scenario));
     const { stdout } = await exec(process.execPath, [
-      "scripts/rea.mjs",
+      "scripts/acl-rea.mjs",
       "capture-process",
       path,
       "--format",

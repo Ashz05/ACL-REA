@@ -493,7 +493,7 @@ import { spawn } from "node:child_process";
 import { mkdir, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { createInterface } from "node:readline";
-const backend = spawn(process.execPath, [${JSON.stringify(resolve("scripts/rea.mjs"))}, "--mcp"], { stdio: ["pipe", "pipe", "ignore"] });
+const backend = spawn(process.execPath, [${JSON.stringify(resolve("scripts/acl-rea.mjs"))}, "--mcp"], { stdio: ["pipe", "pipe", "ignore"] });
 const exited = new Promise((resolve, reject) => { backend.once("error", reject); backend.once("exit", resolve); });
 const methods = new Map();
 const output = createInterface({ input: backend.stdout });

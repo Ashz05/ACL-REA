@@ -104,7 +104,7 @@ describe("setup workflow", () => {
     host.clientResults.set("codex", {
       status: "failed",
       reason: "rollback",
-      backupPath: "/fixture/codex.json.rea.backup",
+      backupPath: "/fixture/codex.json.acl-rea.backup",
       failure: {
         kind: "restore",
         path: "/fixture/codex.json",
@@ -120,7 +120,7 @@ describe("setup workflow", () => {
     expect(result.clients.codex).toEqual({
       status: "failed",
       reason: "rollback",
-      backupPath: "/fixture/codex.json.rea.backup",
+      backupPath: "/fixture/codex.json.acl-rea.backup",
       failure: {
         kind: "restore",
         path: "/fixture/codex.json",
@@ -128,7 +128,7 @@ describe("setup workflow", () => {
       },
     });
     expect(result.remediation).toContain("permission denied");
-    expect(result.remediation).toContain("/fixture/codex.json.rea.backup");
+    expect(result.remediation).toContain("/fixture/codex.json.acl-rea.backup");
   });
 });
 
@@ -172,7 +172,7 @@ describe("setup recovery and readiness guidance", () => {
       host,
     );
     expect(result.remediation).toBe(
-      "Run rea doctor and apply each reported remediation.",
+      "Run acl-rea doctor and apply each reported remediation.",
     );
   });
 
@@ -515,7 +515,7 @@ describe("setup scoped readiness", () => {
         client: "codex",
         config_path: "/codex.toml",
         command_identity: "owned",
-        command: ["rea", "mcp"],
+        command: ["acl-rea", "mcp"],
         state: "aligned",
         remediation: null,
       },
@@ -715,7 +715,7 @@ describe("setup Hopper install eligibility", () => {
       expect(advised.status).toBe("needs_human");
       expect(advised.remediation).not.toContain("--install-hopper");
       expect(advised.remediation).toContain(
-        "Run rea doctor and apply each reported remediation.",
+        "Run acl-rea doctor and apply each reported remediation.",
       );
       expect(advised.remediation).toContain("hosted computer");
       expect(await proposesHopper(host)).toBe(false);

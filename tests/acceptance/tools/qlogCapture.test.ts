@@ -32,7 +32,7 @@ import { issuesByContractField } from "../../support/cli/cliIssueFields.js";
 
 const execute = promisify(execFile);
 const it = runtimeTest.skipIf(!hasMemoryBound || !runtimeSupported);
-const cli = fileURLToPath(new URL("../../../scripts/rea.mjs", import.meta.url));
+const cli = fileURLToPath(new URL("../../../scripts/acl-rea.mjs", import.meta.url));
 const sharedMcp = lazyLocalToolsMcp();
 const cliSession = createCliCommandSession();
 afterAll(() => cliSession.close());

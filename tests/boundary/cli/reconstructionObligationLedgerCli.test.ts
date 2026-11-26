@@ -54,7 +54,7 @@ describe("reconstruction obligation ledger CLI parity", () => {
       const { stdout } = await execute(
         process.execPath,
         [
-          "scripts/rea.mjs",
+          "scripts/acl-rea.mjs",
           "build-reconstruction-obligation-ledger",
           JSON.stringify(variant),
           "--json",
@@ -100,7 +100,7 @@ describe("reconstruction obligation ledger CLI bundle validation", () => {
     const accepted = await execute(
       process.execPath,
       [
-        "scripts/rea.mjs",
+        "scripts/acl-rea.mjs",
         "build-reconstruction-obligation-ledger",
         JSON.stringify(input),
         "--json",
@@ -125,7 +125,7 @@ describe("reconstruction obligation ledger CLI bundle validation", () => {
       await execute(
         process.execPath,
         [
-          "scripts/rea.mjs",
+          "scripts/acl-rea.mjs",
           "build-reconstruction-obligation-ledger",
           JSON.stringify(input),
           "--json",
@@ -185,7 +185,7 @@ describe("reconstruction obligation ledger CLI contradictions", () => {
       const { stdout } = await execute(
         process.execPath,
         [
-          "scripts/rea.mjs",
+          "scripts/acl-rea.mjs",
           "build-reconstruction-obligation-ledger",
           JSON.stringify({
             ...input,

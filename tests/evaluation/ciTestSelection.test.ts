@@ -110,7 +110,7 @@ it("selects tests that start the built runtime beside a changed presentation own
     "src/server/Core.ts": "",
     "src/server/recovery.ts": "",
     "src/domain/Value.ts": "",
-    "tests/support/launch.ts": 'spawn("scripts/rea.mjs", ["mcp"]);',
+    "tests/support/launch.ts": 'spawn("scripts/acl-rea.mjs", ["mcp"]);',
     "tests/fixtures/client.ts": 'import "../support/launch.js";',
     // Starts the built server and imports a sibling of the changed owner.
     "tests/boundary/mcp/direct.test.ts":

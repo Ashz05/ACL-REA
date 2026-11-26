@@ -3,7 +3,7 @@ exit: 0
 --- stdout
 rea@<version> — Reverse engineer anything from your terminal or agent.
 
-Usage: rea <command>
+Usage: acl-rea <command>
 
 Commands:
   address-to-file-offset  Map one analysis address to a file offset; memory bytes may differ and ranges may not be contiguous

@@ -69,7 +69,7 @@ it("reports a candidate endpoint through the worker boundary in the public CLI",
     await writeFile(join(root, name), source);
   const { stdout } = await execute(
     process.execPath,
-    ["scripts/rea.mjs", "analyze-javascript-application", root, "--json"],
+    ["scripts/acl-rea.mjs", "analyze-javascript-application", root, "--json"],
     { cwd: process.cwd(), maxBuffer: 16 * 1024 * 1024 },
   );
   const result = javascriptApplicationAnalysisResultSchema.parse(
@@ -176,7 +176,7 @@ it("preserves SQLite constructor certainty through the public worker and graph",
   );
   const { stdout } = await execute(
     process.execPath,
-    ["scripts/rea.mjs", "analyze-javascript-application", root, "--json"],
+    ["scripts/acl-rea.mjs", "analyze-javascript-application", root, "--json"],
     { cwd: process.cwd(), maxBuffer: 16 * 1024 * 1024 },
   );
   const result = javascriptApplicationAnalysisResultSchema.parse(

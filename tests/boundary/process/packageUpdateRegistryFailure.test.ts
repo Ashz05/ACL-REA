@@ -29,14 +29,14 @@ it("retains upstream body failure and joins the active updater and installer chi
     writeFile(tarball, "archive"),
     writeFile(
       join(packageRoot, "package.json"),
-      JSON.stringify({ name: "rea-agents", version: "6.0.0" }),
+      JSON.stringify({ name: "acl-rea-agents", version: "6.0.0" }),
     ),
     writeFile(
       join(packageRoot, "dist", "generatedPackageMetadata.js"),
       'export const generated = { version: "6.0.0" };\n',
     ),
     writeFile(
-      join(packageRoot, "scripts", "rea.mjs"),
+      join(packageRoot, "scripts", "acl-rea.mjs"),
       [
         'import { readFileSync } from "node:fs";',
         'const metadata = new URL("../package.json", import.meta.url);',

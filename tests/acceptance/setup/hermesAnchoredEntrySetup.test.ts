@@ -174,7 +174,7 @@ for (const [version, style, publicCli] of scenarios) {
       const profile = join(home, "hermes");
       const config = join(profile, "config.yaml");
       const command = publicCli
-        ? [process.execPath, resolve("scripts/rea.mjs"), "mcp"]
+        ? [process.execPath, resolve("scripts/acl-rea.mjs"), "mcp"]
         : currentClientRegistrationCommand({ platform: process.platform });
       if (command[0] === undefined) throw new Error("Missing REA entrypoint");
       const server = {
@@ -198,11 +198,11 @@ for (const [version, style, publicCli] of scenarios) {
       const configuredValues = parse(configured, { version });
       expect(configuredValues).toMatchObject({
         model: "custom",
-        mcp_servers: { rea: { enabled: true, env: { KEEP: "off" } }, other },
+        mcp_servers: { "acl-rea": { enabled: true, env: { KEEP: "off" } }, other },
         ...(style === "shadowed"
           ? { observer: server, later: { KEEP: "later" } }
           : {}),
-        ...(style === "key" ? { observer: "rea" } : {}),
+        ...(style === "key" ? { observer: "acl-rea" } : {}),
       });
       if (hasDefaults)
         expect(configuredValues.mcp_servers.other.env).toBe(
@@ -220,7 +220,7 @@ for (const [version, style, publicCli] of scenarios) {
       );
       if (hasDefaults)
         expect(configured).toContain("# Keep nested reference comment");
-      expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
       await lifecycle.verifyAndRepeat();
       expect(await readFile(config, "utf8")).toBe(configured);
       await lifecycle.remove();
@@ -237,13 +237,13 @@ for (const [version, style, publicCli] of scenarios) {
               observer: server,
             }
           : {}),
-        ...(style === "key" ? { observer: "rea" } : {}),
+        ...(style === "key" ? { observer: "acl-rea" } : {}),
       });
       if (hasDefaults)
         expect(removedValues.mcp_servers.other.env).toBe(
           removedValues.defaults,
         );
-      expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
       const remaining = await readFile(config, "utf8");
       if (style === "entry")
         expect(remaining).toContain("# Keep anchor definition comment");

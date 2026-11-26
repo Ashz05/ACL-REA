@@ -98,8 +98,8 @@ if (packageRoot !== undefined && !isAbsolute(packageRoot))
   throw new Error("REA_NATIVEAOT_PROOF_PACKAGE_ROOT must be absolute");
 const entrypoint =
   packageRoot === undefined
-    ? fileURLToPath(new URL("./rea.mjs", import.meta.url))
-    : join(packageRoot, "scripts/rea.mjs");
+    ? fileURLToPath(new URL("./acl-rea.mjs", import.meta.url))
+    : join(packageRoot, "scripts/acl-rea.mjs");
 const env = {
   PATH: process.env.PATH ?? "/usr/bin:/bin",
   TMPDIR: runtime,

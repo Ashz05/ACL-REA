@@ -84,7 +84,7 @@ const connect = async (
 ) => {
   const transport = new StdioClientTransport({
     command: process.execPath,
-    args: [...nodeArguments, resolve("scripts/rea.mjs"), "mcp"],
+    args: [...nodeArguments, resolve("scripts/acl-rea.mjs"), "mcp"],
     cwd: process.cwd(),
     env: {
       PATH: process.env.PATH ?? "",
@@ -277,7 +277,7 @@ registerHooks({
     const source = loaded.source?.toString() ?? "";
     const names = modules.filter((name) =>
       url.endsWith("/dist/" + name) || source.includes("\\n// dist/" + name + "\\n"));
-    if (url.endsWith("/scripts/rea.mjs")) names.push("entrypoint");
+    if (url.endsWith("/scripts/acl-rea.mjs")) names.push("entrypoint");
     for (const name of names)
       appendFileSync(${JSON.stringify(log)}, JSON.stringify(name) + "\\n");
     return loaded;
@@ -834,7 +834,7 @@ it("runs the real static artifact workflow after deferred initialization", async
   const { client } = await connect("legacy");
   const opened = await client.callTool({
     name: "open_binary",
-    arguments: { path: resolve("scripts/rea.mjs") },
+    arguments: { path: resolve("scripts/acl-rea.mjs") },
   });
   expect(opened.isError, JSON.stringify(opened)).not.toBe(true);
   const inspected = await client.callTool({
@@ -865,7 +865,7 @@ const copyCompiledPackage = async (prefix: string): Promise<string> => {
   const directory = await createTestTempDirectory(prefix);
   await cp(resolve("dist"), join(directory, "dist"), { recursive: true });
   await mkdir(join(directory, "scripts/lib"), { recursive: true });
-  await cp(resolve("scripts/rea.mjs"), join(directory, "scripts/rea.mjs"));
+  await cp(resolve("scripts/acl-rea.mjs"), join(directory, "scripts/acl-rea.mjs"));
   // Copy the helpers selected by the package, so this fixture exercises the
   // same launcher files that an installation receives.
   const manifest = JSON.parse(await readFile("package.json", "utf8")) as {
@@ -1052,7 +1052,7 @@ it("rejects a corrupted build-owned catalog before starting the connection", asy
   await writeFile(join(directory, "dist/mcp-catalog.json"), "{}");
   const child = spawnSync(
     process.execPath,
-    [join(directory, "scripts/rea.mjs"), "mcp"],
+    [join(directory, "scripts/acl-rea.mjs"), "mcp"],
     {
       cwd: directory,
       env: withCompileCache(process.env),

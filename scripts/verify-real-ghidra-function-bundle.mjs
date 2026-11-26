@@ -87,7 +87,7 @@ public class SetHistory extends GhidraScript {
     REA_GHIDRA_PROJECT_PATH: project,
     REA_GHIDRA_PROGRAM_NAME: "fixture",
   };
-  const cli = join(repo, "scripts", "rea.mjs");
+  const cli = join(repo, "scripts", "acl-rea.mjs");
   for (const detail of ["complete", "summary"]) {
     const output = join(root, `${detail}.json`);
     const { stdout } = await run(

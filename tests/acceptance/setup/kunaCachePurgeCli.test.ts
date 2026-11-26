@@ -18,7 +18,7 @@ cliTest
       home,
       process.platform === "darwin" ? "Library/Caches" : "cache",
     );
-    const cache = join(cacheRoot, "rea", "kuna");
+    const cache = join(cacheRoot, "acl-rea", "kuna");
     const custom = `${cache}${suffix}`;
     await mkdir(cache, { recursive: true });
     await mkdir(custom, { recursive: true });

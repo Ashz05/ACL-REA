@@ -7,7 +7,7 @@ import { sep } from "node:path";
  * @param {string} body
  */
 export function hasGeminiSkillBody(responses, directory, body) {
-  const start = `<activated_skill name="reverse-engineer-anything">\n  <instructions>\n    ${body}\n  </instructions>\n\n  <available_resources>\n    `;
+  const start = `<activated_skill name="acl-reverse-engineer-anything">\n  <instructions>\n    ${body}\n  </instructions>\n\n  <available_resources>\n    `;
   return responses.some(({ name, response }) => {
     const output = response?.output;
     if (name !== "activate_skill" || typeof output !== "string") return false;

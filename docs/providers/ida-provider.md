@@ -34,7 +34,7 @@ Attached analysis uses the [native IDA MCP bridge](#native-ida-mcp-bridge). Writ
 export REA_IDA_MCP_CONFIG=/absolute/path/to/ida-mcp.json
 export REA_ANALYSIS_PROVIDER=ida
 rea function /absolute/path/to/program main --json
-rea decompile /absolute/path/to/program main --json
+acl-rea decompile /absolute/path/to/program main --json
 ```
 
 If the registration cannot be read or validated, provider diagnostics retain its
@@ -220,7 +220,7 @@ The `hexrays` profile also opens an existing `.idb` or `.i64`, so analysis start
 
 For an executable, REA checks the private input path and file digest. When IDA reports a recorded input hash, REA compares it with the admitted copy, including the selected thin slice for a universal Mach-O. For a saved database, REA binds the opened copy by `idb_path`. Its `input_path` and `input_sha256` describe the original executable. Results reflect the database's saved content: unsaved changes held by another IDA session, including an unpacked `.id0`/`.id1` set beside it, are not included. Evidence subjects identify the database file, not the input binary. Attached and database-supervisor registrations reject database targets, and Hopper rejects IDA databases.
 
-Hex-Rays MCP exposes database reads only through `execute_python`. REA loads a fixed, read-only query module once per database lease, [`bridge/ida/hexrays_queries.py`](https://github.com/morluto/rea/blob/main/bridge/ida/hexrays_queries.py), and invokes `_rea_query(name, arguments_json)` for each read. If the worker no longer defines that entry point, REA reloads the module and retries the read once. The module answers the same database-supervisor reads REA already validates: health, function inventory and lookup, strings, paged pseudocode and assembly, callees, a depth-zero call graph, xrefs to an address, and a minimal segment survey. Caller-supplied text only ever reaches the module as JSON data, never as Python source, and REA forwards no other Python. Each observation records `execute_python` as the upstream tool, plus the query name, its arguments, and the module's SHA-256 instead of its body. The health reads behind each operation's identity checks are kept the same way, as `health_observations` beside the parsed metadata. Call scans skip data items inside functions.
+Hex-Rays MCP exposes database reads only through `execute_python`. REA loads a fixed, read-only query module once per database lease, [`bridge/ida/hexrays_queries.py`](https://github.com/Ashz05/ACL-REA/blob/main/bridge/ida/hexrays_queries.py), and invokes `_rea_query(name, arguments_json)` for each read. If the worker no longer defines that entry point, REA reloads the module and retries the read once. The module answers the same database-supervisor reads REA already validates: health, function inventory and lookup, strings, paged pseudocode and assembly, callees, a depth-zero call graph, xrefs to an address, and a minimal segment survey. Caller-supplied text only ever reaches the module as JSON data, never as Python source, and REA forwards no other Python. Each observation records `execute_python` as the upstream tool, plus the query name, its arguments, and the module's SHA-256 instead of its body. The health reads behind each operation's identity checks are kept the same way, as `health_observations` beside the parsed metadata. Call scans skip data items inside functions.
 
 `execute_python` waits for initial auto-analysis, so readiness is checked before the first read. Function sizes are enclosing spans, as with other IDA profiles. Strings come from IDA's default string list. Xrefs exclude ordinary flow from the preceding instruction. Callees on x86-only targets report every direct code or pointer target of a call instruction: targets inside a function are internal and resolve to that function, and imports, pointer slots, and code outside every function are reported by address as external. Indirect calls without a reference remain unknown. Other targets use the processor-neutral call graph, which reports function entries reached by IDA’s near or far call references. Direct callers remain unavailable for the same reason as in the database-supervisor profile. The observed Hex-Rays MCP does not truncate or preview `execute_python` results, and REA requests up to 1,000 entries per function or string page and up to 1,000 lines or instructions per pseudocode or disassembly page. Nonempty engine stdout and stderr are retained in the observation.
 
@@ -235,9 +235,9 @@ Add the registration path to the **REA** MCP entry's environment, keeping the up
 ```json
 {
   "mcpServers": {
-    "rea": {
+    "acl-rea": {
       "command": "npx",
-      "args": ["-y", "rea-agents@<version-with-ida>", "mcp"],
+      "args": ["-y", "acl-rea-agents@<version-with-ida>", "mcp"],
       "env": {
         "REA_ANALYSIS_PROVIDER": "ida",
         "REA_IDA_MCP_CONFIG": "/absolute/path/to/ida-mcp.json"
@@ -260,7 +260,7 @@ Opening an MCP target starts its selected provider session; headless opening wai
 
 A long headless analysis also passes through the database supervisor's own deadlines, which REA's `timeoutMs` does not change. In the documented ida-pro-mcp snapshot `c133c385`, the supervisor reaps a worker still opening and auto-analyzing after `IDA_MCP_OPEN_TIMEOUT` seconds (default 1800). REA reports that rejection as `provider_timeout` naming the setting. The supervisor also treats a live but silent worker as wedged after `IDA_MCP_WEDGED_GRACE_SEC` (default 1800), and bounds each forwarded tool call by `IDA_MCP_WORKER_CALL_TIMEOUT` (default 900); `0` disables each. They are environment variables of the process that runs the supervisor and apply when it starts. For a binary whose auto-analysis takes longer, raise them above the expected analysis time together with `timeoutMs` and the agent's MCP request deadline.
 
-For guided registration, set `REA_IDA_MCP_CONFIG` before `rea setup --client <client>`. Setup includes that file reference in its reviewed plan and preserves it after approval; it does not copy upstream credentials into the agent configuration. For `ida` or `auto` selection, Codex/Kimi setup and doctor use the effective client registration's parsed `timeoutMs` (default 300000 ms) when recommending the agent's per-tool deadline. Existing positive client deadlines remain caller choices. `rea doctor --provider ida --json` validates the registration without starting IDA and explicitly leaves runtime compatibility and target binding for analysis.
+For guided registration, set `REA_IDA_MCP_CONFIG` before `acl-rea setup --client <client>`. Setup includes that file reference in its reviewed plan and preserves it after approval; it does not copy upstream credentials into the agent configuration. For `ida` or `auto` selection, Codex/Kimi setup and doctor use the effective client registration's parsed `timeoutMs` (default 300000 ms) when recommending the agent's per-tool deadline. Existing positive client deadlines remain caller choices. `acl-rea doctor --provider ida --json` validates the registration without starting IDA and explicitly leaves runtime compatibility and target binding for analysis.
 
 ## Coverage and evidence
 

@@ -169,7 +169,7 @@ string bytes. Complete inventories remain available through the list tools.
 Overview reuse follows the target/profile snapshot lifetime and is invalidated
 by session metadata edits.
 
-`rea analyze <path> --provider ghidra --json` and MCP `binary_overview` report
+`acl-rea analyze <path> --provider ghidra --json` and MCP `binary_overview` report
 the observed loaded `image_base` in `normalized_result`. They retain each
 segment's reported `image_base` and `address_space`. A provider that does not
 report a base, or whose segments disagree, omits the overview field, following
@@ -217,10 +217,10 @@ Use `list_procedures` to select an observed procedure address. To relate file
 bytes to loaded memory, call MCP `inspect_native_load_image` or:
 
 ```sh
-rea search <path> . --kind procedures --mode regex --provider ghidra --json
-rea inspect-native-load-image <path> --provider ghidra --json
-rea decompile <path> <observed-procedure-address> --provider ghidra --json
-rea decompile <path> --file-offset=0x1013 --provider ghidra --json
+acl-rea search <path> . --kind procedures --mode regex --provider ghidra --json
+acl-rea inspect-native-load-image <path> --provider ghidra --json
+acl-rea decompile <path> <observed-procedure-address> --provider ghidra --json
+acl-rea decompile <path> --file-offset=0x1013 --provider ghidra --json
 rea address-to-file-offset <path> <observed-procedure-address> --provider ghidra --json
 ```
 
@@ -270,7 +270,7 @@ of its page coverage.
 CLI summary delivery requires a complete Evidence bundle:
 
 ```sh
-rea inspect-native-load-image <path> --provider ghidra --detail summary --evidence_output /new/load-image.json --json
+acl-rea inspect-native-load-image <path> --provider ghidra --detail summary --evidence_output /new/load-image.json --json
 ```
 
 Read selected pages later through `inspect-analysis-view` using the returned
@@ -431,7 +431,7 @@ only package compatibility.
 
 ## Masked byte search
 
-`search_bytes` (`rea search-bytes PATH '48 8B ?? ?? 89' --provider ghidra`)
+`search_bytes` (`acl-rea search-bytes PATH '48 8B ?? ?? 89' --provider ghidra`)
 searches initialized analyzed memory, including loader fixups. Supply hexadecimal
 byte pairs, with `??` for any byte. An optional equal-length hexadecimal `mask`
 selects bits: `pattern: "a0"`, `mask: "f0"` matches bytes from `a0` through `af`.

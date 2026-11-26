@@ -86,7 +86,7 @@ it.each(["replaced", "missing"] as const)(
       expect(
         Buffer.compare(
           await readFile(
-            join(directory, "envs/grafana-example/rea-agents.tgz"),
+            join(directory, "envs/grafana-example/acl-rea-agents.tgz"),
           ),
           originalBytes,
         ),
@@ -144,7 +144,7 @@ it.skipIf(process.platform === "win32")(
       });
       expect(
         await readFile(
-          join(directory, "envs/grafana-example/rea-agents.tgz"),
+          join(directory, "envs/grafana-example/acl-rea-agents.tgz"),
           "utf8",
         ),
       ).toBe("package bytes");
@@ -175,7 +175,7 @@ it("keeps tarball ownership when the admitted inode grows during output", async 
       ...args: Parameters<SafeOutputTree["write"]>
     ) {
       const [relative] = args;
-      if (!grown && relative === "envs/grafana-example/rea-agents.tgz") {
+      if (!grown && relative === "envs/grafana-example/acl-rea-agents.tgz") {
         grown = true;
         await appendFile(tarball, Buffer.alloc(1024 * 1024, 0x42));
       }
@@ -195,7 +195,7 @@ it("keeps tarball ownership when the admitted inode grows during output", async 
         _tag: "AnalysisOutputError",
         operation: "environment-export",
         reason:
-          "Extracted content exceeds the inventoried size: envs/grafana-example/rea-agents.tgz",
+          "Extracted content exceeds the inventoried size: envs/grafana-example/acl-rea-agents.tgz",
       },
     });
     if (result.ok)

@@ -17,7 +17,7 @@ it("keeps npm pack output in the owned workspace when package validation fails",
   const packageRoot = join(testRoot, "source");
   const workspace = join(testRoot, "workspace");
   const npmCache = join(testRoot, "npm-cache");
-  const archiveName = "rea-agents-6.0.0.tgz";
+  const archiveName = "acl-rea-agents-6.0.0.tgz";
   const archivePath = join(packageRoot, archiveName);
   const sentinel = Buffer.from("caller-owned archive\n");
   await Promise.all([mkdir(packageRoot), mkdir(workspace), mkdir(npmCache)]);
@@ -25,21 +25,21 @@ it("keeps npm pack output in the owned workspace when package validation fails",
     writeFile(
       join(packageRoot, "package.json"),
       JSON.stringify({
-        name: "rea-agents",
+        name: "acl-rea-agents",
         version: "6.0.0",
         mcpName: "invalid-owner",
-        bin: { rea: "scripts/rea.mjs", "rea-agents": "scripts/rea.mjs" },
+        bin: { rea: "scripts/acl-rea.mjs", "acl-rea-agents": "scripts/acl-rea.mjs" },
         dependencies: {},
       }),
     ),
     writeFile(
       join(packageRoot, "package-lock.json"),
       JSON.stringify({
-        name: "rea-agents",
+        name: "acl-rea-agents",
         version: "6.0.0",
         lockfileVersion: 3,
         packages: {
-          "": { name: "rea-agents", version: "6.0.0", dependencies: {} },
+          "": { name: "acl-rea-agents", version: "6.0.0", dependencies: {} },
         },
       }),
     ),

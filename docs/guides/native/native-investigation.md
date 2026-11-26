@@ -24,13 +24,13 @@ breakpoint names.
 Choose an installed provider from [setup](../../getting-started/installation.md#hopper). For Ghidra:
 
 ```bash
-rea inspect /absolute/path/to/program --provider ghidra --json
-rea search /absolute/path/to/program entry --kind procedures --provider ghidra --json
+acl-rea inspect /absolute/path/to/program --provider ghidra --json
+acl-rea search /absolute/path/to/program entry --kind procedures --provider ghidra --json
 ```
 
 Select an exact name or address from the returned inventory, then use it with
 `rea function PATH PROCEDURE --provider ghidra --json` for a function dossier,
-`rea instructions` for assembly, or `rea decompile` for pseudocode. Do not assume
+`acl-rea instructions` for assembly, or `acl-rea decompile` for pseudocode. Do not assume
 that every target names its entry function `entry`. MCP uses `open_binary` and
 focused tools such as `list_procedures` and `analyze_function` on the same session.
 
@@ -80,7 +80,7 @@ and `trace` accepts `--query=<text>`. These alternatives preserve names and text
 that begin with a dash, including Objective-C names such as
 `rea function ./app '--procedure=-[REAWidget delegate]' --provider hopper --format json`.
 Use the equals form when the value resembles a CLI flag, for example
-`rea trace ./app --query=--help --provider hopper --format json`.
+`acl-rea trace ./app --query=--help --provider hopper --format json`.
 The existing positional forms remain available. Missing selectors and conflicting
 positional/named values fail before analysis starts; identical selections agree.
 
@@ -147,7 +147,7 @@ rea procedure-references /absolute/path/to/program my_function --provider ghidra
   --direction incoming --detail summary --evidence_output /absolute/path/to/references.json
 ```
 
-Use `rea inspect-analysis-view` with that bundle as an `evidence-file` source to
+Use `acl-rea inspect-analysis-view` with that bundle as an `evidence-file` source to
 page it without reopening the target. This command requires a provider supporting
 `procedure_references`; Kuna currently reports that capability unavailable.
 
@@ -187,10 +187,10 @@ nonregular replacement reports `artifact_changed`. Source copying is cancellable
 and never replaces an existing private snapshot.
 
 ```bash
-rea inspect-native-instruction <binary> <address> --provider ghidra
+acl-rea inspect-native-instruction <binary> <address> --provider ghidra
 rea resolve-native-call-targets <binary> <call-site> --provider ghidra
-rea inspect-native-data-type <binary> --type /MyStruct --provider ghidra
-rea inspect-native-data-type <binary> --address <typed-data-address> --provider ghidra
+acl-rea inspect-native-data-type <binary> --type /MyStruct --provider ghidra
+acl-rea inspect-native-data-type <binary> --address <typed-data-address> --provider ghidra
 ```
 
 Ghidra bit-field components may have a `type_id` that is not a registered
@@ -290,7 +290,7 @@ state. Select small explicit batches when using this workflow. A general batch
 admission/output policy, including completed per-item facts when capacity is
 exhausted, remains unresolved.
 
-`decompile_all` (`rea decompile-all <target> --output <directory>`) writes one
+`decompile_all` (`acl-rea decompile-all <target> --output <directory>`) writes one
 pseudocode file per analyzed function and returns only a manifest: counts, the
 output directory, capped failure reasons, provider identity, and the
 analysis-profile digest. The manifest and `decompile-index.json` do not contain
@@ -434,7 +434,7 @@ collection: "references", offset: 0, limit: 64}` to page the original rows;
 `address`; references accept exact `source_address` and `target_address`
 filters. Row indices refer to the retained collection, and page coverage does not establish provider discovery
 completeness. `list_unknowns` pages the independently managed question heads.
-In the one-shot CLI, `rea trace ... --detail summary --evidence_output PATH`
+In the one-shot CLI, `acl-rea trace ... --detail summary --evidence_output PATH`
 stores the trace and its linked source Evidence for later
 `inspect-analysis-view` calls. This bundle does not include the CLI session's
 Unknown registry; its original question texts remain available in the trace's
@@ -520,7 +520,7 @@ Hopper observations are re-observed rather than replayed from snapshots because
 the provider has no document revision token. Safe observations may still be
 retained as Evidence.
 
-`trace_native_ui_action` / `rea trace-native-ui-action <target> <seed>` accepts
+`trace_native_ui_action` / `acl-rea trace-native-ui-action <target> <seed>` accepts
 one authored selector/object ID, native symbol or exact function address. It
 joins UI wiring to uniquely matched class/selector implementations and follows
 bounded typed call references. Direct references, resolved indirect references,
@@ -564,7 +564,7 @@ These routes add no request option or default mode, so discovery omits
 `default_mode_available`. Availability describes source prerequisites;
 the result reports the query's actual matches, coverage and failures.
 
-`trace_native_values` / `rea trace-native-values <binary> <procedure> --provider
+`trace_native_values` / `acl-rea trace-native-values <binary> <procedure> --provider
  ghidra` composes high-p-code def-use graphs across statically resolved calls.
 Logical CALL arguments bind to recovered parameter ordinals; recovered RETURN
 values bind to CALL outputs. These edges are decompiler-derived. Constants,
@@ -803,7 +803,7 @@ classification, decoding, and any native conversion. In an executable session th
 Evidence subject remains the open program, the same binding as other
 bundle-resource observations. A resource-only session keeps a null subject.
 For either bundle session, the selected plist must resolve inside the opened
-bundle. Use `rea inspect-plist <path>` or open the plist itself in MCP when
+bundle. Use `acl-rea inspect-plist <path>` or open the plist itself in MCP when
 it resides outside the bundle.
 
 A conversion refusal includes plutil's diagnostic from either output stream.
@@ -919,7 +919,7 @@ stream failure, and output exhaustion retain the captured output, exit details,
 and cleanup outcome in the error result. Truncated output is never parsed as a
 complete observation.
 
-- `trace_dylib_resolution` / `rea trace-dylib-resolution <app-or-mach-o>`
+- `trace_dylib_resolution` / `acl-rea trace-dylib-resolution <app-or-mach-o>`
   parses Mach-O load commands in TypeScript and follows dyld's path expansion
   for every executable in an app bundle, or for one Mach-O within its directory.
   It reports each `@rpath`, `@loader_path` and `@executable_path` candidate with
@@ -1084,7 +1084,7 @@ complete observation.
   coverage until their navigation semantics are decoded.
 
 - `inspect_native_dispatch_metadata` /
-  `rea inspect-native-dispatch-metadata <app-or-binary>` prefers a validated macOS Mach-O byte reader. It decodes
+  `acl-rea inspect-native-dispatch-metadata <app-or-binary>` prefers a validated macOS Mach-O byte reader. It decodes
   64-bit little-endian Objective-C class/metaclass records, superclass pointers,
   absolute/relative method entries, ivar offsets/sizes/alignment and protocol
   declarations. It also decodes Swift nominal type declarations, simple Swift
@@ -1722,7 +1722,7 @@ Use `search_bytes` after opening a target with Ghidra to locate a known constant
 or instruction sequence. For example, `{"pattern":"48 8B ?? ?? 89","limit":100}`
 returns ordered addresses with segments, source file offsets and containing
 procedures. The CLI equivalent is
-`rea search-bytes ./program '48 8B ?? ?? 89' --provider ghidra`.
+`acl-rea search-bytes ./program '48 8B ?? ?? 89' --provider ghidra`.
 Use `start`/`end` to constrain the inclusive address window, and continue with
 `next_cursor` until `complete` is true. A cursor from another target, analysis
 profile or project, pattern, mask, bounds, or document is rejected without

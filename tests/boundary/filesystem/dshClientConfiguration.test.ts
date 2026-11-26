@@ -215,7 +215,7 @@ describe("DeepSeek Harness Cordis patch registration", () => {
     expect(cordisPatches(await readFile(client.configPath, "utf8"))).toEqual(
       callerPatches,
     );
-    expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
       initial,
     );
   });
@@ -263,7 +263,7 @@ describe("DeepSeek Harness caller-selected platform", () => {
     - id: rea-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -349,7 +349,7 @@ describe("DeepSeek Harness registration identity", () => {
             id: "rea-mcp",
             name: "@deepseek-ai/dsh-mcp-client",
             config: {
-              serverName: "rea",
+              serverName: "acl-rea",
               transport: "stdio",
               command: command[0],
               args: command.slice(1),
@@ -404,7 +404,7 @@ describe("DeepSeek Harness repair boundaries", () => {
         ],
       },
     ]);
-    expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
       initial,
     );
   });
@@ -525,7 +525,7 @@ it("recognizes REA inside nested Cordis groups and removes only its row", async 
   expect(text).toContain("# keep group sibling");
   expect((await host.removeClient(client)).status).toBe("skipped");
   expect(await readFile(client.configPath, "utf8")).toBe(text);
-  expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+  expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
     initial,
   );
 });
@@ -571,7 +571,7 @@ it("preserves alias-site comments when removing a nested DSH row", async () => {
   });
   for (const id of ["tools", "second-tools"])
     expect(rows.find((row) => row.id === id)?.config).toEqual([expectedPeer]);
-  expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+  expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
     initial,
   );
 });
@@ -621,7 +621,7 @@ describe("DeepSeek Harness expression-backed structure", () => {
       expect((await host.removeClient(client)).status).toBe("retained");
       expect(await readFile(client.configPath, "utf8")).toBe(initial);
       await expect(
-        readFile(`${client.configPath}.rea.backup`, "utf8"),
+        readFile(`${client.configPath}.acl-rea.backup`, "utf8"),
       ).rejects.toMatchObject({ code: "ENOENT" });
     },
   );
@@ -671,7 +671,7 @@ describe("DeepSeek Harness registration state", () => {
     - id: rea-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -776,7 +776,7 @@ describe("DeepSeek Harness tool call timeout repair", () => {
     - id: rea-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: ${command[0]}
         args: [${command.slice(1).join(", ")}]
@@ -892,7 +892,7 @@ describe("DeepSeek Harness canonical row repair", () => {
     - id: rea-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -929,13 +929,13 @@ describe("DeepSeek Harness canonical row repair", () => {
     - id: rea-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: first-launcher
         args: [mcp]
 - id: rea-mcp
   config:
-    serverName: rea
+    serverName: acl-rea
     transport: stdio
     command: stale-launcher
     args: [mcp]
@@ -968,7 +968,7 @@ describe("DeepSeek Harness document edges", () => {
     - id: rea-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -1011,7 +1011,7 @@ describe("DeepSeek Harness document edges", () => {
     - id: rea-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -1100,7 +1100,7 @@ describe("DeepSeek Harness entry ownership", () => {
     - id: rea-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -1142,7 +1142,7 @@ describe("DeepSeek Harness entry ownership", () => {
       name: "@deepseek-ai/dsh-mcp-client"
       disabled: !!js process.env.DISABLE_REA === "1"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: ${command[0]}
         args: [${command.slice(1).join(", ")}]
@@ -1170,7 +1170,7 @@ describe("DeepSeek Harness entry ownership", () => {
     - id: rea-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -1217,7 +1217,7 @@ describe("DeepSeek Harness budget resolver expressions", () => {
     - id: rea-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -1255,7 +1255,7 @@ describe("DeepSeek Harness budget resolver expressions", () => {
     - id: rea-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -1289,7 +1289,7 @@ describe("DeepSeek Harness budget resolver expressions", () => {
     - id: rea-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -1325,7 +1325,7 @@ describe("DeepSeek Harness alias collapse", () => {
     - id: rea-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -1359,7 +1359,7 @@ describe("DeepSeek Harness alias collapse", () => {
       id: rea-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -1391,7 +1391,7 @@ describe("DeepSeek Harness alias targets", () => {
       client.configPath,
       `- &cfg
   cwd: !!js process.cwd() # caller launch directory
-  serverName: rea
+  serverName: acl-rea
   transport: stdio
   command: stale-launcher
   args: [mcp]
@@ -1433,7 +1433,7 @@ describe("DeepSeek Harness alias identity", () => {
   - id: rea-mcp
     name: "@deepseek-ai/dsh-mcp-client"
     config:
-      serverName: rea
+      serverName: acl-rea
       transport: stdio
       command: stale-launcher
       args: [mcp]
@@ -1474,7 +1474,7 @@ describe("DeepSeek Harness alias identity", () => {
     - id: rea-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -1505,7 +1505,7 @@ describe("DeepSeek Harness alias identity", () => {
     - id: *entryId
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -1541,7 +1541,7 @@ describe("DeepSeek Harness alias cleanup", () => {
     - id: rea-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -1570,7 +1570,7 @@ describe("DeepSeek Harness alias cleanup", () => {
     - id: rea-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -1603,7 +1603,7 @@ describe("DeepSeek Harness alias cleanup", () => {
     - id: rea-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: ${command[0]}
         args: [${command.slice(1).join(", ")}]
@@ -1629,7 +1629,7 @@ describe("DeepSeek Harness root aliases", () => {
     - id: rea-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: first-launcher
         args: [mcp]
@@ -1638,7 +1638,7 @@ describe("DeepSeek Harness root aliases", () => {
 - &patch
   id: rea-mcp
   config:
-    serverName: rea
+    serverName: acl-rea
     transport: stdio
     command: aliased-launcher
     args: [mcp]
@@ -1646,7 +1646,7 @@ describe("DeepSeek Harness root aliases", () => {
       GHIDRA_INSTALL_DIR: !!js process.env.GHIDRA_INSTALL_DIR
 - id: rea-mcp
   config:
-    serverName: rea
+    serverName: acl-rea
     transport: stdio
     command: intervening-launcher
     args: [mcp]
@@ -1692,7 +1692,7 @@ describe("DeepSeek Harness root aliases", () => {
     - id: rea-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: ${command[0]}
         args: [${command.slice(1).join(", ")}]
@@ -1716,7 +1716,7 @@ describe("DeepSeek Harness root aliases", () => {
   id: rea-mcp
   name: "@deepseek-ai/dsh-mcp-client"
   config:
-    serverName: rea
+    serverName: acl-rea
     transport: stdio
     command: stale-launcher
     args: [mcp]
@@ -1764,7 +1764,7 @@ describe("DeepSeek Harness inert anchors", () => {
       - id: rea-mcp
         name: "@deepseek-ai/dsh-mcp-client"
         config:
-          serverName: rea
+          serverName: acl-rea
           transport: stdio
           command: stale-launcher
           args: [mcp]
@@ -1802,7 +1802,7 @@ describe("DeepSeek Harness inert anchors", () => {
       - id: rea-mcp
         name: "@deepseek-ai/dsh-mcp-client"
         config:
-          serverName: rea
+          serverName: acl-rea
           transport: stdio
           command: ${command[0]}
           args: [${command.slice(1).join(", ")}]
@@ -1866,7 +1866,7 @@ describe("DeepSeek Harness alias anchors", () => {
       expect(text).toContain("# caller inline comment");
       expect(text).toContain("*callerTransport # unrelated alias");
       expect(text).not.toContain("*oldLauncher");
-      expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+      expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
         initial,
       );
     },
@@ -1878,7 +1878,7 @@ describe("DeepSeek Harness alias anchors", () => {
       client.configPath,
       `- id: &entryId rea-mcp
   config:
-    serverName: rea
+    serverName: acl-rea
     transport: stdio
     command: stale-launcher
     args: [mcp]
@@ -1886,7 +1886,7 @@ describe("DeepSeek Harness alias anchors", () => {
     - id: *entryId
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -1912,7 +1912,7 @@ describe("DeepSeek Harness alias anchors", () => {
   - id: rea-mcp
     name: "@deepseek-ai/dsh-mcp-client"
     config:
-      serverName: rea
+      serverName: acl-rea
       transport: stdio
       command: ${command[0]}
       args: [${command.slice(1).join(", ")}]
@@ -1928,7 +1928,7 @@ describe("DeepSeek Harness alias anchors", () => {
     const text = await readFile(client.configPath, "utf8");
     expect(text).not.toContain("*op");
     expect(parseYaml(text)).toEqual([parseYaml(initial)[0]]);
-    expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
       initial,
     );
   });
@@ -1949,7 +1949,7 @@ const canonicalEntry = () => ({
   id: "rea-mcp",
   name: "@deepseek-ai/dsh-mcp-client",
   config: {
-    serverName: "rea",
+    serverName: "acl-rea",
     transport: "stdio",
     command: command[0],
     args: command.slice(1),
@@ -1993,7 +1993,7 @@ describe("DeepSeek Harness runtime environment validation", () => {
     ).toMatchObject({ status: "failed" });
     expect(await readFile(client.configPath, "utf8")).toBe(original);
     await expect(
-      access(`${client.configPath}.rea.backup`),
+      access(`${client.configPath}.acl-rea.backup`),
     ).rejects.toMatchObject({ code: "ENOENT" });
   });
 
@@ -2079,7 +2079,7 @@ describe("DeepSeek Harness runtime environment validation", () => {
       CALLER_SETTING: "keep",
       ...overrides,
     });
-    expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
       original,
     );
   });
@@ -2097,7 +2097,7 @@ describe("DeepSeek Harness source ownership", () => {
         config: {command: keep-me}
       - id: rea-mcp
         name: '@deepseek-ai/dsh-mcp-client'
-        config: {serverName: rea, transport: stdio, command: stale, args: [mcp]}
+        config: {serverName: acl-rea, transport: stdio, command: stale, args: [mcp]}
 - *op
 `;
       await writeFile(client.configPath, initial);
@@ -2115,7 +2115,7 @@ describe("DeepSeek Harness source ownership", () => {
       expect(entries.filter(({ id }) => id === "rea-mcp")).toHaveLength(
         operation === "setup" ? 1 : 0,
       );
-      expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+      expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
         initial,
       );
     },
@@ -2125,7 +2125,7 @@ describe("DeepSeek Harness source ownership", () => {
     "snapshots environment aliases before replacing their anchor in %s",
     async (shape) => {
       const { client } = await harnessClient();
-      const config = `serverName: rea
+      const config = `serverName: acl-rea
       transport: stdio
       command: stale-launcher
       args: [mcp]
@@ -2325,7 +2325,7 @@ describe("DeepSeek Harness registration applicability", () => {
     ).toBe("failed");
     expect(await readFile(client.configPath, "utf8")).toBe(initial);
     await expect(
-      readFile(`${client.configPath}.rea.backup`),
+      readFile(`${client.configPath}.acl-rea.backup`),
     ).rejects.toMatchObject({
       code: "ENOENT",
     });
@@ -2359,7 +2359,7 @@ describe("DeepSeek Harness ownership and editability", () => {
     });
     expect(await readFile(client.configPath, "utf8")).toBe(initial);
     await expect(
-      readFile(`${client.configPath}.rea.backup`),
+      readFile(`${client.configPath}.acl-rea.backup`),
     ).rejects.toMatchObject({
       code: "ENOENT",
     });
@@ -2399,7 +2399,7 @@ describe("DeepSeek Harness ownership and editability", () => {
       expect(await host.inspectClient(client)).toBeUndefined();
       expect((await host.removeClient(client)).status).toBe("removed");
       expect(parseYaml(await readFile(client.configPath, "utf8"))).toEqual([]);
-      expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+      expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
         initial,
       );
     },
@@ -2447,7 +2447,7 @@ describe("DeepSeek Harness aliased mapping keys", () => {
           (await configureClientConfiguration(client, {}, command)).status,
         ).toBe("unchanged");
       }
-      expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+      expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
         initial,
       );
     },
@@ -2602,7 +2602,7 @@ describe("DeepSeek Harness caller node metadata", () => {
         ).status,
       ).toBe("unchanged");
       expect(await readFile(client.configPath, "utf8")).toBe(text);
-      expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+      expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
         initial,
       );
     },
@@ -2631,7 +2631,7 @@ describe("DeepSeek Harness uninstall of a shared operation", () => {
     - id: rea-mcp
       name: "${entry.name}"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: ${entry.config.command}
         args: ${JSON.stringify(entry.config.args)}
@@ -2658,7 +2658,7 @@ describe("DeepSeek Harness uninstall of a shared operation", () => {
     expect(text).toContain("# caller group patch");
     expect((await host.removeClient(client)).status).toBe("skipped");
     expect(await readFile(client.configPath, "utf8")).toBe(text);
-    expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
       initial,
     );
   });
@@ -2671,7 +2671,7 @@ describe("DeepSeek Harness uninstall of a shared operation", () => {
     const row = (launcher: string) => `    - id: rea-mcp
       name: "${entry.name}"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: ${launcher}
         args: [mcp]
@@ -2706,7 +2706,7 @@ ${row("second-launcher")}`,
         { insert: [{ id: "user-a", name: "plugin-a" }] },
         {
           id: "rea-mcp",
-          config: { serverName: "rea" },
+          config: { serverName: "acl-rea" },
           insert: [canonicalEntry()],
         },
       ]),
@@ -2777,7 +2777,7 @@ it("keeps Cordis YAML syntax failures distinct from unresolved ID ownership", as
     expect(inspected?.detail).not.toContain("unknown ownership");
     expect(await readFile(client.configPath, "utf8")).toBe(initial);
     await expect(
-      readFile(`${client.configPath}.rea.backup`),
+      readFile(`${client.configPath}.acl-rea.backup`),
     ).rejects.toMatchObject({ code: "ENOENT" });
   } finally {
     await host.close?.();

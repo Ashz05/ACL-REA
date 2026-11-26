@@ -84,7 +84,7 @@ workspaceCliTest.skipIf(!["linux", "darwin"].includes(process.platform)).for(
       [
         "--import",
         stagingHook(phase),
-        resolve("scripts/rea.mjs"),
+        resolve("scripts/acl-rea.mjs"),
         "inspect-managed-artifact",
         target,
       ],

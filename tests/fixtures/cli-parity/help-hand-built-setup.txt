@@ -1,9 +1,9 @@
-$ rea setup --help
+$ acl-rea setup --help
 exit: 0
 --- stdout
-rea setup — Configure agent integrations and optional analysis providers
+acl-rea setup — Configure agent integrations and optional analysis providers
 
-Usage: rea setup [options]
+Usage: acl-rea setup [options]
 
 Options:
   --yes, -y                               Approve user-owned setup actions without prompting

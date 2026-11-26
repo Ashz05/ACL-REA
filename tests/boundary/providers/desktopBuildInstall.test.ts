@@ -414,10 +414,11 @@ it.each([
       join(payloadDir, "..", "package.json"),
       JSON.stringify({ version: PRODUCT_IDENTITY.packageVersion }),
     );
-    if (link === null) await writeFile(join(payloadDir, "rea.mjs"), entrypoint);
+    if (link === null)
+      await writeFile(join(payloadDir, "acl-rea.mjs"), entrypoint);
     else {
       if (problem === null) await writeFile(join(payloadDir, link), entrypoint);
-      await symlink(link, join(payloadDir, "rea.mjs"));
+      await symlink(link, join(payloadDir, "acl-rea.mjs"));
     }
     await execute("tar", [
       "-cJf",
@@ -426,7 +427,7 @@ it.each([
       join(root, "node-src"),
       `node-v${BUILD_NODE_VERSION}-linux-x64`,
     ]);
-    const archive = join(root, "rea-payload.tar");
+    const archive = join(root, "acl-rea-payload.tar");
     await execute("tar", [
       "-cf",
       archive,
@@ -479,11 +480,11 @@ it.each([
       request({ kind: "archive", package: "mousepad", extra_packages: [] }),
       localPayload,
     );
-    const script = text(bundle.files, "envs/mousepad/install-rea.sh")
-      .replaceAll("/opt/rea", join(root, "opt/rea"))
+    const script = text(bundle.files, "envs/mousepad/install-acl-rea.sh")
+      .replaceAll("/opt/acl-rea", join(root, "opt/acl-rea"))
       .replaceAll("/usr/local/bin", join(root, "bin"));
     await mkdir(join(root, "bin"), { recursive: true });
-    const scriptPath = join(root, "install-rea.sh");
+    const scriptPath = join(root, "install-acl-rea.sh");
     await writeFile(scriptPath, script);
     const installed = execute("sh", [scriptPath], { cwd: root });
     if (problem !== null) {
@@ -494,12 +495,12 @@ it.each([
     }
     await installed;
 
-    const linked = join(root, "opt/rea/rea.mjs");
+    const linked = join(root, "opt/acl-rea/acl-rea.mjs");
     expect(await readlink(linked)).toBe(
-      join(root, "opt/rea/payload", folder, "scripts/rea.mjs"),
+      join(root, "opt/acl-rea/payload", folder, "scripts/acl-rea.mjs"),
     );
     expect(await readFile(linked, "utf8")).toBe(entrypoint);
-    await execute(join(root, "bin/rea"), ["--version"]);
+    await execute(join(root, "bin/acl-rea"), ["--version"]);
     expect(await readFile(marker, "utf8")).toBe(`${linked}\n--version\n`);
   },
 );
@@ -540,16 +541,16 @@ describe("installed launch paths", () => {
         localPayload,
       );
       const root = await createTestTempDirectory("rea-electron-launch-");
-      const runtime = join(root, "opt/rea/payload/rea");
+      const runtime = join(root, "opt/acl-rea/payload/rea");
       const policy = join(runtime, "dist/domain/desktop/appExportInstall.js");
       await mkdir(dirname(policy), { recursive: true });
-      const launcher = join(runtime, "scripts/rea.mjs");
+      const launcher = join(runtime, "scripts/acl-rea.mjs");
       await mkdir(dirname(launcher), { recursive: true });
       await writeFile(launcher, "");
-      await symlink(launcher, join(root, "opt/rea/rea.mjs"));
+      await symlink(launcher, join(root, "opt/acl-rea/acl-rea.mjs"));
       const unrelatedPolicy = join(
         root,
-        "opt/rea/payload/unrelated/dist/domain/desktop/appExportInstall.js",
+        "opt/acl-rea/payload/unrelated/dist/domain/desktop/appExportInstall.js",
       );
       await mkdir(dirname(unrelatedPolicy), { recursive: true });
       await writeFile(unrelatedPolicy, "");
@@ -590,7 +591,7 @@ describe("installed launch paths", () => {
         bundle.files,
         "envs/typora/prepare-electron-launch.sh",
       )
-        .replaceAll("/opt/rea", join(root, "opt/rea"))
+        .replaceAll("/opt/acl-rea", join(root, "opt/acl-rea"))
         .replaceAll("/usr/local/bin", bin);
       const scriptPath = join(root, "prepare-electron-launch.sh");
       await writeFile(scriptPath, script);

@@ -173,7 +173,7 @@ cliTest(
     });
 
     expect(result.exitCode).toBe(0);
-    expect(result.stdout).toContain("Usage: rea setup");
+    expect(result.stdout).toContain("Usage: acl-rea setup");
     expect(result.stdout).not.toContain("Invalid --dry-run value");
     await expect(access(config)).rejects.toMatchObject({ code: "ENOENT" });
   },
@@ -223,7 +223,7 @@ const runSetupInTty = async (
 ): Promise<{ readonly exitCode: number; readonly output: string }> => {
   const terminal = spawn(
     process.execPath,
-    ["scripts/rea.mjs", "setup", ...arguments_],
+    ["scripts/acl-rea.mjs", "setup", ...arguments_],
     {
       cwd: process.cwd(),
       // Client locations such as CODEX_HOME must follow the temporary home.
@@ -314,7 +314,7 @@ describe("manual connector approval", () => {
       expect(output.slice(0, prompt)).toContain(remediation);
       const skill = join(
         home,
-        ".agents/skills/reverse-engineer-anything/SKILL.md",
+        ".agents/skills/acl-reverse-engineer-anything/SKILL.md",
       );
       if (approved) {
         expect(exitCode, output).toBe(1);
@@ -385,7 +385,7 @@ describe("TTY setup dry run", () => {
   it("shows the refusal instead of a blocked skill plan for a TTY dry run", async () => {
     const home = await createTestTempDirectory("rea-cli-setup-linked-dry-run-");
     const managed = join(home, "managed-skill");
-    const linked = join(home, ".claude/skills/reverse-engineer-anything");
+    const linked = join(home, ".claude/skills/acl-reverse-engineer-anything");
     const original = "user-managed skill bytes\n";
     await mkdir(managed);
     await writeFile(join(managed, "SKILL.md"), original);
@@ -423,23 +423,23 @@ cliTest.skipIf(process.platform === "win32")(
     const home = await createTestTempDirectory("rea-codex-alias-repair-");
     const codexHome = join(home, ".codex");
     const config = join(codexHome, "config.toml");
-    const backup = `${config}.rea.backup`;
+    const backup = `${config}.acl-rea.backup`;
     const alias = join(home, "rea-launcher-alias.mjs");
     await mkdir(codexHome);
-    await symlink(resolve("scripts/rea.mjs"), alias, "file");
+    await symlink(resolve("scripts/acl-rea.mjs"), alias, "file");
     const original = [
       "# Caller-owned Codex approval policy",
       'approval_policy = "on-request"',
       'sandbox_mode = "read-only"',
       "",
-      "[mcp_servers.rea]",
+      "[mcp_servers.acl-rea]",
       `command = ${JSON.stringify(process.execPath)}`,
       `args = ${JSON.stringify([alias, "mcp"])}`,
       "startup_timeout_sec = 0",
       "tool_timeout_sec = 900",
       'default_tools_approval_mode = "prompt"',
       "",
-      "[mcp_servers.rea.tools.open_binary]",
+      "[mcp_servers.acl-rea.tools.open_binary]",
       'approval_mode = "approve"',
       "output_token_limit = 2048",
       "",
@@ -490,7 +490,7 @@ cliTest.skipIf(process.platform === "win32")(
       approval_policy: "on-request",
       sandbox_mode: "read-only",
       mcp_servers: {
-        rea: {
+        "acl-rea": {
           command: process.execPath,
           args: [alias, "mcp"],
           startup_timeout_sec: 30,
@@ -575,7 +575,7 @@ describe("interactive setup journey", () => {
           ...actions[0],
           operation: "update",
           backupPath: "/isolated/.codex/config.toml.bak",
-          commands: ["npx -y rea-agents@3.2.1 mcp"],
+          commands: ["npx -y acl-rea-agents@3.2.1 mcp"],
         },
         actions[1],
         actions[2],
@@ -585,7 +585,7 @@ describe("interactive setup journey", () => {
     expect(preflight).toContain("UPDATE  Codex");
     expect(preflight).toMatch(/\/isolated\/\.codex\/config\.toml\r?\n/u);
     expect(preflight).toContain("backup: /isolated/.codex/config.toml.bak");
-    expect(preflight).toContain("command: npx -y rea-agents@3.2.1 mcp");
+    expect(preflight).toContain("command: npx -y acl-rea-agents@3.2.1 mcp");
     expect(result.decision).toEqual({
       approved: true,
       selectedActionIds: ["configure_client:codex", "install_skill"],
@@ -717,16 +717,16 @@ describe("interactive setup client hints", () => {
 
 describe("interactive setup completion", () => {
   it.each([
-    { npmCommand: "", userAgent: "", launcher: "rea" },
+    { npmCommand: "", userAgent: "", launcher: "acl-rea" },
     {
       npmCommand: "exec",
       userAgent: "npm/10.9.0 node/v24.11.0 linux x64",
-      launcher: "npx rea-agents",
+      launcher: "npx acl-rea-agents",
     },
     {
       npmCommand: "exec",
       userAgent: "bun/1.4.2 npm/? node/v26.3.0 linux x64",
-      launcher: "bunx rea-agents",
+      launcher: "bunx acl-rea-agents",
     },
   ])(
     "prints an available next command for $launcher invocation",

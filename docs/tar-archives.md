@@ -75,7 +75,7 @@ extraction never writes outside its fresh output root.
 ## CLI
 
 ```sh
-rea inspect-artifact Pixelorama-Linux-64bit.tar.gz --detail summary \
+acl-rea inspect-artifact Pixelorama-Linux-64bit.tar.gz --detail summary \
   --evidence_output evidence/release.json --json
 rea extract-artifact UniVRM-0.131.4_efd2.unitypackage --json
 ```

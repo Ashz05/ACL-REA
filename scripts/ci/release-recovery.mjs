@@ -54,7 +54,7 @@ export function selectRecoveryRelease({
   if (tagSha !== undefined) {
     sha.parse(tagSha);
     z.object({
-      tag_name: z.literal(`rea-agents-${version}`),
+      tag_name: z.literal(`acl-rea-agents-${version}`),
       draft: z.literal(false),
       published_at: z.string().min(1),
     }).parse(release);
@@ -220,13 +220,13 @@ async function main() {
       "rev-parse",
       "--verify",
       "--quiet",
-      `refs/tags/rea-agents-${version}^{commit}`,
+      `refs/tags/acl-rea-agents-${version}^{commit}`,
     ]).catch((error) => {
       if (error.code !== 1) throw error;
       return undefined;
     });
     const github = githubApi(repository, process.env.GH_TOKEN);
-    const releaseResponse = await github(`releases/tags/rea-agents-${version}`);
+    const releaseResponse = await github(`releases/tags/acl-rea-agents-${version}`);
     if (releaseResponse.status !== 404 && !releaseResponse.ok)
       throw new Error(
         `GitHub release lookup failed: HTTP ${releaseResponse.status}`,
@@ -289,7 +289,7 @@ async function main() {
       JSON.parse(
         await command("npm", [
           "view",
-          `rea-agents@${version}`,
+          `acl-rea-agents@${version}`,
           "dist.integrity",
           "--json",
           "--registry=https://registry.npmjs.org",

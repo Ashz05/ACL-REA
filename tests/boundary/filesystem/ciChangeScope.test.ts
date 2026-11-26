@@ -651,7 +651,7 @@ it("routes license inventories to docs checks and keeps blame-ignore edits forma
   }
   expect(
     await classifyPaths([
-      ".cursor-plugin/skills/reverse-engineer-anything/SKILL.md",
+      ".cursor-plugin/skills/acl-reverse-engineer-anything/SKILL.md",
     ]),
   ).toMatchObject({
     docs: true,
@@ -1438,7 +1438,7 @@ it.each([
   ],
   ["install.sh", { code: true, runtime: true, package: true, evm: false }],
   [
-    ".agents/skills/reverse-engineer-anything/SKILL.md",
+    ".agents/skills/acl-reverse-engineer-anything/SKILL.md",
     {
       code: true,
       runtime: true,

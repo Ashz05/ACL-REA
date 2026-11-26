@@ -88,7 +88,7 @@ mcpTest(
       throw new Error("Expected guidance matches");
     expect(parsed).toMatchObject({
       source: "installed_rea_guidance",
-      package: expect.stringMatching(/^rea-agents@/u),
+      package: expect.stringMatching(/^acl-rea-agents@/u),
     });
     const [selected] = parsed.matches;
     expect(selected).toMatchObject({

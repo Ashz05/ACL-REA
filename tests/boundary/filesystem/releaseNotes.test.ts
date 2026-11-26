@@ -55,7 +55,7 @@ const pluginMarketplaces = [
   ".claude-plugin/marketplace.json",
   ".agents/plugins/marketplace.json",
 ] as const;
-const pluginMarketplace = (version: string, packageName = "rea-agents") => ({
+const pluginMarketplace = (version: string, packageName = "acl-rea-agents") => ({
   plugins: [
     { name: "rea", source: { source: "npm", package: packageName, version } },
   ],
@@ -63,7 +63,7 @@ const pluginMarketplace = (version: string, packageName = "rea-agents") => ({
 
 const pluginServer = (version: string, command = "node") => ({
   mcpServers: {
-    rea: {
+    "acl-rea": {
       command,
       args: ["./scripts/plugin-mcp-launcher.mjs", version],
       startup_timeout_sec: 30,
@@ -78,7 +78,7 @@ const pluginManifest = (
   version,
   skills,
   mcpServers: {
-    rea: {
+    "acl-rea": {
       command,
       args: ["${CLAUDE_PLUGIN_ROOT}/scripts/plugin-mcp-launcher.mjs", version],
     },
@@ -134,7 +134,7 @@ beforeAll(async () => {
   await git(directory, ["add", "."]);
   await git(directory, ["commit", "-m", "chore: baseline"]);
   const base = await git(directory, ["rev-parse", "HEAD"]);
-  await git(directory, ["tag", "rea-agents-6.3.0"]);
+  await git(directory, ["tag", "acl-rea-agents-6.3.0"]);
   await git(directory, ["switch", "-c", "feature"]);
   await writeFile(join(directory, "feature.txt"), "capability");
   await git(directory, ["add", "."]);
@@ -181,7 +181,7 @@ beforeAll(async () => {
           author("cursoragent"),
           author("codex"),
           author("Copilot"),
-          author("morluto"),
+          author("Ashz05"),
         ]),
         associatedPullRequests: page([]),
       },
@@ -318,7 +318,7 @@ it("inventories side branches and paginated credits, then checks and renders syn
   );
   expect(f.record).toContain("Thanks @dana.");
   expect(f.record).not.toMatch(
-    /@(?:merger|automation|platformbot|claude|cursoragent|codex|Copilot|morluto)/u,
+    /@(?:merger|automation|platformbot|claude|cursoragent|codex|Copilot|Ashz05)/u,
   );
   const body = join(f.directory, "body.md");
   await writeFile(body, releaseBody(f.notes));
@@ -349,7 +349,7 @@ it("inventories side branches and paginated credits, then checks and renders syn
   ]);
   expect(summary).toContain("3 commits and 1 merged PR]");
   expect(summary).toContain(
-    "/blob/rea-agents-6.4.0/docs/releases/6.4.0.contributions.json",
+    "/blob/acl-rea-agents-6.4.0/docs/releases/6.4.0.contributions.json",
   );
   expect(summary).not.toContain("Thanks");
   const conciseNotes = f.notes
@@ -567,7 +567,7 @@ it("requires release notes that Release Please can extract from the PR body", as
     readiness + releaseBody(f.notes),
     releaseBody(f.notes) + readiness,
     releaseBody(
-      `<details><summary>rea-agents: 6.4.0</summary>\n\n${f.notes}\n</details>`,
+      `<details><summary>acl-rea-agents: 6.4.0</summary>\n\n${f.notes}\n</details>`,
     ),
   ]) {
     await writeFile(body, validBody);
@@ -579,7 +579,7 @@ it("requires release notes that Release Please can extract from the PR body", as
     releaseBody(readiness + f.notes),
     f.notes,
     releaseBody(
-      `<details><summary>rea-agents: 6.5.0</summary>\n\n${f.notes}\n</details>`,
+      `<details><summary>acl-rea-agents: 6.5.0</summary>\n\n${f.notes}\n</details>`,
     ),
   ]) {
     await writeFile(body, invalidBody);
@@ -619,10 +619,10 @@ it("checks the live merged PR and exact Git snapshot before either publication r
     merge_commit_sha: source,
     base: { ref: "main" },
     head: {
-      ref: "release-please--branches--main--components--rea-agents",
+      ref: "release-please--branches--main--components--acl-rea-agents",
       repo: { full_name: "fixture/rea" },
     },
-    labels: [{ name: "rea:release-notes-finalized" }],
+    labels: [{ name: "acl-rea:release-notes-finalized" }],
   };
   const prFile = join(f.directory, ".git/release-pr.json");
   await writeFile(prFile, JSON.stringify(pr));

@@ -36,7 +36,7 @@ const listeningUrl = (stderr: string): URL | undefined => {
   return undefined;
 };
 
-/** Spawn `rea <arguments>` with stdin closed and resolve once it announces its MCP URL. */
+/** Spawn `acl-rea <arguments>` with stdin closed and resolve once it announces its MCP URL. */
 export const startListeningProcess = async (
   processes: TestProcesses,
   arguments_: readonly string[],
@@ -44,7 +44,7 @@ export const startListeningProcess = async (
 ): Promise<McpHttpProcess> => {
   const child = processes.spawn(
     process.execPath,
-    [resolvePath("scripts/rea.mjs"), ...arguments_],
+    [resolvePath("scripts/acl-rea.mjs"), ...arguments_],
     {
       env: {
         PATH: process.env.PATH ?? "",
@@ -85,7 +85,7 @@ export const startListeningProcess = async (
   return { child, url, stderr: () => stderr };
 };
 
-/** Spawn `rea mcp --http --port 0` and resolve once it names its URL. */
+/** Spawn `acl-rea mcp --http --port 0` and resolve once it names its URL. */
 export const startMcpHttpProcess = (
   processes: TestProcesses,
   arguments_: readonly string[] = [],

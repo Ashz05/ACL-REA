@@ -19,7 +19,7 @@ import { withVerifierCleanup } from "./verifier-cleanup.mjs";
 /** Check native URL resolution against an independently loaded module graph through CLI/MCP. */
 export async function verifyBrowserModules(
   executable,
-  entrypoint = fileURLToPath(new URL("../rea.mjs", import.meta.url)),
+  entrypoint = fileURLToPath(new URL("../acl-rea.mjs", import.meta.url)),
 ) {
   let site;
   let root;

@@ -10,7 +10,7 @@ import {
 } from "../../../src/application/ClientRegistrationIdentity.js";
 import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 
-// The bin shim aube (mise's npm backend) wrote for rea-agents 6.7.0.
+// The bin shim aube (mise's npm backend) wrote for acl-rea-agents 6.7.0.
 const aubeShim = (target: string): string => `#!/bin/sh
 # aube-bin-shim v2 target=${target}
 link="$0"
@@ -33,7 +33,7 @@ fi
 `;
 
 const storeTarget = (version: string): string =>
-  `../.mise/rea-agents@${version}/node_modules/rea-agents/scripts/rea.mjs`;
+  `../.mise/acl-rea-agents@${version}/node_modules/acl-rea-agents/scripts/acl-rea.mjs`;
 
 /**
  * Lay out a mise install the way mise does: each version in its own directory
@@ -54,13 +54,13 @@ const installWithMise = async (
   );
   await mkdir(bin, { recursive: true });
   await symlink(process.execPath, join(bin, "node"));
-  await writeFile(join(bin, "rea"), aubeShim(shimTarget), { mode: 0o755 });
+  await writeFile(join(bin, "acl-rea"), aubeShim(shimTarget), { mode: 0o755 });
   await rm(join(installs, "latest"), { force: true });
   await symlink(`./${version}`, join(installs, "latest"));
   const latestBin = join(installs, "latest", "node_modules", ".bin");
   return {
     entrypoint: join(latestBin, storeTarget(version)),
-    shim: join(latestBin, "rea"),
+    shim: join(latestBin, "acl-rea"),
   };
 };
 
@@ -134,7 +134,7 @@ const registerWithClaudeCode = async (
     join(home, ".claude.json"),
     JSON.stringify({
       mcpServers: {
-        rea: { command: command[0], args: command.slice(1) },
+        "acl-rea": { command: command[0], args: command.slice(1) },
       },
     }),
   );
@@ -211,7 +211,7 @@ it.skipIf(process.platform === "win32")(
       writeFile(
         configPath,
         JSON.stringify({
-          mcp: { servers: { rea: { type: "local", command } } },
+          mcp: { servers: { "acl-rea": { type: "local", command } } },
         }),
       );
     const readProject = async () =>
@@ -224,7 +224,7 @@ it.skipIf(process.platform === "win32")(
       ).find(({ client }) => client === "opencode");
     const cwd = vi.spyOn(process, "cwd").mockReturnValue(project);
     try {
-      await registerProject(["npx", "-y", "rea-agents@1.0.0", "mcp"]);
+      await registerProject(["npx", "-y", "acl-rea-agents@1.0.0", "mcp"]);
       expect(await readProject()).toMatchObject({
         state: "stale",
         scope: "project",
@@ -255,7 +255,7 @@ it.skipIf(process.platform === "win32")(
       join(home, "installs", "rea"),
       "6.7.0",
     );
-    const link = join(home, "bin", "rea");
+    const link = join(home, "bin", "acl-rea");
     await mkdir(dirname(link), { recursive: true });
     await symlink(shim, link);
 
@@ -594,12 +594,16 @@ it.skipIf(process.platform === "win32")(
     const nativeBin = join(nativeBase, ".bin");
     await mkdir(join(nativeBase, "sub"), { recursive: true });
     await mkdir(nativeBin);
-    await writeFile(join(nativeBin, "rea"), aubeShim(storeTarget("6.7.0")), {
-      mode: 0o755,
-    });
+    await writeFile(
+      join(nativeBin, "acl-rea"),
+      aubeShim(storeTarget("6.7.0")),
+      {
+        mode: 0o755,
+      },
+    );
     await symlink(join(nativeBase, "sub"), join(lexicalBin, "..", "helper"));
     await rm(shim);
-    await symlink("../helper/../.bin/rea", shim);
+    await symlink("../helper/../.bin/acl-rea", shim);
     const direct = [shim, "mcp"];
     // The Node script argument resolves lexically to the installed script.
     // The shell's earlier -x test resolves its own Node path natively.

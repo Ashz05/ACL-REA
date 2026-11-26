@@ -48,7 +48,7 @@ remains owned for retry.
 Prefer a retained summary when only a few facts are needed:
 
 ```sh
-rea inspect-artifact firmware.bin --detail summary \
+acl-rea inspect-artifact firmware.bin --detail summary \
   --evidence_output firmware.evidence.json --json
 rea extract-artifact firmware.bin --json
 ```

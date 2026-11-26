@@ -31,7 +31,7 @@ if (
   throw new Error(
     "Usage: node scripts/verify-qlog-captures.mjs /absolute/control/origin.qlog /absolute/loss/origin.qlog /absolute/new-report.json",
   );
-const entrypoint = fileURLToPath(new URL("./rea.mjs", import.meta.url));
+const entrypoint = fileURLToPath(new URL("./acl-rea.mjs", import.meta.url));
 const client = new Client({ name: "qlog-producer-verifier", version: "1" });
 const environment = {
   PATH: process.env.PATH ?? "/usr/bin:/bin",

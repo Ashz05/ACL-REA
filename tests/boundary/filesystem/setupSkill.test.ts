@@ -82,7 +82,7 @@ describe("skill recovery backup selection", () => {
     const current = "currently installed instructions\n";
     await mkdir(dirname(manifest), { recursive: true });
     await writeFile(manifest, current);
-    await writeFile(`${manifest}.rea.backup`, current);
+    await writeFile(`${manifest}.acl-rea.backup`, current);
     const result = await installCanonicalSkill(home, [], {}, process.platform, {
       mkdir: async (path) =>
         mkdir(path, { recursive: true }).then(() => undefined),
@@ -93,7 +93,7 @@ describe("skill recovery backup selection", () => {
     });
 
     expect(result).toEqual({ ok: true, value: "installed" });
-    expect(await readFile(`${manifest}.rea.backup`, "utf8")).toBe(current);
+    expect(await readFile(`${manifest}.acl-rea.backup`, "utf8")).toBe(current);
     expect(await skillNeedsInstall(home, [])).toBe(false);
   });
 });
@@ -105,7 +105,7 @@ describe("skill recovery byte preservation", () => {
     if (destination === undefined) throw new Error("Missing shared skill root");
     const manifest = join(destination.path, "SKILL.md");
     const original = Buffer.from([0x63, 0x61, 0x66, 0xe9, 0xff, 0x0a]);
-    const firstBackup = `${manifest}.rea.backup`;
+    const firstBackup = `${manifest}.acl-rea.backup`;
     const recovery = `${firstBackup}.${createHash("sha256").update(original).digest("hex")}.recovery`;
     await mkdir(dirname(manifest), { recursive: true });
     await writeFile(manifest, original);
@@ -268,7 +268,7 @@ describe("skill directory admission", () => {
 describe("canonical skill transaction", () => {
   it("does not roll back files when backup preparation fails", async () => {
     const home = await createTestTempDirectory("rea-skill-backup-failure-");
-    const root = join(home, ".agents/skills/reverse-engineer-anything");
+    const root = join(home, ".agents/skills/acl-reverse-engineer-anything");
     const manifest = join(root, "SKILL.md");
     const connection = join(root, "references/connection-and-recovery.md");
     const original = "operator-owned manifest bytes\n";
@@ -307,9 +307,9 @@ describe("canonical skill transaction", () => {
     expect(writes).toEqual([]);
     expect(await readFile(manifest, "utf8")).toBe(original);
     expect(await readFile(connection, "utf8")).toBe(secondOriginal);
-    expect(await readFile(`${manifest}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${manifest}.acl-rea.backup`, "utf8")).toBe(original);
     await expect(
-      readFile(`${connection}.rea.backup`, "utf8"),
+      readFile(`${connection}.acl-rea.backup`, "utf8"),
     ).rejects.toMatchObject({
       code: "ENOENT",
     });
@@ -327,7 +327,7 @@ describe("canonical skill transaction", () => {
     const native = join(root, "references/native-and-artifacts.md");
     const originalNative = "old native\n";
     const historical = "previous native instructions\n";
-    const firstBackup = `${native}.rea.backup`;
+    const firstBackup = `${native}.acl-rea.backup`;
     const recovery = `${firstBackup}.${createHash("sha256").update(originalNative).digest("hex")}.recovery`;
     await mkdir(dirname(native), { recursive: true });
     await writeFile(manifest, "old manifest\n", { mode: 0o640 });
@@ -371,8 +371,8 @@ describe("canonical skill transaction", () => {
       { path: native, reason: "injected rollback failure" },
     ]);
     expect(result.error.recoveryBackupPaths).toEqual([
-      `${manifest}.rea.backup`,
-      `${connection}.rea.backup`,
+      `${manifest}.acl-rea.backup`,
+      `${connection}.acl-rea.backup`,
       recovery,
     ]);
     expect(result.error.message).toContain(
@@ -386,7 +386,7 @@ describe("canonical skill transaction", () => {
     expect(await readFile(recovery, "utf8")).toBe(originalNative);
     expect(await readFile(firstBackup, "utf8")).toBe(historical);
     expect(result.error.message).toContain(
-      `Existing-file backups remain at ${manifest}.rea.backup`,
+      `Existing-file backups remain at ${manifest}.acl-rea.backup`,
     );
   });
 });
@@ -398,7 +398,7 @@ describe("canonical skill discovery", () => {
       const home = await createTestTempDirectory("rea-skill-unreadable-");
       const destination = join(
         home,
-        ".agents/skills/reverse-engineer-anything/SKILL.md",
+        ".agents/skills/acl-reverse-engineer-anything/SKILL.md",
       );
       const original = "existing private skill bytes\n";
       await mkdir(dirname(destination), { recursive: true });
@@ -413,7 +413,7 @@ describe("canonical skill discovery", () => {
       }
       expect(await readFile(destination, "utf8")).toBe(original);
       await expect(
-        readFile(`${destination}.rea.backup`, "utf8"),
+        readFile(`${destination}.acl-rea.backup`, "utf8"),
       ).rejects.toMatchObject({
         code: "ENOENT",
       });
@@ -426,14 +426,14 @@ describe("canonical skill discovery", () => {
     const skillsDirectory = join(configDirectory, "skills");
     const claudeSkill = join(
       skillsDirectory,
-      "reverse-engineer-anything/SKILL.md",
+      "acl-reverse-engineer-anything/SKILL.md",
     );
     await mkdir(configDirectory, { recursive: true });
     await writeFile(
       join(configDirectory, ".claude.json"),
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: "npx",
             args: ["-y", PRODUCT_IDENTITY.registrationPackageSpecifier, "mcp"],
           },
@@ -480,7 +480,7 @@ describe("canonical skill discovery", () => {
     ).toBe(false);
     await expect(access(claudeSkill)).resolves.toBeUndefined();
     await expect(
-      access(join(home, ".agents/skills/reverse-engineer-anything")),
+      access(join(home, ".agents/skills/acl-reverse-engineer-anything")),
     ).rejects.toMatchObject({ code: "ENOENT" });
     expect(
       (
@@ -496,12 +496,12 @@ describe("canonical skill discovery", () => {
     const home = await createTestTempDirectory("rea-mixed-skill-");
     const sharedSkill = join(
       home,
-      ".agents/skills/reverse-engineer-anything/SKILL.md",
+      ".agents/skills/acl-reverse-engineer-anything/SKILL.md",
     );
     const claudeSkills = join(home, ".claude", "skills");
     const claudeSkill = join(
       claudeSkills,
-      "reverse-engineer-anything/SKILL.md",
+      "acl-reverse-engineer-anything/SKILL.md",
     );
     const host = systemDoctorHost({
       environment: { HOME: home, USERPROFILE: home },
@@ -541,7 +541,7 @@ describe("canonical skill transaction", () => {
     const home = await createTestTempDirectory("rea-skill-test-");
     const destination = join(
       home,
-      ".agents/skills/reverse-engineer-anything/SKILL.md",
+      ".agents/skills/acl-reverse-engineer-anything/SKILL.md",
     );
     const sibling = join(home, ".agents/skills/unrelated/SKILL.md");
     const nativeGuide = join(
@@ -560,14 +560,14 @@ describe("canonical skill transaction", () => {
       ok: true,
       value: "installed",
     });
-    expect(await readFile(`${destination}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${destination}.acl-rea.backup`, "utf8")).toBe(
       "stale managed skill\n",
     );
     const installedSkill = await readFile(destination, "utf8");
     expect(installedSkill).toBe(
       await readFile(
         new URL(
-          "../../../skills/reverse-engineer-anything/SKILL.md",
+          "../../../skills/acl-reverse-engineer-anything/SKILL.md",
           import.meta.url,
         ),
         "utf8",
@@ -577,7 +577,7 @@ describe("canonical skill transaction", () => {
       `version: "${PRODUCT_IDENTITY.skillVersion}"`,
     );
     await expectPermissionMode(destination, 0o640);
-    expect(await readFile(`${nativeGuide}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${nativeGuide}.acl-rea.backup`, "utf8")).toBe(
       "stale filesystem-write permission grant\n",
     );
     for (const reference of [
@@ -595,7 +595,7 @@ describe("canonical skill transaction", () => {
       expect(installed).toBe(
         await readFile(
           new URL(
-            `../../../skills/reverse-engineer-anything/references/${reference}`,
+            `../../../skills/acl-reverse-engineer-anything/references/${reference}`,
             import.meta.url,
           ),
           "utf8",
@@ -634,7 +634,7 @@ describe("canonical skill transaction", () => {
     const records = await Promise.all(
       paths.map(async (path) => {
         const bytes = await readFile(
-          join(home, ".agents/skills/reverse-engineer-anything", path),
+          join(home, ".agents/skills/acl-reverse-engineer-anything", path),
         );
         return `${path}\0${createHash("sha256").update(bytes).digest("hex")}\n`;
       }),
@@ -654,7 +654,7 @@ describe("canonical skill transaction", () => {
         ),
       );
     expect(manifest.skill_digests).toContainEqual({
-      skill_id: "reverse-engineer-anything",
+      skill_id: "acl-reverse-engineer-anything",
       sha256: createHash("sha256").update(records.join("")).digest("hex"),
     });
   });
@@ -664,7 +664,7 @@ it("doctor verifies installed instructions and references even when metadata is 
   const home = await createTestTempDirectory("rea-skill-doctor-");
   const destination = join(
     home,
-    ".agents/skills/reverse-engineer-anything/SKILL.md",
+    ".agents/skills/acl-reverse-engineer-anything/SKILL.md",
   );
   const reference = join(
     dirname(destination),
@@ -719,14 +719,14 @@ it("reads installed frontmatter metadata without treating body examples as ident
   const manifest = join(destination.path, "SKILL.md");
   await writeFile(
     manifest,
-    "---\nname: reverse-engineer-anything\nmetadata:\n  version: '49'\n  tool_count: -1\n---\n\n```yaml\nmetadata:\n  version: \"counterfeit\"\n  tool_count: 42\n```\n",
+    "---\nname: acl-reverse-engineer-anything\nmetadata:\n  version: '49'\n  tool_count: -1\n---\n\n```yaml\nmetadata:\n  version: \"counterfeit\"\n  tool_count: 42\n```\n",
   );
   expect(
     await readInstalledSkillIdentity(home, ["claude_code"], {}, testPlatform),
   ).toMatchObject({ version: "49", toolCount: null, canonical: false });
   await writeFile(
     manifest,
-    '---\nname: reverse-engineer-anything\n---\n\n```yaml\nmetadata:\n  version: "counterfeit"\n  tool_count: 42\n```\n',
+    '---\nname: acl-reverse-engineer-anything\n---\n\n```yaml\nmetadata:\n  version: "counterfeit"\n  tool_count: 42\n```\n',
   );
   expect(
     await readInstalledSkillIdentity(home, ["claude_code"], {}, testPlatform),

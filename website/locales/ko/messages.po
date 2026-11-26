@@ -2203,7 +2203,7 @@ msgid "Terminal · refresh agent setup"
 msgstr "터미널 · 에이전트 설정 갱신"
 
 # Reviewed for readable setup and analysis terminology.
-#. {ph0}: <code>npx -y rea-agents@latest</code>
+#. {ph0}: <code>npx -y acl-rea-agents@latest</code>
 #: website/public/faq/index.html:303
 #, python-brace-format
 msgctxt "page:faq/index.html"
@@ -2518,7 +2518,7 @@ msgstr ""
 "있습니다."
 
 # Reviewed for readable instructions and accurate software terminology.
-#. {ph0}: <a href="https://github.com/morluto/rea/issues/new/choose" >
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/issues/new/choose" >
 #. {ph1}: </a >
 #: website/public/faq/index.html:517
 #, python-brace-format
@@ -2555,9 +2555,9 @@ msgid "How can I share an example or contribute?"
 msgstr "사례를 공유하거나 기여하려면 어떻게 하나요?"
 
 # Reviewed for readable instructions and accurate software terminology.
-#. {ph0}: <a href="https://github.com/morluto/rea/issues/new/choose" >
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/issues/new/choose" >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/rea/pulls">
+#. {ph2}: <a href="https://github.com/Ashz05/ACL-REA/pulls">
 #. {ph3}: </a >
 #: website/public/faq/index.html:543
 #, python-brace-format
@@ -3476,7 +3476,7 @@ msgid ""
 " Electron app and a browser.{ph3}"
 msgstr "{ph0}분석 가이드 선택{ph1}{ph2}바이너리, Electron 앱, 브라우저의 실제 분석 예제입니다.{ph3}"
 
-#. {ph0}: <a href="https://github.com/morluto/rea/issues">
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/issues">
 #. {ph1}: </a >
 #. {ph2}: <span>
 #. {ph3}: </span>
@@ -7149,7 +7149,7 @@ msgstr ""
 #. squares-flag-checker/ctfcli.yaml" >
 #. {ph3}: </a >
 #. {ph4}: <a
-#. href="https://github.com/morluto/rea/blob/main/website/evidence/ctf-masked-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/website/evidence/ctf-masked-
 #. squares.md" >
 #. {ph5}: </a >
 #: website/public/showcase/ctf/index.html:704
@@ -10699,7 +10699,7 @@ msgstr ""
 #. {ph0}: <span class="prompt-symbol" aria-hidden="true">
 #. {ph1}: </span >
 #. {ph2}: <span id="first-install-prompt" >
-#. {ph3}: <span translate="no">npx rea-agents@latest setup</span>
+#. {ph3}: <span translate="no">npx acl-rea-agents@latest setup</span>
 #. {ph4}: </span >
 #. {ph5}: <span class="terminal-cursor" aria-hidden="true">
 #. {ph6}: </span>
@@ -10738,7 +10738,7 @@ msgstr ""
 #. {ph0}: <span class="prompt-symbol" aria-hidden="true">
 #. {ph1}: </span >
 #. {ph2}: <span id="agent-install-prompt" >
-#. {ph3}: <span translate="no">npx rea-agents@latest setup</span>
+#. {ph3}: <span translate="no">npx acl-rea-agents@latest setup</span>
 #. {ph4}: </span >
 #. {ph5}: <span class="terminal-cursor" aria-hidden="true">
 #. {ph6}: </span>
@@ -10756,7 +10756,7 @@ msgstr ""
 #. {ph0}: <span class="prompt-symbol" aria-hidden="true">
 #. {ph1}: </span >
 #. {ph2}: <span id="home-install-prompt" >
-#. {ph3}: <span translate="no">npx rea-agents@latest setup</span>
+#. {ph3}: <span translate="no">npx acl-rea-agents@latest setup</span>
 #. {ph4}: </span >
 #. {ph5}: <span class="terminal-cursor" aria-hidden="true">
 #. {ph6}: </span>
@@ -11081,7 +11081,7 @@ msgid "Switch to dark mode"
 msgstr "다크 모드로 전환"
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/rea/blob/main/docs/guides/web/web-network-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/web/web-network-
 #. captures.md" >
 #. {ph1}: </a >
 #: website/public/guides/browser/index.html:487
@@ -12278,7 +12278,7 @@ msgid "Back to top"
 msgstr "맨 위로"
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/rea/blob/main/website/evidence/reverse-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/website/evidence/reverse-
 #. engineering-models.md" >
 #. {ph1}: </a >
 #: website/public/blog/reverse-engineering-models/index.html:783
@@ -12557,7 +12557,7 @@ msgstr "Claude Desktop · 데스크톱 채팅으로 사용하기"
 
 #. {ph0}: <a href="https://claude.ai/download">
 #. {ph1}: </a>
-#. {ph2}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph2}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/client-configuration.md#claude-desktop" >
 #. {ph3}: </a >
 #: website/public/get-started/index.html:597
@@ -12601,10 +12601,10 @@ msgctxt "page:get-started/index.html"
 msgid "Setup ID"
 msgstr "설정 ID"
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/client-configuration.md" >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph2}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/installation.md#released-package-and-main" >
 #. {ph3}: </a >
 #: website/public/get-started/index.html:757
@@ -12630,7 +12630,7 @@ msgid ""
 msgstr ""
 "Grok Bot 채팅에서 Bot의 컴퓨터에 다음 명령어로 {ph0}라는 이름의 사용자 지정 MCP 서버를 추가해 달라고 요청하세요."
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/client-configuration.md#other-client-settings" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:788
@@ -12881,7 +12881,7 @@ msgstr ""
 "macOS가 자동화 권한을 요청하면 시스템 설정 → 개인정보 보호 및 보안 → 자동화에서 REA를 시작하는 앱을 허용한 뒤 다시 "
 "시도하세요."
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/installation.md#hopper" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1099
@@ -12956,11 +12956,11 @@ msgstr ""
 "이 명령어들은 같은 터미널 세션에서 실행하세요. 경로를 설정한 뒤 설정 명령어를 다시 실행하고, 갱신된 클라이언트 설정을 승인한 다음 "
 "에이전트를 다시 시작하세요."
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/installation.md#ghidra" >
 #. {ph1}: </a >
 #. {ph2}: <a
-#. href="https://github.com/morluto/rea/blob/main/docs/providers/windows-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/docs/providers/windows-
 #. ghidra-p0.md" >
 #. {ph3}: </a >
 #: website/public/get-started/index.html:1258
@@ -13004,7 +13004,7 @@ msgid ""
 msgstr "분석 도구 가이드에서 준비한 JSON 등록 파일을 사용한 뒤 설정 명령어를 다시 실행하고 에이전트를 다시 시작하세요."
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/rea/blob/main/docs/providers/ida-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/docs/providers/ida-
 #. provider.md" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1376
@@ -13149,15 +13149,15 @@ msgid "Process behavior"
 msgstr "프로세스 동작"
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/rea/blob/main/docs/guides/android/flutter-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/android/flutter-
 #. analysis.md" >
 #. {ph1}: </a >
 #. {ph2}: <a
-#. href="https://github.com/morluto/rea/blob/main/docs/guides/javascript/javascript-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/javascript/javascript-
 #. artifact-reconstruction.md" >
 #. {ph3}: </a >
 #. {ph4}: <a
-#. href="https://github.com/morluto/rea/blob/main/docs/guides/evm/evm-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/evm/evm-
 #. bytecode.md" >
 #. {ph5}: </a >
 #. {ph6}: <a href="../guides/">
@@ -13241,7 +13241,7 @@ msgid ""
 msgstr "에이전트 연결을 갱신하려면 최신 설정 명령어를 다시 실행하고 계획을 확인한 뒤 클라이언트를 다시 시작하세요."
 
 #. {ph0}: <code>rea update</code>
-#. {ph1}: <code>npx rea-agents@latest uninstall</code>
+#. {ph1}: <code>npx acl-rea-agents@latest uninstall</code>
 #: website/public/get-started/index.html:1806
 #, python-brace-format
 msgctxt "page:get-started/index.html"
@@ -13250,7 +13250,7 @@ msgid ""
 "REA's client configuration and skill."
 msgstr "전역 CLI를 설치했다면 {ph0}로 업데이트하세요. REA의 클라이언트 설정과 스킬을 제거하려면 {ph1}을 사용하세요."
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/installation.md#diagnose-update-and-remove" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1812
@@ -13468,7 +13468,7 @@ msgstr ""
 "macOS에서 빌드하려면 Xcode Command Line Tools, make, bison이 필요합니다. 컴퓨터에 맞는 가이드를 "
 "따르세요."
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/installation.md#missing-macos-native-decompiler" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1216
@@ -13477,7 +13477,7 @@ msgctxt "page:get-started/index.html"
 msgid "{ph0}macOS · Intel{ph1}"
 msgstr "{ph0}macOS · Intel{ph1}"
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/installation.md#macos-arm64-native-decompiler" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1222
@@ -13869,7 +13869,7 @@ msgid ""
 msgstr "설정 안내에 따라 에이전트를 연결하세요. 안내가 나타나지 않으면 {ph0}를 실행하세요."
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/rea/blob/main/CONTRIBUTING.md#development-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/CONTRIBUTING.md#development-
 #. setup" >
 #. {ph1}: </a >
 #. {ph2}: <code>6.4.0</code>
@@ -14091,7 +14091,7 @@ msgstr ""
 "달라고 요청할 수 있습니다. 에이전트는 로컬 빌드 컴퓨터에 앱을 설치하고 작업을 작성한 뒤 환경을 내보냅니다. 그런 다음 새 컴퓨터에서 "
 "스크린샷과 마우스, 키보드를 사용해 검증합니다."
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/desktop-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/desktop-
 #. build-
 #. computer.md#set-up-a-build-host">
 #. {ph1}: </a>
@@ -14472,10 +14472,10 @@ msgid ""
 "name warnings identify places to review; they do not remove those values."
 msgstr ""
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/agent-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/agent-
 #. environments-quickstart.md" >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/rea/blob/main/docs/agent-
+#. {ph2}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/agent-
 #. environments.md" >
 #. {ph3}: </a >
 #: website/public/guides/rl-environments/index.html:474
@@ -14757,7 +14757,7 @@ msgctxt "page:index.html"
 msgid "{ph0}Join Discord{ph1} to get help and discuss your investigations."
 msgstr "{ph0}Discord에 참여{ph1}해 도움을 받고 분석 내용을 이야기하세요."
 
-#. {ph0}: <a href="https://github.com/morluto/rea/issues/new/choose" >
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/issues/new/choose" >
 #. {ph1}: </a >
 #: website/public/index.html:1285
 #, python-brace-format
@@ -14827,7 +14827,7 @@ msgstr ""
 #. {ph0}: <a href="../../get-started/">
 #. {ph1}: </a>
 #. {ph2}: <a
-#. href="https://github.com/morluto/rea/blob/main/docs/guides/android/android-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/android/android-
 #. analysis.md" >
 #. {ph3}: </a >
 #: website/public/showcase/aegis/index.html:714

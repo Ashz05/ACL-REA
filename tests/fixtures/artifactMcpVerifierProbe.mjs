@@ -99,7 +99,7 @@ async function reconnect() {
     const transport = await createOwnedMcpStdioTransport({
       command: process.execPath,
       arguments: [
-        fileURLToPath(new URL("../../scripts/rea.mjs", import.meta.url)),
+        fileURLToPath(new URL("../../scripts/acl-rea.mjs", import.meta.url)),
         "mcp",
       ],
       hostEnvironment: {

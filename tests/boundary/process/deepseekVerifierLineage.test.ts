@@ -23,7 +23,7 @@ export async function createOpenAiModelFixture({ onRequest }) {
   await onRequest({
     body: { messages: [] },
     tools: TOOL_CONTRACTS.map(({ name }) => ({
-      name: "mcp__rea__" + name,
+      name: "mcp__acl-rea__" + name,
       parameters: { type: "string", pattern: "^fixture$" },
     })),
   });

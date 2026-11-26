@@ -9,11 +9,11 @@ Ghidra 12.2 and JDK 25; no DOS emulator or cross-compiler is required.
 ## Open and inspect
 
 ```bash
-rea inspect /absolute/path/to/legacy.exe --provider ghidra --json
-rea search /absolute/path/to/legacy.exe entry --kind procedures --provider ghidra --json
-rea instructions /absolute/path/to/legacy.exe entry --provider ghidra --json
+acl-rea inspect /absolute/path/to/legacy.exe --provider ghidra --json
+acl-rea search /absolute/path/to/legacy.exe entry --kind procedures --provider ghidra --json
+acl-rea instructions /absolute/path/to/legacy.exe entry --provider ghidra --json
 rea function /absolute/path/to/legacy.exe entry --provider ghidra --json
-rea inspect-native-load-image /absolute/path/to/legacy.exe --provider ghidra --json
+acl-rea inspect-native-load-image /absolute/path/to/legacy.exe --provider ghidra --json
 rea read-bytes /absolute/path/to/legacy.exe 0x10000 --length 16 --provider ghidra --json
 rea address-to-file-offset /absolute/path/to/legacy.exe 0x10000 --provider ghidra --json
 ```
@@ -58,8 +58,8 @@ COM has no identifying header. Select its interpretation explicitly; neither the
 `.com` suffix nor arbitrary unrecognized bytes are enough to admit it.
 
 ```bash
-rea inspect /absolute/path/to/legacy.com --target-format dos-com --provider ghidra --json
-rea inspect-native-load-image /absolute/path/to/legacy.com --target-format dos-com --provider ghidra --json
+acl-rea inspect /absolute/path/to/legacy.com --target-format dos-com --provider ghidra --json
+acl-rea inspect-native-load-image /absolute/path/to/legacy.com --target-format dos-com --provider ghidra --json
 rea function /absolute/path/to/recognized.com 0x100 --target-format dos-com --provider ghidra --json
 rea function /absolute/path/to/rejected.com 0x10100 --target-format dos-com --provider ghidra --json
 ```

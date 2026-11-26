@@ -79,7 +79,7 @@ const codexHome = join(evaluationRoot, "codex");
 const authPath = join(codexHome, "auth.json");
 const skillDestination = join(
   account,
-  ".agents/skills/reverse-engineer-anything",
+  ".agents/skills/acl-reverse-engineer-anything",
 );
 const evaluationEnvironment = {
   ...Object.fromEntries(
@@ -136,7 +136,7 @@ await withVerifierCleanup(
       await runProcess(
         process.execPath,
         [
-          join(repositoryRoot, "scripts/rea.mjs"),
+          join(repositoryRoot, "scripts/acl-rea.mjs"),
           "setup",
           "--client",
           "codex",

@@ -13,7 +13,7 @@ import { createTestTempDirectory } from "../../fixtures/temporaryDirectory.js";
 const codexSource = (invalid: string): string =>
   [
     'caller_root = "keep"',
-    "[mcp_servers.rea]",
+    "[mcp_servers.acl-rea]",
     `command = "${PRODUCT_IDENTITY.cliBinary}"`,
     'args = ["mcp"]',
     invalid,
@@ -54,7 +54,7 @@ it.each([
       caller_root: "keep",
       mcp: {
         servers: {
-          rea: {
+          "acl-rea": {
             type: "local",
             command: [PRODUCT_IDENTITY.cliBinary, "mcp"],
             environment: { CALLER_SETTING: 42 },
@@ -104,7 +104,7 @@ it.each([
       expect(sample.parse(await readFile(configPath, "utf8"))).toEqual(
         sample.remaining,
       );
-      expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(
+      expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(
         sample.source,
       );
     } finally {
@@ -121,7 +121,7 @@ it("removes the owned OpenCode launcher despite invalid transport", async () => 
     caller_root: "keep",
     mcp: {
       servers: {
-        rea: {
+        "acl-rea": {
           type: "remote",
           url: "https://caller.example/mcp",
           command: [PRODUCT_IDENTITY.cliBinary, "mcp"],
@@ -154,10 +154,10 @@ it("removes the owned OpenCode launcher despite invalid transport", async () => 
       caller_root: "keep",
       mcp: { servers: { peer: { type: "local", command: ["peer"] } } },
     });
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(source);
+    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(source);
     expect(await readdir(dirname(configPath))).toEqual([
       "opencode.json",
-      "opencode.json.rea.backup",
+      "opencode.json.acl-rea.backup",
     ]);
   } finally {
     expect(await host.close?.()).toBeUndefined();

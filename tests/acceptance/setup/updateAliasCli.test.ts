@@ -86,7 +86,7 @@ cliTest(
       for (const result of [canonicalTimed, aliasTimed]) {
         if (flag === "--timings=true")
           expect(JSON.parse(result.stderr)).toMatchObject({
-            rea_timings: { version: 1, command_ms: expect.any(Number) },
+            acl_rea_timings: { version: 1, command_ms: expect.any(Number) },
           });
         else expect(result.stderr).toBe("");
       }
@@ -141,7 +141,7 @@ cliTest(
     expect(ambiguous.exitCode).toBe(1);
     expect(ambiguous.json).toMatchObject({
       code: "UPDATE_FAILED",
-      message: expect.stringContaining("rea update"),
+      message: expect.stringContaining("acl-rea update"),
     });
     expect(await readFile(log, "utf8")).toBe(before);
     const help = await run(["--update", "--help"]);

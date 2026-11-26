@@ -68,7 +68,7 @@ Provider ownership and mutation rules remain specific to each workflow:
   can retain a workspace or session for retry; closing a session
   does not imply that every investigation artifact has been erased.
 
-`rea setup` shows planned configuration and installation changes and requires
+`acl-rea setup` shows planned configuration and installation changes and requires
 approval before applying them. Ghidra, Java and IDA are user-managed. Approved
 Linux Hopper installation authenticates the package's detached PGP signature
 against the pinned publisher identity and checks the signed launcher against

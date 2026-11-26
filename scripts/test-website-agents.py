@@ -21,11 +21,11 @@ class AgentPublishingChecks(unittest.TestCase):
         index = json.loads((site / ".well-known/agent-skills/index.json").read_text())
         self.assertEqual(index["$schema"], "https://schemas.agentskills.io/discovery/0.2.0/schema.json")
         skill, = index["skills"]
-        self.assertEqual(skill["name"], "reverse-engineer-anything")
+        self.assertEqual(skill["name"], "acl-reverse-engineer-anything")
         self.assertEqual(skill["type"], "archive")
         artifact = site / skill["url"].removeprefix("https://rea.tools/")
         self.assertEqual(skill["digest"], "sha256:" + hashlib.sha256(artifact.read_bytes()).hexdigest())
-        source = ROOT / ".agents/skills/reverse-engineer-anything"
+        source = ROOT / ".agents/skills/acl-reverse-engineer-anything"
         with ZipFile(artifact) as archive:
             expected = {f"{source.name}/{p.relative_to(source).as_posix()}": p.read_bytes()
                         for p in source.rglob("*.md")}
@@ -36,7 +36,7 @@ class AgentPublishingChecks(unittest.TestCase):
         catalog = json.loads((site / ".well-known/ai-catalog.json").read_text())
         self.assertEqual(catalog["specVersion"], "1.0")
         entry, = catalog["entries"]
-        self.assertEqual(entry["identifier"], "urn:air:rea.tools:skill:reverse-engineer-anything")
+        self.assertEqual(entry["identifier"], "urn:air:rea.tools:skill:acl-reverse-engineer-anything")
         self.assertEqual(entry["url"], skill["url"])
         self.assertEqual(entry["description"], skill["description"])
         self.assertNotIn("data", entry)
@@ -49,10 +49,10 @@ class AgentPublishingChecks(unittest.TestCase):
     def test_reference_changes_invalidate_digest_and_yaml_scalars_are_parsed(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            source = root / ".agents/skills/reverse-engineer-anything"
+            source = root / ".agents/skills/acl-reverse-engineer-anything"
             source.mkdir(parents=True)
             (source / "SKILL.md").write_text(
-                '---\nname: reverse-engineer-anything\ndescription: >-\n  Inspect programs:\n  preserve evidence.\nmetadata:\n  version: "1"\n---\n# REA\n'
+                '---\nname: acl-reverse-engineer-anything\ndescription: >-\n  Inspect programs:\n  preserve evidence.\nmetadata:\n  version: "1"\n---\n# ACL-REA\n'
             )
             (source / "references").mkdir()
             reference = source / "references/evidence.md"
@@ -70,10 +70,10 @@ class AgentPublishingChecks(unittest.TestCase):
     def test_duplicate_manifest_keys_fail_before_writing_discovery_files(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            source = root / ".agents/skills/reverse-engineer-anything"
+            source = root / ".agents/skills/acl-reverse-engineer-anything"
             source.mkdir(parents=True)
             (source / "SKILL.md").write_text(
-                '---\nname: reverse-engineer-anything\ndescription: First.\ndescription: Second.\nmetadata:\n  version: "1"\n---\n# REA\n'
+                '---\nname: acl-reverse-engineer-anything\ndescription: First.\ndescription: Second.\nmetadata:\n  version: "1"\n---\n# ACL-REA\n'
             )
             site = root / "site"
             with self.assertRaisesRegex(ValueError, "Map keys must be unique"):

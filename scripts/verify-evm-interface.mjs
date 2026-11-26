@@ -56,7 +56,7 @@ const source = await readFile(
   "utf8",
 );
 const entrypoint =
-  process.argv[2] ?? fileURLToPath(new URL("./rea.mjs", import.meta.url));
+  process.argv[2] ?? fileURLToPath(new URL("./acl-rea.mjs", import.meta.url));
 const run = createVerifierRun();
 const commands = await createVerifierCommands();
 const environment = Object.fromEntries(

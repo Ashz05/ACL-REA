@@ -266,7 +266,7 @@ usually soft-float and therefore also use the soft-float storage policy.
 With a caller-installed Ghidra and compatible JDK on a supported Linux/macOS host:
 
 ```bash
-rea analyze /absolute/path/to/mips.elf --provider ghidra --json
+acl-rea analyze /absolute/path/to/mips.elf --provider ghidra --json
 rea function /absolute/path/to/mips.elf function_name --provider ghidra --json
 ```
 

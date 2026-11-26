@@ -12,9 +12,9 @@ can also name their profile and take their entry from the vector table; see
 ## Open and inspect
 
 ```bash
-rea inspect /absolute/path/to/kernel.img --target-format raw-binary --architecture arm --entry-point 0x8000 --provider ghidra --json
+acl-rea inspect /absolute/path/to/kernel.img --target-format raw-binary --architecture arm --entry-point 0x8000 --provider ghidra --json
 rea function /absolute/path/to/kernel.img 0x8000 --target-format raw-binary --architecture arm --entry-point 0x8000 --provider ghidra --json
-rea inspect-native-load-image /absolute/path/to/kernel.img --target-format raw-binary --architecture arm --entry-point 0x8000 --provider ghidra --json
+acl-rea inspect-native-load-image /absolute/path/to/kernel.img --target-format raw-binary --architecture arm --entry-point 0x8000 --provider ghidra --json
 ```
 
 ```json
@@ -96,7 +96,7 @@ records neither the address it was read from nor the M profile of the core.
 Name both:
 
 ```bash
-rea inspect /absolute/path/to/dump.bin --target-format raw-binary --architecture arm --architecture-variant armv7-m --base-address 0x08000000 --provider ghidra --json
+acl-rea inspect /absolute/path/to/dump.bin --target-format raw-binary --architecture arm --architecture-variant armv7-m --base-address 0x08000000 --provider ghidra --json
 ```
 
 ```json
@@ -237,7 +237,7 @@ so REA versions without these inputs cannot replay it.
 
 ```bash
 rea function /absolute/path/to/image.bin 0x8001 --target-format raw-binary --architecture 6502 --entry-point 0x8001 --provider ghidra --json
-rea inspect-native-load-image /absolute/path/to/image.bin --target-format raw-binary --architecture 6502 --entry-point 0x8001 --provider ghidra --json
+acl-rea inspect-native-load-image /absolute/path/to/image.bin --target-format raw-binary --architecture 6502 --entry-point 0x8001 --provider ghidra --json
 ```
 
 Select only headerless NMOS 6502 code with a known entry at file offset 0.
@@ -268,7 +268,7 @@ Windows run.
 
 ```bash
 rea function /absolute/path/to/image.bin 0x1000 --target-format raw-binary --architecture m68k --entry-point 0x1000 --provider ghidra --json
-rea inspect-native-load-image /absolute/path/to/image.bin --target-format raw-binary --architecture m68k --entry-point 0x1000 --provider ghidra --json
+acl-rea inspect-native-load-image /absolute/path/to/image.bin --target-format raw-binary --architecture m68k --entry-point 0x1000 --provider ghidra --json
 ```
 
 Select only headerless big-endian 68000-family code with a known, even entry at

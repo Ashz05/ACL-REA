@@ -89,7 +89,7 @@ describe("rea environment-serve refusals", () => {
     ["--port=1e3", "port"],
     ["--host= ", "host"],
   ] as const)(
-    "refuses listener flag %s like rea mcp --http, before binding",
+    "refuses listener flag %s like acl-rea mcp --http, before binding",
     async ([flag, field], { cli }) => {
       const root = await createTestTempDirectory(
         "rea-environment-serve-listener-",

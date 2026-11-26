@@ -3,19 +3,19 @@
 Use this when someone asks for an environment of a Linux desktop app with a
 task, such as "Build me an Inkscape environment where the agent changes a
 poster's headline and saves it". You are the building agent: you drive the
-app on a build computer through REA's MCP tools, write the task, export the
-bundle and witness it in a fresh computer. REA runs no model. The tools are
-MCP-only and need a Linux host with Docker, agentenv and REA's packed
+app on a build computer through ACL-REA's MCP tools, write the task, export the
+bundle and witness it in a fresh computer. ACL-REA runs no model. The tools are
+MCP-only and need a Linux host with Docker, agentenv and ACL-REA's packed
 runtime. When a start reports one missing, tell the person to run
-`rea doctor --provider desktop_build` and apply its fixes, or
-`rea setup --client <client> --desktop-build` and restart the client, and
+`acl-rea doctor --provider desktop_build` and apply its fixes, or
+`acl-rea setup --client <client> --desktop-build` and restart the client, and
 stop.
 
 For the whole build:
 
 - Drive the app only with `act_on_build_computer`. Never script it, run
   commands in the computer or write its files another way. The one command
-  you write for the computer is a task's reader, which REA runs to check a
+  you write for the computer is a task's reader, which ACL-REA runs to check a
   file; it never makes the seed or the edit.
 - Ask the upfront questions once, then work on your own. Pause only when
   blocked.
@@ -53,7 +53,7 @@ Stop, say what you need and wait only for:
   kind `licence`, and accept it on their behalf;
 - credentials: ask the person to write each secret, and nothing else, in a
   file named after a handle you choose, such as `keepassxc-master`, in
-  `~/.config/rea/build-secrets/` on this host (under `$XDG_CONFIG_HOME` when
+  `~/.config/acl-rea/build-secrets/` on this host (under `$XDG_CONFIG_HOME` when
   it is set), readable only by them (`chmod 600`), and wait until they say it
   is there; then type it with `type_secret` (see Drive the app). Never ask
   for a password or key in chat, and never read, list or print that folder;
@@ -76,12 +76,12 @@ leaves it out. A file the app writes at first launch, such as a trial's
 licence file, changes before you can mark anything: name it in
 `export_build_environment`'s `withhold`. The export lists each withheld file
 in `withheld_files` with the environment variable a deploy reads it from and
-the handle of the secret REA keeps its bytes in; a check may not name one.
+the handle of the secret ACL-REA keeps its bytes in; a check may not name one.
 The export refuses a seed file holding a withheld file's exact bytes, such as
 a `.bak` copy, but a backup that differs from it is not caught: trash backups
 before `seed`.
 Explicitly withhold any other files the person identifies as sensitive;
-REA does not infer secrecy from a value's shape or a file name.
+ACL-REA does not infer secrecy from a value's shape or a file name.
 
 ## Choose the install
 
@@ -126,7 +126,7 @@ the first source that has the app:
   image has: start again with one of them. The image brings its libraries,
   so `extra_packages` is rarely needed; FreeCAD 1.1.4's needs none.
 - A tarball has no entry of its own. `program` is the program's path inside
-  the archive, such as `firefox/firefox`; REA writes an entry named
+  the archive, such as `firefox/firefox`; ACL-REA writes an entry named
   `desktop_entry` that runs it with the files it opens, and `name` is what
   the Applications menu shows. A tarball uses the computer's libraries: name
   what its program lacks in `extra_packages`. gzip, bzip2 and xz archives
@@ -155,7 +155,7 @@ the first source that has the app:
 - Pass `computer_id` and the action's fields at the top level: click
   `{x, y, count}`, scroll `{x, y, direction, amount}`, a screenshot region
   `[x0, y0, x1, y1]`. The rest are in
-  [the build-computer guide](https://github.com/morluto/rea/blob/main/docs/desktop-build-computer.md).
+  [the build-computer guide](https://github.com/Ashz05/ACL-REA/blob/main/docs/desktop-build-computer.md).
 - Take a `screenshot` before pointing: points are pixels of the latest
   frame. If a response is too large, ask for a `region`, or `jpeg` with a
   lower `quality`. A screenshot with `region` does not capture the screen
@@ -245,7 +245,7 @@ the first source that has the app:
 - CherryTree: its first-run autosave "Choose Storage Type" dialog swallows
   keys, so save once early as `.ctd` and untick autosave.
 - VSCodium (its tarball, with `extra_packages: ["libnss3",
-  "libasound2t64"]`) runs on outside REA's reach, so `stop_build_capture`
+  "libasound2t64"]`) runs on outside ACL-REA's reach, so `stop_build_capture`
   fails to clean it up: after `end`, quit it with Ctrl+Q, then stop. Enter
   accepts its word suggestions, so press Escape after typing a line.
 - Glade: a new widget's id is empty until you set it, and a second save
@@ -348,7 +348,7 @@ the first source that has the app:
    runtime: close the computer and start a new one with that package in
    `extra_packages` (see Choose the install), or stop as for an install
    this flow cannot do.
-   - REA counts a file as the app's document only when the app's window
+   - ACL-REA counts a file as the app's document only when the app's window
      title shows its file name or `~/` path. When the title shows something
      else, such as MuseScore's score title, pass the path you will save the
      document at in `state_paths`, relative to the home:
@@ -356,7 +356,7 @@ the first source that has the app:
      It need not exist yet. Add the app's settings folder when its name
      differs from the app's, such as `.config/MuseScore`, so the seed keeps
      the dismissed first-run dialogs. Do not pass the document as a launch
-     argument to make REA see it: `state_paths` is the way. gLabels' title
+     argument to make ACL-REA see it: `state_paths` is the way. gLabels' title
      leaves out the file's extension and Grisbi's shows the entity's name,
      so both need it.
    - An app whose document is a folder of pages, such as a Zim notebook
@@ -372,7 +372,7 @@ the first source that has the app:
    opens the seed's document at launch only when there is exactly one, and
    otherwise starts on its own screen. For a starting file of the requester's,
    read it here and rebuild it in the app with synthetic data in place of
-   personal data; REA cannot copy a file into the computer.
+   personal data; ACL-REA cannot copy a file into the computer.
    - An app that keeps its own data and saves after every change, such as
      Osmo's contacts in `~/.local/share/osmo/contacts_records.xml`, has no
      document: that state is the seed. Build it in the app and mark `seed`
@@ -382,12 +382,12 @@ the first source that has the app:
      named first, then those under `state_paths` and those the app held
      open, caches last, with `more_changed_files` counting the rest.
    - The app's own compressed format works when it is gzip, such as
-     Gnumeric's `.gnumeric`, Dia's `.dia` or Inkscape's `.svgz`: REA reads
+     Gnumeric's `.gnumeric`, Dia's `.dia` or Inkscape's `.svgz`: ACL-REA reads
      the document inside, and checks point into it as into the same
      document uncompressed. Compression may be off by default: Dia's
-     "Compress diagram files" is unticked, which REA reads as plain XML. A format REA reads as binary, such as one
+     "Compress diagram files" is unticked, which ACL-REA reads as plain XML. A format ACL-REA reads as binary, such as one
      compressed with xz, has no view: save in a format the app offers that
-     REA reads, then reopen the file once and check that a plain Ctrl+S
+     ACL-REA reads, then reopen the file once and check that a plain Ctrl+S
      keeps that format. When the task is about the app's own binary
      format, such as GIMP's `.xcf` or Blender's `.blend`, keep it and check
      it through a reader (see Read a binary file with a reader).
@@ -420,7 +420,7 @@ the first source that has the app:
      keeps the task's state only on screen, such as a calculator's result,
      judge the screen instead (see Judge the screen).
    - `unowned_changes` with `no_document`: the app saved your document
-     where REA did not count it as the app's. Its `files` list what changed,
+     where ACL-REA did not count it as the app's. Its `files` list what changed,
      with their roles; the document is among them. Close the computer and
      capture again on a new one with that path in `state_paths`; the export
      refuses a check on a file outside the owned paths.
@@ -428,7 +428,7 @@ the first source that has the app:
      its preferences, and no check reads dconf. Saving again does not help:
      choose a change the app saves in a file, and capture again on a new
      build computer, or judge the screen (see Judge the screen).
-   - `unreadable_changes`: a dconf database changed but REA could not read
+   - `unreadable_changes`: a dconf database changed but ACL-REA could not read
      it; `error` says why. This is not evidence the app saved there: report
      the error rather than changing the task.
 
@@ -446,7 +446,7 @@ the first source that has the app:
      was likely not saved: capture again and save it before `end`.
    - `long_text`: the element's text is too long to check whole; check a
      phrase in it with `text_contains`.
-   - `cut_view` or `unreadable_view`: REA's view holds only part of the
+   - `cut_view` or `unreadable_view`: ACL-REA's view holds only part of the
      file, or none a check can read, such as a binary format (step 3). For
      a binary file, read it with a reader (see Read a binary file with a
      reader).
@@ -551,7 +551,7 @@ per task, each with its own name.
 - The draft suggests a decimal the app writes as text, such as `146.83`,
   as a number with `tolerance: 0.001`; keep the tolerance for any number
   you check that way.
-- When the draft shows an XML document's changes as `lines`, REA read it
+- When the draft shows an XML document's changes as `lines`, ACL-REA read it
   as text, for example because its DOCTYPE declares entities. Selectors are
   impossible there, and `line_count` with `contains` only approximates a
   value: `3:30` also matches `13:30`. Bound it with neighbouring text and
@@ -567,7 +567,7 @@ The kinds and pointer rules are in
 ### Read a binary file with a reader
 
 When the draft notes `unreadable_view` on a binary document, add a reader to
-the task: the app's own headless command, which REA runs in the computer on a
+the task: the app's own headless command, which ACL-REA runs in the computer on a
 private copy of the file, and whose output a check reads instead of the file.
 Write it in the app's scripting mode, print each fact on a line starting
 with `REA ` (with the space), and name the copy `{file}`:
@@ -618,7 +618,7 @@ with `REA ` (with the space), and name the copy `{file}`:
   before `seed`, so solves start on the scene. Blender often takes the first click on a
   menu or a dialog's button only to focus it: click again.
 
-- A format LibreOffice opens but REA cannot read, such as a legacy `.xls`,
+- A format LibreOffice opens but ACL-REA cannot read, such as a legacy `.xls`,
   converted with `--convert-to`:
 
   ```json
@@ -663,7 +663,7 @@ screen judges: `{"id": "shown", "kind": "screen_judge", "question": "Does the
 calculator's display show 8.568?"}`. A model, the judge, answers the question
 on a screenshot three times, and the check passes when most answers are yes.
 
-- REA keeps a screenshot at each checkpoint. Mark `seed` with the screen
+- ACL-REA keeps a screenshot at each checkpoint. Mark `seed` with the screen
   showing the state before the task, where the answer is no, and `end` with
   the change showing, where it is yes: the bundle ships both as the judge's
   examples.
@@ -685,7 +685,7 @@ on a screenshot three times, and the check passes when most answers are yes.
 ## Export
 
 `export_build_environment` with `tasks` and `directory`, the absolute path of
-a new or empty folder here, such as `<home>/rea-builds/poster/bundle`. Each
+a new or empty folder here, such as `<home>/acl-rea-builds/poster/bundle`. Each
 entry of `tasks` is `{"task": ..., "end_checkpoint": ...}`: leave
 `end_checkpoint` out for the task checked at `end`, and give
 `end-<task name>` for each later one. The
@@ -795,7 +795,7 @@ in fresh computers, 3 times, then 2 more unless they passed none or all, and
 keeps a task that passes 1 to 3 of 5 (`band: "in_band"`). It stops before a
 solve the largest cost so far would take past the budget, and writes the
 record into the bundle's `difficulty.json` and README. The solver needs a
-model endpoint where REA starts: `LITELLM_BASE_URL` and `LITELLM_API_KEY`, or
+model endpoint where ACL-REA starts: `LITELLM_BASE_URL` and `LITELLM_API_KEY`, or
 `base_url` and `api_key` under `[model]` in `.agentenv/config.toml`; when the
 measure says a solve did not run for want of one, tell the person what to
 set and stop. Read the result's `failures_per_check` and each solve's

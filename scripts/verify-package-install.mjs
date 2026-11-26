@@ -25,18 +25,18 @@ export async function verifyPackageInstall({
     ],
     { env: environment },
   );
-  const cli = join(prefix, "bin", "rea");
-  const packageRunnerCli = join(prefix, "bin", "rea-agents");
+  const cli = join(prefix, "bin", "acl-rea");
+  const packageRunnerCli = join(prefix, "bin", "acl-rea-agents");
   if (
     !(await commands.run(packageRunnerCli, ["--help"], environment)).includes(
       "setup",
     )
   )
-    throw new Error("packaged rea-agents alias did not expose setup");
+    throw new Error("packaged acl-rea-agents alias did not expose setup");
   const processCaptureCapabilityUrl = pathToFileURL(
     join(
       prefix,
-      "lib/node_modules/rea-agents/dist/process/capture/ProcessCaptureCapability.js",
+      "lib/node_modules/acl-rea-agents/dist/process/capture/ProcessCaptureCapability.js",
     ),
   ).href;
   const processCaptureCapability = JSON.parse(
@@ -71,11 +71,11 @@ export async function verifyPackageInstall({
     ],
     { env: environment },
   );
-  const noOptionalCli = join(noOptionalPrefix, "bin", "rea");
+  const noOptionalCli = join(noOptionalPrefix, "bin", "acl-rea");
   await rm(
     join(
       noOptionalPrefix,
-      "lib/node_modules/rea-agents/node_modules/@lydell",
+      "lib/node_modules/acl-rea-agents/node_modules/@lydell",
       `node-pty-${process.platform}-${process.arch}`,
     ),
     { recursive: true, force: true },
@@ -83,7 +83,7 @@ export async function verifyPackageInstall({
   const noOptionalCapabilityUrl = pathToFileURL(
     join(
       noOptionalPrefix,
-      "lib/node_modules/rea-agents/dist/process/capture/ProcessCaptureCapability.js",
+      "lib/node_modules/acl-rea-agents/dist/process/capture/ProcessCaptureCapability.js",
     ),
   ).href;
   const noOptionalCapability = JSON.parse(
@@ -117,7 +117,7 @@ const verifyInstalledPackageCanRepack = async (
   prefix,
   environment,
 ) => {
-  const installedPackageRoot = join(prefix, "lib/node_modules/rea-agents");
+  const installedPackageRoot = join(prefix, "lib/node_modules/acl-rea-agents");
   const repackedTarball = (
     await commands.execNpm(["pack", "--silent"], {
       cwd: installedPackageRoot,

@@ -325,7 +325,7 @@ export const systemUpdateHost = (
     planMaintenance: (installation) =>
       planIntegrationMaintenance(
         home ?? homeDirectoryFromEnvironment(environment, platform),
-        join(installation.packageRoot, "scripts", "rea.mjs"),
+        join(installation.packageRoot, "scripts", "acl-rea.mjs"),
         environment,
         async (command) => {
           const result = await commands.runProbe(command, environment);

@@ -60,10 +60,10 @@ const skillPath = join(
   account,
   ".agents",
   "skills",
-  "reverse-engineer-anything",
+  "acl-reverse-engineer-anything",
   "SKILL.md",
 );
-const cli = join(runtimeRoot, "scripts", "rea.mjs");
+const cli = join(runtimeRoot, "scripts", "acl-rea.mjs");
 const configPath = join(profile, "cordis.patch.yml");
 const verifier = createVerifierRun();
 let clientVersion = null;
@@ -160,9 +160,9 @@ await withVerifierCleanup(async () => {
           ++mainRequests <= 4,
           "Harness did not complete the bounded fixture workflow.",
         );
-        const rea = tools.filter((tool) => tool.name.startsWith("mcp__rea__"));
+        const rea = tools.filter((tool) => tool.name.startsWith("mcp__acl-rea__"));
         const observedCatalog = rea
-          .map((tool) => tool.name.slice("mcp__rea__".length))
+          .map((tool) => tool.name.slice("mcp__acl-rea__".length))
           .sort();
         assert.deepEqual(
           observedCatalog,
@@ -220,13 +220,13 @@ await withVerifierCleanup(async () => {
         if (!skillRequested) {
           assert(tools.some((tool) => tool.name === "skill"));
           skillRequested = true;
-          return call("skill", { name: "reverse-engineer-anything" });
+          return call("skill", { name: "acl-reverse-engineer-anything" });
         }
         assert(
           skillLoaded,
           "Harness must load the installed skill before analysis.",
         );
-        return call("mcp__rea__analyze_javascript_application", {
+        return call("mcp__acl-rea__analyze_javascript_application", {
           input_path: target,
           format: "directory",
         });
@@ -257,7 +257,7 @@ await withVerifierCleanup(async () => {
     - id: rea-mcp
       name: '@deepseek-ai/dsh-mcp-client'
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: stale-launcher
         args: [mcp]
@@ -286,16 +286,16 @@ await withVerifierCleanup(async () => {
       ),
     );
     assert.equal(await readFile(configPath, "utf8"), original);
-    assert.equal(await pathExists(`${configPath}.rea.backup`), false);
+    assert.equal(await pathExists(`${configPath}.acl-rea.backup`), false);
     lifecycle.push("dry-run");
     const setup = await runRea(["setup", "--client", "dsh", "--yes"], "setup");
     assert.equal(setup.status, "ready");
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.acl-rea.backup`, "utf8"), original);
     const configured = await readFile(configPath, "utf8");
     assert.deepEqual(withoutRea(configured), withoutRea(original));
     assert(configured.includes("!!js process.cwd()"));
     const installedSkill = await readFile(skillPath, "utf8");
-    assert(installedSkill.includes("name: reverse-engineer-anything"));
+    assert(installedSkill.includes("name: acl-reverse-engineer-anything"));
     const frontmatter = /^---\r?\n[\s\S]*?^---(?:\r?\n|$)/mu.exec(
       installedSkill,
     );
@@ -310,7 +310,7 @@ await withVerifierCleanup(async () => {
     );
     assert.deepEqual(repeated.appliedActions, []);
     assert.equal(await readFile(configPath, "utf8"), configured);
-    assert.equal(await readFile(`${configPath}.rea.backup`, "utf8"), original);
+    assert.equal(await readFile(`${configPath}.acl-rea.backup`, "utf8"), original);
     lifecycle.push("idempotent-setup");
     const doctor = await runRea(
       ["doctor", "--client", "dsh", "--skill"],

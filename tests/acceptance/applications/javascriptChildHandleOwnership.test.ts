@@ -20,7 +20,7 @@ const analyzeThroughCliAndMcp = async (source: string) => {
   const { stdout } = await promisify(execFile)(
     process.execPath,
     [
-      "scripts/rea.mjs",
+      "scripts/acl-rea.mjs",
       "analyze-javascript-application",
       app,
       "--format",

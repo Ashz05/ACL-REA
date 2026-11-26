@@ -55,7 +55,7 @@ const expectIdentity = async ({
   });
 };
 
-describe("rea mcp --http", () => {
+describe("acl-rea mcp --http", () => {
   processTest(
     "keeps hot/cold visibility within its HTTP session and refreshes named contracts",
     async ({ processes }) => {

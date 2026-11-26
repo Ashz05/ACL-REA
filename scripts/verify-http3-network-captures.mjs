@@ -54,7 +54,7 @@ if (!inspectExisting)
   );
 const run = createVerifierRun();
 const cwd = fileURLToPath(new URL("..", import.meta.url));
-const entrypoint = fileURLToPath(new URL("./rea.mjs", import.meta.url));
+const entrypoint = fileURLToPath(new URL("./acl-rea.mjs", import.meta.url));
 const environment = Object.fromEntries(
   Object.entries(process.env).filter(([, value]) => typeof value === "string"),
 );

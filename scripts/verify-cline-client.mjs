@@ -14,7 +14,7 @@ import { VerifierFixture } from "./lib/verifier-fixture.mjs";
 /** Verify default-path CLI registration, client parsing and owned MCP discovery. */
 const repo = fileURLToPath(new URL("..", import.meta.url));
 const command = process.env.REA_VERIFY_CLINE_COMMAND ?? "cline";
-const reaEntry = join(repo, "scripts/rea.mjs");
+const reaEntry = join(repo, "scripts/acl-rea.mjs");
 const run = createVerifierRun();
 const { path: lab } = await VerifierFixture.keepArtifacts({
   prefix: "rea-cline-client-",
@@ -74,10 +74,10 @@ const report = await withVerifierCleanup(async () => {
     { cwd: home, env: environment, timeout: 180_000 },
   );
   const settings = JSON.parse(await readFile(configPath, "utf8"));
-  const registration = settings.mcpServers?.rea;
+  const registration = settings.mcpServers?.["acl-rea"];
   assert(
     registration,
-    "setup must write mcpServers.rea into Cline's default settings file",
+    "setup must write mcpServers.acl-rea into Cline's default settings file",
   );
   assert(Array.isArray(registration.args), "the registration must carry args");
   assert.equal(
@@ -93,8 +93,8 @@ const report = await withVerifierCleanup(async () => {
   );
   assert.match(
     listed.stdout,
-    /rea \[stdio\]/,
-    "Cline must list the REA server REA wrote",
+    /acl-rea \[stdio\]/,
+    "Cline must list the ACL-REA server ACL-REA wrote",
   );
 
   const mcp = createVerifierMcpOwner();
@@ -107,13 +107,13 @@ const report = await withVerifierCleanup(async () => {
     expectedCommand: null,
     sweepTokenOwnedProcesses: true,
   });
-  const client = new Client({ name: "rea-cline-verifier", version: "1" });
+  const client = new Client({ name: "acl-rea-cline-verifier", version: "1" });
   // The SDK keeps stdin open through delayed initialization and tool discovery.
   const connection = await mcp.open(client, transport);
   assert.equal(
     client.getServerVersion()?.name,
-    "rea",
-    "initialize must identify rea",
+    "acl-rea",
+    "initialize must identify acl-rea",
   );
   assert(
     connection.definitions.size > 0,
@@ -129,8 +129,8 @@ const report = await withVerifierCleanup(async () => {
     registration_arguments: registration.args,
     tool_count: connection.definitions.size,
     covered: [
-      "rea setup writes the default Cline registration without path overrides",
-      "Cline lists the REA server from that file",
+      "acl-rea setup writes the default Cline registration without path overrides",
+      "Cline lists the ACL-REA server from that file",
       "the registered command completes owned MCP discovery and cleanup",
     ],
     unverified: [

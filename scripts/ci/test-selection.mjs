@@ -204,7 +204,7 @@ const isPresentationOwner = (path) =>
 // the CLI launcher or this repository's built entry points. Other `dist/`
 // paths (package subpaths such as `ajv/dist/2020.js`, fixture apps) are not.
 const LAUNCHES_BUILT_RUNTIME =
-  /scripts\/rea\.mjs|\bdist\/(?:main|cli)\.js|["'`]dist["'`]\s*,\s*["'`](?:main|cli)\.js/u;
+  /scripts\/acl-rea\.mjs|\bdist\/(?:main|cli)\.js|["'`]dist["'`]\s*,\s*["'`](?:main|cli)\.js/u;
 // Inputs that only a non-test check reads: declarations (typecheck), guard and
 // layer baselines (architecture/boundary guards, static job), git-blame ignore
 // revisions, and the advertised-schema summaries (build job). Any test that

@@ -40,21 +40,21 @@ it.each([
   {
     format: "json",
     id: "cursor",
-    text: '{"mcpServers":{"rea":{"command":"old","cmd":"operator-metadata","uri":"local-evidence"}}}',
+    text: '{"mcpServers":{"acl-rea":{"command":"old","cmd":"operator-metadata","uri":"local-evidence"}}}',
     key: "mcpServers",
     metadata: { cmd: "operator-metadata", uri: "local-evidence" },
   },
   {
     format: "zed",
     id: "zed",
-    text: '{"context_servers":{"rea":{"command":"old","cmd":"operator-metadata","uri":"local-evidence"}}}',
+    text: '{"context_servers":{"acl-rea":{"command":"old","cmd":"operator-metadata","uri":"local-evidence"}}}',
     key: "context_servers",
     metadata: { cmd: "operator-metadata", uri: "local-evidence" },
   },
   {
     format: "goose",
     id: "goose",
-    text: "extensions:\n  rea: {cmd: old, command: operator-metadata}\n",
+    text: "extensions:\n  acl-rea: {cmd: old, command: operator-metadata}\n",
     key: "extensions",
     metadata: { command: "operator-metadata" },
   },
@@ -76,8 +76,8 @@ it.each([
         : JSON.parse(content),
     );
     const servers = clientConfigurationRecordSchema.parse(document[key]);
-    expect(servers.rea).toMatchObject(metadata);
-    expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(text);
+    expect(servers["acl-rea"]).toMatchObject(metadata);
+    expect(await readFile(`${path}.acl-rea.backup`, "utf8")).toBe(text);
   },
 );
 
@@ -129,7 +129,7 @@ it.each([
 ] as const)(
   "supersedes $id native remote aliases while preserving ignored metadata",
   async ({ id, previous, removed, retained }) => {
-    const original = JSON.stringify({ mcpServers: { rea: previous } }) + "\n";
+    const original = JSON.stringify({ mcpServers: { "acl-rea": previous } }) + "\n";
     const { path } = await settingsFixture(original);
     expect(
       await registerMcpClientOnHost(
@@ -140,14 +140,14 @@ it.each([
       ),
     ).toMatchObject({ ok: true });
     const document = JSON.parse(await readFile(path, "utf8"));
-    expect(document.mcpServers.rea).toMatchObject({
+    expect(document.mcpServers["acl-rea"]).toMatchObject({
       command: launcher.command,
       args: launcher.args,
       ...retained,
     });
     for (const field of removed)
-      expect(document.mcpServers.rea).not.toHaveProperty(field);
-    expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+      expect(document.mcpServers["acl-rea"]).not.toHaveProperty(field);
+    expect(await readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
   },
 );
 
@@ -187,7 +187,7 @@ it.each([
     const original =
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             transport,
             metadata: { operator: true },
             cmd: "top-level-evidence",
@@ -205,7 +205,7 @@ it.each([
       ),
     ).toMatchObject({ ok: true });
     const document = JSON.parse(await readFile(path, "utf8"));
-    expect(document.mcpServers.rea).toEqual({
+    expect(document.mcpServers["acl-rea"]).toEqual({
       transport: {
         ...preserved,
         type: "stdio",
@@ -216,6 +216,6 @@ it.each([
       cmd: "top-level-evidence",
       uri: "top-level-evidence",
     });
-    expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
   },
 );

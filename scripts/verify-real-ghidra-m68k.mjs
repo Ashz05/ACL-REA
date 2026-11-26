@@ -66,7 +66,7 @@ const runtime = join(workspace, "runtime");
 await mkdir(runtime);
 const path = join(workspace, "image.bin");
 await writeFile(path, bytes);
-const entrypoint = join(root, "scripts", "rea.mjs");
+const entrypoint = join(root, "scripts", "acl-rea.mjs");
 const env = {
   ...process.env,
   TMPDIR: runtime,

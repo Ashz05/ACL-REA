@@ -43,7 +43,7 @@ it.each(["XDG cache", "home fallback"] as const)(
     vi.stubEnv("npm_config_registry", "http://127.0.0.1:9/ambient/");
     vi.stubEnv("AMBIENT_ONLY", "must not be inherited");
     try {
-      process.argv = [process.execPath, resolve("scripts/rea.mjs")];
+      process.argv = [process.execPath, resolve("scripts/acl-rea.mjs")];
       Object.defineProperty(process.stdout, "isTTY", {
         configurable: true,
         value: true,

@@ -108,7 +108,7 @@ processTest(
         // Exercise the same argument-stack bound with a smaller portable fixture.
         // The normal-stack 130,001-asset reproducer is recorded in #10352.
         "--stack_size=128",
-        fileURLToPath(new URL("../../../scripts/rea.mjs", import.meta.url)),
+        fileURLToPath(new URL("../../../scripts/acl-rea.mjs", import.meta.url)),
         "reconcile-javascript-runtime",
         path,
         "--json",

@@ -11,7 +11,7 @@ import {
 
 // Optional verification tool only; the UF2 reader starts no tool.
 const python = process.env.REA_ESPTOOL_PYTHON ?? "python3";
-const entrypoint = fileURLToPath(new URL("../../rea.mjs", import.meta.url));
+const entrypoint = fileURLToPath(new URL("../../acl-rea.mjs", import.meta.url));
 const options = { maxBuffer: 16 * 1024 * 1024, timeout: 120_000 };
 /** Every tool runs as an owned process tree that close() stops. */
 const commands = await createVerifierCommands();

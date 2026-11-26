@@ -157,7 +157,7 @@ describe("Pi registration semantics", () => {
     expect(
       await configureClientConfiguration(client, {}, command),
     ).toMatchObject({ status: "configured" });
-    expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
       original,
     );
     const configured = await readFile(client.configPath, "utf8");
@@ -165,7 +165,7 @@ describe("Pi registration semantics", () => {
       autoEnableCodemode: false,
       mcpServers: {
         other: { command: "other-server" },
-        rea: {
+        "acl-rea": {
           type: "stdio",
           command: command[0],
           args: command.slice(1),
@@ -192,7 +192,7 @@ describe("Pi registration semantics", () => {
     expect(JSON.parse(await readFile(client.configPath, "utf8"))).toEqual(
       JSON.parse(original),
     );
-    expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
       original,
     );
   });
@@ -213,7 +213,7 @@ describe("Pi registration semantics", () => {
         client.configPath,
         JSON.stringify({
           mcpServers: {
-            rea: {
+            "acl-rea": {
               command: command[0],
               args: command.slice(1),
               type,
@@ -267,7 +267,7 @@ describe("Pi strict JSON parsing", () => {
       });
       expect(await readFile(client.configPath, "utf8")).toBe(original);
       await expect(
-        readFile(`${client.configPath}.rea.backup`),
+        readFile(`${client.configPath}.acl-rea.backup`),
       ).rejects.toMatchObject({ code: "ENOENT" });
       expect(
         (
@@ -286,7 +286,7 @@ describe("Pi strict JSON parsing", () => {
       });
       expect(await readFile(client.configPath, "utf8")).toBe(original);
       await expect(
-        readFile(`${client.configPath}.rea.backup`),
+        readFile(`${client.configPath}.acl-rea.backup`),
       ).rejects.toMatchObject({ code: "ENOENT" });
     },
   );
@@ -306,7 +306,7 @@ describe("Pi strict JSON parsing", () => {
     expect(() => JSON.parse(created)).not.toThrow();
     expect(JSON.parse(created)).toEqual({
       mcpServers: {
-        rea: {
+        "acl-rea": {
           type: "stdio",
           command: command[0],
           args: command.slice(1),
@@ -314,7 +314,7 @@ describe("Pi strict JSON parsing", () => {
       },
     });
     await expect(
-      readFile(`${client.configPath}.rea.backup`),
+      readFile(`${client.configPath}.acl-rea.backup`),
     ).rejects.toMatchObject({ code: "ENOENT" });
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
       status: "unchanged",
@@ -371,7 +371,7 @@ describe("Pi project-scoped discovery and overrides", () => {
       projectConfigPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: command[0],
             args: command.slice(1),
           },
@@ -403,9 +403,9 @@ describe("Pi project-scoped discovery and overrides", () => {
       client.configPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: "npx",
-            args: ["-y", "rea-agents@1.0.0", "mcp"],
+            args: ["-y", "acl-rea-agents@1.0.0", "mcp"],
           },
         },
       }),
@@ -418,7 +418,7 @@ describe("Pi project-scoped discovery and overrides", () => {
       projectConfigPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: command[0],
             args: command.slice(1),
           },
@@ -451,9 +451,9 @@ describe("Pi project-scoped discovery and overrides", () => {
       client.configPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: "npx",
-            args: ["-y", "rea-agents@1.0.0", "mcp"],
+            args: ["-y", "acl-rea-agents@1.0.0", "mcp"],
             env: {
               REA_GHIDRA_STARTUP_TIMEOUT_MS: "bad",
             },
@@ -469,7 +469,7 @@ describe("Pi project-scoped discovery and overrides", () => {
       projectConfigPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: command[0],
             args: command.slice(1),
           },
@@ -502,7 +502,7 @@ it.runIf(process.platform === "win32")(
     await writeFile(
       configPath,
       JSON.stringify({
-        mcpServers: { rea: { command: command[0], args: command.slice(1) } },
+        mcpServers: { "acl-rea": { command: command[0], args: command.slice(1) } },
       }),
     );
     const matchingPi = piPath(home, "win32", {
@@ -534,7 +534,7 @@ describe("Pi project-scoped partial overrides", () => {
       client.configPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: command[0],
             args: command.slice(1),
           },
@@ -549,7 +549,7 @@ describe("Pi project-scoped partial overrides", () => {
       projectConfigPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             enabled: false,
           },
         },
@@ -570,7 +570,7 @@ describe("Pi project-scoped partial overrides", () => {
     expect(piStatus?.remediation).toContain(
       "REA setup writes only user-level client configuration and does not modify project-scoped configuration",
     );
-    expect(piStatus?.remediation).not.toContain("Run rea setup");
+    expect(piStatus?.remediation).not.toContain("Run acl-rea setup");
   });
 
   it("names the invalid project file when a flags-only override carries environment fields", async () => {
@@ -583,7 +583,7 @@ describe("Pi project-scoped partial overrides", () => {
       client.configPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: command[0],
             args: command.slice(1),
             enabled: true,
@@ -599,7 +599,7 @@ describe("Pi project-scoped partial overrides", () => {
       projectConfigPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             enabled: true,
             env: { REA_GHIDRA_STARTUP_TIMEOUT_MS: "invalid-number" },
           },
@@ -638,9 +638,9 @@ describe("Pi project-scoped inherited environment validation", () => {
       client.configPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: "npx",
-            args: ["-y", "rea-agents@1.0.0", "mcp"],
+            args: ["-y", "acl-rea-agents@1.0.0", "mcp"],
             env: {
               REA_GHIDRA_PROGRAM_NAME: "sample",
             },
@@ -656,7 +656,7 @@ describe("Pi project-scoped inherited environment validation", () => {
       projectConfigPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             enabled: true,
           },
         },
@@ -696,7 +696,7 @@ describe("Pi project-scoped inherited environment validation", () => {
       client.configPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: 123,
           },
         },
@@ -710,7 +710,7 @@ describe("Pi project-scoped inherited environment validation", () => {
       projectConfigPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             enabled: false,
           },
         },
@@ -749,7 +749,7 @@ it.each(["user", "project"] as const)(
       client.configPath,
       JSON.stringify({
         mcpServers: {
-          rea: { ...launcher, type: scope === "user" ? "http" : "stdio" },
+          "acl-rea": { ...launcher, type: scope === "user" ? "http" : "stdio" },
         },
       }),
     );
@@ -757,7 +757,7 @@ it.each(["user", "project"] as const)(
       projectPath,
       JSON.stringify({
         mcpServers: {
-          rea:
+          "acl-rea":
             scope === "user"
               ? { enabled: true }
               : { ...launcher, type: "http" },
@@ -790,7 +790,7 @@ it("attributes a Pi replacement with a missing launcher to the project file", as
   await writeFile(
     client.configPath,
     JSON.stringify({
-      mcpServers: { rea: { command: command[0], args: command.slice(1) } },
+      mcpServers: { "acl-rea": { command: command[0], args: command.slice(1) } },
     }),
   );
   const configPath = join(project, ".pi", "mcp.json");
@@ -798,7 +798,7 @@ it("attributes a Pi replacement with a missing launcher to the project file", as
   await writeFile(
     configPath,
     JSON.stringify({
-      mcpServers: { rea: { type: "stdio", env: { CALLER: "retained" } } },
+      mcpServers: { "acl-rea": { type: "stdio", env: { CALLER: "retained" } } },
     }),
   );
   const registrations = await readClientRegistrationStatuses(home, undefined, {
@@ -828,7 +828,7 @@ describe("Pi standalone partial override validation", () => {
       projectConfigPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             enabled: true,
           },
         },
@@ -859,13 +859,13 @@ describe("Pi project-scoped launcher provenance and fallback", () => {
     vi.spyOn(process, "cwd").mockReturnValue(projectDir);
     await trustPiProject(home, projectDir);
 
-    const staleCommand = ["npx", "-y", "rea-agents@1.0.0", "mcp"];
+    const staleCommand = ["npx", "-y", "acl-rea-agents@1.0.0", "mcp"];
 
     await writeFile(
       client.configPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: staleCommand[0],
             args: staleCommand.slice(1),
           },
@@ -880,7 +880,7 @@ describe("Pi project-scoped launcher provenance and fallback", () => {
       projectConfigPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             enabled: true,
           },
         },
@@ -899,13 +899,13 @@ describe("Pi project-scoped launcher provenance and fallback", () => {
       launcher_scope: "user",
       config_path: projectConfigPath,
     });
-    expect(piStatus?.remediation).toContain("rea setup --client pi");
+    expect(piStatus?.remediation).toContain("acl-rea setup --client pi");
     expect(piStatus?.remediation).not.toContain(projectConfigPath);
   });
 
   it.each([
-    { reference: "rea-agents@1.0.0", expected: "rea setup --client pi" },
-    { reference: "rea-agents", expected: "Run rea setup" },
+    { reference: "acl-rea-agents@1.0.0", expected: "acl-rea setup --client pi" },
+    { reference: "acl-rea-agents", expected: "Run acl-rea setup" },
     { reference: "other-package", expected: "user-registration-file" },
   ])(
     "keeps both repairs when Pi disables a project override of $reference",
@@ -923,7 +923,7 @@ describe("Pi project-scoped launcher provenance and fallback", () => {
         client.configPath,
         JSON.stringify({
           mcpServers: {
-            rea: {
+            "acl-rea": {
               command: staleCommand[0],
               args: staleCommand.slice(1),
             },
@@ -938,7 +938,7 @@ describe("Pi project-scoped launcher provenance and fallback", () => {
         projectConfigPath,
         JSON.stringify({
           mcpServers: {
-            rea: {
+            "acl-rea": {
               enabled: false,
             },
           },
@@ -980,7 +980,7 @@ describe("Pi project-scoped package launcher repair", () => {
       vi.spyOn(process, "cwd").mockReturnValue(projectDir);
       await trustPiProject(home, projectDir);
 
-      const reference = `rea-agents@${version}`;
+      const reference = `acl-rea-agents@${version}`;
       const staleCommand = ["npx", "-y", reference, "mcp"];
 
       const projectConfigDir = join(projectDir, ".pi");
@@ -990,7 +990,7 @@ describe("Pi project-scoped package launcher repair", () => {
         projectConfigPath,
         JSON.stringify({
           mcpServers: {
-            rea: {
+            "acl-rea": {
               command: staleCommand[0],
               args: staleCommand.slice(1),
               enabled,
@@ -1014,7 +1014,7 @@ describe("Pi project-scoped package launcher repair", () => {
         `Replace the launcher in ${projectConfigPath} with the installed JavaScript runtime and REA entry script`,
       );
       expect(piStatus?.remediation).toContain(reference);
-      expect(piStatus?.remediation).toContain("rea setup --client pi");
+      expect(piStatus?.remediation).toContain("acl-rea setup --client pi");
       if (!enabled)
         expect(piStatus?.remediation).toContain(
           `Update or remove the rea registration in ${projectConfigPath}`,
@@ -1024,7 +1024,7 @@ describe("Pi project-scoped package launcher repair", () => {
           projectConfigPath,
           JSON.stringify({
             mcpServers: {
-              rea: { command: command[0], args: command.slice(1), enabled },
+              "acl-rea": { command: command[0], args: command.slice(1), enabled },
             },
           }),
         );
@@ -1078,7 +1078,7 @@ describe("Pi project-scoped fallback on sibling servers", () => {
       config_path: client?.configPath,
     });
     expect(piStatus?.remediation).toContain(
-      "Run rea setup to refresh this registration",
+      "Run acl-rea setup to refresh this registration",
     );
   });
 });
@@ -1094,7 +1094,7 @@ describe("Pi project trust enforcement", () => {
       client.configPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: alignedCommand[0],
             args: alignedCommand.slice(1),
           },
@@ -1108,7 +1108,7 @@ describe("Pi project trust enforcement", () => {
       resolve(projectConfigDir, "mcp.json"),
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             enabled: false,
           },
         },
@@ -1154,7 +1154,7 @@ describe("Pi project trust error handling", () => {
       client.configPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: alignedCommand[0],
             args: alignedCommand.slice(1),
           },
@@ -1170,7 +1170,7 @@ describe("Pi project trust error handling", () => {
       projectConfigPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: alignedCommand[0],
             args: alignedCommand.slice(1),
           },
@@ -1205,7 +1205,7 @@ describe("Pi project trust error handling", () => {
       client.configPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: alignedCommand[0],
             args: alignedCommand.slice(1),
           },
@@ -1222,7 +1222,7 @@ describe("Pi project trust error handling", () => {
       resolve(projectConfigDir, "mcp.json"),
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             enabled: false,
           },
         },

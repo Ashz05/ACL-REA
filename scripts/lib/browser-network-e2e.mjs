@@ -20,7 +20,7 @@ import { withVerifierCleanup } from "./verifier-cleanup.mjs";
 /** Exercise selected network content through real CLI and stdio MCP, one browser at a time. */
 export async function verifyBrowserNetworkEvidence(
   executable,
-  entrypoint = fileURLToPath(new URL("../rea.mjs", import.meta.url)),
+  entrypoint = fileURLToPath(new URL("../acl-rea.mjs", import.meta.url)),
   attachment,
 ) {
   let site;

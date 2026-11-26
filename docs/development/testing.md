@@ -7,7 +7,7 @@ installed-client and agent runs.
 
 Historical verification records may refer to `experiments/analysis-efficiency`.
 Those experiment scripts are available in the [archived source tree](https://github.com/morluto/rea/tree/a2e2c29b59e8775b0e6aedb09a9eb16adf32646b/experiments/analysis-efficiency);
-they are not included in current checkouts. The retained [test support](https://github.com/morluto/rea/blob/main/tests/support/analysis-efficiency/README.md)
+they are not included in current checkouts. The retained [test support](https://github.com/Ashz05/ACL-REA/blob/main/tests/support/analysis-efficiency/README.md)
 contains deterministic checkers and fixtures. The [allocation report](../verification/analysis-efficiency/mcp-integer-allocation.md)
 and its original receipt JSON remain documentation, checked by the report producer.
 
@@ -136,7 +136,7 @@ and `REA_MCP_OUTPUT_SCHEMA_PROFILE=compact` when the catalog contains
 compact output schemas falls back to eager composition.
 The internal catalog stores object roots for the SDK's result codec, preserves
 non-object output schemas for legacy wrapping, and retains the complete
-`binary_session` output schema for `rea mcp doctor`.
+`binary_session` output schema for `acl-rea mcp doctor`.
 The first tool or guided-workflow request materializes the canonical runtime
 on that same SDK server. It preserves the advertised schemas throughout
 materialization. Initial-target, HTTP, and family-scoped hot/cold startup
@@ -174,7 +174,7 @@ without the artifacts lock, so it can record hashes while `check:pr` or
 `check:ci:fast` and `check:ci:deep` commands.
 Use `npm run lint:details` or `npm run jscpd:details` for all console diagnostics.
 Both duplicate commands scan production and test code using the limit in
-[`.jscpd.json`](https://github.com/morluto/rea/blob/main/.jscpd.json).
+[`.jscpd.json`](https://github.com/Ashz05/ACL-REA/blob/main/.jscpd.json).
 The summary commands preserve checker failures and restore reports from cached
 static tasks. Both lint caches include the website, documentation configuration,
 and experiment code scanned by the checker; a regression compares the actual
@@ -271,7 +271,7 @@ does not cap the complete process family's memory; measure the full invocation
 when enforcing a host budget.
 
 Routine iterations and rebases need focused regressions and relevant checks.
-Follow the [contributor checks](https://github.com/morluto/rea/blob/main/CONTRIBUTING.md#development-feedback-and-pr-verification)
+Follow the [contributor checks](https://github.com/Ashz05/ACL-REA/blob/main/CONTRIBUTING.md#development-feedback-and-pr-verification)
 before handing off a PR. Use `check:pr` for broad changes or CI diagnosis.
 Architecture guards run in `check`, `check:fast`, and `check:ci:deep`.
 The standalone test-discovery check runs in `check:ci:deep`.
@@ -568,7 +568,7 @@ touched verifier uses these helpers.
 
 ## CodeQL production scope
 
-[The production configuration](https://github.com/morluto/rea/blob/main/.github/codeql/production.yml) excludes
+[The production configuration](https://github.com/Ashz05/ACL-REA/blob/main/.github/codeql/production.yml) excludes
 `tests/`, `scripts/fixtures/`, `*.test.*`, `*.fixture.*`, `test_*.py`, and `*_test.py` inputs
 during extraction. It retains the default queries and the existing `local`
 threat model. Production source, bridges, runtime scripts, installation and
@@ -584,7 +584,7 @@ These exclusions do not change which behavioral tests CI executes. CodeQL's
 JavaScript/TypeScript, Python, and Actions lanes do not add shell, Java, or Swift
 analysis; their existing checks remain responsible for those languages.
 
-[The production workflow](https://github.com/morluto/rea/blob/main/.github/workflows/codeql.yml) is inactive until a
+[The production workflow](https://github.com/Ashz05/ACL-REA/blob/main/.github/workflows/codeql.yml) is inactive until a
 repository administrator disables CodeQL **default setup** and sets the Actions
 repository variable `REA_CODEQL_ADVANCED` to `true`. Disable default setup first:
 it rejects advanced CodeQL uploads. Then enable the variable and manually run
@@ -1185,7 +1185,7 @@ exceptions.
 
 The shared temporary-directory and workspace helpers preserve caller labels
 under an owned `rea-` prefix when needed. Their
-[cleanup ownership differs](https://github.com/morluto/rea/blob/main/CONTRIBUTING.md#temporary-files-and-diagnostics):
+[cleanup ownership differs](https://github.com/Ashz05/ACL-REA/blob/main/CONTRIBUTING.md#temporary-files-and-diagnostics):
 `createTestTempDirectory` registers `onTestFinished` deletion, while
 `createTestWorkspace` requires caller cleanup. Close resources before removing
 their directory. `npm run verify:test-temp-hygiene`

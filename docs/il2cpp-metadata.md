@@ -132,7 +132,7 @@ budget.
 ## CLI
 
 ```bash
-rea inspect-il2cpp-metadata /absolute/path/global-metadata.dat --json
+acl-rea inspect-il2cpp-metadata /absolute/path/global-metadata.dat --json
 ```
 
 The CLI defaults to complete Evidence. Compact delivery requires
@@ -141,9 +141,9 @@ preserves every decoded row; query it offline by the returned
 `parent_evidence_id`, without the original file:
 
 ```bash
-rea inspect-il2cpp-metadata /absolute/path/global-metadata.dat \
+acl-rea inspect-il2cpp-metadata /absolute/path/global-metadata.dat \
   --detail summary --evidence_output metadata-evidence.json --json
-rea inspect-analysis-view --evidence-bundle metadata-evidence.json \
+acl-rea inspect-analysis-view --evidence-bundle metadata-evidence.json \
   '{"source":{"kind":"retained-evidence","evidence_id":"<parent_evidence_id>"},"view":{"kind":"il2cpp-metadata","collection":"methods","indices":[9785],"fields":["name","declaring_type"]}}' \
   --json
 ```
@@ -537,7 +537,7 @@ The CLI can turn a linked report into a
 before auto-analysis:
 
 ```bash
-rea inspect-il2cpp-metadata global-metadata.dat --binary libil2cpp.so \
+acl-rea inspect-il2cpp-metadata global-metadata.dat --binary libil2cpp.so \
   --ghidra-seeds il2cpp-seeds.tsv --json > /dev/null
 export REA_GHIDRA_SEED_FILE="$PWD/il2cpp-seeds.tsv"
 ```

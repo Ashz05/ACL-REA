@@ -25,14 +25,14 @@ export const reaCacheLocationSettings = (
     : []),
 ];
 
-/** Per-user cache directory that REA owns for Kuna on this host. */
+/** Per-user cache directory that ACL-REA owns for Kuna on this host. */
 export const defaultKunaCacheDirectory = (
   environment: Readonly<NodeJS.ProcessEnv>,
   platform: NodeJS.Platform,
   home?: string,
 ): string => reaCacheDirectory(environment, platform, "kuna", home);
 
-/** A per-user cache directory REA owns on this host: `rea/<name>` under the platform's cache root. */
+/** A per-user cache directory ACL-REA owns on this host: `acl-rea/<name>` under the platform's cache root. */
 export const reaCacheDirectory = (
   environment: Readonly<NodeJS.ProcessEnv>,
   platform: NodeJS.Platform,
@@ -46,7 +46,7 @@ export const reaCacheDirectory = (
       platform === "darwin" ? "Library/Caches" : ".cache",
       platform,
     );
-  return appendCallerPath(root, `rea/${name}`, platform);
+  return appendCallerPath(root, `acl-rea/${name}`, platform);
 };
 
 /**

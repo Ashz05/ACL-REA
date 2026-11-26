@@ -7,8 +7,8 @@ root digest. Nothing in the tree is executed, extracted or modified.
 
 - MCP: `inspect_artifact` with `path`, and `compare_artifacts` with
   `{"kind":"path","path":"/absolute/dir"}` on either side.
-- CLI: `rea inspect-artifact <dir>` and
-  `rea compare-artifacts '{"left":{"kind":"path","path":"a"},"right":{"kind":"path","path":"b"}}'`.
+- CLI: `acl-rea inspect-artifact <dir>` and
+  `acl-rea compare-artifacts '{"left":{"kind":"path","path":"a"},"right":{"kind":"path","path":"b"}}'`.
 
 `open_binary` still refuses an ordinary directory with
 `directory_requires_file`; native analysis needs a file or a supported Apple

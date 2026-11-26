@@ -20,10 +20,10 @@ const pluginFixture = async (runtime: string) => {
   await copyFile(launcher, entry);
   await writeFile(
     join(root, "package.json"),
-    JSON.stringify({ name: "rea-agents", version: "6.8.0", type: "module" }),
+    JSON.stringify({ name: "acl-rea-agents", version: "6.8.0", type: "module" }),
   );
   await writeFile(join(root, "dist/mcp/main.js"), "");
-  await writeFile(join(root, "scripts/rea.mjs"), runtime);
+  await writeFile(join(root, "scripts/acl-rea.mjs"), runtime);
   return { root, entry };
 };
 
@@ -92,7 +92,7 @@ it.each([["latest"], ["6.8.0&echo wrong"], ["6.8.0", "extra"], []])(
     expect(await closed).toEqual({
       code: 1,
       stdout: "",
-      stderr: "REA plugin requires one exact rea-agents@VERSION pin.\n",
+      stderr: "ACL-REA plugin requires one exact acl-rea-agents@VERSION pin.\n",
     });
   },
 );
@@ -107,7 +107,7 @@ it("rejects a mismatched runtime instead of downloading another package", async 
     code: 1,
     stdout: "",
     stderr:
-      "REA plugin version pin does not match its installed rea-agents package; reinstall the plugin.\n",
+      "ACL-REA plugin version pin does not match its installed acl-rea-agents package; reinstall the plugin.\n",
   });
 });
 
@@ -122,7 +122,7 @@ it("reports how to repair an incomplete artifact or unbuilt source checkout", as
     code: 1,
     stdout: "",
     stderr:
-      "REA plugin runtime is missing; reinstall the plugin, or run npm ci && npm run build:cached in a source checkout.\n",
+      "ACL-REA plugin runtime is missing; reinstall the plugin, or run npm ci && npm run build:cached in a source checkout.\n",
   });
 });
 

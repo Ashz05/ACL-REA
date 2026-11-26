@@ -7,7 +7,7 @@ This read-only container inspection uses portable Node.js file reads; it needs
 neither Ghidra nor an emulator.
 
 ```bash
-rea inspect-artifact ./cartridge.nes --json
+acl-rea inspect-artifact ./cartridge.nes --json
 rea extract-artifact ./cartridge.nes --json
 ```
 

@@ -1,6 +1,6 @@
 # .NET single-file bundles
 
-Use `rea inspect-artifact /absolute/path/host --json` to inventory an ordinary
+Use `acl-rea inspect-artifact /absolute/path/host --json` to inventory an ordinary
 .NET single-file host and `rea extract-artifact /absolute/path/host --json` to
 materialize its members into a fresh, REA-owned output directory. With a host
 selected through `open_binary`, the corresponding MCP tools are
@@ -101,7 +101,7 @@ as the optional third generator argument to match that template.
 ```bash
 dotnet build scripts/fixtures/dotnet-bundle/BundleFixture.csproj -c Release --configfile scripts/fixtures/dotnet-bundle/NuGet.Config -o /absolute/path/producer -p:BaseIntermediateOutputPath=/absolute/path/producer-obj/
 dotnet /absolute/path/producer/BundleFixture.dll /absolute/path/apphost.exe /absolute/path/absent-bundles-directory
-rea inspect-artifact /absolute/path/absent-bundles-directory/net8-compressed/Probe.exe --json
+acl-rea inspect-artifact /absolute/path/absent-bundles-directory/net8-compressed/Probe.exe --json
 rea extract-artifact /absolute/path/absent-bundles-directory/net8-compressed/Probe.exe --json
 ```
 

@@ -105,7 +105,7 @@ itWithCaptureCapability(
 
     let captureRoot: string | undefined;
     try {
-      const cliEntry = resolve("scripts/rea.mjs");
+      const cliEntry = resolve("scripts/acl-rea.mjs");
       const result = await execFileAsync(
         process.execPath,
         [cliEntry, "capture-process", scenarioPath, "--json"],

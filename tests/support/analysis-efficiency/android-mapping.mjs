@@ -61,7 +61,7 @@ const outputContracts = await selectedOutputContracts(repo);
 const { withCanonicalOutputSchema } = outputContracts;
 const transport = new StdioClientTransport({
   command: process.execPath,
-  args: [join(repo, "scripts/rea.mjs"), "mcp"],
+  args: [join(repo, "scripts/acl-rea.mjs"), "mcp"],
   cwd: repo,
   env: {
     PATH: process.env.PATH,

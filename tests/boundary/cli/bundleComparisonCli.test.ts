@@ -297,7 +297,7 @@ cliTest(
     const transport = new StdioClientTransport({
       command: process.execPath,
       args: [
-        fileURLToPath(new URL("../../../scripts/rea.mjs", import.meta.url)),
+        fileURLToPath(new URL("../../../scripts/acl-rea.mjs", import.meta.url)),
         "mcp",
       ],
       cwd: root,

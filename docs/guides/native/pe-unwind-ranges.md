@@ -6,8 +6,8 @@ compiler's record of a function range that needs unwind data. No disassembler,
 Windows host, or target execution is required.
 
 ```sh
-rea inspect-pe-unwind-ranges /absolute/path/to/application.exe --limit 0 --json
-rea inspect-pe-unwind-ranges /absolute/path/to/application.exe --kind chained --json
+acl-rea inspect-pe-unwind-ranges /absolute/path/to/application.exe --limit 0 --json
+acl-rea inspect-pe-unwind-ranges /absolute/path/to/application.exe --kind chained --json
 ```
 
 MCP accepts `{ "path": "/absolute/path/to/application.exe" }`. CLI paths may be

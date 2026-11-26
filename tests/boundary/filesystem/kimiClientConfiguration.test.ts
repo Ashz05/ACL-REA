@@ -96,7 +96,7 @@ describe("Kimi Code registration lifecycle", () => {
       client.configPath,
       JSON.stringify({
         mcpServers: {
-          rea: { command: "rea", args: ["mcp"], enabledTools },
+          "acl-rea": { command: "acl-rea", args: ["mcp"], enabledTools },
         },
       }),
     );
@@ -104,7 +104,7 @@ describe("Kimi Code registration lifecycle", () => {
       (await configureClientConfiguration(client, {}, command)).status,
     ).toBe("configured");
     expect(
-      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.rea,
+      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers["acl-rea"],
     ).toEqual({
       ...expectedRegistration(command),
       enabledTools,
@@ -118,8 +118,8 @@ describe("Kimi Code registration lifecycle", () => {
     const { home, client } = await kimiClient();
     const original = JSON.stringify({
       mcpServers: {
-        rea: {
-          ...expectedRegistration(["rea", "mcp"]),
+        "acl-rea": {
+          ...expectedRegistration(["acl-rea", "mcp"]),
           startupTimeoutMs: 90_000,
           toolTimeoutMs: 300_000,
         },
@@ -131,16 +131,16 @@ describe("Kimi Code registration lifecycle", () => {
       await configureClientConfiguration(client, {}, command),
     ).toMatchObject({
       status: "configured",
-      backupPath: `${client.configPath}.rea.backup`,
+      backupPath: `${client.configPath}.acl-rea.backup`,
     });
     expect(
-      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.rea,
+      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers["acl-rea"],
     ).toEqual({
       ...expectedRegistration(command),
       startupTimeoutMs: 90_000,
       toolTimeoutMs: 300_000,
     });
-    expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
       original,
     );
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
@@ -172,7 +172,7 @@ describe("Kimi Code registration lifecycle", () => {
       ),
     ).toMatchObject({ status: "configured" });
     expect(
-      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.rea
+      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers["acl-rea"]
         .toolTimeoutMs,
     ).toBe(2_147_603_647);
   });
@@ -190,19 +190,19 @@ describe("Kimi Code registration lifecycle", () => {
 
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
       status: "configured",
-      backupPath: `${client.configPath}.rea.backup`,
+      backupPath: `${client.configPath}.acl-rea.backup`,
     });
     const text = await readFile(client.configPath, "utf8");
     expect(JSON.parse(text)).toEqual({
       customSetting: { enabled: true },
       mcpServers: {
         other: { command: "other-server", startupTimeoutMs: 5000 },
-        rea: expectedRegistration(command),
+        "acl-rea": expectedRegistration(command),
       },
     });
     expect(text).not.toContain('"type"');
     expect(text).not.toContain('"transport"');
-    expect(await readFile(`${client.configPath}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${client.configPath}.acl-rea.backup`, "utf8")).toBe(
       original,
     );
     expect(await configureClientConfiguration(client, {}, command)).toEqual({
@@ -244,8 +244,8 @@ describe("Kimi Code input-schema profile selection", () => {
     const { client } = await kimiClient();
     const stored = JSON.stringify({
       mcpServers: {
-        rea: {
-          command: "rea",
+        "acl-rea": {
+          command: "acl-rea",
           args: ["mcp"],
           env: { REA_MCP_INPUT_SCHEMA_PROFILE: "full" },
         },
@@ -273,7 +273,7 @@ describe("Kimi Code input-schema profile selection", () => {
       ).status,
     ).toBe("configured");
     expect(
-      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.rea,
+      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers["acl-rea"],
     ).toEqual(expectedRegistration(command, "compact"));
     expect(
       (
@@ -293,8 +293,8 @@ describe("Kimi Code input-schema profile selection", () => {
         client.configPath,
         JSON.stringify({
           mcpServers: {
-            rea: {
-              command: "rea",
+            "acl-rea": {
+              command: "acl-rea",
               args: ["mcp"],
               env: { REA_MCP_INPUT_SCHEMA_PROFILE: storedProfile },
             },
@@ -312,7 +312,7 @@ describe("Kimi Code input-schema profile selection", () => {
         ).status,
       ).toBe("configured");
       expect(
-        JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.rea,
+        JSON.parse(await readFile(client.configPath, "utf8")).mcpServers["acl-rea"],
       ).toEqual(expectedRegistration(command, overrideProfile));
     },
   );
@@ -323,7 +323,7 @@ describe("Kimi Code input-schema profile selection", () => {
       client.configPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             command: command[0],
             args: command.slice(1),
             startupTimeoutMs: MCP_STARTUP_POLICY.kimiStartupTimeoutMs,
@@ -345,7 +345,7 @@ describe("Kimi Code input-schema profile selection", () => {
       status: "unchanged",
     });
     expect(
-      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.rea,
+      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers["acl-rea"],
     ).toEqual(expectedRegistration(command, undefined, 120_000));
   });
 });
@@ -392,7 +392,7 @@ describe("Kimi Code package launchers", () => {
         (await configureClientConfiguration(client, {}, launcher)).status,
       ).toBe("configured");
       expect(
-        JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.rea,
+        JSON.parse(await readFile(client.configPath, "utf8")).mcpServers["acl-rea"],
       ).toEqual(expectedRegistration(launcher));
       expect(
         (
@@ -427,7 +427,7 @@ describe("Kimi Code transport validation", () => {
         (await configureClientConfiguration(client, {}, command)).status,
       ).toBe("configured");
       expect(
-        JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.rea,
+        JSON.parse(await readFile(client.configPath, "utf8")).mcpServers["acl-rea"],
       ).toEqual(expectedRegistration(command));
       expect(await configureClientConfiguration(client, {}, command)).toEqual({
         status: "unchanged",
@@ -451,7 +451,7 @@ describe("Kimi Code transport validation", () => {
       reason: "readback",
     });
     expect(await readFile(client.configPath, "utf8")).toBe(original);
-    expect(await exists(`${client.configPath}.rea.backup`)).toBe(false);
+    expect(await exists(`${client.configPath}.acl-rea.backup`)).toBe(false);
   });
 
   it("accepts explicit stdio transport without causing repeated rewrites", async () => {
@@ -460,7 +460,7 @@ describe("Kimi Code transport validation", () => {
       client.configPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             transport: "stdio",
             ...expectedRegistration(command),
           },
@@ -484,7 +484,7 @@ describe("Kimi Code transport validation", () => {
       status: "unchanged",
     });
     expect(
-      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers.rea
+      JSON.parse(await readFile(client.configPath, "utf8")).mcpServers["acl-rea"]
         .transport,
     ).toBe("stdio");
     expect(
@@ -505,7 +505,7 @@ describe("Kimi Code transport validation", () => {
         client.configPath,
         JSON.stringify({
           mcpServers: {
-            rea: {
+            "acl-rea": {
               transport,
               ...expectedRegistration(command),
             },
@@ -547,7 +547,7 @@ describe("Kimi Code timeout alignment", () => {
     };
     await writeFile(
       client.configPath,
-      JSON.stringify({ mcpServers: { rea: registration } }),
+      JSON.stringify({ mcpServers: { "acl-rea": registration } }),
     );
     expect(
       (
@@ -561,7 +561,7 @@ describe("Kimi Code timeout alignment", () => {
 
   it("uses a direct installed REA command without requiring a package runner", async () => {
     const { home, client } = await kimiClient();
-    const entry = join(home, "scripts", "rea.mjs");
+    const entry = join(home, "scripts", "acl-rea.mjs");
     const launcher = [process.execPath, entry, "mcp"];
     expect(
       (await configureClientConfiguration(client, {}, launcher)).status,
@@ -582,7 +582,7 @@ describe("Kimi Code timeout alignment", () => {
       client.configPath,
       JSON.stringify({
         mcpServers: {
-          rea: {
+          "acl-rea": {
             ...expectedRegistration(command),
             command: "another-package",
             args: ["mcp"],

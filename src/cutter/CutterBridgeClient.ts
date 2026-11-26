@@ -1281,10 +1281,10 @@ const resolveBridgeDirectory = (
     return configured;
   }
   return platform === "win32" && localAppData
-    ? join(localAppData, "REA", "CutterBridge")
+    ? join(localAppData, "ACL-REA", "CutterBridge")
     : platform === "win32"
-      ? join(homeDirectory, ".cache", "rea", "cutter-bridge")
-      : appendCallerPath(homeDirectory, ".cache/rea/cutter-bridge", platform);
+      ? join(homeDirectory, ".cache", "acl-rea", "cutter-bridge")
+      : appendCallerPath(homeDirectory, ".cache/acl-rea/cutter-bridge", platform);
 };
 
 class CutterDiscoveryFailure extends Error {

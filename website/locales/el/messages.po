@@ -1616,7 +1616,7 @@ msgid "Evidence and model attribution"
 msgstr "Στοιχεία και απόδοση της εργασίας στα μοντέλα"
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/rea/blob/main/website/evidence/reverse-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/website/evidence/reverse-
 #. engineering-models.md" >
 #. {ph1}: </a >
 #: website/public/blog/reverse-engineering-models/index.html:783
@@ -4049,7 +4049,7 @@ msgctxt "page:faq/index.html"
 msgid "Terminal · refresh agent setup"
 msgstr "Τερματικό · ανανέωση ρύθμισης βοηθού"
 
-#. {ph0}: <code>npx -y rea-agents@latest</code>
+#. {ph0}: <code>npx -y acl-rea-agents@latest</code>
 #: website/public/faq/index.html:303
 #, python-brace-format
 msgctxt "page:faq/index.html"
@@ -4394,7 +4394,7 @@ msgstr ""
 "{ph0}Ενημερώστε το REA{ph1}, επανεκκινήστε τον βοηθό σας και επαναλάβετε την"
 " ίδια εργασία. Μια πρόσφατη έκδοση μπορεί να έχει ήδη διορθώσει το πρόβλημα."
 
-#. {ph0}: <a href="https://github.com/morluto/rea/issues/new/choose" >
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/issues/new/choose" >
 #. {ph1}: </a >
 #: website/public/faq/index.html:517
 #, python-brace-format
@@ -4434,9 +4434,9 @@ msgctxt "page:faq/index.html"
 msgid "How can I share an example or contribute?"
 msgstr "Πώς μπορώ να μοιραστώ ένα παράδειγμα ή να συνεισφέρω;"
 
-#. {ph0}: <a href="https://github.com/morluto/rea/issues/new/choose" >
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/issues/new/choose" >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/rea/pulls">
+#. {ph2}: <a href="https://github.com/Ashz05/ACL-REA/pulls">
 #. {ph3}: </a >
 #: website/public/faq/index.html:543
 #, python-brace-format
@@ -4663,7 +4663,7 @@ msgstr "Αντιγραφή"
 #. {ph0}: <span class="prompt-symbol" aria-hidden="true">
 #. {ph1}: </span >
 #. {ph2}: <span id="first-install-prompt" >
-#. {ph3}: <span translate="no">npx rea-agents@latest setup</span>
+#. {ph3}: <span translate="no">npx acl-rea-agents@latest setup</span>
 #. {ph4}: </span >
 #. {ph5}: <span class="terminal-cursor" aria-hidden="true">
 #. {ph6}: </span>
@@ -5249,7 +5249,7 @@ msgstr "{ph0}{ph1}{ph2}{ph3}{ph4}{ph5}{ph6}{ph7}Ο βοηθός προγραμμ
 #. {ph0}: <span class="prompt-symbol" aria-hidden="true">
 #. {ph1}: </span >
 #. {ph2}: <span id="agent-install-prompt" >
-#. {ph3}: <span translate="no">npx rea-agents@latest setup</span>
+#. {ph3}: <span translate="no">npx acl-rea-agents@latest setup</span>
 #. {ph4}: </span >
 #. {ph5}: <span class="terminal-cursor" aria-hidden="true">
 #. {ph6}: </span>
@@ -5653,7 +5653,7 @@ msgstr ""
 "{ph0}Επιλέξτε έναν οδηγό διερεύνησης{ph1}{ph2}Αναλυτικά παραδείγματα για ένα"
 " δυαδικό αρχείο, μια εφαρμογή Electron και έναν browser.{ph3}"
 
-#. {ph0}: <a href="https://github.com/morluto/rea/issues">
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/issues">
 #. {ph1}: </a >
 #. {ph2}: <span>
 #. {ph3}: </span>
@@ -6214,7 +6214,7 @@ msgstr ""
 "διεργασιών."
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/rea/blob/main/docs/guides/web/web-network-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/web/web-network-
 #. captures.md" >
 #. {ph1}: </a >
 #: website/public/guides/browser/index.html:487
@@ -7677,7 +7677,7 @@ msgstr "Αντιγραφή"
 #. {ph0}: <span class="prompt-symbol" aria-hidden="true">
 #. {ph1}: </span >
 #. {ph2}: <span id="home-install-prompt" >
-#. {ph3}: <span translate="no">npx rea-agents@latest setup</span>
+#. {ph3}: <span translate="no">npx acl-rea-agents@latest setup</span>
 #. {ph4}: </span >
 #. {ph5}: <span class="terminal-cursor" aria-hidden="true">
 #. {ph6}: </span>
@@ -10032,7 +10032,7 @@ msgstr ""
 #. squares-flag-checker/ctfcli.yaml" >
 #. {ph3}: </a >
 #. {ph4}: <a
-#. href="https://github.com/morluto/rea/blob/main/website/evidence/ctf-masked-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/website/evidence/ctf-masked-
 #. squares.md" >
 #. {ph5}: </a >
 #: website/public/showcase/ctf/index.html:704
@@ -13759,7 +13759,7 @@ msgstr ""
 
 #. {ph0}: <a href="https://claude.ai/download">
 #. {ph1}: </a>
-#. {ph2}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph2}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/client-configuration.md#claude-desktop" >
 #. {ph3}: </a >
 #: website/public/get-started/index.html:597
@@ -13813,10 +13813,10 @@ msgctxt "page:get-started/index.html"
 msgid "Setup ID"
 msgstr "Αναγνωριστικό ρύθμισης"
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/client-configuration.md" >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph2}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/installation.md#released-package-and-main" >
 #. {ph3}: </a >
 #: website/public/get-started/index.html:757
@@ -13846,7 +13846,7 @@ msgstr ""
 "διακομιστή MCP με όνομα {ph0}, χρησιμοποιώντας αυτή την εντολή στον "
 "υπολογιστή του Bot:"
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/client-configuration.md#other-client-settings" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:788
@@ -14120,7 +14120,7 @@ msgstr ""
 "Αν το macOS ζητήσει άδεια Automation, επιτρέψτε την εφαρμογή που ξεκινά το "
 "REA από System Settings → Privacy & Security → Automation και ξαναδοκιμάστε."
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/installation.md#hopper" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1099
@@ -14213,7 +14213,7 @@ msgstr ""
 "Στο macOS, η μεταγλώττιση χρειάζεται Xcode Command Line Tools, make και "
 "bison. Χρησιμοποιήστε τον οδηγό για τον υπολογιστή σας:"
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/installation.md#missing-macos-native-decompiler" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1216
@@ -14222,7 +14222,7 @@ msgctxt "page:get-started/index.html"
 msgid "{ph0}macOS · Intel{ph1}"
 msgstr "{ph0}macOS · Intel{ph1}"
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/installation.md#macos-arm64-native-decompiler" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1222
@@ -14259,11 +14259,11 @@ msgstr ""
 " ρύθμιση αφού ορίσετε τις διαδρομές, εγκρίνετε την ενημερωμένη διαμόρφωση "
 "της εφαρμογής και επανεκκινήστε τον βοηθό σας."
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/installation.md#ghidra" >
 #. {ph1}: </a >
 #. {ph2}: <a
-#. href="https://github.com/morluto/rea/blob/main/docs/providers/windows-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/docs/providers/windows-
 #. ghidra-p0.md" >
 #. {ph3}: </a >
 #: website/public/get-started/index.html:1258
@@ -14365,7 +14365,7 @@ msgstr ""
 "παρόχου ανάλυσης, εκτελέστε ξανά τη ρύθμιση και επανεκκινήστε τον βοηθό σας."
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/rea/blob/main/docs/providers/ida-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/docs/providers/ida-
 #. provider.md" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1376
@@ -14525,15 +14525,15 @@ msgid "Process behavior"
 msgstr "Συμπεριφορά διεργασίας"
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/rea/blob/main/docs/guides/android/flutter-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/android/flutter-
 #. analysis.md" >
 #. {ph1}: </a >
 #. {ph2}: <a
-#. href="https://github.com/morluto/rea/blob/main/docs/guides/javascript/javascript-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/javascript/javascript-
 #. artifact-reconstruction.md" >
 #. {ph3}: </a >
 #. {ph4}: <a
-#. href="https://github.com/morluto/rea/blob/main/docs/guides/evm/evm-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/evm/evm-
 #. bytecode.md" >
 #. {ph5}: </a >
 #. {ph6}: <a href="../guides/">
@@ -14637,7 +14637,7 @@ msgstr ""
 " εντολή ρύθμισης, ελέγξτε το σχέδιό της και επανεκκινήστε την εφαρμογή σας."
 
 #. {ph0}: <code>rea update</code>
-#. {ph1}: <code>npx rea-agents@latest uninstall</code>
+#. {ph1}: <code>npx acl-rea-agents@latest uninstall</code>
 #: website/public/get-started/index.html:1806
 #, python-brace-format
 msgctxt "page:get-started/index.html"
@@ -14648,7 +14648,7 @@ msgstr ""
 "Αν εγκαταστήσατε το καθολικό CLI, ενημερώστε το με {ph0}. Χρησιμοποιήστε το "
 "{ph1} για να αφαιρέσετε τη διαμόρφωση εφαρμογών και τη δεξιότητα του REA."
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/getting-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/getting-
 #. started/installation.md#diagnose-update-and-remove" >
 #. {ph1}: </a >
 #: website/public/get-started/index.html:1812
@@ -15060,7 +15060,7 @@ msgid "Setup options"
 msgstr "Επιλογές ρύθμισης"
 
 #. {ph0}: <a
-#. href="https://github.com/morluto/rea/blob/main/CONTRIBUTING.md#development-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/CONTRIBUTING.md#development-
 #. setup" >
 #. {ph1}: </a >
 #. {ph2}: <code>6.4.0</code>
@@ -15299,7 +15299,7 @@ msgstr ""
 "περιβάλλον και το ελέγχει σε καθαρό υπολογιστή με στιγμιότυπα οθόνης, "
 "ποντίκι και πληκτρολόγιο."
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/desktop-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/desktop-
 #. build-
 #. computer.md#set-up-a-build-host">
 #. {ph1}: </a>
@@ -15682,10 +15682,10 @@ msgid ""
 "name warnings identify places to review; they do not remove those values."
 msgstr ""
 
-#. {ph0}: <a href="https://github.com/morluto/rea/blob/main/docs/agent-
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/agent-
 #. environments-quickstart.md" >
 #. {ph1}: </a >
-#. {ph2}: <a href="https://github.com/morluto/rea/blob/main/docs/agent-
+#. {ph2}: <a href="https://github.com/Ashz05/ACL-REA/blob/main/docs/agent-
 #. environments.md" >
 #. {ph3}: </a >
 #: website/public/guides/rl-environments/index.html:474
@@ -15993,7 +15993,7 @@ msgstr ""
 "{ph0}Μπείτε στο Discord{ph1} για να ζητήσετε βοήθεια και να συζητήσετε τις "
 "αναλύσεις σας."
 
-#. {ph0}: <a href="https://github.com/morluto/rea/issues/new/choose" >
+#. {ph0}: <a href="https://github.com/Ashz05/ACL-REA/issues/new/choose" >
 #. {ph1}: </a >
 #: website/public/index.html:1285
 #, python-brace-format
@@ -16064,7 +16064,7 @@ msgstr ""
 #. {ph0}: <a href="../../get-started/">
 #. {ph1}: </a>
 #. {ph2}: <a
-#. href="https://github.com/morluto/rea/blob/main/docs/guides/android/android-
+#. href="https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/android/android-
 #. analysis.md" >
 #. {ph3}: </a >
 #: website/public/showcase/aegis/index.html:714

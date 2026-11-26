@@ -3,7 +3,7 @@ exit: 0
 --- stdout
 rea environment-build — Build an agent environment bundle from a recorded capture in one offline step: inspect a HAR (or read capture Evidence), project the environment manifest, derive the state, report which tools the environment answers from state, which replay and why each write is withheld, then write the bundle environment-export writes
 
-Usage: rea environment-build <capture> [directory] [options]
+Usage: acl-rea environment-build <capture> [directory] [options]
 
 Arguments:
   capture    A .har file, or capture Evidence JSON from inspect-web-network-capture (HAR) or capture-browser-scenario
@@ -13,7 +13,7 @@ Options:
   --name <string>               Env folder and env id (kebab-case); default the manifest's name, or the capture file's name when the origin is a loopback or IP address
   --template-rule <array>       Opt-in template rule; repeat to select several. Replaces the default after-uid-literal, opaque-token, sibling-variance and prefix-variance
   --format-rules-only           Apply only the four format rules, the views' own default
-  --package-tarball <string>    Packed rea-agents tarball (npm pack) copied into the env folder and installed by the Dockerfile instead of the registry package pinned to this version
+  --package-tarball <string>    Packed acl-rea-agents tarball (npm pack) copied into the env folder and installed by the Dockerfile instead of the registry package pinned to this version
   --dry-run                     Run every stage and report, but write nothing
   --capture-timeout-ms <value>  Capture wall-clock deadline in milliseconds (default 30000), from decoder start through process exit. Omitted means 30000 and applies on the next capture. deadlineExpired returns no partial capture. Does not raise the separately selected max_input_bytes, max_reply_bytes or max_nesting_depth budgets.
 

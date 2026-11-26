@@ -30,7 +30,7 @@ import { ok } from "../../../src/domain/result.js";
 import { MCP_STARTUP_POLICY } from "../../../src/config/mcpStartupPolicy.js";
 import { supportedClientRegistrationProfile } from "../../fixtures/clientRegistrationProfile.js";
 
-const staleOwnedCommand = ["npx", "-y", "rea-agents@6.6.0", "mcp"] as const;
+const staleOwnedCommand = ["npx", "-y", "acl-rea-agents@6.6.0", "mcp"] as const;
 
 it.each([
   {
@@ -71,7 +71,7 @@ it.each([
     );
     const configPath = join(root, "mcp.json");
     const original = JSON.stringify({
-      mcpServers: { rea: { command: "rea", args: ["mcp"], env } },
+      mcpServers: { "acl-rea": { command: "acl-rea", args: ["mcp"], env } },
     });
     await writeFile(configPath, original);
     const client = {
@@ -84,20 +84,20 @@ it.each([
       await configureClientConfiguration(
         client,
         {},
-        ["rea", "mcp"],
+        ["acl-rea", "mcp"],
         undefined,
         platform,
         {},
       ),
     ).toEqual({
       status: "configured",
-      backupPath: `${configPath}.rea.backup`,
+      backupPath: `${configPath}.acl-rea.backup`,
     });
     const current = expectResultValue(
       parseClientConfiguration(await readFile(configPath, "utf8"), "kimi"),
     );
-    expect(current.servers.rea).toMatchObject({ toolTimeoutMs: deadline });
-    expect(current.servers.rea).toHaveProperty("env", env);
+    expect(current.servers["acl-rea"]).toMatchObject({ toolTimeoutMs: deadline });
+    expect(current.servers["acl-rea"]).toHaveProperty("env", env);
   },
 );
 
@@ -111,8 +111,8 @@ it("preserves owner-parsed registration facts and revalidates later inspections"
   };
   const original = JSON.stringify({
     mcpServers: {
-      rea: {
-        command: "rea",
+      "acl-rea": {
+        command: "acl-rea",
         args: ["mcp"],
         env: environment,
         startupTimeoutMs: MCP_STARTUP_POLICY.kimiStartupTimeoutMs,
@@ -142,21 +142,21 @@ it("preserves owner-parsed registration facts and revalidates later inspections"
   };
 
   expect(
-    await clientConfigurationAligned(client, {}, ["rea", "mcp"], resolveBudget),
+    await clientConfigurationAligned(client, {}, ["acl-rea", "mcp"], resolveBudget),
   ).toBe(true);
   expect(observedBudgets.has(17)).toBe(true);
 
   expect(
-    await inspectClientConfiguration(client, {}, ["rea", "mcp"], resolveBudget),
+    await inspectClientConfiguration(client, {}, ["acl-rea", "mcp"], resolveBudget),
   ).toEqual({ status: "already_current" });
   providerTimeoutMs = 1_000_000;
   // Revalidate the budget while preserving the caller's positive timeout.
   expect(
-    await inspectClientConfiguration(client, {}, ["rea", "mcp"], resolveBudget),
+    await inspectClientConfiguration(client, {}, ["acl-rea", "mcp"], resolveBudget),
   ).toEqual({ status: "already_current" });
   expect(observedBudgets.has(providerTimeoutMs)).toBe(true);
   expect(await readFile(configPath, "utf8")).toBe(original);
-  await expect(access(`${configPath}.rea.backup`)).rejects.toMatchObject({
+  await expect(access(`${configPath}.acl-rea.backup`)).rejects.toMatchObject({
     code: "ENOENT",
   });
 });
@@ -171,7 +171,7 @@ it.each(["win32", "linux"] as const)(
       path,
       JSON.stringify({
         mcpServers: {
-          rea: clientRegistrationEntry(
+          "acl-rea": clientRegistrationEntry(
             "json",
             currentClientRegistrationCommand({ platform }),
             { rea_analysis_provider: "invalid provider" },
@@ -213,7 +213,7 @@ it.skipIf(process.platform !== "win32").each([
   async ({ key, override, value, duplicate }) => {
     const root = await createTestTempDirectory("rea-dsh-alias-comments-");
     const configPath = join(root, "cordis.patch.yml");
-    const source = `- insert:\n    - id: rea-mcp\n      name: "@deepseek-ai/dsh-mcp-client"\n      config:\n        serverName: rea\n        transport: stdio\n        command: old-rea\n        args: [mcp]\n        env:\n          # retain preceding rationale\n          ${key}: "hopper" # retain inline rationale\n${duplicate ? `          ${override}: "ghidra" # retain winning rationale\n` : ""}          CUSTOM: !!js caller.custom\n`;
+    const source = `- insert:\n    - id: rea-mcp\n      name: "@deepseek-ai/dsh-mcp-client"\n      config:\n        serverName: acl-rea\n        transport: stdio\n        command: old-rea\n        args: [mcp]\n        env:\n          # retain preceding rationale\n          ${key}: "hopper" # retain inline rationale\n${duplicate ? `          ${override}: "ghidra" # retain winning rationale\n` : ""}          CUSTOM: !!js caller.custom\n`;
     await writeFile(configPath, source);
     const client = {
       name: "dsh",
@@ -224,7 +224,7 @@ it.skipIf(process.platform !== "win32").each([
     const result = await configureClientConfiguration(
       client,
       { [override]: value },
-      ["rea", "mcp"],
+      ["acl-rea", "mcp"],
     );
     expect(result, JSON.stringify(result)).toMatchObject({
       status: "configured",
@@ -246,11 +246,9 @@ it.skipIf(process.platform !== "win32").each([
         (name) => name.toUpperCase() === override.toUpperCase(),
       ),
     ).toEqual([override]);
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(source);
+    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(source);
     expect(
-      await configureClientConfiguration(client, { [override]: value }, [
-        "rea",
-        "mcp",
+      await configureClientConfiguration(client, { [override]: value }, ["acl-rea", "mcp",
       ]),
     ).toEqual({ status: "unchanged" });
   },
@@ -264,7 +262,7 @@ it("preserves a lowercase explicit Kimi schema profile instead of inserting a co
     configPath,
     JSON.stringify({
       mcpServers: {
-        rea: {
+        "acl-rea": {
           command: staleOwnedCommand[0],
           args: staleOwnedCommand.slice(1),
           env: { rea_mcp_input_schema_profile: "compact" },
@@ -304,7 +302,7 @@ it
   async (stored) => {
     const root = await createTestTempDirectory("rea-dsh-case-");
     const configPath = join(root, "cordis.patch.yml");
-    const source = `- insert:\n    - id: rea-mcp\n      name: "@deepseek-ai/dsh-mcp-client"\n      config:\n        serverName: rea\n        transport: stdio\n        command: old-rea\n        args: [mcp]\n        env:\n          rea_analysis_provider: ${stored}\n          CUSTOM: !!js caller.custom\n`;
+    const source = `- insert:\n    - id: rea-mcp\n      name: "@deepseek-ai/dsh-mcp-client"\n      config:\n        serverName: acl-rea\n        transport: stdio\n        command: old-rea\n        args: [mcp]\n        env:\n          rea_analysis_provider: ${stored}\n          CUSTOM: !!js caller.custom\n`;
     await writeFile(configPath, source);
     const client = {
       name: "dsh",
@@ -313,9 +311,7 @@ it
       configPath,
     } as const;
     const overrides = { REA_ANALYSIS_PROVIDER: "ghidra" };
-    const configured = await configureClientConfiguration(client, overrides, [
-      "rea",
-      "mcp",
+    const configured = await configureClientConfiguration(client, overrides, ["acl-rea", "mcp",
     ]);
     expect(configured, JSON.stringify(configured)).toMatchObject({
       status: "configured",
@@ -332,7 +328,7 @@ it
     if (!details.ok) throw details.error;
     expect(details.value.timeoutInputs?.analysisProvider).toBe("ghidra");
     expect(
-      await configureClientConfiguration(client, overrides, ["rea", "mcp"]),
+      await configureClientConfiguration(client, overrides, ["acl-rea", "mcp"]),
     ).toEqual({ status: "unchanged" });
   },
 );
@@ -354,7 +350,7 @@ it.skipIf(process.platform !== "win32").each([
     const parsed = expectResultValue(
       parseClientConfiguration(
         JSON.stringify({
-          mcpServers: { rea: { command: "rea", args: ["mcp"], env: existing } },
+          mcpServers: { "acl-rea": { command: "acl-rea", args: ["mcp"], env: existing } },
         }),
         "json",
       ),
@@ -395,8 +391,8 @@ it.skipIf(process.platform !== "win32")(
     const configPath = join(root, "config.json");
     const original = JSON.stringify({
       mcpServers: {
-        rea: {
-          command: "rea",
+        "acl-rea": {
+          command: "acl-rea",
           args: ["mcp"],
           env: { rea_analysis_provider: "invalid provider" },
         },
@@ -411,11 +407,11 @@ it.skipIf(process.platform !== "win32")(
         configPath,
       },
       {},
-      ["rea", "mcp"],
+      ["acl-rea", "mcp"],
     );
     expect(result).toMatchObject({ status: "failed" });
     expect(await readFile(configPath, "utf8")).toBe(original);
-    await expect(access(`${configPath}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${configPath}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
   },
@@ -470,7 +466,7 @@ it.each([
     );
     await writeFile(configPath, original);
     const providers = { GHIDRA_INSTALL_DIR: join(root, "new-ghidra") };
-    const command = ["rea", "mcp"];
+    const command = ["acl-rea", "mcp"];
     expect(
       await inspectClientConfiguration(client, providers, command),
     ).toMatchObject({ status: "update" });
@@ -496,7 +492,7 @@ it.each([
     expect(effectiveClientServer(parsed, "other")).toEqual(
       effectiveClientServer(originalParsed, "other"),
     );
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
     expect(await clientConfigurationAligned(client, providers, command)).toBe(
       true,
     );
@@ -517,7 +513,7 @@ it.each(["linux", "win32"] as const)(
     - id: rea-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: rea
         args: [mcp]
@@ -759,7 +755,7 @@ it("does not hide an invalid JEB endpoint in an untouched configuration layer", 
   const configPath = join(root, "opencode.json");
   const bad = JSON.stringify({
     mcp: {
-      rea: clientRegistrationEntry("opencode", ["rea", "mcp"], {
+      "acl-rea": clientRegistrationEntry("opencode", ["acl-rea", "mcp"], {
         REA_JEB_MCP_URL: "https://example.com/mcp",
       }),
     },
@@ -775,13 +771,13 @@ it("does not hide an invalid JEB endpoint in an untouched configuration layer", 
   } as const;
   const selected = { REA_JEB_MCP_URL: "http://127.0.0.1:8426/mcp" };
   expect(
-    await inspectClientConfiguration(client, selected, ["rea", "mcp"]),
+    await inspectClientConfiguration(client, selected, ["acl-rea", "mcp"]),
   ).toMatchObject({
     status: "invalid",
     remediation: expect.stringContaining(lower),
   });
   expect(
-    await configureClientConfiguration(client, selected, ["rea", "mcp"]),
+    await configureClientConfiguration(client, selected, ["acl-rea", "mcp"]),
   ).toEqual({
     status: "failed",
     reason: "readback",
@@ -804,7 +800,7 @@ it("retains legacy OpenCode environment when migrating into a native server tabl
     configPath,
     JSON.stringify({
       mcp: {
-        rea: clientRegistrationEntry("opencode", staleOwnedCommand, custom),
+        "acl-rea": clientRegistrationEntry("opencode", staleOwnedCommand, custom),
         servers: {
           other: clientRegistrationEntry("opencode_v2", ["other"], {}),
         },
@@ -812,23 +808,23 @@ it("retains legacy OpenCode environment when migrating into a native server tabl
     }),
   );
   expect(
-    await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+    await configureClientConfiguration(client, {}, ["acl-rea", "mcp"]),
   ).toMatchObject({ status: "configured" });
   const parsed = expectResultValue(
     parseClientConfiguration(await readFile(configPath, "utf8"), "opencode"),
   );
   expect(parsed.legacyServers).toEqual({});
-  expect(parsed.servers.rea).toEqual(
-    clientRegistrationEntry("opencode_v2", ["rea", "mcp"], custom),
+  expect(parsed.servers["acl-rea"]).toEqual(
+    clientRegistrationEntry("opencode_v2", ["acl-rea", "mcp"], custom),
   );
   expect(
-    await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+    await configureClientConfiguration(client, {}, ["acl-rea", "mcp"]),
   ).toEqual({ status: "unchanged" });
 });
 
 const registrationWithEnvironment = (env: unknown): string =>
   JSON.stringify({
-    mcpServers: { rea: { command: "rea", args: ["mcp"], env } },
+    mcpServers: { "acl-rea": { command: "acl-rea", args: ["mcp"], env } },
   });
 
 it.each([
@@ -1012,15 +1008,15 @@ it.each([
       configPath,
     } as const;
     expect(
-      await inspectClientConfiguration(client, {}, ["rea", "mcp"]),
+      await inspectClientConfiguration(client, {}, ["acl-rea", "mcp"]),
     ).toMatchObject({
       status: "invalid",
       remediation: expect.stringContaining(setting),
     });
     expect(
-      await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+      await configureClientConfiguration(client, {}, ["acl-rea", "mcp"]),
     ).toEqual({ status: "failed", reason: "readback" });
-    expect(await clientConfigurationAligned(client, {}, ["rea", "mcp"])).toBe(
+    expect(await clientConfigurationAligned(client, {}, ["acl-rea", "mcp"])).toBe(
       false,
     );
     const statuses = await readClientRegistrationStatuses(home, "rea", {
@@ -1032,7 +1028,7 @@ it.each([
       remediation: expect.stringContaining(setting),
     });
     expect(await readFile(configPath, "utf8")).toBe(original);
-    await expect(access(`${configPath}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${configPath}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
   },
@@ -1065,8 +1061,8 @@ it("treats a variable-expanding client's recorded expression as unresolved", () 
     parseClientConfiguration(
       JSON.stringify({
         mcpServers: {
-          rea: {
-            command: "rea",
+          "acl-rea": {
+            command: "acl-rea",
             args: ["mcp"],
             env: { PATH: "${PATH}:/opt/jdk/bin", JAVA_HOME: "/opt/jdk" },
           },
@@ -1108,8 +1104,8 @@ it("keeps a typed Qwen setting unresolved without discarding its recorded expres
     parseClientConfiguration(
       JSON.stringify({
         mcpServers: {
-          rea: {
-            command: "rea",
+          "acl-rea": {
+            command: "acl-rea",
             args: ["mcp"],
             env: { REA_GHIDRA_STARTUP_TIMEOUT_MS: "${JOBS}" },
           },
@@ -1139,8 +1135,8 @@ it("keeps a differently cased Qwen expression unresolved on Windows", () => {
     parseClientConfiguration(
       JSON.stringify({
         mcpServers: {
-          rea: {
-            command: "rea",
+          "acl-rea": {
+            command: "acl-rea",
             args: ["mcp"],
             env: { rea_ghidra_startup_timeout_ms: "${JOBS}" },
           },
@@ -1178,7 +1174,7 @@ it.each([
       parseClientConfiguration(
         JSON.stringify({
           mcpServers: {
-            rea: {
+            "acl-rea": {
               command: "outer",
               env: { SELECTED: "outer" },
               transport: {

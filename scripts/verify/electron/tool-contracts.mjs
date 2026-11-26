@@ -44,7 +44,7 @@ export async function verifyElectronToolContracts({
   const main = join(applicationRoot, "main.cjs");
   const preload = join(applicationRoot, "preload.cjs");
   const ready = join(root, "ready");
-  const entrypoint = join(repositoryRoot, "scripts", "rea.mjs");
+  const entrypoint = join(repositoryRoot, "scripts", "acl-rea.mjs");
   const runId = randomUUID();
   const prepare = async () => {
     await Promise.all(
@@ -503,7 +503,7 @@ async function verifyCancellation({
     const error = JSON.parse(stdout);
     assert.ok(["cancelled", "cleanup_incomplete"].includes(error.code), stdout);
     assert.equal(error.category, "cancelled", stdout);
-    assert.doesNotMatch(error.message, /rea doctor/u);
+    assert.doesNotMatch(error.message, /acl-rea doctor/u);
     assert.equal(
       error.details?.partial_observation?.kind,
       "electron-active-observation",

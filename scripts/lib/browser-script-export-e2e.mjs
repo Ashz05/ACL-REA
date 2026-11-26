@@ -20,7 +20,7 @@ import { withVerifierCleanup } from "./verifier-cleanup.mjs";
 /** Verify capture → export → existing analysis through real CLI and stdio MCP. */
 export async function verifyBrowserScriptExport(
   executable,
-  entrypoint = fileURLToPath(new URL("../rea.mjs", import.meta.url)),
+  entrypoint = fileURLToPath(new URL("../acl-rea.mjs", import.meta.url)),
   attachment,
 ) {
   let site;

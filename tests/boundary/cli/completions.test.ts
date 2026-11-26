@@ -62,83 +62,91 @@ const completeBash = (
   words: readonly string[],
   index = words.length,
 ) =>
-  completionOutput("bash", ["rea", ...words], index, {
-    _COMPLETE_BASH_LINE: `rea ${line}`,
+  completionOutput("bash", ["acl-rea", ...words], index, {
+    _COMPLETE_BASH_LINE: `acl-rea ${line}`,
     _COMPLETE_BASH_FRAGMENT: fragment,
   });
 
 it("resolves enabled builtin scopes in the same tree as registered commands", () => {
-  expect(complete(["rea", "mcp", "d"])).toEqual(["doctor"]);
-  expect(complete(["rea", "mcp"], 2)).toEqual(["add", "doctor"]);
-  expect(complete(["rea", ""])).toEqual(["instructions", "mcp", "completions"]);
-  expect(complete(["rea", "completions", "b"])).toEqual(["bash"]);
-  expect(complete(["rea", "mcp", "add", "--c"])).toEqual([
+  expect(complete(["acl-rea", "mcp", "d"])).toEqual(["doctor"]);
+  expect(complete(["acl-rea", "mcp"], 2)).toEqual(["add", "doctor"]);
+  expect(complete(["acl-rea", ""])).toEqual([
+    "instructions",
+    "mcp",
+    "completions",
+  ]);
+  expect(complete(["acl-rea", "completions", "b"])).toEqual(["bash"]);
+  expect(complete(["acl-rea", "mcp", "add", "--c"])).toEqual([
     "--command",
     "--columns",
   ]);
 });
 
 it("uses canonical global flag metadata and retains command options and enum hints", () => {
-  expect(complete(["rea", "instructions", "--", "--he"])).toEqual([]);
-  expect(complete(["rea", "instructions", "--he"])).toEqual(["--help"]);
-  expect(complete(["rea", "instructions", "--for"])).toEqual(["--format"]);
-  expect(complete(["rea", "instructions", "--tok"])).toEqual(
+  expect(complete(["acl-rea", "instructions", "--", "--he"])).toEqual([]);
+  expect(complete(["acl-rea", "instructions", "--he"])).toEqual(["--help"]);
+  expect(complete(["acl-rea", "instructions", "--for"])).toEqual(["--format"]);
+  expect(complete(["acl-rea", "instructions", "--tok"])).toEqual(
     expect.arrayContaining([
       "--token-count",
       "--token-limit",
       "--token-offset",
     ]),
   );
-  expect(complete(["rea", "instructions", "--proc"])).toEqual(["--procedure"]);
-  expect(complete(["rea", "instructions", "--target-format", "--he"])).toEqual([
-    "--help",
+  expect(complete(["acl-rea", "instructions", "--proc"])).toEqual([
+    "--procedure",
   ]);
-  expect(complete(["rea", "instructions", "--target-format", ""])).toEqual([
+  expect(
+    complete(["acl-rea", "instructions", "--target-format", "--he"]),
+  ).toEqual(["--help"]);
+  expect(complete(["acl-rea", "instructions", "--target-format", ""])).toEqual([
     "dos-com",
     "raw-binary",
   ]);
-  expect(complete(["rea", "mcp", "doctor", "--format", ""])).toEqual([
+  expect(complete(["acl-rea", "mcp", "doctor", "--format", ""])).toEqual([
     "toon",
     "json",
     "yaml",
     "md",
     "jsonl",
   ]);
-  expect(complete(["rea", "mcp", "doctor", "--t"])).toEqual(["--timings"]);
-  expect(complete(["rea", "mcp", "doctor", "-h"])).toEqual(["-h"]);
-  expect(complete(["rea", "--filter-output", "mcp", ""])).toEqual([
+  expect(complete(["acl-rea", "mcp", "doctor", "--t"])).toEqual(["--timings"]);
+  expect(complete(["acl-rea", "mcp", "doctor", "-h"])).toEqual(["-h"]);
+  expect(complete(["acl-rea", "--filter-output", "mcp", ""])).toEqual([
     "instructions",
     "mcp",
     "completions",
   ]);
-  expect(complete(["rea", "instructions", "--"])).not.toContain(
+  expect(complete(["acl-rea", "instructions", "--"])).not.toContain(
     "--incur-update-check",
   );
-  expect(complete(["rea", "instructions", "--"])).not.toContain("--mcp");
+  expect(complete(["acl-rea", "instructions", "--"])).not.toContain("--mcp");
 });
 
 it("completes whole-word inline values with their option spelling", () => {
   expect(
     JSON.parse(
-      completionOutput("nushell", ["rea", "instructions", "--format=j"]),
+      completionOutput("nushell", ["acl-rea", "instructions", "--format=j"]),
     ),
   ).toEqual([{ value: "--format=json" }, { value: "--format=jsonl" }]);
-  expect(complete(["rea", "instructions", "--target-format="])).toEqual([
+  expect(complete(["acl-rea", "instructions", "--target-format="])).toEqual([
     "--target-format=dos-com",
     "--target-format=raw-binary",
   ]);
-  expect(complete(["rea", "instructions", "--targetFormat=r"])).toEqual([]);
-  expect(complete(["rea", "instructions", "-f", "r"])).toEqual(["raw-binary"]);
-  expect(complete(["rea", "instructions", "-f=r"])).toEqual([]);
+  expect(complete(["acl-rea", "instructions", "--targetFormat=r"])).toEqual([]);
+  expect(complete(["acl-rea", "instructions", "-f", "r"])).toEqual([
+    "raw-binary",
+  ]);
+  expect(complete(["acl-rea", "instructions", "-f=r"])).toEqual([]);
   expect(
-    complete(["rea", "instructions", "example.f", "--target-format=r"]),
+    complete(["acl-rea", "instructions", "example.f", "--target-format=r"]),
   ).toEqual(["--target-format=raw-binary"]);
   expect(
-    complete(["rea", "instructions", "--no-dry-run", "--target-format=r"]),
+    complete(["acl-rea", "instructions", "--no-dry-run", "--target-format=r"]),
   ).toEqual(["--target-format=raw-binary"]);
   expect(
     complete([
-      "rea",
+      "acl-rea",
       "instructions",
       "example.bin",
       "--procedure",
@@ -147,7 +155,7 @@ it("completes whole-word inline values with their option spelling", () => {
   ).toEqual([]);
   expect(
     complete([
-      "rea",
+      "acl-rea",
       "instructions",
       "--procedure",
       "--target-format",
@@ -160,12 +168,12 @@ it("completes whole-word inline values with their option spelling", () => {
     "--help=t",
     "--format=j=",
   ])
-    expect(complete(["rea", "instructions", word])).toEqual([]);
-  expect(complete(["rea", "instructions", "--", "--format=j"])).toEqual([]);
+    expect(complete(["acl-rea", "instructions", word])).toEqual([]);
+  expect(complete(["acl-rea", "instructions", "--", "--format=j"])).toEqual([]);
   expect(
     JSON.parse(
       completionOutput("nushell", [
-        "rea",
+        "acl-rea",
         "instructions",
         "--filter-output",
         "--format=j",
@@ -336,7 +344,7 @@ it("serves the Bash script through both public generation routes", async () => {
     "--help",
   ]);
   expect(help.exitCode).toBe(0);
-  expect(help.stdout).toContain("Usage: rea completions");
+  expect(help.stdout).toContain("Usage: acl-rea completions");
   expect(help.stdout).not.toContain('export COMPLETE="bash"');
 });
 
@@ -358,12 +366,12 @@ workspaceCliTest(
       ...workspace.environment,
       REA_LOG_LEVEL: "silent",
       REA_TEST_NODE: process.execPath,
-      REA_TEST_DISPATCHER: resolve("scripts/rea.mjs"),
+      REA_TEST_DISPATCHER: resolve("scripts/acl-rea.mjs"),
     };
     for (const arguments_ of [["completions", "--help"], ["completions"]]) {
       const help = await processes.run(
         process.execPath,
-        [resolve("scripts/rea.mjs"), ...arguments_],
+        [resolve("scripts/acl-rea.mjs"), ...arguments_],
         { env: environment },
       );
       expect(help.exitCode, help.stderr).toBe(0);
@@ -382,7 +390,7 @@ workspaceCliTest.skipIf(process.platform !== "darwin")(
       ...workspace.environment,
       REA_LOG_LEVEL: "silent",
       REA_TEST_NODE: process.execPath,
-      REA_TEST_DISPATCHER: resolve("scripts/rea.mjs"),
+      REA_TEST_DISPATCHER: resolve("scripts/acl-rea.mjs"),
     };
     const result = await processes.run(
       "zsh",
@@ -390,11 +398,11 @@ workspaceCliTest.skipIf(process.platform !== "darwin")(
         "-f",
         "-c",
         `
-rea() { "$REA_TEST_NODE" "$REA_TEST_DISPATCHER" "$@"; }
+acl-rea() { "$REA_TEST_NODE" "$REA_TEST_DISPATCHER" "$@"; }
 autoload -Uz compinit
 compinit -i -D
-eval "$(rea completions zsh)" || exit
-print -r -- "association=\${+_comps[rea]}"
+eval "$(acl-rea completions zsh)" || exit
+print -r -- "association=\${+_comps[acl-rea]}"
 `,
       ],
       { env: environment },
@@ -415,39 +423,39 @@ workspaceCliTest.skipIf(process.platform === "win32")(
         "--norc",
         "-c",
         `
-rea() { "$REA_TEST_NODE" "$REA_TEST_DISPATCHER" "$@"; }
-eval "$(rea completions bash)" || exit
-COMP_WORDS=(rea mcp "")
+acl-rea() { "$REA_TEST_NODE" "$REA_TEST_DISPATCHER" "$@"; }
+eval "$(acl-rea completions bash)" || exit
+COMP_WORDS=(acl-rea mcp "")
 COMP_CWORD=2
-_incur_complete_rea || exit
+_incur_complete_acl_rea || exit
 printf 'mcp=%s\\n' "\${COMPREPLY[*]}"
-COMP_WORDS=(rea instructions --format "")
+COMP_WORDS=(acl-rea instructions --format "")
 COMP_CWORD=3
-_incur_complete_rea || exit
+_incur_complete_acl_rea || exit
 printf 'format=%s\\n' "\${COMPREPLY[*]}"
-COMP_LINE='rea instructions --format=j'
+COMP_LINE='acl-rea instructions --format=j'
 COMP_POINT=\${#COMP_LINE}
-COMP_WORDS=(rea instructions --format = j)
+COMP_WORDS=(acl-rea instructions --format = j)
 COMP_CWORD=4
-_incur_complete_rea rea j = || exit
+_incur_complete_acl_rea acl-rea j = || exit
 printf 'inline=%s\\n' "\${COMPREPLY[*]}"
-COMP_LINE='rea instructions --format='
+COMP_LINE='acl-rea instructions --format='
 COMP_POINT=\${#COMP_LINE}
-COMP_WORDS=(rea instructions --format =)
+COMP_WORDS=(acl-rea instructions --format =)
 COMP_CWORD=3
-_incur_complete_rea rea '' --format || exit
+_incur_complete_acl_rea acl-rea '' --format || exit
 printf 'empty-inline=%s\\n' "\${COMPREPLY[*]}"
-COMP_LINE='rea instructions --format = j'
+COMP_LINE='acl-rea instructions --format = j'
 COMP_POINT=\${#COMP_LINE}
-COMP_WORDS=(rea instructions --format = j)
+COMP_WORDS=(acl-rea instructions --format = j)
 COMP_CWORD=4
-_incur_complete_rea rea j = || exit
+_incur_complete_acl_rea acl-rea j = || exit
 printf 'separate-equals=%s\\n' "\${COMPREPLY[*]}"
-COMP_LINE='rea mcp doctor --'
+COMP_LINE='acl-rea mcp doctor --'
 COMP_POINT=\${#COMP_LINE}
-COMP_WORDS=(rea mcp doctor --)
+COMP_WORDS=(acl-rea mcp doctor --)
 COMP_CWORD=3
-_incur_complete_rea || exit
+_incur_complete_acl_rea || exit
 printf 'doctor=%s\\n' "\${COMPREPLY[*]}"
 `,
       ],
@@ -457,7 +465,7 @@ printf 'doctor=%s\\n' "\${COMPREPLY[*]}"
           ...workspace.environment,
           REA_LOG_LEVEL: "silent",
           REA_TEST_NODE: process.execPath,
-          REA_TEST_DISPATCHER: resolve("scripts/rea.mjs"),
+          REA_TEST_DISPATCHER: resolve("scripts/acl-rea.mjs"),
         },
       },
     );

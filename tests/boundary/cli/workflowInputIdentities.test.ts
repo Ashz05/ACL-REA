@@ -71,7 +71,7 @@ const connectMcp = async (root: string) => {
   );
   const transport = new StdioClientTransport({
     command: process.execPath,
-    args: [resolve("scripts/rea.mjs"), "mcp"],
+    args: [resolve("scripts/acl-rea.mjs"), "mcp"],
     cwd: root,
     env: {
       PATH: process.env.PATH ?? "",

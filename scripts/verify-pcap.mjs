@@ -40,7 +40,7 @@ Object.assign(environment, {
   TMP: root,
   TEMP: root,
 });
-const entrypoint = resolve("scripts/rea.mjs");
+const entrypoint = resolve("scripts/acl-rea.mjs");
 const execute = promisify(execFile);
 const client = new Client({ name: "pcap-real-verifier", version: "1" });
 const transport = new StdioClientTransport({

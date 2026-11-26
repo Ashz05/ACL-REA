@@ -52,7 +52,7 @@ for (const [variable, profile] of [
       }
       expect(await readFile(config, "utf8")).toBe(original);
       for (const path of [
-        config + ".rea.backup",
+        config + ".acl-rea.backup",
         join(home, ".omp", "agent"),
         join(home, ".agents", "skills"),
       ])
@@ -114,6 +114,6 @@ cliTest(
     expect(result.json).toMatchObject({ status: "ready" });
     expect(
       JSON.parse(await readFile(join(agent, "mcp.json"), "utf8")),
-    ).toHaveProperty("mcpServers.rea");
+    ).toHaveProperty("mcpServers.acl-rea");
   },
 );

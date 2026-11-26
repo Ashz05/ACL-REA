@@ -1,9 +1,9 @@
-$ rea mcp --help
+$ acl-rea mcp --help
 exit: 0
 --- stdout
-rea mcp — Register as MCP server
+acl-rea mcp — Register as MCP server
 
-Usage: rea mcp <command>
+Usage: acl-rea mcp <command>
 
 Commands:
   add     Register as MCP server

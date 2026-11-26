@@ -13,7 +13,7 @@ not establish live model-service acceptance.
 
 ## Launch environment verification
 
-`rea mcp doctor --json` starts the production MCP adapter with the current runtime
+`acl-rea mcp doctor --json` starts the production MCP adapter with the current runtime
 executable and environment. A healthy result establishes that adapter's
 initialization, discovery and target-free request flow, with the request-flow
 reply validated against the canonical `binary_session` output contract whatever
@@ -70,7 +70,7 @@ Not covered by the lane: a model-driven tool call inside Cline. Cline's provider
 configuration (`providers.json`) is versioned and auth-shaped, and the CLI ignores
 `OPENAI_BASE_URL`, so the loopback model fixture cannot drive it without depending
 on that private schema. The IDE extension is not covered either: its MCP settings are
-UI-managed and live under editor-specific `globalStorage` roots, which `rea setup`
+UI-managed and live under editor-specific `globalStorage` roots, which `acl-rea setup`
 does not write in this release.
 
 <a id="llamacpp"></a>
@@ -79,7 +79,7 @@ does not write in this release.
 
 The [manual stdio connection](../getting-started/client-configuration.md#llamacpp) was checked on
 macOS arm64 with Node.js 24.18.0, llama-server b11715 (`9d1878a43`), and the
-published `rea-agents@6.5.0` package. `GET /tools` exposed REA tools without
+published `acl-rea-agents@6.5.0` package. `GET /tools` exposed REA tools without
 enabling llama.cpp's built-in tools. With the source checkout at `9e372c6`, all
 forwarded names, descriptions and input schemas matched a direct MCP client.
 
@@ -494,7 +494,7 @@ selected request/response bytes, binary and compressed responses, duplicate
 headers, credential and declared-secret redaction, redirects, streaming cutoff,
 CLI/MCP parity, and owned-profile cleanup. Set `REA_BROWSER_EXECUTABLE` to an
 installed Chrome-family browser. An optional script argument selects an already
-installed package's `scripts/rea.mjs` entry point for packaged-artifact checks.
+installed package's `scripts/acl-rea.mjs` entry point for packaged-artifact checks.
 The complete `verify:browser` lane includes these same checks.
 
 After building, `verify:browser:dom` checks empty and HTML-whitespace form
@@ -548,7 +548,7 @@ exceeding these diagnostic budgets fails explicitly. Scenario JSON events stream
 to the evaluator without retaining a second raw stdout copy. Cleanup attempts the
 remaining run tree even if auth removal fails, and reports unresolved cleanup
 together with the original verification failure. The lane
-installs the packaged skill and MCP registration through public `rea setup`,
+installs the packaged skill and MCP registration through public `acl-rea setup`,
 rather than copying a skill into a project that also inherits the caller's
 skills and configuration. Only authentication is copied, when present, and it
 is removed after confirmed process cleanup even with

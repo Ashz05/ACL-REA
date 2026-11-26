@@ -21,7 +21,7 @@ import { BinaryTargetError } from "../../../src/domain/configurationErrors.js";
 import { silentLogger } from "../../../src/logger.js";
 import { createCommandCli } from "../../support/cli/commandCli.js";
 
-const CLI_ISSUE_REPORT_URL = "https://github.com/morluto/rea/issues";
+const CLI_ISSUE_REPORT_URL = "https://github.com/Ashz05/ACL-REA/issues";
 
 const unsupportedTargetProjection = (): AnalysisErrorProjection =>
   projectAnalysisError(

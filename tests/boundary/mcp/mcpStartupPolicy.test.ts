@@ -69,9 +69,9 @@ describe("MCP startup policy", () => {
   it("profiles unique file-backed ESM modules without retaining paths", () => {
     const collector = createEsmModuleProfileCollector();
     collector.append(
-      "ESM 1: Storing file:///opt/node_modules/rea-agents/dist/main.js\n" +
-        "ESM 1: Translating StandardModule file:///opt/node_modules/rea-agents/dist/main.js\n" +
-        "ESM 1: Storing file:///opt/rea/node_modules/zod/index.js",
+      "ESM 1: Storing file:///opt/node_modules/acl-rea-agents/dist/main.js\n" +
+        "ESM 1: Translating StandardModule file:///opt/node_modules/acl-rea-agents/dist/main.js\n" +
+        "ESM 1: Storing file:///opt/acl-rea/node_modules/zod/index.js",
     );
 
     expect(collector.result()).toEqual({
@@ -170,7 +170,7 @@ describe("packaged MCP startup probe failures", () => {
         args: [probeChild],
         environment: { ...process.env, REA_MCP_PROBE_MODE: "hang" },
         policy,
-        packageName: "rea-agents",
+        packageName: "acl-rea-agents",
       }),
       policy.doctor,
     );
@@ -188,7 +188,7 @@ describe("packaged MCP startup probe failures", () => {
           REA_MCP_PROBE_MODE: "initialize-then-hang",
         },
         policy,
-        packageName: "rea-agents",
+        packageName: "acl-rea-agents",
       }),
       policy.toolsList,
     );
@@ -207,7 +207,7 @@ describe("packaged MCP startup probe failures", () => {
           REA_MCP_PROBE_ERROR_MESSAGE: message,
         },
         policy,
-        packageName: "rea-agents",
+        packageName: "acl-rea-agents",
       }),
     ).rejects.toMatchObject({ code: -32601, message });
   });

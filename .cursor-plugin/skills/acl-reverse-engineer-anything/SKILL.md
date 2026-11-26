@@ -1,27 +1,27 @@
 ---
-name: reverse-engineer-anything
-description: Reverse engineer native, managed, Electron/JavaScript, packaged, firmware, and browser targets with REA, and build agent environments (AgentEnv bundles) of web applications from a live instance or a capture, and of Linux desktop apps with a task from a request. Use shipped-artifact or requested runtime evidence to explain features, compare versions, decompile code, or guide a reconstruction. Skip REA for ordinary source-repository architecture analysis.
+name: acl-reverse-engineer-anything
+description: Reverse engineer native, managed, Electron/JavaScript, packaged, firmware, and browser targets with ACL-REA, and build agent environments (AgentEnv bundles) of web applications from a live instance or a capture, and of Linux desktop apps with a task from a request. Use shipped-artifact or requested runtime evidence to explain features, compare versions, decompile code, or guide a reconstruction. Skip ACL-REA for ordinary source-repository architecture analysis.
 metadata:
   version: "63"
 ---
 
-# REA
+# ACL-REA
 
-Use REA when a claim depends on a shipped binary or package, decompilation,
+Use ACL-REA when a claim depends on a shipped binary or package, decompilation,
 requested runtime evidence, or comparison with
 behavior not established by available source. For ordinary analysis of a
-complete source repository, use normal repository tools and do not run REA
+complete source repository, use normal repository tools and do not run ACL-REA
 readiness or provider commands.
 
 ## Connect only when needed
 
-Installing this skill supplies instructions; it does not register the REA MCP
+Installing this skill supplies instructions; it does not register the ACL-REA MCP
 server, install analysis engines, or add tools to an already-running agent.
 The exception is a Claude Code, Codex, or Cursor Marketplace plugin install:
-the plugin bundles this skill and registers its own `rea` server, outside the
-state that `rea setup` and `rea doctor` manage.
+the plugin bundles this skill and registers its own `acl-rea` server, outside the
+state that `acl-rea setup` and `acl-rea doctor` manage.
 
-If REA tools are available and their registration is not known to be stale,
+If ACL-REA tools are available and their registration is not known to be stale,
 proceed directly to the target. Do not run diagnostics or setup before every
 investigation. Use the connected server's actual tool list and input schemas;
 a skill installed from repository main may describe capabilities absent from
@@ -33,21 +33,21 @@ unavailable, read [connection and recovery](references/connection-and-recovery.m
 Diagnose the observed blocker, continue useful supported work, and resume the
 original task after repair. Client approval, shell PATH, registration and engine
 availability have different remedies; avoid repeating setup for all of them.
-If the host times out without a REA result, do not repeat the unchanged call or
+If the host times out without an ACL-REA result, do not repeat the unchanged call or
 assume work stopped; read the guide's
 [deadline distinction](references/connection-and-recovery.md#distinguish-client-and-server-deadlines).
-When the MCP connection drops, REA could not start, or a call returns
+When the MCP connection drops, ACL-REA could not start, or a call returns
 `cleanup_incomplete`, a retryable capacity limit or `configuration_invalid`,
 follow its [recovery ladder](references/connection-and-recovery.md#recovery-ladder)
 before retrying, restarting or repairing.
 
 Choose the installation owner before repairing registration. Plugin installs use
-[plugin recovery](references/connection-and-recovery.md#rea-installed-as-a-client-plugin);
+[plugin recovery](references/connection-and-recovery.md#acl-rea-installed-as-a-client-plugin);
 only setup-owned registrations use the guide's
 [registration repair plan](references/connection-and-recovery.md#repair-registration-when-needed).
-A plugin-only doctor result of `missing` does not call for `rea setup`.
+A plugin-only doctor result of `missing` does not call for `acl-rea setup`.
 
-REA setup never installs or upgrades Node.js, npm, Homebrew, Java, Ghidra, IDA,
+ACL-REA setup never installs or upgrades Node.js, npm, Homebrew, Java, Ghidra, IDA,
 JADX, Kuna, Binwalk, or Unblob. Use existing prerequisites; do not install unrelated
 software to repair MCP registration. For an unsupported client, use manual stdio
 registration with an existing installation’s absolute runtime and entry script, or continue through the CLI.
@@ -55,15 +55,15 @@ registration with an existing installation’s absolute runtime and entry script
 A concrete CLI fallback for an operator-supplied JavaScript tree or ASAR is:
 
 ```bash
-npx -y rea-agents@latest analyze-javascript-application /absolute/path/to/app --json
+npx -y acl-rea-agents@latest analyze-javascript-application /absolute/path/to/app --json
 ```
 
 No MCP registration or native engine is required. Read the returned Evidence,
 graph, limitations, and unknowns with the same care as an MCP result; the CLI
 returns the Evidence record directly. This fallback does not establish that
 MCP is configured. Native CLI tasks still require their selected engine.
-Prefer an existing `rea` CLI. When none is installed and REA package acquisition
-is within the authorized scope, use `npx -y rea-agents@latest` in its place from a
+Prefer an existing `acl-rea` CLI. When none is installed and ACL-REA package acquisition
+is within the authorized scope, use `npx -y acl-rea-agents@latest` in its place from a
 trusted directory outside the target project, with absolute target paths. Managed
 setup binds the current installation directly; retain its runtime and package
 cache entry, or restore that installation before repairing its registration.
@@ -93,16 +93,16 @@ explicit path or endpoint and do not need it.
   for selected member fields/pages. A complete small inventory can cost less
   than extra calls and schemas. Runtime options are metadata, not files.
   Compact delivery still inventories and hashes members. See the
-  [Python packaged applications guide](https://github.com/morluto/rea/blob/main/docs/python-packaged-applications.md).
+  [Python packaged applications guide](https://github.com/Ashz05/ACL-REA/blob/main/docs/python-packaged-applications.md).
 - Bun `--compile` executable: `open_binary`, then `inspect_artifact`; the Bun
   module graph is the application layer. Extract stored modules and analyze the
-  JavaScript. See [Bun standalone executables](https://github.com/morluto/rea/blob/main/docs/bun-standalone.md).
+  JavaScript. See [Bun standalone executables](https://github.com/Ashz05/ACL-REA/blob/main/docs/bun-standalone.md).
 - Deno `deno compile` executable: `open_binary`, then `inspect_artifact`; the
   embedded virtual filesystem is the application layer. Extract stored files and
   analyze compatible JavaScript. Environment-file values and CA certificate bytes
   are retained in local Evidence with their counts and byte lengths. The npm
   snapshot length is reported and not decoded, and the executable is not run. See
-  [Deno compile executables](https://github.com/morluto/rea/blob/main/docs/deno-standalone.md).
+  [Deno compile executables](https://github.com/Ashz05/ACL-REA/blob/main/docs/deno-standalone.md).
 - Apple app plist, Interface Builder, asset catalog, or keyed archive resources:
   `open_bundle_resources`, then the selected resource tool. This does not
   require `CFBundleExecutable` or a deep provider. Resource sessions have no
@@ -115,7 +115,7 @@ explicit path or endpoint and do not need it.
   For external firmware scanning or extraction on Linux, use
   `inspect_firmware_regions` or `extract_firmware` with caller-supplied
   Binwalk or Unblob. Extraction needs a caller-selected new absolute output
-  directory. See the [firmware guide](https://github.com/morluto/rea/blob/main/docs/guides/firmware/firmware-analysis.md).
+  directory. See the [firmware guide](https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/firmware/firmware-analysis.md).
 - ESP32-family app or bootloader image (`0xE9` magic): `inspect_artifact`
   without a provider; see the ESP section of `references/native-and-artifacts.md`.
 - .NET NativeAOT PE/ELF: native Ghidra analysis. Native code can yield pseudocode;
@@ -159,9 +159,9 @@ explicit path or endpoint and do not need it.
   original record ordinals when useful; inspect producer fields and byte/number
   sidecars without fetching recorded URLs or claiming live attribution. HAR/SAZ/qlog
   old-generation heap is `REA_CAPTURE_DECODER_OLD_GENERATION_MIB` (default 192 MiB,
-  floor 8, maximum 16384), set where REA starts. Host memory and `NODE_OPTIONS` do not
+  floor 8, maximum 16384), set where ACL-REA starts. Host memory and `NODE_OPTIONS` do not
   raise it. See
-  [historical captures](https://github.com/morluto/rea/blob/main/docs/guides/web/web-network-captures.md) for the exact upstream
+  [historical captures](https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/web/web-network-captures.md) for the exact upstream
   profile and credential exclusions. Qlog support starts with aioquic 1.5.0
   JSON 0.3; stream coverage and endpoint loss declarations do not recover bodies
   or establish network loss. Prefer detail summary, then kind qlog trace/stream
@@ -169,7 +169,7 @@ explicit path or endpoint and do not need it.
   Facts retain all-recorded-events-before-selection scope. Other qlog layouts
   and PCAP correlation are unsupported.
 - User-owned Electron runtime already open: `list_electron_targets`. Before an electron-main Inspector attempt, check packaged fuses with `inspect_electron_fuses`; disabled `EnableNodeCliInspectArguments` means the app ignores `--inspect`.
-- Shipped application exposure for a local `.app`, install directory, ASAR, or executable: `audit_release_exposure` / `rea audit-release-exposure`. Each check has a stable id, a status, and fixed remediation. Unknown and unassessed checks stay in the report. This does not establish that an application is secure. Credential-marker hits report the rule id and location only. See [release exposure](https://github.com/morluto/rea/blob/main/docs/release-exposure.md).
+- Shipped application exposure for a local `.app`, install directory, ASAR, or executable: `audit_release_exposure` / `acl-rea audit-release-exposure`. Each check has a stable id, a status, and fixed remediation. Unknown and unassessed checks stay in the report. This does not establish that an application is secure. Credential-marker hits report the rule id and location only. See [release exposure](https://github.com/Ashz05/ACL-REA/blob/main/docs/release-exposure.md).
 - Packet-field discovery: `inspect_packet_fields` searches installed protocols
   and field names/types before choosing fields for `inspect_packet_capture`.
   Query/page the relevant records; registrations do not establish observed traffic.
@@ -177,7 +177,7 @@ explicit path or endpoint and do not need it.
   display filters and decode-as rules. Requires Linux, util-linux prlimit and
   TShark 4.x on an absolute `PATH` entry or via the optional absolute
   `REA_TSHARK_COMMAND` override; see
-  [capture guide](https://github.com/morluto/rea/blob/main/docs/guides/data/packet-captures.md).
+  [capture guide](https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/data/packet-captures.md).
   Packet limits count input packets before filtering. Output defaults to 50 matching
   frames; use `match_offset` / `match_limit` for later pages, or explicit null
   limit for complete matching output. Preserve the source digest across pages.
@@ -185,7 +185,7 @@ explicit path or endpoint and do not need it.
   For address/DNS/SNI/protocol summaries use `inspect_pcap_capture` with MCP
   detail summary, then retained kind pcap pages. Requires Wireshark 4.x tshark
   and capinfos, with Linux prlimit or Windows Job Objects; see
-  [packet summaries](https://github.com/morluto/rea/blob/main/docs/guides/data/pcap-analysis.md).
+  [packet summaries](https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/data/pcap-analysis.md).
   Select an exact DNS question for address pages; page exhaustion does not prove
   network completeness. This reads recordings and does not acquire traffic.
 - Decoder discovery: `inspect_signal_decoders` searches installed decoder IDs
@@ -193,7 +193,7 @@ explicit path or endpoint and do not need it.
   relevant details before choosing settings; this does not scan hardware.
 - Recorded logic/signal traces: `decode_signal_recording` with explicit decoder,
   channel and protocol settings. On Linux with util-linux prlimit, supply sigrok-cli 0.7.2 through
-  `REA_SIGROK_COMMAND`; see [recording guide](https://github.com/morluto/rea/blob/main/docs/guides/signals/signal-recordings.md).
+  `REA_SIGROK_COMMAND`; see [recording guide](https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/signals/signal-recordings.md).
   Output defaults to 50 literal lines; select annotation classes and page with
   `line_offset` / `line_limit`, or explicit null for all remaining output.
   Window counts are display lines, not annotations or samples. Preserve source digests across pages.
@@ -208,73 +208,73 @@ explicit path or endpoint and do not need it.
   behavior or metadata never existed.
   - WebAssembly: `inspect_wasm_artifact` with WABT through
     `REA_WABT_BIN_DIRECTORY`; select JavaScript glue and candidate paths
-    explicitly ([WASM guide](https://github.com/morluto/rea/blob/main/docs/guides/wasm/wasm-artifacts.md)).
+    explicitly ([WASM guide](https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/wasm/wasm-artifacts.md)).
   - APK, ZIP or AAB signing: `inspect_apk_signature`, identity and integrity
-    rather than a trust verdict ([APK signature guide](https://github.com/morluto/rea/blob/main/docs/apk-signature.md)).
+    rather than a trust verdict ([APK signature guide](https://github.com/Ashz05/ACL-REA/blob/main/docs/apk-signature.md)).
   - EVM bytecode: `inspect_evm_interface`; selectors, arguments and mutability
-    are inferred candidates ([EVM bytecode guide](https://github.com/morluto/rea/blob/main/docs/guides/evm/evm-bytecode.md)).
+    are inferred candidates ([EVM bytecode guide](https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/evm/evm-bytecode.md)).
   - Go build metadata or static `(ptr, len)` strings: `inspect_go_binary`
-    ([Go binary guide](https://github.com/morluto/rea/blob/main/docs/guides/native/go-binaries.md)).
+    ([Go binary guide](https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/native/go-binaries.md)).
   - Rust cargo-auditable dependencies: `inspect_rust_binary`; for selected
     crates, pass a `packages` `view` on the first call
-    ([Rust binary guide](https://github.com/morluto/rea/blob/main/docs/rust-binaries.md)).
+    ([Rust binary guide](https://github.com/Ashz05/ACL-REA/blob/main/docs/rust-binaries.md)).
   - Embedded CUDA/HIP code objects: `inspect_gpu_code_objects`; inventory
     targets first, then decode selected payloads.
   - GGUF or safetensors declarations: `inspect_model_artifact`; do not infer
     model behavior from declared architecture or tensor types
-    ([model file guide](https://github.com/morluto/rea/blob/main/docs/model-artifacts.md)).
+    ([model file guide](https://github.com/Ashz05/ACL-REA/blob/main/docs/model-artifacts.md)).
   - Unity IL2CPP `global-metadata.dat`: `inspect_il2cpp_metadata`; pass the
     matching native binary as `binary_path` to link method addresses
-    ([IL2CPP metadata guide](https://github.com/morluto/rea/blob/main/docs/il2cpp-metadata.md)).
+    ([IL2CPP metadata guide](https://github.com/Ashz05/ACL-REA/blob/main/docs/il2cpp-metadata.md)).
   - Maven `pom.xml` or Gradle `.module`: `inspect_maven_gradle_metadata`
-    ([Maven and Gradle guide](https://github.com/morluto/rea/blob/main/docs/maven-gradle-metadata.md)).
+    ([Maven and Gradle guide](https://github.com/Ashz05/ACL-REA/blob/main/docs/maven-gradle-metadata.md)).
   - PE tables: `inspect_pe_certificates`, `inspect_pe_imports`,
     `inspect_pe_load_config` and `inspect_pe_resources`; PE or ELF exports:
     `inspect_native_exports`. Signatures are not verified
-    ([certificates](https://github.com/morluto/rea/blob/main/docs/pe-certificates.md),
-    [imports](https://github.com/morluto/rea/blob/main/docs/pe-imports.md),
-    [load configuration](https://github.com/morluto/rea/blob/main/docs/pe-load-config.md)).
+    ([certificates](https://github.com/Ashz05/ACL-REA/blob/main/docs/pe-certificates.md),
+    [imports](https://github.com/Ashz05/ACL-REA/blob/main/docs/pe-imports.md),
+    [load configuration](https://github.com/Ashz05/ACL-REA/blob/main/docs/pe-load-config.md)).
   - Windows `.lnk` shortcut: `inspect_windows_shortcut`; the target is not
-    resolved ([shortcut guide](https://github.com/morluto/rea/blob/main/docs/guides/native/windows-shortcut.md)).
+    resolved ([shortcut guide](https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/native/windows-shortcut.md)).
   - ELF, PE and Mach-O hardening: `inspect_binary_hardening`; use
     `inspect_signature` for Mach-O hardened runtime
-    ([hardening guide](https://github.com/morluto/rea/blob/main/docs/binary-hardening.md)).
+    ([hardening guide](https://github.com/Ashz05/ACL-REA/blob/main/docs/binary-hardening.md)).
   - ELF declarations: `inspect_elf_notes`, `inspect_elf_debug_link` (pass
     `candidate_path` only for a debug file you already selected),
     `inspect_elf_dependencies` and `inspect_elf_unwind_ranges`. Relocatable
     objects use `inspect_kernel_module`; core dumps use
     `inspect_recorded_crash`
-    ([notes](https://github.com/morluto/rea/blob/main/docs/elf-notes.md),
-    [debug files](https://github.com/morluto/rea/blob/main/docs/guides/native/elf-debug-link.md),
-    [dependencies](https://github.com/morluto/rea/blob/main/docs/elf-dependencies.md),
-    [unwind ranges](https://github.com/morluto/rea/blob/main/docs/guides/native/elf-unwind-ranges.md)).
+    ([notes](https://github.com/Ashz05/ACL-REA/blob/main/docs/elf-notes.md),
+    [debug files](https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/native/elf-debug-link.md),
+    [dependencies](https://github.com/Ashz05/ACL-REA/blob/main/docs/elf-dependencies.md),
+    [unwind ranges](https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/native/elf-unwind-ranges.md)).
   - DWARF compile units, including the DWARF file inside a `.dSYM`:
-    `inspect_dwarf_units` ([DWARF guide](https://github.com/morluto/rea/blob/main/docs/guides/native/dwarf-units.md)).
+    `inspect_dwarf_units` ([DWARF guide](https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/native/dwarf-units.md)).
   - Code that runs before `main` or at exit in ELF or Mach-O:
     `inspect_native_initializers`
-    ([initializer guide](https://github.com/morluto/rea/blob/main/docs/guides/native/native-initializers.md)).
+    ([initializer guide](https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/native/native-initializers.md)).
   - Apple `.ips` crash report: `inspect_apple_ips`; `join_path` matches one
-    local Mach-O or dSYM ([Apple IPS guide](https://github.com/morluto/rea/blob/main/docs/apple-ips.md)).
+    local Mach-O or dSYM ([Apple IPS guide](https://github.com/Ashz05/ACL-REA/blob/main/docs/apple-ips.md)).
   - Linux kernel module: `inspect_kernel_module`; kernel version and
     `CONFIG_*` options: `inspect_kernel_build_config`. Decompress unsupported
     containers into a separate file with an external codec, then inspect the
-    result ([kernel modules](https://github.com/morluto/rea/blob/main/docs/kernel-modules.md),
-    [kernel build config](https://github.com/morluto/rea/blob/main/docs/guides/native/kernel-build-config.md)).
+    result ([kernel modules](https://github.com/Ashz05/ACL-REA/blob/main/docs/kernel-modules.md),
+    [kernel build config](https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/native/kernel-build-config.md)).
   - CPython `.pyc`: `inspect_python_pyc`; Erlang `.beam`:
     `inspect_erlang_beam`; NuGet `.nupkg`: `inspect_nuget_nupkg`
-    ([pyc](https://github.com/morluto/rea/blob/main/docs/python-pyc.md),
-    [BEAM](https://github.com/morluto/rea/blob/main/docs/erlang-beam.md),
-    [NuGet](https://github.com/morluto/rea/blob/main/docs/guides/managed/nuget-nupkg.md)).
+    ([pyc](https://github.com/Ashz05/ACL-REA/blob/main/docs/python-pyc.md),
+    [BEAM](https://github.com/Ashz05/ACL-REA/blob/main/docs/erlang-beam.md),
+    [NuGet](https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/managed/nuget-nupkg.md)).
   - SQLite snapshot: `inspect_sqlite_database`; read the schema first and
     supply a quiescent snapshot rather than a live database/WAL pair
-    ([SQLite guide](https://github.com/morluto/rea/blob/main/docs/guides/data/sqlite-databases.md)).
+    ([SQLite guide](https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/data/sqlite-databases.md)).
   - Linux ELF layout, symbols, relocations or static mitigations:
     `inspect_binary_layout` with caller-supplied pwntools
-    ([offline binary guide](https://github.com/morluto/rea/blob/main/docs/guides/native/binary-diagnostics.md)).
+    ([offline binary guide](https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/native/binary-diagnostics.md)).
   - Linux ELF core: `inspect_recorded_crash`; historical PIDs do not select
     live processes. Request `include_debugger_context` only when core-only
     mapping candidates help
-    ([recorded crash guide](https://github.com/morluto/rea/blob/main/docs/guides/native/recorded-crashes.md)).
+    ([recorded crash guide](https://github.com/Ashz05/ACL-REA/blob/main/docs/guides/native/recorded-crashes.md)).
 - Native executable, library, or analysis database: `open_binary`, then
   use focused analysis tools directly; call `binary_overview` when metadata or
   inventory context is useful and available from the selected provider. If
@@ -287,16 +287,16 @@ explicit path or endpoint and do not need it.
 For an existing IDA MCP configuration, use `open_binary` with the original
 input binary and `provider_id: "ida"`. Only the Hex-Rays (`hexrays`) profile
 also admits an existing `.idb` or `.i64`: pass the database path to start from
-its saved annotations instead of a fresh auto-analysis. REA analyzes a private
+its saved annotations instead of a fresh auto-analysis. ACL-REA analyzes a private
 copy and never writes the selected database.
 The native attached profile binds the already-open GUI input by SHA-256 and
 leaves its database open. The modern headless profile creates and closes an
 owned private database without saving; it reuses
 [mrexodia/ida-pro-mcp](https://github.com/mrexodia/ida-pro-mcp). See the
-[IDA provider guide](https://github.com/morluto/rea/blob/main/docs/providers/ida-provider.md).
+[IDA provider guide](https://github.com/Ashz05/ACL-REA/blob/main/docs/providers/ida-provider.md).
 A registration naming the removed ida-pro-mcp 1.4 `"legacy"` protocol is
 refused; follow the guide's
-[legacy attached migration](https://github.com/morluto/rea/blob/main/docs/providers/ida-provider.md#migrate-a-legacy-attached-registration)
+[legacy attached migration](https://github.com/Ashz05/ACL-REA/blob/main/docs/providers/ida-provider.md#migrate-a-legacy-attached-registration)
 instead of editing the protocol value. No IDA profile provides direct callers;
 check session availability and the guide's verification limits.
 Proceed directly to `analyze_function`, pseudocode, or function/string searches
@@ -316,7 +316,7 @@ answer can come from a single-function run (its limitations say so); assembly
 waits for the export. For pseudocode and assembly, `raw_result.source` names the
 cached `.c`/`.asm` file and byte span, which you may search directly instead of
 calling per function. See the
-[Kuna provider guide](https://github.com/morluto/rea/blob/main/docs/kuna-provider.md).
+[Kuna provider guide](https://github.com/Ashz05/ACL-REA/blob/main/docs/kuna-provider.md).
 
 If the user says only "my app" without a name, path, or target already selected
 for this task, ask which app before searching for artifacts. Paths in unrelated
@@ -350,7 +350,7 @@ For a Ghidra startup timeout on a large native target, follow
 before abandoning deep analysis or repeating the same cold import. The default
 330 seconds can be changed for new startup attempts through
 `update_analysis_settings` using `ghidra.startup_timeout_ms`. Changing the
-server's launch environment instead requires a new REA process.
+server's launch environment instead requires a new ACL-REA process.
 
 ## Work summary-first
 
@@ -398,11 +398,11 @@ that record has no supported view (for example an annotation), read it with
 names linked sources this session does not retain.
 `retention: "complete-record"` means the whole record is stored; native
 value-flow truncation and unknown metadata remain separate. For an exported
-portable bundle, use `rea inspect-evidence-bundle` with JSON containing `path`,
+portable bundle, use `acl-rea inspect-evidence-bundle` with JSON containing `path`,
 `detail: "summary"` and the same `filters`. Reading that file still requires
 validating its full contents within the local memory budget.
 
-A client can also truncate a successful tool result without a REA transport
+A client can also truncate a successful tool result without an ACL-REA transport
 error. Treat that preview as incomplete; use the retained parent ID for smaller
 views or export when the full record is needed. Do not parse the preview as
 canonical JSON or repeat the producer. For JavaScript, read the
@@ -416,7 +416,7 @@ that static analysis observed execution. Runtime requests execute the declared
 target and lifecycle; do not broaden the target or action beyond those fields.
 
 Within the user's requested investigation, call available analysis tools
-directly. REA does not require permission grants or per-call approval flags.
+directly. ACL-REA does not require permission grants or per-call approval flags.
 The agent client can independently require approval. Follow the declared request
 scope and the host's actual access requirements; use the recovery guide for an
 observed client-policy rejection.
@@ -428,7 +428,7 @@ For requests that span multiple features or subsystems, use a staged workflow:
 1. Turn the request into a checklist of questions and the evidence each answer
    needs. Resolve target identity and constraints from the conversation and
    workspace before asking for information again.
-2. Inspect the current REA session, artifact identity, saved analysis database,
+2. Inspect the current ACL-REA session, artifact identity, saved analysis database,
    bookmarks, and prior evidence. Reuse matching state; do not open duplicate
    sessions or repeat identical analysis.
 3. Start with the smallest useful overview or inventory. Follow each question

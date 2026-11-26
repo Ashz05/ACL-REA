@@ -119,7 +119,7 @@ def main():
         'NODE_OPTIONS': '--max-old-space-size=512',
     })
     target_digest = file_digest(Path(args.artifact_path)) if args.artifact_path else None
-    command_args = [str(repository / 'scripts/rea.mjs'), 'mcp']
+    command_args = [str(repository / 'scripts/acl-rea.mjs'), 'mcp']
     instruction = (
         'Use the registered REA MCP server for this investigation. Static analysis '
         'only: do not execute target code, fetch URLs, launch a GUI, or modify targets. '
@@ -150,7 +150,7 @@ def main():
     if args.guide_enabled_tools:
         instruction += (
             ' Configured REA tool function names for this trial: '
-            + json.dumps(['mcp__rea__' + name for name in enabled_tools])
+            + json.dumps(['mcp__acl-rea__' + name for name in enabled_tools])
             + '. For discovery select only these exact names from ALL_TOOLS and '
             'return only their metadata. Preserve the original analyst question, '
             'dependency order and source Evidence.'
@@ -179,11 +179,11 @@ def main():
     ]) + '\n'
     if not args.no_mcp:
         config += '\n'.join([
-            '[mcp_servers.rea]', 'required = true', 'command = ' + quote(node),
+            '[mcp_servers.acl-rea]', 'required = true', 'command = ' + quote(node),
             'args = ' + quote(command_args), 'startup_timeout_sec = 60',
             'tool_timeout_sec = 600',
             *([] if enabled_tools is None else ['enabled_tools = ' + quote(enabled_tools)]),
-            '[mcp_servers.rea.env]',
+            '[mcp_servers.acl-rea.env]',
             *[key + ' = ' + quote(value) for key, value in provider_env.items()],
         ]) + '\n'
     # MCP read-only hints cover normal static tools. Explicitly authorize only
@@ -213,7 +213,7 @@ def main():
                  'resolve_containing_procedure', 'analyze_function', 'close_binary']
     if not args.no_mcp:
         for tool in approved_tools:
-            config += '[mcp_servers.rea.tools.' + tool + ']\napproval_mode = "approve"\n'
+            config += '[mcp_servers.acl-rea.tools.' + tool + ']\napproval_mode = "approve"\n'
     try:
         if source_auth.exists():
             shutil.copyfile(source_auth, auth)
@@ -245,7 +245,7 @@ def main():
             'enabled_tools': enabled_tools,
             'authority': args.authority,
             'runtime_files_sha256': runtime_digest,
-            'runtime_dispatcher_sha256': file_digest(repository / 'scripts/rea.mjs'),
+            'runtime_dispatcher_sha256': file_digest(repository / 'scripts/acl-rea.mjs'),
             'package_lock_sha256': file_digest(repository / 'package-lock.json'),
             'experiment_sources_sha256': {
                 name: hashlib.sha256((experiment / name).read_bytes()).hexdigest()

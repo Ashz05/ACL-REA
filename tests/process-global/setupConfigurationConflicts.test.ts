@@ -117,10 +117,10 @@ it.each(["before", "after"] as const)(
       }),
     ).toMatchObject({ status: "failed", reason: "conflict" });
     expect(Buffer.compare(await readFile(path), changed)).toBe(0);
-    expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
     expect((await readdir(root)).sort()).toEqual([
       "config.json",
-      "config.json.rea.backup",
+      "config.json.acl-rea.backup",
     ]);
   },
 );
@@ -132,7 +132,7 @@ it("preserves an unrelated concurrent edit when a matching recovery backup alrea
   const changed =
     '{"theme":"light","mcpServers":{"other":{"command":"other"}}}\n';
   await writeFile(path, original);
-  await writeFile(`${path}.rea.backup`, original);
+  await writeFile(`${path}.acl-rea.backup`, original);
   writers.before = (target) => writeFile(target, changed);
 
   const result = await configureClientConfiguration({
@@ -144,10 +144,10 @@ it("preserves an unrelated concurrent edit when a matching recovery backup alrea
 
   expect(result).toMatchObject({ status: "failed", reason: "conflict" });
   expect(await readFile(path, "utf8")).toBe(changed);
-  expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+  expect(await readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
   expect((await readdir(root)).sort()).toEqual([
     "config.json",
-    "config.json.rea.backup",
+    "config.json.acl-rea.backup",
   ]);
   writers.before = undefined;
   const retry = await configureClientConfiguration({
@@ -306,7 +306,7 @@ it("merges queued setup requests through absolute and relative paths to the same
       "configured",
     ]);
     expect(JSON.parse(await readFile(path, "utf8"))).toMatchObject({
-      mcpServers: { rea: { env: { FIRST: "1", SECOND: "2" } } },
+      mcpServers: { "acl-rea": { env: { FIRST: "1", SECOND: "2" } } },
     });
   } finally {
     process.chdir(callerDirectory);
@@ -380,7 +380,7 @@ it.skipIf(process.platform === "win32")(
           "configured",
         ]);
         expect(JSON.parse(await readFile(realPath, "utf8"))).toMatchObject({
-          mcpServers: { rea: { env: { FIRST: "1", SECOND: "2" } } },
+          mcpServers: { "acl-rea": { env: { FIRST: "1", SECOND: "2" } } },
         });
         expect(await readFile(aliasPath, "utf8")).toBe(
           await readFile(realPath, "utf8"),
@@ -414,7 +414,7 @@ it.skipIf(process.platform === "win32")(
     ).toMatchObject({ status: "failed", reason: "conflict" });
     expect(await readFile(path, "utf8")).toBe(original);
     expect((await lstat(path)).mode & 0o777).toBe(0o640);
-    expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
   },
 );
 
@@ -452,7 +452,7 @@ it("releases a failed setup transaction so a queued request can configure the fi
       },
     });
     expect(queued.status).toBe("configured");
-    expect(JSON.parse(await readFile(path, "utf8")).mcpServers.rea.env).toEqual(
+    expect(JSON.parse(await readFile(path, "utf8")).mcpServers["acl-rea"].env).toEqual(
       {
         SECOND: "2",
       },

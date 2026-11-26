@@ -174,7 +174,7 @@ syncBuiltinESMExports();
             [
               "--import",
               preload,
-              "scripts/rea.mjs",
+              "scripts/acl-rea.mjs",
               "environment-serve",
               files.manifestPath,
               "--evidence",

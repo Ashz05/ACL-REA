@@ -484,7 +484,7 @@ async function verifyNativeApiCli(
   const { stdout } = await commands.exec(
     process.execPath,
     [
-      "scripts/rea.mjs",
+      "scripts/acl-rea.mjs",
       "inspect-native-api",
       targetPath,
       denseSwitch.address,

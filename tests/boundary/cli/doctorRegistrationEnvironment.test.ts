@@ -122,10 +122,10 @@ cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
       z
         .object({
           mcpServers: z.object({
-            rea: z.object({ env: z.record(z.string(), z.string()) }),
+            "acl-rea": z.object({ env: z.record(z.string(), z.string()) }),
           }),
         })
-        .parse(JSON.parse(await readFile(configPath, "utf8"))).mcpServers.rea
+        .parse(JSON.parse(await readFile(configPath, "utf8"))).mcpServers["acl-rea"]
         .env;
 
     // Setup ran where the provider settings were not visible.
@@ -174,7 +174,7 @@ cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
             providers: ["ghidra"],
           },
           remediation: expect.stringContaining(
-            "rea setup --client claude_code --skill=false --dry-run",
+            "acl-rea setup --client claude_code --skill=false --dry-run",
           ),
         }),
       );
@@ -222,7 +222,7 @@ cliTest.skipIf(!["darwin", "linux"].includes(process.platform))(
       GHIDRA_INSTALL_DIR: install,
       JAVA_HOME: jdk,
     });
-    expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(before);
+    expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(before);
 
     const recorded = await doctor(cli, ["--provider", "ghidra"], terminal);
     expect(recorded.exitCode).toBe(0);

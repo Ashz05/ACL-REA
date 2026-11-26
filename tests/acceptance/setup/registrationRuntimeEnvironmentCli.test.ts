@@ -175,7 +175,7 @@ cliTest(
       ...changed,
       REA_MCP_TOOL_FAMILIES: scope,
     });
-    const backup = `${config}.rea.backup`;
+    const backup = `${config}.acl-rea.backup`;
     expect(await readFile(backup, "utf8")).toBe(original);
 
     const repeated = await run(changed, scope);
@@ -203,9 +203,9 @@ cliTest.skipIf(process.platform !== "win32")(
     await mkdir(dirname(config), { recursive: true });
     const original = JSON.stringify({
       mcpServers: {
-        rea: clientRegistrationEntry(
+        "acl-rea": clientRegistrationEntry(
           "json",
-          [process.execPath, resolve("scripts/rea.mjs"), "mcp"],
+          [process.execPath, resolve("scripts/acl-rea.mjs"), "mcp"],
           { rea_analysis_provider: "invalid provider" },
         ),
       },
@@ -253,7 +253,7 @@ cliTest.skipIf(process.platform !== "win32")(
       remediation: expect.stringContaining("REA_ANALYSIS_PROVIDER"),
     });
     expect(await readFile(config, "utf8")).toBe(original);
-    await expect(access(`${config}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${config}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
   },
@@ -328,7 +328,7 @@ cliTest.for([
     const registration = (env: Readonly<Record<string, string>>) => {
       const entry = clientRegistrationEntry(
         scenario.format,
-        [process.execPath, resolve("scripts/rea.mjs"), "mcp"],
+        [process.execPath, resolve("scripts/acl-rea.mjs"), "mcp"],
         env,
       );
       // A current dsh registration records its tool call deadline; without
@@ -355,7 +355,7 @@ cliTest.for([
               ],
             },
           ])
-        : JSON.stringify({ mcpServers: { rea: entry } });
+        : JSON.stringify({ mcpServers: { "acl-rea": entry } });
     };
     const original = registration(
       scenario.position === "value"
@@ -409,7 +409,7 @@ cliTest.for([
       setup.stdout + setup.stderr + doctor.stdout + doctor.stderr,
     ).not.toContain(valueMarker);
     expect(await readFile(config, "utf8")).toBe(original);
-    await expect(access(`${config}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${config}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
 
@@ -452,7 +452,7 @@ for (const scenario of scenarios)
       const registration = (env: Readonly<Record<string, string>>) => {
         const server = {
           command: "npx",
-          args: ["-y", "rea-agents@6.6.0", "mcp"],
+          args: ["-y", "acl-rea-agents@6.6.0", "mcp"],
           env: {
             CALLER_SETTING: "keep exactly",
             ["__proto__"]: "retain caller key",
@@ -467,7 +467,7 @@ for (const scenario of scenarios)
                     id: "rea-mcp",
                     name: "@deepseek-ai/dsh-mcp-client",
                     config: {
-                      serverName: "rea",
+                      serverName: "acl-rea",
                       transport: "stdio",
                       ...server,
                     },
@@ -475,7 +475,7 @@ for (const scenario of scenarios)
                 ],
               },
             ])
-          : JSON.stringify({ mcpServers: { rea: server } });
+          : JSON.stringify({ mcpServers: { "acl-rea": server } });
       };
       const original = registration(scenario.invalid);
       await writeFile(config, original);
@@ -517,7 +517,7 @@ for (const scenario of scenarios)
         },
       });
       expect(await readFile(config, "utf8")).toBe(original);
-      await expect(access(`${config}.rea.backup`)).rejects.toMatchObject({
+      await expect(access(`${config}.acl-rea.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
 
@@ -543,7 +543,7 @@ for (const scenario of scenarios)
           ...scenario.repaired,
         },
       });
-      expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(repaired);
+      expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(repaired);
       const repeated = await run([
         "setup",
         "--client",
@@ -572,9 +572,9 @@ cliTest(
     const content = (env: Record<string, string>) =>
       JSON.stringify({
         mcp: {
-          rea: clientRegistrationEntry(
+          "acl-rea": clientRegistrationEntry(
             "opencode",
-            [process.execPath, resolve("scripts/rea.mjs"), "mcp"],
+            [process.execPath, resolve("scripts/acl-rea.mjs"), "mcp"],
             env,
           ),
         },
@@ -589,7 +589,7 @@ cliTest(
     });
     await writeFile(lower, lowerContent);
     await writeFile(upper, upperContent);
-    const saved = join(terminalRoot, "rea", "rea.json");
+    const saved = join(terminalRoot, "acl-rea", "acl-rea.json");
     await mkdir(dirname(saved), { recursive: true });
     await writeFile(
       saved,
@@ -660,7 +660,7 @@ cliTest(
     expect(await readFile(lower, "utf8")).toBe(withoutLanguage);
     expect(await readFile(upper, "utf8")).toBe(upperContent);
     for (const path of [lower, upper])
-      await expect(access(`${path}.rea.backup`)).rejects.toMatchObject({
+      await expect(access(`${path}.acl-rea.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
   },
@@ -771,7 +771,7 @@ cliTest(
     - id: rea-mcp
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: rea
+        serverName: acl-rea
         transport: stdio
         command: rea
         args: [mcp]
@@ -799,7 +799,7 @@ ${lookup}`;
         freshProcess: true,
       });
     const configRoot = join(home, "rea-settings");
-    const config = join(configRoot, "rea", "rea.json");
+    const config = join(configRoot, "acl-rea", "acl-rea.json");
     await mkdir(dirname(config), { recursive: true });
     await writeFile(config, JSON.stringify({ REA_IDA_MCP_CONFIG: idaConfig }));
     for (const setting of [
@@ -879,7 +879,7 @@ cliTest(
       [terminalRoot, 900_000],
       [clientRoot, 1_800_000],
     ] as const) {
-      const config = join(root, "rea", "rea.json");
+      const config = join(root, "acl-rea", "acl-rea.json");
       const ida = join(root, "ida.json");
       await mkdir(dirname(config), { recursive: true });
       await writeFile(
@@ -895,11 +895,11 @@ cliTest(
     await mkdir(dirname(codex), { recursive: true });
     await writeFile(
       codex,
-      `[mcp_servers.rea]
+      `[mcp_servers.acl-rea]
 command = "npx"
-args = ["-y", "rea-agents@1.0.0", "mcp"]
+args = ["-y", "acl-rea-agents@1.0.0", "mcp"]
 
-[mcp_servers.rea.env]
+[mcp_servers.acl-rea.env]
 REA_ANALYSIS_PROVIDER = "ida"
 XDG_CONFIG_HOME = ${JSON.stringify(clientRoot)}
 `,
@@ -951,7 +951,7 @@ cliTest(
     const configHome = join(home, "selected-config");
     const codexHome = join(home, ".codex");
     const idaConfig = join(home, "ida.json");
-    const savedConfig = join(configHome, "rea", "rea.json");
+    const savedConfig = join(configHome, "acl-rea", "acl-rea.json");
     await mkdir(dirname(savedConfig), { recursive: true });
     await mkdir(codexHome, { recursive: true });
     const writeIdaRegistration = (file: string, timeoutMs: number) =>
@@ -1183,7 +1183,7 @@ for (const [client, provider] of [
         appliedActions: [],
       });
       expect(await readFile(config, "utf8")).toBe(text);
-      await expect(access(`${config}.rea.backup`)).rejects.toMatchObject({
+      await expect(access(`${config}.acl-rea.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
       if (provider === "ida") {
@@ -1210,7 +1210,7 @@ for (const [client, provider] of [
         expect(invalidSetup.exitCode).toBe(1);
         expect(invalidSetup.stdout).toContain("REA_IDA_MCP_CONFIG");
         expect(await readFile(config, "utf8")).toBe(text);
-        await expect(access(`${config}.rea.backup`)).rejects.toMatchObject({
+        await expect(access(`${config}.acl-rea.backup`)).rejects.toMatchObject({
           code: "ENOENT",
         });
       }
@@ -1259,7 +1259,7 @@ for (const invalidSetting of [
         invalidSetting.setting,
       );
       await expect(access(config)).rejects.toMatchObject({ code: "ENOENT" });
-      await expect(access(`${config}.rea.backup`)).rejects.toMatchObject({
+      await expect(access(`${config}.acl-rea.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
     },
@@ -1312,15 +1312,15 @@ cliTest(
     expect(JSON.parse(await readFile(config, "utf8"))).toMatchObject({
       servers: {
         foreign: { command: "keep" },
-        rea: {
+        "acl-rea": {
           command: process.execPath,
-          args: [resolve("scripts/rea.mjs"), "mcp"],
+          args: [resolve("scripts/acl-rea.mjs"), "mcp"],
         },
       },
     });
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
     expect(await readFile(defaultConfig, "utf8")).toBe(defaultOriginal);
-    await expect(access(`${defaultConfig}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${defaultConfig}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
   },

@@ -135,7 +135,7 @@ it("compares a caller selection as setup spells it", async () => {
     join(home, ".claude.json"),
     JSON.stringify({
       mcpServers: {
-        rea: {
+        "acl-rea": {
           command: "/current/rea",
           args: ["mcp"],
           env: {

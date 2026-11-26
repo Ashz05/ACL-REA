@@ -126,10 +126,10 @@ const exportOptionsSchema = z.object({
   options: z.object({ properties: z.record(z.string(), z.unknown()) }),
 });
 const repackRuntime =
-  "Run npm run pack:build-computer-runtime -- /absolute/path/rea-prod.tar.xz in a current REA checkout, set REA_BUILD_COMPUTER_REA_ARCHIVE to that archive, restart the REA MCP server, and start a new build computer.";
+  "Run npm run pack:build-computer-runtime -- /absolute/path/acl-rea-prod.tar.xz in a current ACL-REA checkout, set REA_BUILD_COMPUTER_REA_ARCHIVE to that archive, restart the ACL-REA MCP server, and start a new build computer.";
 const schemaCommandError = (exitCode: number | null, detail: string) =>
   new ProviderAdapterError(AGENTENV_PROVIDER, START, {
-    userMessage: `The build computer's REA export schema command ${exitCode === null ? "ended without an exit status" : `exited ${String(exitCode)}`}: ${detail}`,
+    userMessage: `The build computer's ACL-REA export schema command ${exitCode === null ? "ended without an exit status" : `exited ${String(exitCode)}`}: ${detail}`,
     remediationAction: `Inspect the command error. If the runtime is outdated, ${repackRuntime}`,
   });
 

@@ -21,10 +21,10 @@ cliTest.for(["root", "references"] as const)(
     const directory = await createTestTempDirectory("rea-skill-preflight-");
     const selected = join(
       directory,
-      ".claude/skills/reverse-engineer-anything",
+      ".claude/skills/acl-reverse-engineer-anything",
     );
     const managed = join(directory, "user-managed");
-    const source = resolve("skills/reverse-engineer-anything");
+    const source = resolve("skills/acl-reverse-engineer-anything");
     await mkdir(kind === "root" ? dirname(selected) : selected, {
       recursive: true,
     });
@@ -119,10 +119,10 @@ cliTest(
     const directory = await createTestTempDirectory("rea-skill-retained-cli-");
     const selected = join(
       directory,
-      ".claude/skills/reverse-engineer-anything",
+      ".claude/skills/acl-reverse-engineer-anything",
     );
     const managed = join(directory, "user-managed-references");
-    const source = resolve("skills/reverse-engineer-anything");
+    const source = resolve("skills/acl-reverse-engineer-anything");
     await mkdir(selected, { recursive: true });
     await cp(join(source, "SKILL.md"), join(selected, "SKILL.md"));
     await cp(join(source, "references"), managed, { recursive: true });
@@ -171,9 +171,9 @@ cliTest(
     const directory = await createTestTempDirectory("rea-selected-skill-");
     const selected = join(
       directory,
-      ".claude/skills/reverse-engineer-anything",
+      ".claude/skills/acl-reverse-engineer-anything",
     );
-    const shared = join(directory, ".agents/skills/reverse-engineer-anything");
+    const shared = join(directory, ".agents/skills/acl-reverse-engineer-anything");
     const run = (args: readonly string[]) =>
       cli.run({
         arguments: [...args, "--json"],
@@ -219,7 +219,7 @@ cliTest(
         identity: { skill: { state: "aligned" } },
       },
     });
-    const bundle = resolve("skills/reverse-engineer-anything");
+    const bundle = resolve("skills/acl-reverse-engineer-anything");
     const assertAligned = async () => {
       for (const entry of await readdir(bundle, {
         recursive: true,
@@ -306,13 +306,13 @@ cliTest(
     });
     await access(join(directory, ".codex/config.toml"));
     await access(
-      join(directory, ".claude/skills/reverse-engineer-anything/SKILL.md"),
+      join(directory, ".claude/skills/acl-reverse-engineer-anything/SKILL.md"),
     );
     await expect(access(join(directory, ".claude.json"))).rejects.toMatchObject(
       { code: "ENOENT" },
     );
     await expect(
-      access(join(directory, ".agents/skills/reverse-engineer-anything")),
+      access(join(directory, ".agents/skills/acl-reverse-engineer-anything")),
     ).rejects.toMatchObject({ code: "ENOENT" });
   },
 );

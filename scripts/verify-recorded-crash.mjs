@@ -41,7 +41,7 @@ environment.REA_PROCESS_RUN_ID = run.run_id;
 const root = await VerifierFixture.open({ prefix: "rea-core-verifier-" });
 const options = { root: root.path, environment, runId: run.run_id };
 const entrypoint =
-  process.argv[2] ?? fileURLToPath(new URL("./rea.mjs", import.meta.url));
+  process.argv[2] ?? fileURLToPath(new URL("./acl-rea.mjs", import.meta.url));
 const failures = [];
 const sessions = [];
 let sentinel;

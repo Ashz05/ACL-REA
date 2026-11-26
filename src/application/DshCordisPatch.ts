@@ -21,6 +21,7 @@ import {
   DshCordisYaml,
 } from "./DshCordisYaml.js";
 import { mergeRegistrationEnvironment } from "./UserConfigurationLocation.js";
+import { PRODUCT_IDENTITY } from "../identity.js";
 import { isRecord } from "../kernel/isRecord.js";
 
 export const DSH_ENTRY_ID = "rea-mcp";
@@ -565,7 +566,10 @@ export const parseDshCordisDocument = (
   const source = new DshCordisDocument(text);
   return {
     document: { cordis: source },
-    servers: source.config === undefined ? {} : { rea: source.config },
+    servers:
+      source.config === undefined
+        ? {}
+        : { [PRODUCT_IDENTITY.mcpServerKey]: source.config },
     serversPath: [],
     dialect: "dsh",
     environmentKey: "env",

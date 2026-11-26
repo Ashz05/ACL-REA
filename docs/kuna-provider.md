@@ -1,6 +1,6 @@
 # Kuna provider
 
-[Kuna](https://github.com/Noelo-Lab/kuna) is an Apache-2.0 decompiler distributed as one `kuna` executable. For a new installation, use Kuna 1.1000, REA's recommended verified release. REA uses a `kuna` you supply; it does not download, install, update or bundle Kuna. REA accepts other releases; `rea doctor` and analysis Evidence report them as unverified. Verification compares the reported version; it does not authenticate the executable. Analysis profiles retain the observed version and executable digest, independently of REA's current verified-release policy. The 1.1000 real-provider checks ran on macOS arm64; Linux and other hosts have not been verified with that release.
+[Kuna](https://github.com/Noelo-Lab/kuna) is an Apache-2.0 decompiler distributed as one `kuna` executable. For a new installation, use Kuna 1.1000, REA's recommended verified release. REA uses a `kuna` you supply; it does not download, install, update or bundle Kuna. REA accepts other releases; `acl-rea doctor` and analysis Evidence report them as unverified. Verification compares the reported version; it does not authenticate the executable. Analysis profiles retain the observed version and executable digest, independently of REA's current verified-release policy. The 1.1000 real-provider checks ran on macOS arm64; Linux and other hosts have not been verified with that release.
 
 Kuna is static: it reads the selected image and never executes it.
 
@@ -33,7 +33,7 @@ and are not persisted as ambient provider registration settings.
 
 ```bash
 export REA_KUNA_COMMAND=/absolute/path/to/kuna
-rea doctor --provider kuna
+acl-rea doctor --provider kuna
 ```
 
 Doctor and runtime share one readiness decision: valid Kuna settings and a
@@ -42,7 +42,7 @@ Doctor and runtime share one readiness decision: valid Kuna settings and a
 reports two health checks beside it that do not decide availability: `version`
 runs `kuna --version` and fingerprints the executable, and `cache` inspects the
 cache root without creating it. Runtime does not run these probes when it
-reports availability; opening a target runs the version probe. `rea setup`
+reports availability; opening a target runs the version probe. `acl-rea setup`
 lists Kuna as a ready provider only when every Kuna check passes.
 
 Select it explicitly with `--provider kuna`, MCP's `open_binary.provider_id: "kuna"`, or `REA_ANALYSIS_PROVIDER=kuna`. With Kuna and another provider configured for the same target, `auto` reports `ambiguous` instead of choosing one.
@@ -167,8 +167,8 @@ rollback permits another setup attempt.
 
 ## Provenance and limitations
 
-- For arm64 Mach-O, `procedure_pseudo_code` with `analysis: "call_destination"` or `rea decompile --analysis call_destination` accepts an exact hexadecimal address outside the procedure inventory. REA requires file-backed executable section bytes and an exact direct call from a procedure Kuna already reports. The Evidence includes the call site and the incoming-reference reply digest. The body comes from a standalone Kuna run and does not establish function boundaries or add an inventory or project-export entry. If the call cannot be established, REA refuses the attempt. The mode is advertised as `call_destination_decompile` in `binary_session`.
-- If a completed project export reports a failed function, `procedure_pseudo_code` with `analysis: "independent_fresh"` or `rea decompile --analysis independent_fresh` requests a new single-function attempt. It bypasses the project result and prior single-function and snapshot results; it does not replace the original observation. On a cold session it obtains an inventory without starting a project export. The independent attempt can use different analysis context and may also fail. Identical results can share an Evidence ID because Evidence is content-addressed.
+- For arm64 Mach-O, `procedure_pseudo_code` with `analysis: "call_destination"` or `acl-rea decompile --analysis call_destination` accepts an exact hexadecimal address outside the procedure inventory. REA requires file-backed executable section bytes and an exact direct call from a procedure Kuna already reports. The Evidence includes the call site and the incoming-reference reply digest. The body comes from a standalone Kuna run and does not establish function boundaries or add an inventory or project-export entry. If the call cannot be established, REA refuses the attempt. The mode is advertised as `call_destination_decompile` in `binary_session`.
+- If a completed project export reports a failed function, `procedure_pseudo_code` with `analysis: "independent_fresh"` or `acl-rea decompile --analysis independent_fresh` requests a new single-function attempt. It bypasses the project result and prior single-function and snapshot results; it does not replace the original observation. On a cold session it obtains an inventory without starting a project export. The independent attempt can use different analysis context and may also fail. Identical results can share an Evidence ID because Evidence is content-addressed.
 - Addresses and bytes are Kuna's observations of the image. Procedure entries and extents are its derivations: extents are upper bounds clipped at the next entry, and Kuna can split one function at an entry its own analysis infers. Pseudocode is its reconstruction, never original source.
 - Pseudocode and assembly are exact Kuna text; text from Kuna and from another provider is not comparable as equal or different.
 - Results are re-read rather than replayed from REA's analysis snapshots, because a cold answer can differ from the export's.
@@ -220,7 +220,7 @@ prove stopped is never swept; REA keeps it owned, retries the stop on
 the same-connection retry as `recovery.kind=retry_cleanup` ([retained cleanup
 retry](reference/mcp-contracts.md#retained-cleanup-retry)). Failed file
 removal also stays bound to its export and is retried by `close_binary`;
-closing does not report success while that cleanup remains. `rea doctor
+closing does not report success while that cleanup remains. `acl-rea doctor
 --provider kuna` reports the cache directory without creating it.
 
 ## Verify with a real Kuna

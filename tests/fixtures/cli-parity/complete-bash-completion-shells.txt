@@ -1,4 +1,4 @@
-$ COMPLETE=bash rea -- rea completions ""
+$ COMPLETE=bash rea -- acl-rea completions ""
 exit: 0
 --- stdout
 bash<0x0b>zsh<0x0b>fish<0x0b>nushell<end>

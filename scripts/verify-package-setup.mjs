@@ -141,9 +141,9 @@ const verifyAbsentOpenCodeSetup = async ({
     execution.status !== 0 ||
     result.status !== "ready" ||
     !result.appliedActions.includes("configured_opencode") ||
-    config.mcp?.rea?.type !== "local" ||
-    config.mcp.rea.enabled !== true ||
-    !(await isDirectRegistration(config.mcp.rea.command, cli))
+    config.mcp?.["acl-rea"]?.type !== "local" ||
+    config.mcp["acl-rea"].enabled !== true ||
+    !(await isDirectRegistration(config.mcp["acl-rea"].command, cli))
   )
     throw new Error(
       `packaged setup did not configure explicitly selected OpenCode without a config file: ${JSON.stringify(result)}`,
@@ -305,7 +305,7 @@ export const assertClientConfig = async (cli, configPath, original) => {
     ))
   )
     throw new Error("packaged client readback failed");
-  if (!(await readFile(`${configPath}.rea.backup`)).equals(original))
+  if (!(await readFile(`${configPath}.acl-rea.backup`)).equals(original))
     throw new Error("packaged client backup failed");
 };
 
@@ -325,10 +325,10 @@ const assertOpenCodeConfig = async ({
     config?.model !== "provider/model" ||
     mcp?.other?.command?.[0] !== "node" ||
     (expectedRegistration &&
-      (mcp?.rea?.type !== "local" ||
-        mcp.rea.enabled !== true ||
-        !(await isDirectRegistration(mcp.rea.command, cli)))) ||
-    (!expectedRegistration && mcp?.rea !== undefined)
+      (mcp?.["acl-rea"]?.type !== "local" ||
+        mcp["acl-rea"].enabled !== true ||
+        !(await isDirectRegistration(mcp["acl-rea"].command, cli)))) ||
+    (!expectedRegistration && mcp?.["acl-rea"] !== undefined)
   )
     throw new Error("packaged OpenCode JSONC registration readback failed");
 };
@@ -340,18 +340,18 @@ const assertCodexSymlink = async ({
   codexTarget,
 }) => {
   const codex = await readFile(codexTarget, "utf8");
-  const registration = parseToml(codex).mcp_servers?.rea;
+  const registration = parseToml(codex).mcp_servers?.["acl-rea"];
   if (
     !(await lstat(codexConfig)).isSymbolicLink() ||
     !(await lstat(cursorConfig)).isSymbolicLink() ||
-    !codex.includes("[mcp_servers.rea]") ||
+    !codex.includes("[mcp_servers.acl-rea]") ||
     !(await isDirectRegistration(
       [registration?.command, ...(registration?.args ?? [])],
       cli,
     )) ||
     !codex.includes("startup_timeout_sec = 30") ||
     !codex.startsWith(CODEX_ORIGINAL) ||
-    (await readFile(`${codexConfig}.rea.backup`, "utf8")) !== CODEX_ORIGINAL
+    (await readFile(`${codexConfig}.acl-rea.backup`, "utf8")) !== CODEX_ORIGINAL
   )
     throw new Error("packaged setup did not preserve config symlinks");
 };
@@ -359,12 +359,12 @@ const assertCodexSymlink = async ({
 const assertSkill = async ({ skillPath, siblingSkillPath, root }) => {
   const skill = await readFile(skillPath, "utf8");
   const canonicalSkill = await readFile(
-    join(root, "skills/reverse-engineer-anything/SKILL.md"),
+    join(root, "skills/acl-reverse-engineer-anything/SKILL.md"),
     "utf8",
   );
   if (skill !== canonicalSkill)
     throw new Error("packaged skill did not match its canonical source");
-  const canonicalRoot = join(root, "skills/reverse-engineer-anything");
+  const canonicalRoot = join(root, "skills/acl-reverse-engineer-anything");
   for (const reference of await readdir(join(canonicalRoot, "references"))) {
     const installed = await readFile(
       join(dirname(skillPath), "references", reference),
@@ -435,7 +435,7 @@ const verifyConfigReadback = async ({
     expectedRegistration: true,
   });
   if (
-    (await readFile(`${opencodeConfig}.rea.backup`, "utf8")) !==
+    (await readFile(`${opencodeConfig}.acl-rea.backup`, "utf8")) !==
     opencodeOriginal
   )
     throw new Error(
@@ -469,7 +469,7 @@ const verifySetupFailureRecovery = async ({
     !failed.remediation?.includes("Claude Desktop") ||
     (await readFile(claudeConfig, "utf8")) !== "malformed" ||
     cursorAfterFailure.existing !== true ||
-    cursorAfterFailure.mcpServers?.rea !== undefined
+    cursorAfterFailure.mcpServers?.["acl-rea"] !== undefined
   )
     throw new Error(
       `packaged setup mutated clients after a preflight failure: ${JSON.stringify(failed)}`,
@@ -482,7 +482,7 @@ const verifySetupFailureRecovery = async ({
   );
   const recovered = JSON.parse(recoveredExecution.stdout);
   const registration = JSON.parse(await readFile(cursorConfig, "utf8"))
-    .mcpServers?.rea;
+    .mcpServers?.["acl-rea"];
   if (
     recovered.status !== status ||
     recoveredExecution.status !== (status === "ready" ? 0 : 1) ||
@@ -513,7 +513,7 @@ const verifyDanglingSymlink = async ({ commands, cli, environment, home }) => {
     !dangling.remediation?.includes("Gemini CLI") ||
     !dangling.remediation?.includes("unsafe or unresolved") ||
     !(await lstat(geminiConfig)).isSymbolicLink() ||
-    (await pathExists(`${geminiConfig}.rea.backup`))
+    (await pathExists(`${geminiConfig}.acl-rea.backup`))
   )
     throw new Error(
       `packaged setup did not reject a dangling config symlink before mutation: ${JSON.stringify(dangling)}`,
@@ -555,24 +555,24 @@ const verifyUninstall = async ({
     !(await lstat(cursorConfig)).isSymbolicLink() ||
     !(await lstat(codexConfig)).isSymbolicLink() ||
     cursorAfterUninstall.existing !== true ||
-    cursorAfterUninstall.mcpServers?.rea !== undefined ||
+    cursorAfterUninstall.mcpServers?.["acl-rea"] !== undefined ||
     codexAfterUninstall !== CODEX_ORIGINAL ||
-    codexAfterUninstall.includes("mcp_servers.rea") ||
+    codexAfterUninstall.includes("mcp_servers.acl-rea") ||
     openCodeErrors.length !== 0 ||
     openCodeAfterUninstall?.model !== "provider/model" ||
-    openCodeAfterUninstall?.mcp?.rea !== undefined ||
+    openCodeAfterUninstall?.mcp?.["acl-rea"] !== undefined ||
     openCodeAfterUninstall?.mcp?.other?.command?.[0] !== "node" ||
-    !(await readFile(`${opencodeConfig}.rea.backup`, "utf8")).includes(
+    !(await readFile(`${opencodeConfig}.acl-rea.backup`, "utf8")).includes(
       "OpenCode preferences must survive setup",
     ) ||
-    !(await readFile(`${opencodeConfig}.rea.backup`, "utf8")).includes(
+    !(await readFile(`${opencodeConfig}.acl-rea.backup`, "utf8")).includes(
       "Keep this independently managed server",
     ) ||
-    (await readFile(`${opencodeConfig}.rea.backup`, "utf8")) !==
+    (await readFile(`${opencodeConfig}.acl-rea.backup`, "utf8")) !==
       OPENCODE_ORIGINAL ||
-    (await readFile(`${cursorConfig}.rea.backup`, "utf8")) !==
+    (await readFile(`${cursorConfig}.acl-rea.backup`, "utf8")) !==
       '{"existing":true}\n' ||
-    (await readFile(`${codexConfig}.rea.backup`, "utf8")) !== CODEX_ORIGINAL
+    (await readFile(`${codexConfig}.acl-rea.backup`, "utf8")) !== CODEX_ORIGINAL
   )
     throw new Error(
       `packaged uninstall did not preserve config symlinks: ${JSON.stringify(uninstall)}`,
@@ -599,7 +599,7 @@ export async function verifyPackageSetup({
   await verifyMcpAdd({ commands, cli, environment, npxLog, home });
   const skillPath = join(
     home,
-    ".agents/skills/reverse-engineer-anything/SKILL.md",
+    ".agents/skills/acl-reverse-engineer-anything/SKILL.md",
   );
   const siblingSkillPath = join(home, ".agents/skills/unrelated/SKILL.md");
   if (supportedSetupHost) {

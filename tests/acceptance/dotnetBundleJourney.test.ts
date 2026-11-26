@@ -140,7 +140,7 @@ for (const format of ["dotnet-bundle", "pyinstaller"] as const) {
     );
     const transport = new StdioClientTransport({
       command: process.execPath,
-      args: [resolve("scripts/rea.mjs"), "mcp"],
+      args: [resolve("scripts/acl-rea.mjs"), "mcp"],
       env: environment,
       stderr: "pipe",
     });

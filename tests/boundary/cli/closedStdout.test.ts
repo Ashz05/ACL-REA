@@ -20,7 +20,7 @@ const runWithClosedReader = async (
 ) => {
   const child = processes.spawn(
     process.execPath,
-    [...nodeArguments, resolve("scripts/rea.mjs"), ...arguments_],
+    [...nodeArguments, resolve("scripts/acl-rea.mjs"), ...arguments_],
     { env: { PATH: process.env.PATH ?? "", REA_LOG_LEVEL: "silent" } },
   );
   let received = 0;

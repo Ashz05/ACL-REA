@@ -47,7 +47,7 @@ const environment = {
 };
 const transport = new StdioClientTransport({
   command: process.execPath,
-  args: [fileURLToPath(new URL("../../rea.mjs", import.meta.url)), "mcp"],
+  args: [fileURLToPath(new URL("../../acl-rea.mjs", import.meta.url)), "mcp"],
   env: environment,
   stderr: "pipe",
 });
@@ -278,7 +278,7 @@ await withVerifierCleanup(async () => {
       serialize({ source: { kind: "inline", evidence: parent }, view: query }),
     );
     const cli = await ownedCommand(process.execPath, [
-      fileURLToPath(new URL("../../rea.mjs", import.meta.url)),
+      fileURLToPath(new URL("../../acl-rea.mjs", import.meta.url)),
       "inspect-analysis-view",
       requestPath,
       "--json",

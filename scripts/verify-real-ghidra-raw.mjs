@@ -67,7 +67,7 @@ const bytes = Buffer.from("1eff2fe1", "hex"); // ARM little-endian bx lr.
 const sha256 = createHash("sha256").update(bytes).digest("hex");
 const path = join(workspace, "image.bin");
 await writeFile(path, bytes);
-const entrypoint = fileURLToPath(new URL("./rea.mjs", import.meta.url));
+const entrypoint = fileURLToPath(new URL("./acl-rea.mjs", import.meta.url));
 const env = {
   PATH: process.env.PATH ?? "/usr/bin:/bin",
   TMPDIR: runtime,

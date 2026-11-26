@@ -185,7 +185,7 @@ try {
     const cli = await promisify(execFile)(
       process.execPath,
       [
-        fileURLToPath(new URL("./rea.mjs", import.meta.url)),
+        fileURLToPath(new URL("./acl-rea.mjs", import.meta.url)),
         "capture-native-ui-scenario",
         executable,
         "--pid",

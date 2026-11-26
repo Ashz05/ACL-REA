@@ -323,7 +323,7 @@ async function exerciseTrustedRetentionWithLegacyTarget(
     cwd: runnerWorkspace,
     env: {
       PATH: join(runnerWorkspace, "bin"),
-      CI_REPOSITORY: "morluto/rea",
+      CI_REPOSITORY: "Ashz05/ACL-REA",
       CACHE_PREFIX: prefix,
       CACHE_KEEP_KEY: keepKey,
       FAKE_GH_LOG: ghLog,
@@ -346,7 +346,7 @@ async function exerciseTrustedRetentionWithLegacyTarget(
     listing!.slice("GET ".length),
     "https://example.test",
   );
-  expect(endpoint.pathname).toBe("/repos/morluto/rea/actions/caches");
+  expect(endpoint.pathname).toBe("/repos/Ashz05/ACL-REA/actions/caches");
   expect(Object.fromEntries(endpoint.searchParams)).toEqual({
     per_page: "100",
     page: "1",
@@ -354,7 +354,7 @@ async function exerciseTrustedRetentionWithLegacyTarget(
     direction: "desc",
     key: prefix,
   });
-  expect(deletion).toBe("DELETE repos/morluto/rea/actions/caches/1");
+  expect(deletion).toBe("DELETE repos/Ashz05/ACL-REA/actions/caches/1");
 }
 
 describe("hosted npm download-cache policy", () => {

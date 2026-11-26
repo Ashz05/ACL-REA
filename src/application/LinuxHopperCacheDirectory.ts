@@ -41,7 +41,7 @@ export const linuxHopperReleaseCacheDirectory = (
             selectedHome ?? homeDirectoryFromEnvironment(environment, "linux"),
             ".cache",
           ),
-        "rea/hopper-releases",
+        "acl-rea/hopper-releases",
       ),
     );
   } catch (cause: unknown) {

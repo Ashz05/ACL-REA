@@ -47,8 +47,8 @@ says its body is not yet valid. Those bodies produce a gap while later files
 remain selectable.
 
 ```sh
-rea inspect-uefi-firmware /path/to/flash.bin --json
-rea inspect-uefi-nvram /path/to/flash.bin --json
+acl-rea inspect-uefi-firmware /path/to/flash.bin --json
+acl-rea inspect-uefi-nvram /path/to/flash.bin --json
 rea extract-uefi-firmware /path/to/flash.bin /path/to/new-output \
   --volume-offset 4096 --source-stream flash --json
 ```
@@ -217,7 +217,7 @@ Capability discovery recommends `REA_BINWALK_COMMAND` for missing inspection
 and `REA_UNBLOB_COMMAND` for missing extraction. Configuring the other engine
 does not enable the unavailable operation.
 Both require util-linux `prlimit`, normally `/usr/bin/prlimit`; override its
-absolute path with `REA_FIRMWARE_PRLIMIT_COMMAND` if needed. `rea doctor` does
+absolute path with `REA_FIRMWARE_PRLIMIT_COMMAND` if needed. `acl-rea doctor` does
 not currently inspect firmware readiness. Engine selection/version checks run
 when the firmware operation is requested; successful general doctor checks do
 not establish firmware tool or external-extractor availability.
@@ -241,7 +241,7 @@ git submodule update --init third_party/binwalk third_party/unblob
 ```
 
 Normal REA builds and npm packages do not include or build these sources or
-engine binaries. See [upstream provenance](https://github.com/morluto/rea/blob/main/third_party/README.md).
+engine binaries. See [upstream provenance](https://github.com/Ashz05/ACL-REA/blob/main/third_party/README.md).
 
 ### Windows submodule checkout
 
@@ -281,7 +281,7 @@ in the firmware image.
 ## CLI and MCP
 
 ```sh
-rea inspect-firmware-regions /path/to/firmware.bin
+acl-rea inspect-firmware-regions /path/to/firmware.bin
 rea extract-firmware /path/to/firmware.bin /path/to/new-output
 rea extract-firmware /path/to/firmware.bin /path/to/selected-output \
   --offset 64 --length 4096 --max-depth 3
@@ -480,7 +480,7 @@ REA_FIRMWARE_VERIFY_GHIDRA=1 npm run verify:firmware
 `REA_FIRMWARE_MKE2FS_COMMAND` selects the optional ext4 fixture producer.
 `REA_FIRMWARE_FIXTURE_ROOT` selects generated data storage.
 `REA_FIRMWARE_TEST_ENTRYPOINT` can select an isolated installed npm package's
-`scripts/rea.mjs` to verify the packaged CLI/MCP workflow. Real coverage here is
+`scripts/acl-rea.mjs` to verify the packaged CLI/MCP workflow. Real coverage here is
 generated gzip/USTAR/ext4 with a Linux x64 ELF child; SquashFS, UBIFS, proprietary
 firmware, other hosts and architectures remain unverified.
 
@@ -506,7 +506,7 @@ does not start at flash address 0, select `esp-flash-image` with
 
 ## Inspect extracted devicetrees
 
-Use [`inspect_devicetree`](../../devicetree.md) / `rea inspect-devicetree` on an
+Use [`inspect_devicetree`](../../devicetree.md) / `acl-rea inspect-devicetree` on an
 extracted DTB for its node/property tree, reservations, hardware summary and
 selected phandle relationships. FDT v16/v17 inspection is portable and requires
 no external tool or disassembler.

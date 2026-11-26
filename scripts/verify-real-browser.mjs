@@ -446,7 +446,7 @@ async function verifyPublicBundle(endpoint, target, origin) {
   assertBundleAnalysis(evidence.normalized_result);
   const transport = new StdioClientTransport({
     command: process.execPath,
-    args: [fileURLToPath(new URL("./rea.mjs", import.meta.url)), "mcp"],
+    args: [fileURLToPath(new URL("./acl-rea.mjs", import.meta.url)), "mcp"],
     env: {
       PATH: process.env.PATH ?? "",
       REA_LOG_LEVEL: "silent",

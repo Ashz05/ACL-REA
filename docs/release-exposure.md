@@ -5,8 +5,8 @@
 The report does not establish that an application is secure. A check that could not be completed is `unknown` or `not_assessed`, and those counts stay beside the findings. There is no pass verdict and no letter grade.
 
 ```bash
-rea audit-release-exposure /Applications/Example.app --json
-rea audit-release-exposure ./dist/MyApp.app --fail_on high --json
+acl-rea audit-release-exposure /Applications/Example.app --json
+acl-rea audit-release-exposure ./dist/MyApp.app --fail_on high --json
 ```
 
 Without `--fail_on`, the exit status reflects only whether the audit finished. With `--fail_on high`, `--fail_on medium`, or `--fail_on low`, a completed audit exits `3` when an `exposed` check meets that severity. `high` matches high. `medium` matches high and medium. `low` matches high, medium, and low. `unknown` and `not_assessed` do not change the exit status. A tool failure is still exit `1`.

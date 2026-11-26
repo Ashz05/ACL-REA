@@ -21,7 +21,7 @@ hashed and rechecked after each run, and Evidence records its
 
 ```sh
 export REA_TSHARK_COMMAND=/absolute/path/to/tshark   # optional when tshark is on PATH
-rea inspect-packet-capture /artifacts/device.pcapng \
+acl-rea inspect-packet-capture /artifacts/device.pcapng \
   --fields ip.addr --fields udp.port --fields data.data \
   --display_filter 'udp' --format json
 ```
@@ -186,9 +186,9 @@ failed cleanup remains owned and can be retried.
 registration glossary before selecting fields for capture inspection:
 
 ```sh
-rea inspect-packet-fields --query usb
-rea inspect-packet-fields --kind fields --protocol usb --query idVendor
-rea inspect-packet-fields --kind fields --protocol udp --all
+acl-rea inspect-packet-fields --query usb
+acl-rea inspect-packet-fields --kind fields --protocol usb --query idVendor
+acl-rea inspect-packet-fields --kind fields --protocol udp --all
 ```
 
 `kind` defaults to `protocols`; `fields` selects field definitions. `protocol`

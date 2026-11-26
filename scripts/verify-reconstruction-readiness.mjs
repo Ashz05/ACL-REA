@@ -57,7 +57,7 @@ const electronCliEvidence = await runCli([
 
 const transport = new StdioClientTransport({
   command: process.execPath,
-  args: ["scripts/rea.mjs", "mcp"],
+  args: ["scripts/acl-rea.mjs", "mcp"],
   cwd: root,
   env: environment,
   stderr: "pipe",
@@ -177,7 +177,7 @@ process.stdout.write(
 async function runCli(arguments_) {
   const { stdout } = await execute(
     process.execPath,
-    ["scripts/rea.mjs", ...arguments_],
+    ["scripts/acl-rea.mjs", ...arguments_],
     {
       cwd: root,
       env: environment,

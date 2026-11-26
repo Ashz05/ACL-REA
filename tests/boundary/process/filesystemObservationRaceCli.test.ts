@@ -68,7 +68,7 @@ captureCliTest(
       cwd: root,
       environment: {
         NODE_OPTIONS: `--import=${pathToFileURL(preload).href}`,
-        REA_TEST_CLI_ENTRY: resolve("scripts/rea.mjs"),
+        REA_TEST_CLI_ENTRY: resolve("scripts/acl-rea.mjs"),
         REA_TEST_STABLE_SYMLINK: stable,
         REA_TEST_VANISHING_SYMLINK: vanishing,
         REA_TEST_READLINK_LOG: readLog,

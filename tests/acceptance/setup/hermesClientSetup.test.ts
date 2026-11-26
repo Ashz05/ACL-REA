@@ -68,7 +68,7 @@ for (const [version, keyStyle] of [
         "timestamp: 2026-10-14T00:00:00.123456+08:00\n";
       const original =
         settings +
-        "mcp_servers:\n  rea:\n    command: rea\n    args: [mcp]\n    env:\n" +
+        "mcp_servers:\n  acl-rea:\n    command: rea\n    args: [mcp]\n    env:\n" +
         Object.entries(environment)
           .map(
             ([key, value]) =>
@@ -94,7 +94,7 @@ for (const [version, keyStyle] of [
       expect((await run(setup)).json).toMatchObject({ status: "ready" });
       const configured = await readFile(config, "utf8");
       expect(parse(configured, { version })).toMatchObject({
-        mcp_servers: { rea: { env: environment, enabled: true } },
+        mcp_servers: { "acl-rea": { env: environment, enabled: true } },
       });
       // Hermes's C loader applies YAML 1.1 even with the explicit directive.
       // Independently model that schema; real Hermes loader verification is
@@ -111,11 +111,11 @@ for (const [version, keyStyle] of [
         expect(
           parse(configured.slice(directive.length), { version: "1.1" }),
         ).toMatchObject({
-          mcp_servers: { rea: { env: environment, enabled: true } },
+          mcp_servers: { "acl-rea": { env: environment, enabled: true } },
         });
       }
       expect(configured.startsWith(settings)).toBe(true);
-      expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
       expect(
         (await run(["doctor", "--client", "hermes", "--json"])).json,
       ).toMatchObject({
@@ -172,7 +172,7 @@ cliTest(
       ]),
     });
     expect(await readFile(config, "utf8")).toBe(original);
-    await expect(access(`${config}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${config}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
 
@@ -185,7 +185,7 @@ cliTest(
     const configured = await readFile(config, "utf8");
     expect(parse(configured)).toMatchObject({
       mcp_servers: {
-        rea: {
+        "acl-rea": {
           command: expect.stringMatching(/\S/u),
           args: expect.arrayContaining(["mcp"]),
           enabled: true,
@@ -199,12 +199,12 @@ cliTest(
       },
     });
     expect(parse(configured)).not.toMatchObject({
-      mcp_servers: { rea: { command: "rea" } },
+      mcp_servers: { "acl-rea": { command: "acl-rea" } },
     });
     expect(configured).toContain("# Curated for this client.");
     expect(configured).toContain("# Registration explanation");
     expect(configured).toContain("# Launcher explanation");
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
     expect(
       (await run(["doctor", "--client", "hermes", "--skill=false", "--json"]))
         .json,
@@ -218,7 +218,7 @@ cliTest(
       appliedActions: [],
     });
     expect(await readFile(config, "utf8")).toBe(configured);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
   },
 );
 
@@ -228,7 +228,7 @@ cliTest(
     const home = sharedHome;
     const profile = join(home, "profile");
     const config = join(profile, "config.yaml");
-    const skill = join(profile, "skills/reverse-engineer-anything/SKILL.md");
+    const skill = join(profile, "skills/acl-reverse-engineer-anything/SKILL.md");
     const original =
       "# user settings\nmodel: custom\nmcp_servers:\n  other:\n    command: other-server\n";
     await mkdir(profile);
@@ -256,7 +256,7 @@ cliTest(
       plannedActions: expect.arrayContaining([
         expect.objectContaining({ target: config }),
         expect.objectContaining({
-          target: join(profile, "skills/reverse-engineer-anything"),
+          target: join(profile, "skills/acl-reverse-engineer-anything"),
         }),
       ]),
     });
@@ -275,15 +275,15 @@ cliTest(
       model: "custom",
       mcp_servers: {
         other: { command: "other-server" },
-        rea: { enabled: true },
+        "acl-rea": { enabled: true },
       },
     });
-    expect(await readFile(config + ".rea.backup", "utf8")).toBe(original);
+    expect(await readFile(config + ".acl-rea.backup", "utf8")).toBe(original);
     expect(await readFile(skill, "utf8")).toContain(
-      "reverse-engineer-anything",
+      "acl-reverse-engineer-anything",
     );
     await expect(
-      access(join(home, ".agents/skills/reverse-engineer-anything/SKILL.md")),
+      access(join(home, ".agents/skills/acl-reverse-engineer-anything/SKILL.md")),
     ).rejects.toMatchObject({ code: "ENOENT" });
     const doctor = await run([
       "doctor",
@@ -365,7 +365,7 @@ for (const selection of ["default", "custom", "suffix", "explicit"] as const) {
         plannedActions: expect.arrayContaining([
           expect.objectContaining({ target: config }),
           expect.objectContaining({
-            target: join(profile, "skills", "reverse-engineer-anything"),
+            target: join(profile, "skills", "acl-reverse-engineer-anything"),
           }),
         ]),
       });
@@ -379,19 +379,19 @@ for (const selection of ["default", "custom", "suffix", "explicit"] as const) {
       expect(applied.exitCode, applied.stdout).toBe(0);
       expect(parse(await readFile(config, "utf8"))).toMatchObject({
         mcp_servers: {
-          rea: { enabled: true },
+          "acl-rea": { enabled: true },
           other: { command: "other-server" },
         },
       });
-      expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
       const skill = join(
         profile,
         "skills",
-        "reverse-engineer-anything",
+        "acl-reverse-engineer-anything",
         "SKILL.md",
       );
       expect(await readFile(skill, "utf8")).toContain(
-        "name: reverse-engineer-anything",
+        "name: acl-reverse-engineer-anything",
       );
       if (selection === "custom") {
         const doctor = await run([
@@ -423,11 +423,11 @@ for (const selection of ["default", "custom", "suffix", "explicit"] as const) {
         await expect(access(skill)).rejects.toMatchObject({ code: "ENOENT" });
       }
       expect(await readFile(rootConfig, "utf8")).toBe("model: root-model\n");
-      await expect(access(`${rootConfig}.rea.backup`)).rejects.toMatchObject({
+      await expect(access(`${rootConfig}.acl-rea.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
       await expect(
-        access(join(root, "skills", "reverse-engineer-anything")),
+        access(join(root, "skills", "acl-reverse-engineer-anything")),
       ).rejects.toMatchObject({ code: "ENOENT" });
     },
   );
@@ -511,7 +511,7 @@ for (const selection of [
           plannedActions: expect.arrayContaining([
             expect.objectContaining({ target: join(selected, "config.yaml") }),
             expect.objectContaining({
-              target: join(selected, "skills", "reverse-engineer-anything"),
+              target: join(selected, "skills", "acl-reverse-engineer-anything"),
             }),
           ]),
           appliedActions: [],
@@ -552,7 +552,7 @@ for (const selection of [
         join(root, "profiles", "other"),
       ]) {
         await expect(
-          access(join(directory, "config.yaml.rea.backup")),
+          access(join(directory, "config.yaml.acl-rea.backup")),
         ).rejects.toMatchObject({ code: "ENOENT" });
         await expect(access(join(directory, "skills"))).rejects.toMatchObject({
           code: "ENOENT",
@@ -616,7 +616,7 @@ for (const layout of ["symlinked-default", "escaping-prefix"] as const) {
             expect.objectContaining({
               id: "install_skill:hermes",
               kind: "install_skill",
-              target: join(selected, "skills", "reverse-engineer-anything"),
+              target: join(selected, "skills", "acl-reverse-engineer-anything"),
               operation: "install",
             }),
           ]),
@@ -634,7 +634,7 @@ for (const layout of ["symlinked-default", "escaping-prefix"] as const) {
             { code: "ENOENT" },
           );
           await expect(
-            access(join(directory, "config.yaml.rea.backup")),
+            access(join(directory, "config.yaml.acl-rea.backup")),
           ).rejects.toMatchObject({ code: "ENOENT" });
         }
         await expect(access(join(root, "config.yaml"))).rejects.toMatchObject({
@@ -661,7 +661,7 @@ for (const name of ["missing", "deleted", "ghost", "../escape", "root"]) {
       const deletionDirectory = join(root, "profiles", ".deleted");
       const tombstone = join(deletionDirectory, name);
       const original =
-        "model: custom\nmcp_servers: {rea: {command: rea, args: [mcp]}}\n";
+        "model: custom\nmcp_servers: {"acl-rea": {command: rea, args: [mcp]}}\n";
       if (name === "deleted" || name === "ghost") {
         await mkdir(join(root, "profiles", name), { recursive: true });
         if (name === "deleted") {
@@ -703,7 +703,7 @@ for (const name of ["missing", "deleted", "ghost", "../escape", "root"]) {
           });
           const unavailable = await run(setup);
           expect(await readFile(config, "utf8")).toBe(original);
-          await expect(access(`${config}.rea.backup`)).rejects.toMatchObject({
+          await expect(access(`${config}.acl-rea.backup`)).rejects.toMatchObject({
             code: "ENOENT",
           });
           expect(unavailable.exitCode).not.toBe(0);
@@ -716,7 +716,7 @@ for (const name of ["missing", "deleted", "ghost", "../escape", "root"]) {
 
           const removal = await run(["uninstall", "--json"]);
           expect(await readFile(config, "utf8")).toBe(original);
-          await expect(access(`${config}.rea.backup`)).rejects.toMatchObject({
+          await expect(access(`${config}.acl-rea.backup`)).rejects.toMatchObject({
             code: "ENOENT",
           });
           expect(removal.exitCode).not.toBe(0);
@@ -782,7 +782,7 @@ cliTest.skipIf(process.platform === "win32")(
     const literalProfile = join(home, override);
     expect(literalProfile).not.toBe(temporary);
     const config = `${profile}/config.yaml`;
-    const skill = `${profile}/skills/reverse-engineer-anything/SKILL.md`;
+    const skill = `${profile}/skills/acl-reverse-engineer-anything/SKILL.md`;
     const original =
       "# owned fixture\nmodel: custom\nmcp_servers:\n  other:\n    command: other-server\n";
     await writeFile(config, original);
@@ -809,7 +809,7 @@ cliTest.skipIf(process.platform === "win32")(
       plannedActions: expect.arrayContaining([
         expect.objectContaining({ target: config }),
         expect.objectContaining({
-          target: `${profile}/skills/reverse-engineer-anything`,
+          target: `${profile}/skills/acl-reverse-engineer-anything`,
         }),
       ]),
     });
@@ -822,12 +822,12 @@ cliTest.skipIf(process.platform === "win32")(
       model: "custom",
       mcp_servers: {
         other: { command: "other-server" },
-        rea: { enabled: true },
+        "acl-rea": { enabled: true },
       },
     });
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
     expect(await readFile(skill, "utf8")).toContain(
-      "name: reverse-engineer-anything",
+      "name: acl-reverse-engineer-anything",
     );
     expect(
       (await run(["doctor", "--client", "hermes", "--skill", "--json"])).json,
@@ -898,7 +898,7 @@ cliTest(
       code: "ENOENT",
     });
     await expect(
-      access(join(home, ".agents/skills/reverse-engineer-anything")),
+      access(join(home, ".agents/skills/acl-reverse-engineer-anything")),
     ).rejects.toMatchObject({ code: "ENOENT" });
   },
 );

@@ -29,7 +29,7 @@ NAVIGATION = (
 
 
 # Sources are shared with the figures on the corresponding reading pages.
-DEFAULT_IMAGE_ALT = "Blue REA lettering beside disassembly, hex data and an agent workflow."
+DEFAULT_IMAGE_ALT = "Blue ACL-REA lettering beside disassembly, hex data and an agent workflow."
 SOCIAL_FIGURES = {
     "showcase/": "docs/assets/rea-showcases.svg",
     "showcase/aegis/": "website/artwork/aegis.svg",
@@ -53,8 +53,8 @@ def social_image_path(route):
 
 def checked_contributors(data):
     """Validate the public snapshot once, before rendering or replacing it."""
-    if not isinstance(data, dict) or data.get("repository") != "morluto/rea":
-        raise ValueError("Contributors must come from morluto/rea")
+    if not isinstance(data, dict) or data.get("repository") != "Ashz05/ACL-REA":
+        raise ValueError("Contributors must come from Ashz05/ACL-REA")
     if not isinstance(data.get("updated"), str):
         raise ValueError("Contributors need an ISO update date")
     date.fromisoformat(data["updated"])
@@ -120,9 +120,9 @@ def github_json(*arguments):
 
 def collect_contributors():
     """Count each GitHub profile once per commit on a fixed revision of main."""
-    revision = github_json("repos/morluto/rea/git/ref/heads/main")["object"]["sha"]
+    revision = github_json("repos/Ashz05/ACL-REA/git/ref/heads/main")["object"]["sha"]
     commits = subprocess.run(
-        ["gh", "api", "--paginate", f"repos/morluto/rea/commits?sha={revision}&per_page=100",
+        ["gh", "api", "--paginate", f"repos/Ashz05/ACL-REA/commits?sha={revision}&per_page=100",
          "--jq", ".[] | {sha, author: (.author | if . then {id,login,type,html_url,avatar_url} else null end)} | @json"],
         capture_output=True, text=True, check=True,
     )
@@ -134,7 +134,7 @@ def collect_contributors():
         primary[commit["sha"]] = commit["author"]
 
     query = """query($revision: GitObjectID!, $endCursor: String) {
-      repository(owner: "morluto", name: "rea") {
+      repository(owner: "Ashz05", name: "ACL-REA") {
         object(oid: $revision) { ... on Commit {
           history(first: 100, after: $endCursor) {
             pageInfo { hasNextPage endCursor }
@@ -164,7 +164,7 @@ def collect_contributors():
     if primary:
         raise ValueError("Incomplete GitHub commit history")
     data = checked_contributors({
-        "repository": "morluto/rea", "revision": revision, "updated": date.today().isoformat(),
+        "repository": "Ashz05/ACL-REA", "revision": revision, "updated": date.today().isoformat(),
         "contributors": list(people.values()),
     })
     data["contributors"] = ranked_contributors(data)

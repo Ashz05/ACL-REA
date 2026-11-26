@@ -1,9 +1,9 @@
-$ rea mcp add --help
+$ acl-rea mcp add --help
 exit: 0
 --- stdout
-rea mcp add — Register exact stdio launcher arguments in selected client settings, with backups and verified publication.
+acl-rea mcp add — Register exact stdio launcher arguments in selected client settings, with backups and verified publication.
 
-Usage: rea mcp add [options]
+Usage: acl-rea mcp add [options]
 
 Options:
   --agent <array>         Select client IDs or documented aliases; repeat --agent to select more than one.

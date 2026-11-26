@@ -203,7 +203,7 @@ describe("canonical product catalog drift", () => {
     );
     expect(issues).not.toContain("README.md: missing Future Client");
     expect(issues).toContain(
-      ".agents/skills/reverse-engineer-anything/references/connection-and-recovery.md: missing `future_client`",
+      ".agents/skills/acl-reverse-engineer-anything/references/connection-and-recovery.md: missing `future_client`",
     );
   });
 

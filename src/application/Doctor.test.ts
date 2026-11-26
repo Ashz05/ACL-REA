@@ -512,7 +512,7 @@ describe("doctor", () => {
     ).toEqual({
       node: `Install ${SUPPORTED_NODE_VERSION_PROSE}.`,
       host: "REA supports macOS 12+, Linux distributions with a recognized apt, dnf, or pacman package family, and the experimental Windows x64 Ghidra P0 boundary; automated Hopper setup on Linux additionally requires an x86_64 host running Ubuntu 24.04+, Fedora 41+, Nobara 44+, Arch Linux, CachyOS, or Omarchy.",
-      hopper: "Run rea setup to install Hopper, or set HOPPER_LAUNCHER_PATH.",
+      hopper: "Run acl-rea setup to install Hopper, or set HOPPER_LAUNCHER_PATH.",
     });
   });
 
@@ -667,10 +667,10 @@ describe("doctor installation identity", () => {
     );
     expect(result.identity?.skill).toMatchObject({ state: "stale" });
     expect(result.identity?.skill.remediation).toContain(
-      "rea setup --skill-client claude_code --skill",
+      "acl-rea setup --skill-client claude_code --skill",
     );
     expect(result.identity?.skill.remediation).toContain(
-      "rea setup --skill-client shared --skill",
+      "acl-rea setup --skill-client shared --skill",
     );
     expect(result.identity?.skill.remediation).toContain(
       "/home/.claude/skills/rea",
@@ -772,7 +772,7 @@ describe("doctor installation identity", () => {
               command: ["/old/rea", "mcp"],
               state: "stale",
               remediation:
-                "Run rea setup to refresh this registration, then restart the client.",
+                "Run acl-rea setup to refresh this registration, then restart the client.",
             },
           ]),
       }),
@@ -845,7 +845,7 @@ describe("doctor scoped readiness", () => {
         command_identity: "unknown",
         command: ["/old/rea", "mcp"],
         state: "unknown",
-        remediation: "Run rea setup to refresh this registration.",
+        remediation: "Run acl-rea setup to refresh this registration.",
       },
     ];
     const scoped = await runDoctor(
@@ -1021,7 +1021,7 @@ describe("doctor scoped readiness", () => {
               client: "codex",
               config_path: "/home/user/.codex/config.toml",
               command_identity: "owned",
-              command: ["rea", "mcp"],
+              command: ["acl-rea", "mcp"],
               state: "aligned",
               remediation: null,
             },

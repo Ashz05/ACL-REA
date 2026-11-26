@@ -60,7 +60,7 @@ const registryRequest = async (
   await Promise.all([
     writeFile(
       join(packageRoot, "package.json"),
-      JSON.stringify({ name: "rea-agents", version: "6.0.0" }),
+      JSON.stringify({ name: "acl-rea-agents", version: "6.0.0" }),
     ),
     writeFile(
       join(packageRoot, "dist", "generatedPackageMetadata.js"),
@@ -99,7 +99,7 @@ it.each([
   ["/unlisted?x=a%20b&x=2", "/unlisted?x=a%20b&x=2"],
   ["http://other.invalid:9999/unlisted?x=%2F", "/unlisted?x=%2F"],
   ["//other.invalid/unlisted?x=1", "//other.invalid/unlisted?x=1"],
-  ["//other.invalid/rea-agents?x=1", "//other.invalid/rea-agents?x=1"],
+  ["//other.invalid/acl-rea-agents?x=1", "//other.invalid/acl-rea-agents?x=1"],
   ["/%40scope%2fpackage?escaped=%252f", "/%40scope%2fpackage?escaped=%252f"],
 ])(
   "forwards %s to the fixed npm origin with its path and query",
@@ -128,7 +128,7 @@ it.each([
 );
 
 it.each([
-  ["GET", "http://other.invalid/rea-agents", "metadata"],
+  ["GET", "http://other.invalid/acl-rea-agents", "metadata"],
   ["GET", "/release.tgz", "archive"],
   ["POST", "/unlisted", "{}"],
 ])("keeps the local %s %s fixture route", async (method, target, body) => {
@@ -145,7 +145,7 @@ it.each([
   expect(reply.status).toBe(200);
   if (body === "metadata")
     expect(JSON.parse(reply.body) as unknown).toMatchObject({
-      name: "rea-agents",
+      name: "acl-rea-agents",
       "dist-tags": { latest: "6.0.0" },
     });
   else expect(reply.body).toBe(body);

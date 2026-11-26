@@ -163,7 +163,7 @@ The projection does not read plists. Use `inspect_plist` on a bundle's
 `SMPrivilegedExecutables`, `BundleProgram`, URL schemes, and usage descriptions.
 MCP calls require an existing `open_binary` or `open_bundle_resources` session,
 including when `inspect_plist.path` is explicit. For a bundle without a resolved
-executable, open its resource session first. The CLI `rea inspect-plist <path>`
+executable, open its resource session first. The CLI `acl-rea inspect-plist <path>`
 opens the selected artifact for its one invocation.
 Use `inspect_signature` on an executable candidate for code-signing claims.
 Its identity, hashes, designated requirement, entitlements and runtime state
@@ -183,8 +183,8 @@ privileged helpers, and helper tools) is a separate process root with its own
 `@executable_path`.
 
 ```sh
-rea trace-dylib-resolution MyApp.app --json
-rea trace-dylib-resolution MyApp.app --root Contents/MacOS/MyApp --architecture arm64 --json
+acl-rea trace-dylib-resolution MyApp.app --json
+acl-rea trace-dylib-resolution MyApp.app --root Contents/MacOS/MyApp --architecture arm64 --json
 ```
 
 ```json

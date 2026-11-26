@@ -353,7 +353,7 @@ const captureDebRequest = async (
     dependencies,
   });
   expect(argv("capture-desktop-application")).toEqual(
-    expect.arrayContaining(["--package-file", "/opt/rea/package.deb"]),
+    expect.arrayContaining(["--package-file", "/opt/acl-rea/package.deb"]),
   );
   return {
     started,

@@ -2,7 +2,7 @@
 layout: home
 
 hero:
-  name: REA
+  name: ACL-REA
   text: Reverse Engineer Anything
   tagline: Understand binaries, applications, and runtime behavior with one CLI and MCP server.
   actions:
@@ -11,11 +11,11 @@ hero:
       link: /installation
     - theme: alt
       text: View on GitHub
-      link: https://github.com/morluto/rea
+      link: https://github.com/Ashz05/ACL-REA
 
 features:
   - title: Investigate with your agent
-    details: Connect REA to your coding agent, describe the app or feature you want to understand, and follow the evidence.
+    details: Connect ACL-REA to your coding agent, describe the app or feature you want to understand, and follow the evidence.
     link: /mcp-prompts
   - title: Inspect across formats
     details: Explore native binaries, JavaScript and Electron apps, .NET assemblies, Android packages, firmware, and websites.
@@ -28,7 +28,7 @@ features:
 ## Start with one command
 
 ```bash
-npx rea-agents setup
+npx acl-rea-agents setup
 ```
 
 Choose your agent, review the planned changes, and approve setup. Native binary
@@ -38,7 +38,7 @@ JavaScript analysis needs no native analysis engine.
 For a first result from an extracted JavaScript application or ASAR:
 
 ```bash
-npx -y rea-agents@latest analyze-javascript-application /absolute/path/to/app --json
+npx -y acl-rea-agents@latest analyze-javascript-application /absolute/path/to/app --json
 ```
 
 See [installation and setup](getting-started/installation.md) for requirements and configuration.

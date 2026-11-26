@@ -57,7 +57,7 @@ const skillDirectory = join(
   account,
   ".agents",
   "skills",
-  "reverse-engineer-anything",
+  "acl-reverse-engineer-anything",
 );
 let clientVersion = null;
 let fixture;
@@ -215,11 +215,11 @@ await withVerifierCleanup(async () => {
           const skill = tools.find((t) => t.name === "skill");
           assert(skill, "Copilot CLI must expose its native skill tool");
           skillRequested = true;
-          return call(skill.name, { skill: "reverse-engineer-anything" });
+          return call(skill.name, { skill: "acl-reverse-engineer-anything" });
         }
         assert(
           skillLoaded,
-          "Copilot CLI must load the installed personal REA skill",
+          "Copilot CLI must load the installed personal ACL-REA skill",
         );
         const spilled = replies.find(
           (message) =>
@@ -279,7 +279,7 @@ await withVerifierCleanup(async () => {
       join(skillDirectory, "SKILL.md"),
       "utf8",
     );
-    assert(installedSkill.includes("name: reverse-engineer-anything"));
+    assert(installedSkill.includes("name: acl-reverse-engineer-anything"));
     const skillLines = installedSkill.split("\n");
     const headerEnd = skillLines.indexOf("---", 1);
     assert(
@@ -304,9 +304,9 @@ await withVerifierCleanup(async () => {
       });
       await writeFile(join(lab, `${name}.stdout`), result.stdout);
       await writeFile(join(lab, `${name}.stderr`), result.stderr);
-      if (name === "mcp-list") assert(result.stdout.includes("rea"));
+      if (name === "mcp-list") assert(result.stdout.includes("acl-rea"));
       if (name === "skill-list")
-        assert(result.stdout.includes("reverse-engineer-anything"));
+        assert(result.stdout.includes("acl-reverse-engineer-anything"));
     }
     const response = await saveVerifierCommandOutput(
       () =>

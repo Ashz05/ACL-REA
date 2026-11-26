@@ -22,7 +22,7 @@ const { BROWSER_DEVTOOLS_STARTUP_TIMEOUT_MS } = await importVerifierSource(
 /** Verify real Chrome capture → export → original compiler point through packaged CLI/MCP. */
 export async function verifyBrowserSourceMap(
   executable,
-  entrypoint = fileURLToPath(new URL("../rea.mjs", import.meta.url)),
+  entrypoint = fileURLToPath(new URL("../acl-rea.mjs", import.meta.url)),
 ) {
   let site;
   let root;

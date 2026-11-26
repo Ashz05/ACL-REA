@@ -6,7 +6,7 @@ function ranges those tables name. It reads the file without executing it and
 does not require a disassembler.
 
 ```bash
-rea inspect-elf-unwind-ranges /absolute/path/to/program --json
+acl-rea inspect-elf-unwind-ranges /absolute/path/to/program --json
 ```
 
 The CLI resolves relative paths against the caller's working directory. MCP

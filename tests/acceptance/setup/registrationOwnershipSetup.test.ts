@@ -22,7 +22,7 @@ cliTest(
       });
     expect((await run([...setup, "--yes"])).exitCode).toBe(0);
     const replacement =
-      '{"mcpServers":{"rea":{"command":"peer-owned-server","args":["mcp"]},"peer":{"command":"peer-edited"}},"theme":"edited"}\n';
+      '{"mcpServers":{"acl-rea":{"command":"peer-owned-server","args":["mcp"]},"peer":{"command":"peer-edited"}},"theme":"edited"}\n';
     await writeFile(config, replacement);
     for (const mode of ["--dry-run", "--yes"]) {
       const result = await run([...setup, mode]);
@@ -34,7 +34,7 @@ cliTest(
         remediation: expect.stringContaining("foreign ownership"),
       });
       expect(await readFile(config, "utf8")).toBe(replacement);
-      expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
       expect(
         (await readdir(home)).filter((name) => name.includes(".recovery")),
       ).toEqual([]);
@@ -50,7 +50,7 @@ for (const [identity, entry] of [
     "unknown",
     {
       command: process.execPath,
-      args: ["/missing/old-rea/scripts/rea.mjs", "mcp"],
+      args: ["/missing/old-rea/scripts/acl-rea.mjs", "mcp"],
     },
   ],
 ] as const)
@@ -59,7 +59,7 @@ for (const [identity, entry] of [
     async ({ cli }) => {
       const home = await createTestTempDirectory("rea-setup-ownership-");
       const config = join(home, ".claude.json");
-      const original = JSON.stringify({ mcpServers: { rea: entry } });
+      const original = JSON.stringify({ mcpServers: { "acl-rea": entry } });
       await writeFile(config, original);
       const result = await cli.run({
         arguments: ["setup", "--client", "claude_code", "--yes", "--json"],
@@ -97,14 +97,14 @@ for (const [identity, entry] of [
           ]),
         },
       });
-      expect(await readdir(home)).not.toContain(".claude.json.rea.backup");
+      expect(await readdir(home)).not.toContain(".claude.json.acl-rea.backup");
       await expect(
         readFile(
           join(
             home,
             ".claude",
             "skills",
-            "reverse-engineer-anything",
+            "acl-reverse-engineer-anything",
             "SKILL.md",
           ),
         ),
@@ -119,9 +119,9 @@ cliTest(
     const config = join(home, ".claude.json");
     const original = JSON.stringify({
       mcpServers: {
-        rea: {
+        "acl-rea": {
           command: "npx",
-          args: ["-y", "rea-agents@6.6.0", "mcp"],
+          args: ["-y", "acl-rea-agents@6.6.0", "mcp"],
           env: { CUSTOM: "keep" },
         },
         peer: { command: "peer" },
@@ -136,11 +136,11 @@ cliTest(
     expect(result.exitCode, result.stdout).toBe(0);
     expect(JSON.parse(await readFile(config, "utf8"))).toMatchObject({
       mcpServers: {
-        rea: { command: process.execPath, env: { CUSTOM: "keep" } },
+        "acl-rea": { command: process.execPath, env: { CUSTOM: "keep" } },
         peer: { command: "peer" },
       },
     });
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
   },
 );
 
@@ -152,7 +152,7 @@ for (const repeated of [false, true])
       const config = join(home, ".config", "opencode", "opencode.json");
       await mkdir(dirname(config), { recursive: true });
       const foreign = '"rea":{"type":"local","command":["other"]}';
-      const owned = '"rea":{"type":"local","command":["rea","mcp"]}';
+      const owned = '"rea":{"type":"local","command":["acl-rea", "mcp"]}';
       const original = `{"mcp":{${foreign},${repeated ? `${owned},` : ""}"servers":{${owned}}}}`;
       await writeFile(config, original);
       const result = await cli.run({
@@ -177,7 +177,7 @@ for (const repeated of [false, true])
         remediation: expect.stringContaining("foreign ownership"),
       });
       expect(await readFile(config, "utf8")).toBe(original);
-      await expect(readFile(`${config}.rea.backup`)).rejects.toMatchObject({
+      await expect(readFile(`${config}.acl-rea.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
     },
@@ -190,7 +190,7 @@ cliTest(
     const fallback = join(home, ".agents", "mcp.json");
     await mkdir(dirname(fallback), { recursive: true });
     const original =
-      '{"mcpServers":{"rea":{"command":"other"},"peer":{"command":"peer"}}}';
+      '{"mcpServers":{"acl-rea":{"command":"other"},"peer":{"command":"peer"}}}';
     await writeFile(fallback, original);
     const result = await cli.run({
       arguments: [
@@ -214,7 +214,7 @@ cliTest(
     await expect(
       readFile(join(home, ".zcode", "cli", "config.json")),
     ).rejects.toMatchObject({ code: "ENOENT" });
-    await expect(readFile(`${fallback}.rea.backup`)).rejects.toMatchObject({
+    await expect(readFile(`${fallback}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
   },
@@ -229,7 +229,7 @@ cliTest(
     const lower = join(directory, "config.json");
     const upper = join(directory, "opencode.json");
     const originalLower =
-      '{"mcp":{"rea":{"type":"local","command":["other"]}}}';
+      '{"mcp":{"acl-rea":{"type":"local","command":["other"]}}}';
     const originalUpper = "{}";
     await writeFile(lower, originalLower);
     await writeFile(upper, originalUpper);
@@ -257,7 +257,7 @@ cliTest(
     });
     expect(await readFile(lower, "utf8")).toBe(originalLower);
     expect(await readFile(upper, "utf8")).toBe(originalUpper);
-    await expect(readFile(`${upper}.rea.backup`)).rejects.toMatchObject({
+    await expect(readFile(`${upper}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
   },
@@ -272,10 +272,10 @@ cliTest(
     const lower = join(directory, "config.json");
     const upper = join(directory, "opencode.json");
     const originalLower = JSON.stringify({
-      mcp: { rea: { type: "local", command: ["rea", "mcp"] } },
+      mcp: { "acl-rea": { type: "local", command: ["acl-rea", "mcp"] } },
     });
     const originalUpper = JSON.stringify({
-      mcp: { rea: { environment: { CUSTOM: "keep" } } },
+      mcp: { "acl-rea": { environment: { CUSTOM: "keep" } } },
     });
     await writeFile(lower, originalLower);
     await writeFile(upper, originalUpper);
@@ -297,12 +297,12 @@ cliTest(
     });
     expect(result.exitCode, result.stdout).toBe(0);
     expect(await readFile(lower, "utf8")).toBe(originalLower);
-    expect(await readFile(`${upper}.rea.backup`, "utf8")).toBe(originalUpper);
+    expect(await readFile(`${upper}.acl-rea.backup`, "utf8")).toBe(originalUpper);
     expect(JSON.parse(await readFile(upper, "utf8"))).toMatchObject({
-      mcp: { rea: { type: "local", environment: { CUSTOM: "keep" } } },
+      mcp: { "acl-rea": { type: "local", environment: { CUSTOM: "keep" } } },
     });
     const foreignFragment = JSON.stringify({
-      mcp: { rea: { command: ["other", "mcp"] } },
+      mcp: { "acl-rea": { command: ["other", "mcp"] } },
     });
     await writeFile(upper, foreignFragment);
     const blocked = await cli.run({
@@ -327,6 +327,6 @@ cliTest(
       remediation: expect.stringContaining("foreign ownership"),
     });
     expect(await readFile(upper, "utf8")).toBe(foreignFragment);
-    expect(await readFile(`${upper}.rea.backup`, "utf8")).toBe(originalUpper);
+    expect(await readFile(`${upper}.acl-rea.backup`, "utf8")).toBe(originalUpper);
   },
 );

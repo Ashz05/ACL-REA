@@ -18,10 +18,10 @@ const computerId = z.uuid().describe("The id start_build_computer returned.");
 
 /** Where the person writes a secret's file, as the tools name it. */
 export const BUILD_SECRETS_FOLDER =
-  "$XDG_CONFIG_HOME/rea/build-secrets/<handle>, or ~/.config/rea/build-secrets/<handle>";
+  "$XDG_CONFIG_HOME/acl-rea/build-secrets/<handle>, or ~/.config/acl-rea/build-secrets/<handle>";
 
 /** The export's description of withheld sign-in state. */
-export const WITHHELD_EXPORT_DESCRIPTION = `Files under the owned paths that changed between the ${SIGN_IN_START} and ${SIGN_IN_END} checkpoints, and those named in withhold, are withheld from the seed as sign-in or licence state: each becomes a secret setting the deploy takes from an environment variable as the file's bytes in base64, the README says how to fill it, a check may not name it, and REA keeps its bytes as the secret withheld_files names by handle, for start_build_computer's settings when witnessing; a file larger than ${String(MAX_WITHHELD_BYTES / 1024)} KiB cannot be withheld. With seed_sign_in, they are seeded instead, which needs a seed_sign_in consent from record_build_consent; every recorded consent ships as consent.json.`;
+export const WITHHELD_EXPORT_DESCRIPTION = `Files under the owned paths that changed between the ${SIGN_IN_START} and ${SIGN_IN_END} checkpoints, and those named in withhold, are withheld from the seed as sign-in or licence state: each becomes a secret setting the deploy takes from an environment variable as the file's bytes in base64, the README says how to fill it, a check may not name it, and ACL-REA keeps its bytes as the secret withheld_files names by handle, for start_build_computer's settings when witnessing; a file larger than ${String(MAX_WITHHELD_BYTES / 1024)} KiB cannot be withheld. With seed_sign_in, they are seeded instead, which needs a seed_sign_in consent from record_build_consent; every recorded consent ships as consent.json.`;
 
 /** The draft's list of the files it leaves out as withheld. */
 export const draftWithheldField = strings.describe(

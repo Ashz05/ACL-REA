@@ -64,18 +64,18 @@ it.each(["inspect", "configure"] as const)(
     refresh.afterDiscovery = () => writeFile(configPath, repaired);
     if (operation === "inspect") {
       expect(
-        await inspectClientConfiguration(client, {}, ["rea", "mcp"]),
+        await inspectClientConfiguration(client, {}, ["acl-rea", "mcp"]),
       ).toMatchObject({ status: "update" });
       expect(await readFile(configPath, "utf8")).toBe(repaired);
     } else {
       expect(
-        await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+        await configureClientConfiguration(client, {}, ["acl-rea", "mcp"]),
       ).toMatchObject({ status: "configured" });
       expect(JSON.parse(await readFile(configPath, "utf8"))).toMatchObject({
         caller_setting: true,
-        mcpServers: { rea: { command: "rea", args: ["mcp"] } },
+        mcpServers: { "acl-rea": { command: "acl-rea", args: ["mcp"] } },
       });
-      expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(repaired);
+      expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(repaired);
     }
   },
 );
@@ -92,29 +92,29 @@ it("rechecks registration ownership after preflight before creating any backup",
   };
   await writeFile(
     configPath,
-    '{"mcpServers":{"rea":{"command":"rea","args":["mcp"]}}}',
+    '{"mcpServers":{"acl-rea":{"command":"acl-rea","args":["mcp"]}}}',
   );
   expect(
     await inspectClientConfiguration(client, {}, [
       "npx",
       "-y",
-      "rea-agents@6.8.0",
+      "acl-rea-agents@6.8.0",
       "mcp",
     ]),
   ).toMatchObject({ status: "update" });
   const replacement =
-    '{"mcpServers":{"rea":{"command":"other","args":["mcp"]}}}';
+    '{"mcpServers":{"acl-rea":{"command":"other","args":["mcp"]}}}';
   // Change after layered discovery, so only the transaction's physical snapshot sees it.
   refresh.afterDiscovery = () => writeFile(configPath, replacement);
   expect(
-    await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+    await configureClientConfiguration(client, {}, ["acl-rea", "mcp"]),
   ).toMatchObject({
     status: "failed",
     reason: "registration_ownership",
     detail: expect.stringContaining("foreign ownership"),
   });
   expect(await readFile(configPath, "utf8")).toBe(replacement);
-  await expect(readFile(`${configPath}.rea.backup`)).rejects.toMatchObject({
+  await expect(readFile(`${configPath}.acl-rea.backup`)).rejects.toMatchObject({
     code: "ENOENT",
   });
 });
@@ -125,7 +125,7 @@ it("blocks an inherited foreign row before planning creation of a missing write 
   const configPath = join(home, "opencode.json");
   await writeFile(
     lower,
-    '{"mcp":{"rea":{"type":"local","command":["other"]}}}',
+    '{"mcp":{"acl-rea":{"type":"local","command":["other"]}}}',
   );
   const client: SetupClient = {
     name: "opencode",
@@ -135,13 +135,13 @@ it("blocks an inherited foreign row before planning creation of a missing write 
     configPaths: [lower, configPath],
   };
   expect(
-    await inspectClientConfiguration(client, {}, ["rea", "mcp"]),
+    await inspectClientConfiguration(client, {}, ["acl-rea", "mcp"]),
   ).toMatchObject({
     status: "invalid",
     remediation: expect.stringContaining("foreign ownership"),
   });
   await expect(readFile(configPath)).rejects.toMatchObject({ code: "ENOENT" });
-  await expect(readFile(`${lower}.rea.backup`)).rejects.toMatchObject({
+  await expect(readFile(`${lower}.acl-rea.backup`)).rejects.toMatchObject({
     code: "ENOENT",
   });
 });
@@ -161,23 +161,21 @@ it.each(["other", "rea"])(
     };
     await writeFile(
       lower,
-      '{"mcp":{"rea":{"type":"local","command":["rea","mcp"]}}}',
+      '{"mcp":{"acl-rea":{"type":"local","command":["acl-rea", "mcp"]}}}',
     );
-    const original = '{"mcp":{"rea":{"environment":{"CUSTOM":"keep"}}}}';
+    const original = '{"mcp":{"acl-rea":{"environment":{"CUSTOM":"keep"}}}}';
     await writeFile(configPath, original);
     expect(
-      await inspectClientConfiguration(client, {}, ["rea", "mcp"]),
+      await inspectClientConfiguration(client, {}, ["acl-rea", "mcp"]),
     ).toMatchObject({ status: "update" });
     // The write transaction must use a fresh source discovery after preflight.
     await writeFile(
       lower,
       JSON.stringify({
-        mcp: { rea: { type: "local", command: [command, "mcp"] } },
+        mcp: { "acl-rea": { type: "local", command: [command, "mcp"] } },
       }),
     );
-    const result = await configureClientConfiguration(client, {}, [
-      "rea",
-      "mcp",
+    const result = await configureClientConfiguration(client, {}, ["acl-rea", "mcp",
     ]);
     if (command === "other") {
       expect(result).toMatchObject({
@@ -186,12 +184,12 @@ it.each(["other", "rea"])(
         detail: expect.stringContaining("foreign ownership"),
       });
       expect(await readFile(configPath, "utf8")).toBe(original);
-      await expect(readFile(`${configPath}.rea.backup`)).rejects.toMatchObject({
+      await expect(readFile(`${configPath}.acl-rea.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
     } else {
       expect(result).toMatchObject({ status: "configured" });
-      expect(await readFile(`${configPath}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${configPath}.acl-rea.backup`, "utf8")).toBe(original);
     }
   },
 );
@@ -214,13 +212,13 @@ it("reports an OpenCode layer conflict introduced before the transaction snapsho
   await writeFile(nativePath, native);
   await writeFile(configPath, "{}");
   expect(
-    await inspectClientConfiguration(client, {}, ["rea", "mcp"]),
+    await inspectClientConfiguration(client, {}, ["acl-rea", "mcp"]),
   ).toMatchObject({
     status: "update",
   });
   refresh.afterDiscovery = () => writeFile(configPath, conflict);
   expect(
-    await configureClientConfiguration(client, {}, ["rea", "mcp"]),
+    await configureClientConfiguration(client, {}, ["acl-rea", "mcp"]),
   ).toEqual({
     status: "failed",
     reason: "invalid_configuration",
@@ -228,7 +226,7 @@ it("reports an OpenCode layer conflict introduced before the transaction snapsho
   });
   expect(await readFile(configPath, "utf8")).toBe(conflict);
   expect(await readFile(nativePath, "utf8")).toBe(native);
-  await expect(readFile(`${configPath}.rea.backup`)).rejects.toMatchObject({
+  await expect(readFile(`${configPath}.acl-rea.backup`)).rejects.toMatchObject({
     code: "ENOENT",
   });
 });

@@ -101,7 +101,7 @@ already-installed Chrome-family browser and the URL with your running fixture:
 ```
 
 ```bash
-rea capture-browser-scenario ./browser-scenario.json --json > browser-capture.json
+acl-rea capture-browser-scenario ./browser-scenario.json --json > browser-capture.json
 ```
 
 The default capture includes the final URL. Select DOM, screenshots, or events
@@ -154,7 +154,7 @@ Save it as `browser-search.json` and run it the same way as the minimal
 example:
 
 ```bash
-rea capture-browser-scenario ./browser-search.json --json > browser-search-capture.json
+acl-rea capture-browser-scenario ./browser-search.json --json > browser-search-capture.json
 ```
 
 Through MCP, pass the same object as the `capture_browser_scenario` arguments.
@@ -840,7 +840,7 @@ with capture omissions reported separately.
 For the one-shot CLI, save the complete Evidence before selecting a summary:
 
 ```bash
-rea capture-browser-scenario scenario.json --detail summary --evidence_output /absolute/path/scenario-evidence.json --json
+acl-rea capture-browser-scenario scenario.json --detail summary --evidence_output /absolute/path/scenario-evidence.json --json
 ```
 
 Use the returned `normalized_result.parent_evidence_id` with

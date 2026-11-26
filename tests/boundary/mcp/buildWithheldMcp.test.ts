@@ -143,7 +143,7 @@ it("withholds a file the agent names, keeps its bytes in a secret file only the 
     expect.arrayContaining(["--withhold-path", SETTINGS, "--withheld-copy"]),
   );
   const value = Buffer.from("[ui]\nwrap=false\n").toString("base64");
-  const file = join(config, "rea", "build-secrets", HANDLE);
+  const file = join(config, "acl-rea", "build-secrets", HANDLE);
   expect(await readFile(file, "utf8")).toBe(value);
   expect((await stat(file)).mode & 0o777).toBe(0o600);
   expect(JSON.stringify(result)).not.toContain(value);
@@ -206,7 +206,7 @@ it("reports the published bundle and completed handle if a later withheld file c
     },
   };
   const config = await createTestTempDirectory("xdg-config-");
-  const secrets = join(config, "rea", "build-secrets");
+  const secrets = join(config, "acl-rea", "build-secrets");
   await mkdir(secrets, { recursive: true, mode: 0o700 });
   await writeFile(
     join(secrets, "rea-notes-config-notes-second-ini"),
@@ -262,7 +262,7 @@ it("reports the published bundle and completed handle if a later withheld file c
 
 it("keeps a later build's withheld bytes under a handle of their own, leaving an earlier build's secret as it was", async () => {
   const config = await createTestTempDirectory("xdg-config-");
-  const folder = join(config, "rea", "build-secrets");
+  const folder = join(config, "acl-rea", "build-secrets");
   await mkdir(folder, { recursive: true, mode: 0o700 });
   const earlier = Buffer.from("[ui]\nwrap=true\n").toString("base64");
   await writeFile(join(folder, HANDLE), earlier, { mode: 0o600 });

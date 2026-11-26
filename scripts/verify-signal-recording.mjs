@@ -32,7 +32,7 @@ if (!isAbsolute(process.env.REA_SIGROK_COMMAND ?? ""))
     "Supply an absolute REA_SIGROK_COMMAND for sigrok-cli 0.7.2.",
   );
 const entrypoint =
-  process.argv[2] ?? fileURLToPath(new URL("./rea.mjs", import.meta.url));
+  process.argv[2] ?? fileURLToPath(new URL("./acl-rea.mjs", import.meta.url));
 // Read host limits before acquiring the root so a failure cannot leak it.
 const inheritedAddressSpace = (await readFile("/proc/self/limits", "utf8"))
   .split("\n")

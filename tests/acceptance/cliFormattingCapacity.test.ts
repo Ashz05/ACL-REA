@@ -184,7 +184,7 @@ for (const [name, outcome] of realProcessCases) {
             : "data:text/javascript,",
           "--import",
           scenario.format === "md" ? markdownCapacityHook : encoderCapacityHook,
-          resolve("scripts/rea.mjs"),
+          resolve("scripts/acl-rea.mjs"),
           "inspect-managed-artifact",
           target,
           ...(scenario.format ? ["--format", scenario.format] : []),
@@ -241,7 +241,7 @@ workspaceCliTest.skipIf(process.platform === "win32")(
       [
         "--import",
         encoderCapacityHook,
-        resolve("scripts/rea.mjs"),
+        resolve("scripts/acl-rea.mjs"),
         "inspect-managed-artifact",
         workspace.path("missing.dll"),
       ],

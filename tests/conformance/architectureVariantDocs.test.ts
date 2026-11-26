@@ -36,7 +36,7 @@ it("documents every architecture variant with its Ghidra decoder", async () => {
 it("names every architecture variant in the skill reference", async () => {
   const content = await readFile(
     resolve(
-      ".agents/skills/reverse-engineer-anything/references/native-and-artifacts.md",
+      ".agents/skills/acl-reverse-engineer-anything/references/native-and-artifacts.md",
     ),
     "utf8",
   );

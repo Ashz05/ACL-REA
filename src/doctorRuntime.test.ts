@@ -213,8 +213,8 @@ test.each(["unavailable", "unknown"] as const)(
       });
       expect(check?.remediation).toContain(
         state === "unavailable"
-          ? "rea setup --install-hopper"
-          : "Retry rea doctor",
+          ? "acl-rea setup --install-hopper"
+          : "Retry acl-rea doctor",
       );
     } finally {
       python.mockRestore();
@@ -559,7 +559,7 @@ const opencodeRegistration = (
       join(directory, "opencode.json"),
       JSON.stringify({
         mcp: {
-          rea: {
+          "acl-rea": {
             type: "local",
             command: [process.execPath, CURRENT_ENTRYPOINT_PATH, "mcp"],
             enabled: true,
@@ -604,16 +604,16 @@ test.each(["native", "legacy user alias"] as const)(
       REA_KUNA_COMMAND: join(project, "unavailable-provider"),
     };
     if (layout === "legacy user alias") {
-      await writeFile(direct, JSON.stringify({ mcp: { rea: launcher } }));
+      await writeFile(direct, JSON.stringify({ mcp: { "acl-rea": launcher } }));
       await writeFile(
         join(home, "opencode.json"),
-        JSON.stringify({ mcp: { rea: { ...launcher, environment: setting } } }),
+        JSON.stringify({ mcp: { "acl-rea": { ...launcher, environment: setting } } }),
       );
     } else {
       await writeFile(
         direct,
         JSON.stringify({
-          mcp: { servers: { rea: { ...launcher, environment: setting } } },
+          mcp: { servers: { "acl-rea": { ...launcher, environment: setting } } },
         }),
       );
     }
@@ -777,7 +777,7 @@ test("does not fill a registration's unresolvable expression from the terminal",
       "    - id: rea-mcp",
       '      name: "@deepseek-ai/dsh-mcp-client"',
       "      config:",
-      "        serverName: rea",
+      "        serverName: acl-rea",
       "        transport: stdio",
       "        command: rea",
       "        args: [mcp]",
@@ -814,8 +814,8 @@ test("keeps a Qwen registration's variable expression out of the probe", async (
     join(home, ".qwen/settings.json"),
     JSON.stringify({
       mcpServers: {
-        rea: {
-          command: "rea",
+        "acl-rea": {
+          command: "acl-rea",
           args: ["mcp"],
           env: { PATH: "${PATH}:/opt/jdk/bin" },
         },
@@ -1025,7 +1025,7 @@ test("keeps a known provider configuration when only its Java setting is unresol
       "    - id: rea-mcp",
       '      name: "@deepseek-ai/dsh-mcp-client"',
       "      config:",
-      "        serverName: rea",
+      "        serverName: acl-rea",
       "        transport: stdio",
       "        command: rea",
       "        args: [mcp]",
@@ -1123,7 +1123,7 @@ test.each([
         "    - id: rea-mcp",
         '      name: "@deepseek-ai/dsh-mcp-client"',
         "      config:",
-        "        serverName: rea",
+        "        serverName: acl-rea",
         "        transport: stdio",
         "        command: rea",
         "        args: [mcp]",
@@ -1212,7 +1212,7 @@ test("keeps a Qwen PATH expression unresolved for provider readiness", async () 
     join(home, ".qwen/settings.json"),
     JSON.stringify({
       mcpServers: {
-        rea: {
+        "acl-rea": {
           command: "node",
           args: ["rea"],
           env: { PATH: "${PATH}", REA_JADX_MCP_JAR: jar },
@@ -1252,7 +1252,7 @@ it.each(["REA_KUNA_COMMAND", "REA_KUNA_JOBS", "USERPROFILE"] as const)(
         "    - id: rea-mcp",
         '      name: "@deepseek-ai/dsh-mcp-client"',
         "      config:",
-        "        serverName: rea",
+        "        serverName: acl-rea",
         "        transport: stdio",
         "        command: rea",
         "        args: [mcp]",
@@ -1302,7 +1302,7 @@ it.each([
         "    - id: rea-mcp",
         '      name: "@deepseek-ai/dsh-mcp-client"',
         "      config:",
-        "        serverName: rea",
+        "        serverName: acl-rea",
         "        transport: stdio",
         "        command: rea",
         "        args: [mcp]",
@@ -1327,7 +1327,7 @@ it.each([
             name: "cache",
             ok: true,
             details: expect.objectContaining({
-              cache_root: join(cache, "rea", "kuna"),
+              cache_root: join(cache, "acl-rea", "kuna"),
             }),
           }),
         );
@@ -1356,7 +1356,7 @@ it("probes Kuna when only the unused client PATH is unresolved", async () => {
       "    - id: rea-mcp",
       '      name: "@deepseek-ai/dsh-mcp-client"',
       "      config:",
-      "        serverName: rea",
+      "        serverName: acl-rea",
       "        transport: stdio",
       "        command: rea",
       "        args: [mcp]",
@@ -1392,7 +1392,7 @@ test.skipIf(process.platform !== "win32")(
         "    - id: rea-mcp",
         '      name: "@deepseek-ai/dsh-mcp-client"',
         "      config:",
-        "        serverName: rea",
+        "        serverName: acl-rea",
         "        transport: stdio",
         "        command: rea",
         "        args: [mcp]",

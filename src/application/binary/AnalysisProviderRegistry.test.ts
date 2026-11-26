@@ -565,7 +565,7 @@ describe("analysis provider registry: rejection diagnostics", () => {
                 code: "version_unresolved",
                 // doctor cannot check this provider, so it is not offered.
                 remediation: expect.not.stringContaining(
-                  "rea doctor",
+                  "acl-rea doctor",
                 ) as unknown,
               },
             ],

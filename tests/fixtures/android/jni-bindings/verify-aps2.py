@@ -75,7 +75,7 @@ def verify(root, cc, lld, node):
                             assert slot["relocation"]["packing"] == {"format": "aps2", "group_entry_index": provenance["entry_index"]}
                         else:
                             assert "packing" not in slot["relocation"]
-                evidence = json.loads(run(node, str(root / "scripts/rea.mjs"),
+                evidence = json.loads(run(node, str(root / "scripts/acl-rea.mjs"),
                                           "inspect-native-initializers", str(library), "--json"))
                 report = evidence["normalized_result"]
                 constructor = next(entry for entry in report["entries"] if entry["kind"] == "init_array")

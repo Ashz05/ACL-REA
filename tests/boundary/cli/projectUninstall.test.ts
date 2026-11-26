@@ -18,12 +18,12 @@ const put = async (
 
 const piRegistration = {
   command: "npx",
-  args: ["-y", "rea-agents", "mcp"],
+  args: ["-y", "acl-rea-agents", "mcp"],
   enabled: false,
 };
 const openCodeRegistration = {
   type: "local",
-  command: ["npx", "-y", "rea-agents", "mcp"],
+  command: ["npx", "-y", "acl-rea-agents", "mcp"],
 };
 const openCodePeer = { type: "local", command: ["unrelated", "mcp"] };
 const openCodeRemote = { type: "remote", url: "https://example.invalid/mcp" };
@@ -41,7 +41,7 @@ for (const distinctAlias of [false, true]) {
       const path = join(project, "opencode.json");
       const alias = join(project, "opencode.jsonc");
       const original = await put(path, {
-        mcp: { servers: { rea: openCodeRegistration, peer: openCodePeer } },
+        mcp: { servers: { "acl-rea": openCodeRegistration, peer: openCodePeer } },
       });
       if (distinctAlias) await symlink(path, alias);
       const result = await cli.run({
@@ -63,7 +63,7 @@ for (const distinctAlias of [false, true]) {
           ]),
         });
         expect(await readFile(path, "utf8")).toBe(original);
-        await expect(readFile(`${path}.rea.backup`)).rejects.toMatchObject({
+        await expect(readFile(`${path}.acl-rea.backup`)).rejects.toMatchObject({
           code: "ENOENT",
         });
         return;
@@ -82,7 +82,7 @@ for (const distinctAlias of [false, true]) {
       expect(JSON.parse(await readFile(path, "utf8"))).toEqual({
         mcp: { servers: { peer: openCodePeer } },
       });
-      expect(await readFile(`${path}.rea.backup`, "utf8")).toBe(original);
+      expect(await readFile(`${path}.acl-rea.backup`, "utf8")).toBe(original);
     },
   );
 }
@@ -107,10 +107,10 @@ cliTest(
       mcp: { servers: { ancestor: openCodePeer } },
     });
     const piOriginal = await put(piPath, {
-      mcpServers: { rea: piRegistration, peer: { command: "unrelated" } },
+      mcpServers: { "acl-rea": piRegistration, peer: { command: "unrelated" } },
     });
     const openCodeOriginal = await put(openCodePath, {
-      mcp: { servers: { rea: openCodeRegistration, peer: openCodePeer } },
+      mcp: { servers: { "acl-rea": openCodeRegistration, peer: openCodePeer } },
     });
     const run = (cwd: string, ...arguments_: string[]) =>
       cli.run({
@@ -151,8 +151,8 @@ cliTest(
     expect(JSON.parse(await readFile(openCodePath, "utf8"))).toEqual({
       mcp: { servers: { peer: openCodePeer } },
     });
-    expect(await readFile(`${piPath}.rea.backup`, "utf8")).toBe(piOriginal);
-    expect(await readFile(`${openCodePath}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${piPath}.acl-rea.backup`, "utf8")).toBe(piOriginal);
+    expect(await readFile(`${openCodePath}.acl-rea.backup`, "utf8")).toBe(
       openCodeOriginal,
     );
     expect(await readFile(ancestor, "utf8")).toBe(ancestorOriginal);
@@ -181,13 +181,13 @@ for (const { kind, retained } of [
       const environment = await registrationEnvironment(home);
       await put(join(home, ".pi", "agent", "trust.json"), { [project]: true });
       const lowerOriginal = await put(lower, {
-        mcp: { servers: { rea: openCodeRegistration, peer: openCodePeer } },
+        mcp: { servers: { "acl-rea": openCodeRegistration, peer: openCodePeer } },
       });
       const higherOriginal = await put(higher, {
-        mcp: { servers: { rea: retained } },
+        mcp: { servers: { "acl-rea": retained } },
       });
       const piOriginal = await put(pi, {
-        mcpServers: { rea: piRegistration, peer: { command: "unrelated" } },
+        mcpServers: { "acl-rea": piRegistration, peer: { command: "unrelated" } },
       });
 
       const result = await cli.run({
@@ -203,10 +203,10 @@ for (const { kind, retained } of [
       expect(JSON.parse(await readFile(pi, "utf8"))).toEqual({
         mcpServers: { peer: { command: "unrelated" } },
       });
-      expect(await readFile(`${lower}.rea.backup`, "utf8")).toBe(lowerOriginal);
-      expect(await readFile(`${pi}.rea.backup`, "utf8")).toBe(piOriginal);
+      expect(await readFile(`${lower}.acl-rea.backup`, "utf8")).toBe(lowerOriginal);
+      expect(await readFile(`${pi}.acl-rea.backup`, "utf8")).toBe(piOriginal);
       expect(await readFile(higher, "utf8")).toBe(higherOriginal);
-      await expect(readFile(`${higher}.rea.backup`)).rejects.toMatchObject({
+      await expect(readFile(`${higher}.acl-rea.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
     },
@@ -226,7 +226,7 @@ cliTest(
     const userOriginal = await put(piUser, "{ malformed");
     const blockerOriginal = await put(blocker, "ordinary file");
     const original = await put(openCode, {
-      mcp: { servers: { rea: openCodeRegistration, peer: openCodePeer } },
+      mcp: { servers: { "acl-rea": openCodeRegistration, peer: openCodePeer } },
     });
 
     const result = await cli.run({
@@ -247,7 +247,7 @@ cliTest(
     expect(JSON.parse(await readFile(openCode, "utf8"))).toEqual({
       mcp: { servers: { peer: openCodePeer } },
     });
-    expect(await readFile(`${openCode}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${openCode}.acl-rea.backup`, "utf8")).toBe(original);
     expect(await readFile(piUser, "utf8")).toBe(userOriginal);
     expect(await readFile(blocker, "utf8")).toBe(blockerOriginal);
   },
@@ -289,11 +289,11 @@ for (const [scenario, trusted, fallback, status = "failed"] of [
               piUser,
               typeof fallback === "string"
                 ? fallback
-                : { mcpServers: { rea: fallback } },
+                : { mcpServers: { "acl-rea": fallback } },
             );
       const piPath = join(project, ".pi", "mcp.json");
       const original = await put(piPath, {
-        mcpServers: { rea: piRegistration },
+        mcpServers: { "acl-rea": piRegistration },
       });
 
       const result = await cli.run({
@@ -311,10 +311,10 @@ for (const [scenario, trusted, fallback, status = "failed"] of [
       const updated = await readFile(piPath, "utf8");
       if (status === "removed") {
         expect(JSON.parse(updated)).toEqual({ mcpServers: {} });
-        expect(await readFile(`${piPath}.rea.backup`, "utf8")).toBe(original);
+        expect(await readFile(`${piPath}.acl-rea.backup`, "utf8")).toBe(original);
       } else {
         expect(updated).toBe(original);
-        await expect(readFile(`${piPath}.rea.backup`)).rejects.toMatchObject({
+        await expect(readFile(`${piPath}.acl-rea.backup`)).rejects.toMatchObject({
           code: "ENOENT",
         });
       }
@@ -337,7 +337,7 @@ for (const scope of ["outside", "user"] as const) {
           : join(home, ".config", "opencode", "opencode.json");
       const environment = await registrationEnvironment(home);
       const original = await put(external, {
-        mcp: { servers: { rea: openCodeRegistration } },
+        mcp: { servers: { "acl-rea": openCodeRegistration } },
       });
       await mkdir(project);
       const link = join(project, "opencode.json");
@@ -364,7 +364,7 @@ for (const scope of ["outside", "user"] as const) {
         ]),
       });
       expect(await readFile(external, "utf8")).toBe(original);
-      await expect(readFile(`${link}.rea.backup`)).rejects.toMatchObject({
+      await expect(readFile(`${link}.acl-rea.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
     },
@@ -394,7 +394,7 @@ for (const aliasedClient of ["opencode", "pi"] as const) {
       const original = await put(
         alias,
         aliasedClient === "pi"
-          ? { mcpServers: { rea: { command: "unrelated" } } }
+          ? { mcpServers: { "acl-rea": { command: "unrelated" } } }
           : { mcp: { servers: { peer: openCodePeer } } },
       );
       const run = () =>
@@ -412,8 +412,8 @@ for (const aliasedClient of ["opencode", "pi"] as const) {
       const selectedOriginal = await put(
         selected,
         aliasedClient === "pi"
-          ? { mcp: { servers: { rea: openCodeRegistration } } }
-          : { mcpServers: { rea: piRegistration } },
+          ? { mcp: { servers: { "acl-rea": openCodeRegistration } } }
+          : { mcpServers: { "acl-rea": piRegistration } },
       );
       const removed = await run();
       expect(removed.exitCode, removed.stdout).toBe(0);
@@ -426,11 +426,11 @@ for (const aliasedClient of ["opencode", "pi"] as const) {
           }),
         ]),
       });
-      expect(await readFile(`${selected}.rea.backup`, "utf8")).toBe(
+      expect(await readFile(`${selected}.acl-rea.backup`, "utf8")).toBe(
         selectedOriginal,
       );
       expect(await readFile(alias, "utf8")).toBe(original);
-      await expect(readFile(`${alias}.rea.backup`)).rejects.toMatchObject({
+      await expect(readFile(`${alias}.acl-rea.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
     },
@@ -449,7 +449,7 @@ cliTest(
     const original = await put(configuration, {
       mcp: {
         servers: {
-          rea: {
+          "acl-rea": {
             ...openCodeRegistration,
             environment: { REA_GHIDRA_STARTUP_TIMEOUT_MS: "bad" },
           },
@@ -473,7 +473,7 @@ cliTest(
     expect(JSON.parse(await readFile(configuration, "utf8"))).toEqual({
       mcp: { servers: { peer: openCodePeer } },
     });
-    expect(await readFile(`${configuration}.rea.backup`, "utf8")).toBe(
+    expect(await readFile(`${configuration}.acl-rea.backup`, "utf8")).toBe(
       original,
     );
   },
@@ -515,16 +515,16 @@ for (const { label, entry, permitsRemoval } of [
       const firstPath = join(selected, "opencode.json");
       const secondPath = join(selected, "opencode.jsonc");
       const first = await put(firstPath, {
-        mcp: { servers: { rea: openCodeRegistration, first: openCodePeer } },
+        mcp: { servers: { "acl-rea": openCodeRegistration, first: openCodePeer } },
       });
       const second = await put(secondPath, {
-        mcp: { servers: { rea: openCodeRegistration, second: openCodePeer } },
+        mcp: { servers: { "acl-rea": openCodeRegistration, second: openCodePeer } },
       });
       const lowerPath = join(root, "opencode.json");
       const lower =
         entry === undefined
           ? undefined
-          : await put(lowerPath, { mcp: { servers: { rea: entry } } });
+          : await put(lowerPath, { mcp: { servers: { "acl-rea": entry } } });
       const run = () =>
         cli.run({
           arguments: ["uninstall", "--project", selected, "--json"],
@@ -539,13 +539,13 @@ for (const { label, entry, permitsRemoval } of [
         expect(await readFile(firstPath, "utf8")).toBe(first);
         expect(await readFile(secondPath, "utf8")).toBe(second);
         expect(await readFile(lowerPath, "utf8")).toBe(lower);
-        await expect(readFile(`${firstPath}.rea.backup`)).rejects.toMatchObject(
+        await expect(readFile(`${firstPath}.acl-rea.backup`)).rejects.toMatchObject(
           {
             code: "ENOENT",
           },
         );
         await expect(
-          readFile(`${secondPath}.rea.backup`),
+          readFile(`${secondPath}.acl-rea.backup`),
         ).rejects.toMatchObject({
           code: "ENOENT",
         });
@@ -579,8 +579,8 @@ for (const { label, entry, permitsRemoval } of [
       expect(JSON.parse(await readFile(secondPath, "utf8"))).toEqual({
         mcp: { servers: { second: openCodePeer } },
       });
-      expect(await readFile(`${firstPath}.rea.backup`, "utf8")).toBe(first);
-      expect(await readFile(`${secondPath}.rea.backup`, "utf8")).toBe(second);
+      expect(await readFile(`${firstPath}.acl-rea.backup`, "utf8")).toBe(first);
+      expect(await readFile(`${secondPath}.acl-rea.backup`, "utf8")).toBe(second);
       expect((await run()).exitCode).toBe(0);
     },
   );

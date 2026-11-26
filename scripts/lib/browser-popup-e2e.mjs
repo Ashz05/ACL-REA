@@ -157,7 +157,7 @@ const verifySharedContext = async (executable, origin) => {
 
 const verifyTransports = async (executable, origin) => {
   const scenario = scenarioFor(executable, origin, ["network"]);
-  const entrypoint = fileURLToPath(new URL("../rea.mjs", import.meta.url));
+  const entrypoint = fileURLToPath(new URL("../acl-rea.mjs", import.meta.url));
   const env = {
     PATH: process.env.PATH ?? "/usr/bin:/bin",
     REA_LOG_LEVEL: "silent",

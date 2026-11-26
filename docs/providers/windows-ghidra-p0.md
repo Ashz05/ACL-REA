@@ -65,17 +65,17 @@ and DLLs.
 ## Configuration
 
 ```powershell
-npm install --global rea-agents
+npm install --global acl-rea-agents
 $env:GHIDRA_INSTALL_DIR = "C:\tools\ghidra_12.2_PUBLIC"
 $env:JAVA_HOME = "C:\tools\jdk-25"
 $env:REA_ANALYSIS_PROVIDER = "ghidra"
 
-rea doctor --json
+acl-rea doctor --json
 rea providers --json
-rea inspect "C:\fixtures\sample.exe" --provider ghidra --format json
+acl-rea inspect "C:\fixtures\sample.exe" --provider ghidra --format json
 ```
 
-`rea doctor` distinguishes installation prerequisites from native artifact or
+`acl-rea doctor` distinguishes installation prerequisites from native artifact or
 OS failures. It checks the Ghidra release, headless launcher, full JDK, x64
 host, and native controls. A missing or mismatched addon requires the matching
 Windows x64 package; changing MCP registration cannot supply that artifact.
@@ -100,7 +100,7 @@ failures remain stable for the process lifetime.
 Other doctor checks, including unconfigured agent integrations, can remain
 unready while Ghidra itself is available.
 
-`rea setup` can register supported agent integrations and the bundled skill.
+`acl-rea setup` can register supported agent integrations and the bundled skill.
 Its existing preview and approval apply to configuration writes. Setup
 preserves valid Ghidra and Java settings even when a separate runtime
 prerequisite is unavailable.
@@ -110,7 +110,7 @@ For MCP, register the resolved Node entry point and the same provider settings:
 ```json
 {
   "mcpServers": {
-    "rea": {
+    "acl-rea": {
       "command": "C:\\tools\\node\\node.exe",
       "args": ["C:\\tools\\rea\\scripts\\rea.mjs", "mcp"],
       "env": {
@@ -243,7 +243,7 @@ starts REA (your shell or the MCP client's registration), restart REA, and
 retry. Creating `java_home.save` in advance does not help because LaunchSupport
 rewrites it.
 
-On Windows, `rea doctor` also reports a `temp_directory` check under the Ghidra
+On Windows, `acl-rea doctor` also reports a `temp_directory` check under the Ghidra
 provider. It creates and deletes one file under that same session root from the
 REA process and fails the provider when either step fails. If the file cannot
 be removed, doctor reports its path and retries removal when it finishes. A
@@ -253,7 +253,7 @@ the message above.
 The startup-output match is limited to the English `Access is denied` text.
 
 Windows cannot open an existing Ghidra project. When the client's registration
-sets `REA_GHIDRA_PROJECT_PATH`, `rea doctor` reports a failed
+sets `REA_GHIDRA_PROJECT_PATH`, `acl-rea doctor` reports a failed
 `existing_project` check and the Ghidra provider as unavailable, the same
 refusal REA returns at runtime. Unset the setting to import targets into an
 ephemeral project.
@@ -274,7 +274,7 @@ private runtime files; crash-time transactional deletion is not claimed.
 
 ## Verification
 
-See [native controls](https://github.com/morluto/rea/blob/main/native/windows/README.md) for the separate artifact
+See [native controls](https://github.com/Ashz05/ACL-REA/blob/main/native/windows/README.md) for the separate artifact
 build lane and native boundary checks. Development tarballs without the built
 artifact report native controls unavailable; publishing requires the verified
 artifact and manifest.

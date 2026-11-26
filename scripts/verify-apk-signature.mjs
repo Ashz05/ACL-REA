@@ -95,7 +95,7 @@ if ([apksigner, aapt2, androidJar, keytool].includes(undefined)) {
 
 const entrypoint =
   process.argv.slice(2).find((arg) => !arg.startsWith("--")) ??
-  fileURLToPath(new URL("./rea.mjs", import.meta.url));
+  fileURLToPath(new URL("./acl-rea.mjs", import.meta.url));
 
 const run = async (tool, args) =>
   execute(tool, args, {

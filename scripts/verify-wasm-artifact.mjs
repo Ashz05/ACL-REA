@@ -41,7 +41,7 @@ if (!isAbsolute(directory ?? "")) {
 }
 const entrypoint =
   process.argv.slice(2).find((arg) => !arg.startsWith("--")) ??
-  fileURLToPath(new URL("./rea.mjs", import.meta.url));
+  fileURLToPath(new URL("./acl-rea.mjs", import.meta.url));
 const execute = promisify(execFile);
 const environment = Object.fromEntries(
   Object.entries(process.env).filter(([, value]) => typeof value === "string"),

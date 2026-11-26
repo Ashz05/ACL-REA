@@ -19,7 +19,7 @@ cliTest.skipIf(process.platform !== "darwin")(
     await writeFile(apktool, "#!/bin/sh\necho 2.9.3\n", { mode: 0o755 });
     const transport = new StdioClientTransport({
       command: process.execPath,
-      args: [resolve("scripts/rea.mjs"), "mcp"],
+      args: [resolve("scripts/acl-rea.mjs"), "mcp"],
       cwd: process.cwd(),
       env: {
         PATH: process.env.PATH ?? "",

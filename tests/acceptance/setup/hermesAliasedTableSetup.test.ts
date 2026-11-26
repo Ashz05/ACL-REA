@@ -48,7 +48,7 @@ const configuration = (
     "# Personal settings\nmodel: custom\nmask: 0x1F\n" +
     "server_defaults: &servers\n" +
     (existing
-      ? "  rea: &server\n    command: npx\n    args: [ '-y', 'rea-agents@6.1.0', 'mcp' ]\n    env:\n      FLAG: 'on'\n  other: *server\n"
+      ? "  rea: &server\n    command: npx\n    args: [ '-y', 'acl-rea-agents@6.1.0', 'mcp' ]\n    env:\n      FLAG: 'on'\n  other: *server\n"
       : "  other: &server\n    command: other-server\n    args: [ 'on', '0600' ]\n");
   return {
     defaults,
@@ -83,9 +83,9 @@ for (const [version, existing] of [
       expect(parsed.server_defaults).toEqual(before.server_defaults);
       expect(parsed.observer).toEqual(before.observer);
       expect(parsed.mcp_servers.other).toEqual(before.mcp_servers.other);
-      expect(parsed.mcp_servers.rea).toMatchObject({ enabled: true });
+      expect(parsed.mcp_servers["acl-rea"]).toMatchObject({ enabled: true });
       if (existing)
-        expect(parsed.mcp_servers.rea.env).toEqual({
+        expect(parsed.mcp_servers["acl-rea"].env).toEqual({
           FLAG: "on",
           HOPPER_LAUNCHER_PATH: process.execPath,
           GHIDRA_INSTALL_DIR: ghidra,
@@ -95,7 +95,7 @@ for (const [version, existing] of [
       expect(configured).toContain("# Selected table");
       expect(configured.match(/&servers\b/gu)).toHaveLength(1);
       expect(configured.match(/&server\b/gu)).toHaveLength(1);
-      expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(
+      expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(
         original.text,
       );
       const doctor = await run(
@@ -136,7 +136,7 @@ cliTest(
     const removed = await run(uninstall);
     expect(removed.exitCode).toBe(0);
     expect(await readFile(config, "utf8")).toBe(original);
-    await expect(access(`${config}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${config}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
   },
@@ -153,8 +153,8 @@ cliTest("Hermes still registers into an explicit table", async ({ cli }) => {
   expect(parsed.mcp_servers.other).toEqual(
     parse(original.text).mcp_servers.other,
   );
-  expect(parsed.mcp_servers.rea).toMatchObject({ enabled: true });
-  expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original.text);
+  expect(parsed.mcp_servers["acl-rea"]).toMatchObject({ enabled: true });
+  expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original.text);
 });
 
 cliTest(
@@ -177,7 +177,7 @@ cliTest(
     expect(configured.mcp_servers.other).toEqual(before.mcp_servers.other);
     expect(configured.server_defaults).toEqual(before.server_defaults);
     expect(configured.observer).toEqual(before.observer);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
   },
 );
 
@@ -186,7 +186,7 @@ cliTest(
   async ({ cli }) => {
     const { config, run } = await hermesProfile(cli);
     const [command, ...args] = currentClientRegistrationCommand({
-      entrypointPath: resolve("scripts/rea.mjs"),
+      entrypointPath: resolve("scripts/acl-rea.mjs"),
     });
     const entry = {
       command,
@@ -204,7 +204,7 @@ cliTest(
         .join("") +
       "mcp_servers: *servers\nobserver: *servers\n";
     await writeFile(config, original);
-    await expect(access(`${config}.rea.backup`)).rejects.toMatchObject({
+    await expect(access(`${config}.acl-rea.backup`)).rejects.toMatchObject({
       code: "ENOENT",
     });
     const doctor = await run(["doctor", "--client", "hermes", "--json"]);
@@ -228,10 +228,10 @@ cliTest(
     expect(remaining.server_defaults).toEqual(defaults);
     expect(remaining.observer).toEqual(defaults);
     const configured = await readFile(config, "utf8");
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
     expect((await run(uninstall)).exitCode).toBe(0);
     expect(await readFile(config, "utf8")).toBe(configured);
-    expect(await readFile(`${config}.rea.backup`, "utf8")).toBe(original);
+    expect(await readFile(`${config}.acl-rea.backup`, "utf8")).toBe(original);
   },
 );
 
@@ -252,7 +252,7 @@ for (const original of [
         appliedActions: [],
       });
       expect(await readFile(config, "utf8")).toBe(original);
-      await expect(access(`${config}.rea.backup`)).rejects.toMatchObject({
+      await expect(access(`${config}.acl-rea.backup`)).rejects.toMatchObject({
         code: "ENOENT",
       });
     },

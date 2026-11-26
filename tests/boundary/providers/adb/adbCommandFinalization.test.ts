@@ -321,7 +321,7 @@ nativeClientTest(
     const root = dirname(selection.binary);
     const completed = await execFileOutput(
       process.execPath,
-      ["scripts/rea.mjs", "inspect-adb-client", "--json"],
+      ["scripts/acl-rea.mjs", "inspect-adb-client", "--json"],
       {
         env: {
           PATH: process.env.PATH,

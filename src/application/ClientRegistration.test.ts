@@ -39,7 +39,7 @@ const client: SetupClient = {
 
 it("preserves every OpenCode environment key while normalizing its launcher", () => {
   const input = JSON.parse(
-    '{"type":"local","command":["rea","mcp"],"environment":{"__proto__":"operator","constructor":"selected","normal":"value"}}',
+    '{"type":"local","command":["acl-rea", "mcp"],"environment":{"__proto__":"operator","constructor":"selected","normal":"value"}}',
   );
   const result = parseClientRegistrationPolicy(input, client);
   if (!result.ok) throw result.error;
@@ -57,7 +57,7 @@ it.each([42, null, {}])(
   (value) => {
     const environment = Object.fromEntries([["__proto__", value]]);
     const result = parseClientRegistrationPolicy(
-      { type: "local", command: ["rea", "mcp"], environment },
+      { type: "local", command: ["acl-rea", "mcp"], environment },
       client,
     );
     expect(result.ok).toBe(false);
@@ -138,14 +138,14 @@ it.each([{ envs: { KEEP: "1" } }, {}])(
 it("keeps a native Goose leading-zero string when normalizing the env alias", () => {
   const parsed = expectResultValue(
     parseClientConfiguration(
-      "extensions:\n  rea:\n    cmd: old\n    env:\n      VALUE: 0123\n",
+      "extensions:\n  acl-rea:\n    cmd: old\n    env:\n      VALUE: 0123\n",
       "goose",
     ),
   );
   const result = replaceClientRegistrationLauncher(
     gooseTarget,
     ["fixture"],
-    parsed.servers.rea,
+    parsed.servers["acl-rea"],
   );
   if (!result.ok) throw result.error;
   expect(result.value.envs).toEqual({ VALUE: "0123" });
@@ -199,8 +199,8 @@ it.each([null, 42, ["value"], { VALUE: 123 }])(
 );
 
 it.each([
-  "extensions:\n  rea:\n    cmd: old\n    env:\n",
-  "extensions:\n  rea:\n    cmd: old\n    env: null\n",
+  "extensions:\n  acl-rea:\n    cmd: old\n    env:\n",
+  "extensions:\n  acl-rea:\n    cmd: old\n    env: null\n",
 ])(
   "reads a null Goose env alias as a malformed environment, not an empty one: %j",
   (text) => {

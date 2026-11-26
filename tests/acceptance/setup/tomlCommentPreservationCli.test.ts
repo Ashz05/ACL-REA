@@ -16,13 +16,13 @@ const scenarios = [
       'model = "x" # inline model note',
       "",
       "# about rea",
-      "[mcp_servers.rea]",
+      "[mcp_servers.acl-rea]",
       "# inside the rea table",
       'command = "npx"',
-      'args = ["-y", "rea-agents@6.1.0", "mcp"]',
+      'args = ["-y", "acl-rea-agents@6.1.0", "mcp"]',
       "",
       "# between rea and its environment",
-      "[mcp_servers.rea.env]",
+      "[mcp_servers.acl-rea.env]",
       'OLD = "value"',
       "# after the rea environment",
       "",
@@ -51,9 +51,9 @@ const scenarios = [
     unrelated: {},
     original: [
       "# about rea",
-      "[mcp_servers.rea]",
+      "[mcp_servers.acl-rea]",
       'command = "npx"',
-      'args = ["-y", "rea-agents@6.1.0", "mcp"]',
+      'args = ["-y", "acl-rea-agents@6.1.0", "mcp"]',
       "# trailing note without a line break",
     ].join("\n"),
     comments: ["# about rea", "# trailing note without a line break"],
@@ -123,10 +123,10 @@ cliTest(
       const text = await readFile(path, "utf8");
       configured.push({ path, text });
       for (const comment of comments) expect(text, path).toContain(comment);
-      expect(text, path).not.toContain("rea-agents@6.1.0");
+      expect(text, path).not.toContain("acl-rea-agents@6.1.0");
       expect(unrelatedValues(text), path).toEqual(unrelated);
-      expect(parseToml(text), path).toHaveProperty("mcp_servers.rea.command");
-      expect(await readFile(`${path}.rea.backup`, "utf8"), path).toBe(original);
+      expect(parseToml(text), path).toHaveProperty("mcp_servers.acl-rea.command");
+      expect(await readFile(`${path}.acl-rea.backup`, "utf8"), path).toBe(original);
     }
 
     const repeated = await run([...setup, "--yes"]);
@@ -144,7 +144,7 @@ cliTest(
     for (const { path, comments, unrelated } of configs) {
       const text = await readFile(path, "utf8");
       for (const comment of comments) expect(text, path).toContain(comment);
-      expect(parseToml(text), path).not.toHaveProperty("mcp_servers.rea");
+      expect(parseToml(text), path).not.toHaveProperty("mcp_servers.acl-rea");
       expect(unrelatedValues(text), path).toEqual(unrelated);
       expect(text.endsWith("\n"), path).toBe(true);
     }

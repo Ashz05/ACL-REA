@@ -7,8 +7,8 @@ the file, never starts a V8 runtime, never installs bytenode, and never invokes 
 decompiler.
 
 ```bash
-rea inspect-v8-code-cache /absolute/path/to/module.jsc --json
-rea inspect-v8-code-cache /absolute/path/to/module.jsc --min-string-bytes 8 --json
+acl-rea inspect-v8-code-cache /absolute/path/to/module.jsc --json
+acl-rea inspect-v8-code-cache /absolute/path/to/module.jsc --min-string-bytes 8 --json
 ```
 
 The MCP tool is `inspect_v8_code_cache` with the same inputs and the same retained

@@ -283,7 +283,7 @@ cleanup or changing the identity of the provider session.
 Launch validation has two relevant boundaries. Settings validated by global
 configuration parsing can prevent REA from starting; an MCP setter cannot
 repair a server that is not running. Correct the launch environment or
-registration, use `rea doctor` for its configuration checks, and start REA again.
+registration, use `acl-rea doctor` for its configuration checks, and start REA again.
 
 Provider-local validation can leave MCP available. For example, an invalid
 `REA_JADX_OPERATION_TIMEOUT_MS` is inspectable with `source: "invalid"`, a
@@ -302,7 +302,7 @@ A fixed ceiling is the exception. Keep one only for a stated format, protocol,
 or representation reason.
 
 Inspection's separate
-[constraints](https://github.com/morluto/rea/blob/main/src/server/analysisSettingsConstraints.ts)
+[constraints](https://github.com/Ashz05/ACL-REA/blob/main/src/server/analysisSettingsConstraints.ts)
 describe operator-owned, external, and fixed controls. REA can report its
 configured response budget and parent heap limit; client deadlines and receive
 buffers remain explicitly unknown. These are not entries accepted by the
@@ -315,7 +315,7 @@ runtime override, and name what does not raise it. Do not invent a setting.
 Every fixed ceiling a refusal declares (`fixedAllowanceOptions`,
 `fixedProducerInputAllowance`, `artifactFixedLimitFailure` or an inline
 `fixedAllowance`) is listed in
-[`fixed-ceiling-registry.json`](https://github.com/morluto/rea/blob/main/scripts/verify/fixed-ceiling-registry.json)
+[`fixed-ceiling-registry.json`](https://github.com/Ashz05/ACL-REA/blob/main/scripts/verify/fixed-ceiling-registry.json)
 under its file and allowance, with its class and reason: `format`,
 `protocol`, `representation`, `derived` (grows with the admitted input or
 another control), `forwarding` (relays a ceiling declared elsewhere), or
@@ -330,7 +330,7 @@ that count may only shrink, and `--shrink-baselines` lowers it
 ([#14234](https://github.com/morluto/rea/issues/14234)).
 
 JSON values stop at `MAX_JSON_DEPTH` (1000) in
-[`jsonValue.ts`](https://github.com/morluto/rea/blob/main/src/domain/jsonValue.ts):
+[`jsonValue.ts`](https://github.com/Ashz05/ACL-REA/blob/main/src/domain/jsonValue.ts):
 "JSON value exceeds maximum nesting depth of 1000. This release has no runtime
 override."
 
@@ -338,7 +338,7 @@ override."
 
 A producer that refuses a request types the refusal instead of leaving
 recovery to the resource kind. The domain owner is
-[`analysisRefusal.ts`](https://github.com/morluto/rea/blob/main/src/domain/analysisRefusal.ts).
+[`analysisRefusal.ts`](https://github.com/Ashz05/ACL-REA/blob/main/src/domain/analysisRefusal.ts).
 It has three variants. Each one projects under `details.refusal` with the
 `operation` the error is attributed to:
 
@@ -393,12 +393,12 @@ request to change it.
 - Dropped MCP connection: retry the call once only when it is safe to repeat
   or known not to have started. If it may already have changed the target, or
   it fails again, tell the user and ask them to restart the MCP client. Do not
-  start with `rea doctor`
+  start with `acl-rea doctor`
   ([#6353](https://github.com/morluto/rea/pull/6353)).
 - REA could not start its connection: retry once. If it fails again, tell the
-  user and ask them to restart the MCP client, then run `rea doctor`. Do not
+  user and ask them to restart the MCP client, then run `acl-rea doctor`. Do not
   retry a startup that returns the same unchanged result: tell the user REA
-  could not start, ask them to restart the MCP client, then run `rea doctor`.
+  could not start, ask them to restart the MCP client, then run `acl-rea doctor`.
 - Unexpected process-command failure: do not repeat the command. Tell the user
   the reported reason and ask them to check the scenario or capture files it
   read; if they are valid, report the failure with its diagnostics. Doctor does
@@ -413,8 +413,8 @@ request to change it.
 - `configuration_invalid`: when MCP remains available and the failure belongs
   to a curated provider-local setting, inspect and set a valid runtime override.
   Otherwise correct the named setting in the environment that starts REA, then
-  start REA again. Run `rea doctor` for the
-  `runtime-configuration:` check. Re-run `rea setup` for that client when the
+  start REA again. Run `acl-rea doctor` for the
+  `runtime-configuration:` check. Re-run `acl-rea setup` for that client when the
   setting is on the registration allowlist, then reconnect so the new process
   sees it.
 - `invalid_request`: follow the specific recovery and reported issue. Inspect
@@ -463,7 +463,7 @@ MCP drop, a capacity wait, or retained cleanup.
 
 Cover the unset default, accepted overrides, rejected floor/maximum values,
 and invalid syntax through the owning parser and configuration boundary.
-[`regexMatchingDeadline.test.ts`](https://github.com/morluto/rea/blob/main/src/config/regexMatchingDeadline.test.ts)
+[`regexMatchingDeadline.test.ts`](https://github.com/Ashz05/ACL-REA/blob/main/src/config/regexMatchingDeadline.test.ts)
 is one example. Assert error codes, setting IDs, values, units, provenance,
 application points, and resulting behavior. Check that adapters deliver the
 canonical recovery guidance, with independent assertions for its underlying

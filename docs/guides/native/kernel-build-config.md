@@ -8,8 +8,8 @@ and a `configs.ko` module. It does not require a Linux host,
 `extract-ikconfig`, or `/proc/config.gz`.
 
 ```bash
-rea inspect-kernel-build-config /absolute/path/to/vmlinux --json
-rea inspect-kernel-build-config /absolute/path/to/bzImage --name CONFIG_SECURITY_SELINUX --json
+acl-rea inspect-kernel-build-config /absolute/path/to/vmlinux --json
+acl-rea inspect-kernel-build-config /absolute/path/to/bzImage --name CONFIG_SECURITY_SELINUX --json
 ```
 
 The CLI resolves relative paths against the caller's working directory. MCP

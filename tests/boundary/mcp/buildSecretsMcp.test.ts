@@ -46,7 +46,7 @@ const secretsConfig = async (
   files: Readonly<Record<string, { text: string; mode?: number }>>,
 ) => {
   const config = await createTestTempDirectory("xdg-config-");
-  const folder = join(config, "rea", "build-secrets");
+  const folder = join(config, "acl-rea", "build-secrets");
   await mkdir(folder, { recursive: true, mode: 0o700 });
   for (const [handle, { text, mode = 0o600 }] of Object.entries(files)) {
     await writeFile(join(folder, handle), text);
@@ -108,7 +108,7 @@ it("types a secret from its handle's file, showing neither its value nor an imag
   const absent = await act("type_secret", { secret: "absent" });
   results.push(absent);
   expect(errorMessage(absent)).toContain(
-    join(config, "rea", "build-secrets", "absent"),
+    join(config, "acl-rea", "build-secrets", "absent"),
   );
 
   // The driver's refusal could quote what it was given, so REA shows none of it.
@@ -245,7 +245,7 @@ it("refuses to write a bundle that holds a handle's value, naming the files but 
 
 it("refuses export if a declared handle cannot be checked", async () => {
   const config = await secretsConfig({ master: { text: VALUE } });
-  await symlink("missing", join(config, "rea", "build-secrets", "unreadable"));
+  await symlink("missing", join(config, "acl-rea", "build-secrets", "unreadable"));
   const { client } = await buildCaptureFakes({
     serverEnv: { XDG_CONFIG_HOME: config },
   });
